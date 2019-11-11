@@ -135,15 +135,13 @@ After first run of ./ronin.sh, you can simply type `ronin` into the terminal, no
 
 1. cd ~
 
-2. sudo pacman -S git
+2. sudo pacman -Syu git
 
 3. git clone -b development https://github.com/RoninDojo/RoninDojo.git
 
-4. cd ~/RoninDojo
+4. sudo chmod +x ~/RoninDojo/ronin.sh
 
-5. sudo chmod +x ~/RoninDojo/ronin.sh
-
-6. ./ronin.sh
+5. Type `ronin` and hit enter
 
 ```
 Donations:
