@@ -137,7 +137,7 @@ Now that you system is setup you can continue with Ronin UI.
 
 3. cd ~/RoninDojo
 
-4. sudo chmod +x ~/ronin.sh
+4. sudo chmod +x ~/RoninDojo/ronin.sh
 
 5. ./ronin.sh
 
