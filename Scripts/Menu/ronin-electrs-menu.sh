@@ -89,7 +89,7 @@ case $CHOICE in
             # disable electrs at startup, return to menu
             ;;
         6)
-            bash ~/RoninDojo/ronin.sh
+            bash ~/RoninDojo/ronin
             # returns to main menu
             ;;
 esac

@@ -113,7 +113,7 @@ case $CHOICE in
             # uses passwd to unlock root user, returns to menu
             ;;
         8)
-            bash ~/RoninDojo/ronin.sh
+            bash ~/RoninDojo/ronin
             # returns to main menu
             ;;
 esac

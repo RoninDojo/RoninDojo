@@ -193,7 +193,7 @@ case $CHOICE in
 	    # reload and return to menu
             ;;
         7)
-            bash ~/RoninDojo/ronin.sh
+            bash ~/RoninDojo/ronin
             # return to main menu
             ;;
 esac

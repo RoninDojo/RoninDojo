@@ -33,7 +33,7 @@ do
             # runs electrs setup script
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Install/ronin.sh
+            bash ~/RoninDojo/Scripts/Install/ronin
             # go back to main menu
             ;;
     esac

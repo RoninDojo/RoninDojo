@@ -102,7 +102,7 @@ case $CHOICE in
             # check for updates, return to menu
             ;;
         7)
-            bash ~/RoninDojo/ronin.sh
+            bash ~/RoninDojo/ronin
             # return to menu
             ;;
 esac
