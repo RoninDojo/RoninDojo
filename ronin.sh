@@ -8,9 +8,6 @@ NC='\033[0m'
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
 
-sudo sed -i '11i export PATH="$PATH:~/RoninDojo/ronin.sh' ~/.bashrc
-# edit bash.rc with ronin.sh path for quick launch from command line
-
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
