@@ -1,0 +1,119 @@
+#!/bin/bash
+
+RED='\033[0;31m'
+# used for color with ${RED}
+NC='\033[0m'
+# No Color
+
+HEIGHT=22
+WIDTH=76
+CHOICE_HEIGHT=16
+TITLE="Ronin UI"
+MENU="Choose one of the following options:"
+
+OPTIONS=(1 "Task Manager"
+         2 "Check Disk Space"
+	 3 "Check for Updates"
+         4 "Restart"
+         5 "Power Off"
+	 6 "Lock Root User"
+	 7 "Unlock Root User"
+	 8 "Go Back")
+
+CHOICE=$(dialog --clear \
+                --title "$TITLE" \
+                --menu "$MENU" \
+                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "${OPTIONS[@]}" \
+                2>&1 >/dev/tty)
+
+clear
+case $CHOICE in
+        1)
+            echo -e "${RED}"
+            echo "***"
+            echo "Use Ctrl+C at any time to exit Task Manager."
+            echo "***"
+            echo -e "${NC}"
+	    sleep 5s
+	    sudo htop
+	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            # returns to main menu
+            ;;
+	2)
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing Disk Space Info..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 3s
+            df -h
+            # disk space info
+            
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            # press any key to return to menu
+            ;;
+        3)
+            echo -e "${RED}"
+            echo "***"
+            echo "Checking for system updates..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 2s
+            sudo pacman -Syu
+	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            # check for system updates, then return to menu
+            ;;
+        4)
+            echo -e "${RED}"
+            echo "***"
+            echo "Restarting in 10s, or press Ctrl + C to cancel now..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 10s
+            sudo shutdown -r now
+            # disk space info
+            ;;
+        5)
+            echo -e "${RED}"
+            echo "***"
+            echo "Powering off in 10s, press Ctrl + C to cancel..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 10s
+            sudo shutdown now
+            # disk space info
+            ;;
+	6)
+            echo -e "${RED}"
+            echo "***"
+            echo "Locking Root User..."
+            echo "***"
+            echo -e "${NC}"
+	    sleep 5s
+	    sudo passwd -l root
+	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            # uses passwd to lock root user, returns to menu
+            ;;
+	7)
+            echo -e "${RED}"
+            echo "***"
+            echo "Unlocking Root User..."
+            echo "***"
+            echo -e "${NC}"
+	    sleep 5s
+	    sudo passwd -u root
+	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            # uses passwd to unlock root user, returns to menu
+            ;;
+        8)
+            bash ~/RoninDojo/ronin.sh
+            # returns to main menu
+            ;;
+esac
