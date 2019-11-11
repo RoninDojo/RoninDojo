@@ -352,5 +352,14 @@ echo -e "${RED}"
 echo "Configuration is complete!"
 sleep 3s
 echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
-sleep 10s
+sleep 3s
+
+echo -e "${RED}"
+echo "***"
+echo "Installing Dojo..."
+echo "***"
+echo -e "${NC}"
+sleep 5s
+cd ~/dojo/docker/my-dojo
+sudo ./dojo.sh install
 # end dojo setup
