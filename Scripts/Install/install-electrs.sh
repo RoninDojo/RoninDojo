@@ -133,7 +133,7 @@ Description=Electrs
 After=dojo.service
 [Service]
 WorkingDirectory=/home/$USER/electrs
-ExecStart=/home/$USER/electrs/target/release/electrs --index-batch-size=10
+ExecStart=/home/$USER/electrs/target/release/electrs --electrum-rpc-addr="0.0.0.0:50001"
 User=$USER
 Group=$USER
 Type=simple
