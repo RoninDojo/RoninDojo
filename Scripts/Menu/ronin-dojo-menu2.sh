@@ -75,7 +75,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu2.sh
             # start dojo, return to menu
             ;; 
         2)
@@ -97,7 +97,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu2.sh
             # start dojo, return to menu
             ;;
         3)
@@ -119,7 +119,7 @@ case $CHOICE in
             # uninstall dojo
             ;;
         4)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # return to main menu
             ;;
 esac

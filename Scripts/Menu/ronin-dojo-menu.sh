@@ -40,7 +40,7 @@ case $CHOICE in
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh start
             sleep 3s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # start dojo, return to menu
             ;;
         2)
@@ -53,7 +53,7 @@ case $CHOICE in
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh stop
             sleep 3s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+	    bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # stop dojo, return to menu
             ;;
         3)
@@ -74,7 +74,7 @@ case $CHOICE in
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh logs $requested_logs
             # utilizing user input from $requested_logs for ./dojo.sh logs
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # return to main menu
             ;;
         4)
@@ -94,7 +94,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # press any key to return to menu
             # shows .onion and returns to menu
             ;;
@@ -108,7 +108,8 @@ case $CHOICE in
             sleep 30s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh upgrade
-            # restart dojo
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
+            # upgrades dojo
             ;;
         6)
             echo -e "${RED}"
@@ -126,7 +127,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # display dojo version info
             # press any letter to return
             ;;
@@ -143,11 +144,11 @@ case $CHOICE in
             # free disk space by deleting docker dangling images and images of previous versions
             ;;
         8)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-dojo-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu2.sh
             # takes you to ronin dojo menu2
             ;;
         9)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/ronin.sh
+            bash ~/RoninDojo/ronin.sh
             # return to main ronin.sh menu
             ;;
 esac

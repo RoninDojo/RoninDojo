@@ -37,7 +37,7 @@ case $CHOICE in
             sleep 1s
             sudo ufw enable
             sleep 1s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
             # enables firewall
             ;;
         2)
@@ -49,7 +49,7 @@ case $CHOICE in
             sleep 1s
             sudo ufw disable
             sleep 1s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
             # disables firewall
             ;;
         3)
@@ -69,7 +69,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
             # press any key to return to menu
             ;;
         4)
@@ -128,7 +128,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
             # press any key to return to menu
             ;;
         5)
@@ -177,7 +177,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-	    bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
             # press any letter to return to menu
             ;;
         6)
@@ -189,11 +189,11 @@ case $CHOICE in
             sleep 1s
             sudo ufw reload
             sleep 1s
-	    bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
 	    # reload and return to menu
             ;;
         7)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/ronin.sh
+            bash ~/RoninDojo/ronin.sh
             # return to main menu
             ;;
 esac

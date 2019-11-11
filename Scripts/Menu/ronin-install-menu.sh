@@ -17,23 +17,23 @@ for choice in $choices
 do
     case $choice in
         1)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/install-dependencies-setup-system.sh
+            bash ~/RoninDojo/Scripts/Install/install-dependencies-setup-system.sh
 	    # runs system setup script which will installs dependencies, setup ssd, assigns local ip range to ufw, etc. 
             ;;
         2)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/install-dojo.sh
+            bash ~/RoninDojo/Scripts/Install/install-dojo.sh
             # runs dojo install script
             ;;
         3)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/install-whirlpool.sh
+            bash ~/Ronin-Dojo/Scripts/Install/install-whirlpool.sh
             # runs electrs setup script
             ;;
         4)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/Scripts/install-electrs.sh
+            bash ~/RoninDojo/Scripts/Install/install-electrs.sh
             # runs electrs setup script
             ;;
         5)
-            bash ~/Ronin-Dojo/Odroid/Manjaro/ronin.sh
+            bash ~/RoninDojo/Scripts/Install/ronin.sh
             # go back to main menu
             ;;
     esac
