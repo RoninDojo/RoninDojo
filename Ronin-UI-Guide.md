@@ -131,17 +131,19 @@ Now that you system is setup you can continue with Ronin UI.
 
 ## 5. [RONIN UI]
 
-1. sudo pacman -S git
+After first run of ./ronin.sh, you can simply type ronin.sh into the terminal, no need to type ./ before it.
 
-2. git clone -b development https://github.com/RoninDojo/RoninDojo.git
+1. cd ~
 
-3. cd ~/RoninDojo
+2. sudo pacman -S git
 
-4. sudo chmod +x ~/RoninDojo/ronin.sh
+3. git clone -b development https://github.com/RoninDojo/RoninDojo.git
 
-5. ./ronin.sh
+4. cd ~/RoninDojo
 
-4. Afterfirst run, you can simply type ronin.sh into the terminal, no need to type ./ before it. 
+5. sudo chmod +x ~/RoninDojo/ronin.sh
+
+6. ./ronin.sh
 
 ```
 Donations:
