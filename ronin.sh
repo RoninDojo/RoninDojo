@@ -7,21 +7,12 @@ NC='\033[0m'
 
 echo -e "${RED}"
 echo "***"
-echo "Updating, Installing Git, and Preparing for UI..."
+echo "Updating and Preparing for UI..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
 sudo pacman -Syu
-sudo pacman -S --noconfirm git
 # initial setup for UI is deleted by sed a few lines below
-
-echo -e "${RED}"
-echo "***"
-echo "Downloading UI..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-git clone https://github.com/RoninDojo/RoninDojo.git
 
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
@@ -40,7 +31,7 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-sudo sed '8,44d' ~/RoninDojo/ronin.sh
+sudo sed '8,35d' ~/RoninDojo/ronin.sh
 # after running first time setup, then lines 8-44 are deleted by sed
 
 HEIGHT=22
