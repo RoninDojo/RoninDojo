@@ -2,7 +2,7 @@
 
 This guide is out of date and needs to be updated! If you are testing please see section 5.
 
-Get your Dojo running in a few easy steps! Once setup, simply enter `ronin.sh` into the Terminal anytime to manage your System, Dojo, or other features using the Ronin UI.
+Get your Dojo running in a few easy steps! Once setup, simply enter `ronin` into the Terminal anytime to manage your System, Dojo, or other features using the Ronin UI.
 
 Please report any issues that you are having. Thank you for trying Ronin UI!
 
@@ -131,7 +131,7 @@ Now that you system is setup you can continue with Ronin UI.
 
 ## 5. [RONIN UI]
 
-After first run of ./ronin.sh, you can simply type ronin.sh into the terminal, no need to type ./ before it.
+After first run of ./ronin.sh, you can simply type `ronin` into the terminal, no need to type ./ before it.
 
 1. cd ~
 
