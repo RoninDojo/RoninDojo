@@ -1,4 +1,4 @@
-# Ronin Dojo Guides
+# Welcome to Ronin Dojo
 Ronin Dojo is the RPi4 and Odriod N2 installation variant of Samourai Wallet's Dojo. This is not a change to their code or application, rather the installation process modified specifically for RPi4/Odroid. 
 
 Our Mission is to bring full on-chain self-sovereignity at an afforable price!
@@ -79,3 +79,7 @@ This list is continuously growing, I will do my best to update as much as I can.
 If we missed you please let me know.
 
 ## Shout out to Samoura Wallet team for making an amazing product!
+# As long they continue to build we will continue to support!
+check out the telegram groups:
+
+[Dojo Telegram](https://t.me/samourai_dojo)
