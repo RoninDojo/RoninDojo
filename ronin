@@ -11,6 +11,11 @@ cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
+# move ronin.sh to /etc/profile.d/
+sudo cp -r ~/RoninDojo/ronin.sh /etc/profile.d
+sudo chmod +x /etc/profile.d/ronin.sh
+sudo systemctl daemon-reload
+
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
