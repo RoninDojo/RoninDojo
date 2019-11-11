@@ -207,26 +207,64 @@ echo "***"
 echo "Opening tmux session and starting Whirlpool..."
 echo "***"
 echo -e "${NC}"
+# setting whirlpool as a Service
+echo -e "${NC}" 
+USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+# adding tor location to whirlpool configuration
+sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
+
+#creating an executable file and making it executable
+
+echo "
+#!/bin/bash
+
+cd /home/$USER/whirlpool
+
+java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --mixs-target=0 --listen
+"| sudo tee -a /bin/whirlpool
+
+sudo chmod +x /bin/whirlpool
+
+# sudo nano /etc/systemd/system/whirlpool.service 
+echo "
+[Unit]
+Description=Whirlpool
+After=tor.service
+[Service]
+WorkingDirectory=/home/$USER/whirlpool
+ExecStart=/bin/whirlpool
+User=$USER
+Group=$USER
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
+[Install]
+WantedBy=multi-user.target
+" | sudo tee -a /etc/systemd/system/whirlpool.service 
+
+sudo systemctl enable whirlpool
+sudo systemctl start whirlpool
+
+echo ""
+echo "***"
+echo "Starting whirlpool in the background"
+echo "***"
 sleep 2s
-tmux new -s whirlpool -d
-sleep 2ss
-tmux send-keys -t 'whirlpool' "java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --authenticate --mixs-target=0 --listen" ENTER
-sleep 5s
-# create whirlpool tmux session and start Whirlpool
-
-echo -e "${RED}"
 echo "***"
-echo "Entering tmux Whirlpool Session."
-echo "Type in your Wallet Passphrase when prompted."
-echo "***"
-echo -e "${NC}"
-
-echo "***"
-echo "After you see it running you can close using the following:"
-echo "Press Ctrl+b then press d."
+echo "Pair with GUI to unlock wallet and begin mixing"
+echo "$APIkey"
 echo "***"
 
 echo "For pairing with GUI head to full guide at: 
+sleep 1s
 echo "https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Raspbian/Whirlpool-Guide.md#pairing-your-with-the-whirlpool-gui"
-sleep 20s
-tmux a -t 'whirlpool'
+sleep 5s
+echo -e "${RED}"
+echo "***"
+echo "Press any letter to return..."
+echo "***"
+echo -e "${NC}"
+read -n 1 -r -s
+bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
