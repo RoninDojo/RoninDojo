@@ -1,5 +1,7 @@
 # Ronin UI Guide
 
+This guide is out of date and needs to be updated! If you are testing please see section 5.
+
 Get your Dojo running in a few easy steps! Once setup, simply enter `ronin.sh` into the Terminal anytime to manage your System, Dojo, or other features using the Ronin UI.
 
 Please report any issues that you are having. Thank you for trying Ronin UI!
@@ -129,13 +131,17 @@ Now that you system is setup you can continue with Ronin UI.
 
 ## 5. [RONIN UI]
 
-1. Download ronin.sh
+1. sudo pacman -S git
 
-2. sudo chmod +x ~/ronin.sh
+2. git clone -b development https://github.com/RoninDojo/RoninDojo.git
 
-3. Run ./ronin.sh which will pull repo and run first time setup.
+3. cd ~/RoninDojo
 
-4. Now you can just type ronin.sh into the terminal, no need to type ./ before it. 
+4. sudo chmod +x ~/ronin.sh
+
+5. ./ronin.sh
+
+4. Afterfirst run, you can simply type ronin.sh into the terminal, no need to type ./ before it. 
 
 ```
 Donations:
