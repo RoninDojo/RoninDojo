@@ -5,15 +5,6 @@ RED='\033[0;31m'
 NC='\033[0m'
 # No Color
 
-echo -e "${RED}"
-echo "***"
-echo "Updating and Preparing for UI..."
-echo "***"
-echo -e "${NC}"
-sleep 3s
-sudo pacman -Syu
-# initial setup for UI is deleted by sed a few lines below
-
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
 
@@ -22,17 +13,6 @@ sudo sed -i '11i export PATH="$PATH:~/RoninDojo/ronin.sh' ~/.bashrc
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
-# set all scripts to be executable
-
-echo -e "${RED}"
-echo "***"
-echo "Welcome to Ronin UI!"
-echo "***"
-echo -e "${NC}"
-sleep 5s
-
-sudo sed '8,35d' ~/RoninDojo/ronin.sh
-# after running first time setup, then lines 8-44 are deleted by sed
 
 HEIGHT=22
 WIDTH=76
