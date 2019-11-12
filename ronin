@@ -10,11 +10,10 @@ cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
+sudo chmod +x ~/RoninDojo/ronin.sh
 
-# move ronin.sh to /etc/profile.d/
-sudo cp -r ~/RoninDojo/ronin.sh /etc/profile.d
-sudo chmod +x /etc/profile.d/ronin.sh
-sudo systemctl daemon-reload
+# place ronin.sh execution path in ~/.bashrc
+sed -i '2i ~/RoninDojo/ronin.sh' ~/.bashrc
 
 HEIGHT=22
 WIDTH=76
