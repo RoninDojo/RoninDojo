@@ -40,7 +40,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            sudo journalctl -e electrs.service
+            sudo journalctl -u electrs.service -e
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
             ;;
@@ -51,7 +51,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # start here
+            sudo systemctl start electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
             ;;
@@ -62,7 +62,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # stop here
+            sudo systemctl stop electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
             ;;
@@ -73,7 +73,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # start here
+            sudo systemctl enable electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # enable electrs at startup, return to menu
             ;;
@@ -84,7 +84,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # stop here
+            sudo systemctl enable electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # disable electrs at startup, return to menu
             ;;
