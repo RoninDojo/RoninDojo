@@ -13,7 +13,7 @@ sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 sudo chmod +x ~/RoninDojo/ronin.sh
 
 # place ronin.sh execution path in ~/.bashrc
-sed -i '2i ~/RoninDojo/ronin.sh' ~/.bashrc
+sed -i '11i ~/RoninDojo/ronin.sh' ~/.bashrc
 
 HEIGHT=22
 WIDTH=76
