@@ -11,7 +11,7 @@ echo -e "${RED}"
 echo "***"
 echo "Welcome to Ronin Dojo UI...."
 echo -e "${NC}"
-sleep 3s
+sleep 1s
 
 echo -e "${NC}"
 echo " _____________________________________________________|_._._._._._._._._, "
@@ -30,7 +30,7 @@ echo " ,_._._._._._._._._|_____________________________________________________ 
 echo " |_|_|_|_|_|_|_|_|_|____________________________________________________/ "
 echo "                   !                                                      "
 echo -e "${NC}"
-sleep 10s
+sleep 5s
 
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
