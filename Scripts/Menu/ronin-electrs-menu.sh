@@ -16,7 +16,8 @@ OPTIONS=(1 "View Logs"
 	 3 "Stop Electrs"
          4 "Enable Electrs at Startup"
          5 "Disable Electrs at Startup"
-	 6 "Go Back")
+	 6 "Show Tor Hiddenservice Address"
+	 7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -89,6 +90,18 @@ case $CHOICE in
             # disable electrs at startup, return to menu
             ;;
         6)
+	    echo -e "${RED}"
+            echo "***"
+            echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 2s
+            sudo cat /mnt/usb/tor/hidden_service/hostname
+	    sleep 5s
+            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            # disable electrs at startup, return to menu
+            ;;
+	7)
             bash ~/RoninDojo/ronin
             # returns to main menu
             ;;
