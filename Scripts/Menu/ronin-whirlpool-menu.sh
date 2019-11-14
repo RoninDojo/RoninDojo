@@ -35,16 +35,16 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            
+
             echo -e "${RED}"
             echo "***"
-            echo "Use Ctrl+C to exit anytime."
+            echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
-            sudo journalctl -e whirlpool.service
+            sleep 3s
+            journalctl -u whirlpool.service -n 50
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
-            # start whirlpool, return to menu
+            # press any key to return to menu
             ;;
         2)
             echo -e "${RED}"

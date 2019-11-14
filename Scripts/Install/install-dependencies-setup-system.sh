@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 RED='\033[0;31m'
@@ -54,6 +53,18 @@ echo -e "${NC}"
 sleep 5s
 
 # system setup starts
+sudo rm -r /etc/motd
+# remove remove ssh banner for the script logo
+
+cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
+# config file for dialog color
+
+sudo chmod +x ~/RoninDojo/Scripts/Install/*
+sudo chmod +x ~/RoninDojo/Scripts/Menu/*
+
+echo "~/RoninDojo/ronin" >> ~/.bashrc
+# place ronin execution path in ~/.bashrc
+
 echo -e "${RED}"
 echo "***"
 echo "Formatting the SSD..."
@@ -75,57 +86,8 @@ fi
 rm ~/sda_tmp.txt
 # remove temp file
 
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
-  d # delete partition if there is one
-    # Accept default
-  w # write the partition table
-EOF
-sleep 5s
-# delete any existing partition
-# runs 4 times in case there is up to 4 partitions
-
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
-  d # delete partition if there is one
-    # Accept default
-  w # write the partition table
-EOF
-sleep 5s
-# delete any existing partition
-# runs 4 times in case there is up to 4 partitions
-
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
-  d # delete partition if there is one
-    # Accept default
-  w # write the partition table
-EOF
-sleep 5s
-# delete any existing partition
-# runs 4 times in case there is up to 4 partitions
-
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
-  d # delete partition if there is one
-    # Accept default
-  w # write the partition table
-EOF
-sleep 5s
-# delete any existing partition
-# runs 4 times in case there is up to 4 partitions
-
-sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
-  n # make new partition
-  p # will be primary partition
-  1 # Select partition 1
-    # First sector (Accept default: 1)
-    # Last sector (Accept default: varies)
-  w # write the partition table
-EOF
-sleep 5s
-# to create the partitions programatically (rather than manually)
-# we're going to simulate the manual input to fdisk
-# The sed script strips off all the comments so that we can
-# document what we're doing in-line with the actual commands
-# Note that a blank line (commented as "defualt" will send a empty
-# line terminated with a newline to take the fdisk default.
+sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
+# wipes partition table
 
 echo -e "${RED}"
 echo "***"
@@ -354,11 +316,12 @@ echo "***"
 echo "Restarting docker..."
 echo "***"
 echo -e "${NC}"
+sudo systemctl stop docker
+sleep 10s
 sudo systemctl daemon-reload
 sleep 5s
-sudo systemctl stop docker
-sleep 3s
 sudo systemctl start docker
+sleep 10s
 # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
 # see systemctl status docker.service and journalctl -xe for details on error
 
@@ -372,3 +335,4 @@ sudo docker info | grep "Docker Root Dir:"
 sleep 5s
 # if not showing SSD path check above
 # docker setup ends
+

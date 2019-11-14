@@ -93,273 +93,488 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Configure your Dojo .conf.tpl files when prompted."
+echo "Do you want to run the Express install? This decreases your inputs and reduces install time."
 echo "***"
 echo -e "${NC}"
-sleep 3s
-#RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Set your RPC Username and Password now..."
+echo "Press 'e' or type 'express' for the Express Installation. Press 'm' or type 'manual' for the Manual Installation. "
 echo "***"
+echo ""
 echo -e "${NC}"
-sleep 3s
+read -r -p "[e/m]: " input
+ 
+case $input in
+    [eE][xX][pP][rR][eE][sS][sS]|[eE])
+ echo -e "${YELLOW}"
+ echo "***"
+ echo "You have selected an Express Installation, are you sure?"
+ echo "***"
+ echo -e "${NC}"
+ sleep 2s
 
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
-echo "Be sure that you record all of this information! Store it in a safe place you will not forget."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ echo -e "${RED}"
+ echo "***"
+ echo "Press any letter to continue, or use Ctrl+C to exit..."
+ echo "***"
+ echo -e "${NC}"
+ read -n 1 -r -s
 
-read -p 'RPC Username: ' RPC_USER
-# get user input for rpc username
+ echo -e "${RED}"
+ echo "***"
+ echo "Proceeding with Express Installation..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 2s
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo     "$RPC_USER"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New RPC Username: ' RPC_USER
+ echo -e "${RED}"
+ echo "***"
+ echo "Configure your Dojo .conf.tpl files when prompted."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
+ #RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+
+ echo -e "${RED}"
+ echo "***"
+ echo "Set your RPC Username and Password now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
+
+ echo -e "${RED}"
+ echo "***"
+ echo "NOTICE:"
+ echo "Enter any value that you want."
+ echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
+ echo "Alphanumerical values only. No special characters such as (*&^%$#@!)."
+ echo "Be sure that you record this information! Store it in a safe place you will not forget."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+
+ read -p 'RPC Username: ' RPC_USER
+ # get user input for rpc username
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo     "$RPC_USER"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+  select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New RPC Username: ' RPC_USER
             echo "$RPC_USER"
-    esac
-done
-sed -i '7d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-sed -i '7i BITCOIN_RPC_USER='$RPC_USER'' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-# uses sed to edit .conf.tpl file with user input value
+     esac
+ done
+ sed -i '7d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ sed -i '7i BITCOIN_RPC_USER='$RPC_USER'' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ # uses sed to edit .conf.tpl file with user input value
 
-read -p 'RPC Password: ' RPC_PASS
-# get user input for rpc password
+ read -p 'RPC Password: ' RPC_PASS
+ # get user input for rpc password
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo     "$RPC_PASS"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New Dojo RPC Password: ' RPC_PASS
-            echo "$RPC_PASS"
-    esac
-done
-sed -i '11d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-sed -i '11i BITCOIND_RPC_PASS='$RPC_PASS'' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-# uses sed to edit .conf.tpl file with user input value
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo     "$RPC_PASS"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New Dojo RPC Password: ' RPC_PASS
+             echo "$RPC_PASS"
+     esac
+ done
+ sed -i '11d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ sed -i '11i BITCOIND_RPC_PASS='$RPC_PASS'' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ # uses sed to edit .conf.tpl file with user input value
 
-#NODE Configuration at dojo/docker/my-dojo/conf/docker-node.conf.tpl
-echo -e "${RED}"
-echo "***"
-echo "Set your Node API Key now..."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ # increasing the dbcache for increased download speed
+ sed -i '23d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ sed -i '23i BITCOIND_DB_CACHE=3000' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Enter any value that you want."
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
-echo "Be sure that you record all of this information! Store it in a safe place you will not forget."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ # creating a 5GB swapfile
+ sudo fallocate -l 5G /swapfile
+ sudo chmod 600 /swapfile
+ sudo mkswap /swapfile
+ sudo swapon /swapfile
+ sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
 
-read -p 'Enter Node API Key for interacting with Wallet and Sentinel: ' NODE_API_KEY
-# get user input for node api key
+ #Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo    "$NODE_API_KEY"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New Node API Key: ' NODE_API_KEY
-            echo "$NODE_API_KEY"
-    esac
-done
-sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-sed -i '9i NODE_API_KEY='$NODE_API_KEY'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-sleep 2s
-#Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ echo -e "${RED}"
+ echo "****"
+ echo "Set the Node Admin Key now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
 
-echo -e "${RED}"
-echo "****"
-echo "Set the Node Admin Key now..."
-echo "***"
-echo -e "${NC}"
-sleep 3s
+ echo -e "${RED}"
+ echo "***"
+ echo "NOTICE:"
+ echo "Enter any value that you want."
+ echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
+ echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
+ echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
+ echo "Be sure that you record this information! Store it in a safe place you will not forget."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
 
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Enter any value that you want."
-echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
-echo "Be sure that you record all of this information! Store it in a safe place you will not forget."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ read -p 'Enter Node Admin Key for accessing Dojo Maintenance Tool: ' NODE_ADMIN_KEY
 
-read -p 'Enter Node Admin Key for accessing Dojo Maintenance Tool: ' NODE_ADMIN_KEY
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$NODE_ADMIN_KEY"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New Node Admin Key: ' NODE_ADMIN_KEY
+             echo "$NODE_ADMIN_KEY"
+     esac
+ done
+ sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sed -i '15i NODE_ADMIN_KEY='$NODE_ADMIN_KEY'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sleep 5s
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo    "$NODE_ADMIN_KEY"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New Node Admin Key: ' NODE_ADMIN_KEY
-            echo "$NODE_ADMIN_KEY"
-    esac
-done
-sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-sed -i '15i NODE_ADMIN_KEY='$NODE_ADMIN_KEY'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ echo -e "${RED}"
+ echo "***"
+ echo "NOTICE:"
+ echo "An automatically generated random 64 character value will generate for each of the following values:"
+ echo "NODE API KEY, JWT Secret, MYSQL ROOT Password, MYSQL username, and password"
+ echo "These can be accessed in the the conf folders at a later time"
+ echo "***"
+ sleep 3s
 
-echo -e "${RED}"
-echo "****"
-echo "Enter any value you prefer for JWT Secret Key now..."
-echo "***"
-echo -e "${NC}"
-sleep 3s
+ echo -e "${NC}"
+ NODE_API_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+ sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sed -i '9i NODE_API_KEY='$NODE_API_KEY'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sleep 2s
 
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Enter any value that you want."
-echo "Node JWT Secret Key is used to sign cyrptographic key signing Json Web Tokens."
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
-echo "Be sure that you record all of this information! Store it in a safe place you will not forget."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ NODE_JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+ sed -i '21d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sed -i '21i NODE_JWT_SECRET='$NODE_JWT_SECRET'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sleep 2s
 
-read -p 'Enter the Node JWT Secret Key, use HIGH ENTROPY: ' NODE_JWT_SECRET
+ #MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo    "$NODE_JWT_SECRET"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New Node JWT Secret: ' NODE_ADMIN_KEY
-            echo "$NODE_JWT_SECRET"
-    esac
-done
-sed -i '21d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-sed -i '21i NODE_JWT_SECRET='$NODE_JWT_SECRET'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-sleep 2s
+ MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+ sed -i '7d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sed -i '7i MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-#MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-echo -e "${RED}"
-echo "***"
-echo "Enter your MYSQL root account password, MYSQL db User, and MYSQL db Password now..."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ echo -e "${RED}"
+ echo "Auto-generating MYSQL Username"
+ echo -e "${NC}"
 
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Enter any value that you want."
-echo "This will protect MYSQL database and provide login information for Dojo DB."
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
-echo "Be sure that you record all of this information! Store it in a safe place you will not forget."
-echo "***"
-echo -e "${NC}"
-sleep 5s
+ MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+ sed -i '11d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sed -i '11i MYSQL_USER='$MYSQL_USER'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-read -p 'MYSQL root password: ' MYSQL_ROOT_PASSWORD
+ echo -e "${RED}"
+ echo "Auto-generating MYSQL Password"
+ echo -e "${NC}"
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo    "$MYSQL_ROOT_PASSWORD"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New MYSQL Root Password: ' MYSQL_ROOT_PASSWORD
+ MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+ sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+
+ echo -e "${RED}"
+ echo "Configuration is complete!"
+ sleep 3s
+ echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
+ sleep 10s
+ # end dojo setup
+
+ echo -e "${RED}"
+ echo "***"
+ echo "Installing Dojo..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+ cd ~/dojo/docker/my-dojo
+ sudo ./dojo.sh install
+ ;;
+    [mM][aA][nN][uU][aA][lL]|[mM])
+ echo -e "${YELLOW}"
+ echo "***"
+ echo "You have selected a Manual Installation, are you sure?"
+ echo "***"
+ echo -e "${NC}"
+ sleep 2s
+
+ echo -e "${RED}"
+ echo "***"
+ echo "Press any letter to continue, or use Ctrl+C to exit..."
+ echo "***"
+ echo -e "${NC}"
+ read -n 1 -r -s
+
+ echo -e "${RED}"
+ echo "***"
+ echo "Proceeding with Manual Installation..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 2s
+
+ echo -e "${RED}"
+ echo "***"
+ echo "Configure your Dojo .conf.tpl files when prompted."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
+ #RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+
+ echo -e "${RED}"
+ echo "***"
+ echo "Set your RPC Username and Password now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
+
+ echo -e "${RED}"
+ echo "***"
+ echo "NOTICE:"
+ echo "Enter any value that you want."
+ echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
+ echo "Alphanumerical values only. No special characters such as (*&^%$#@!)."
+ echo "Be sure that you record this information! Store it in a safe place you will not forget."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+
+ read -p 'RPC Username: ' RPC_USER
+ # get user input for rpc username
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo     "$RPC_USER"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New RPC Username: ' RPC_USER
+             echo "$RPC_USER"
+     esac
+ done
+ sed -i '7d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ sed -i '7i BITCOIN_RPC_USER='$RPC_USER'' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ # uses sed to edit .conf.tpl file with user input value
+
+ read -p 'RPC Password: ' RPC_PASS
+ # get user input for rpc password
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo     "$RPC_PASS"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New Dojo RPC Password: ' RPC_PASS
+             echo "$RPC_PASS"
+     esac
+ done
+ sed -i '11d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ sed -i '11i BITCOIND_RPC_PASS='$RPC_PASS'' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ # uses sed to edit .conf.tpl file with user input value
+
+ #NODE Configuration at dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ echo -e "${RED}"
+ echo "***"
+ echo "Set your Node API Key now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+
+ read -p 'Enter Node API Key for interacting with Wallet and Sentinel: ' NODE_API_KEY
+ # get user input for node api key
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$NODE_API_KEY"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New Node API Key: ' NODE_API_KEY
+             echo "$NODE_API_KEY"
+     esac
+ done
+ sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sed -i '9i NODE_API_KEY='$NODE_API_KEY'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sleep 2s
+ #Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
+
+ echo -e "${RED}"
+ echo "****"
+ echo "Set the Node Admin Key now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
+
+ echo -e "${RED}"
+ echo "***"
+ echo "NOTICE:"
+ echo "Enter any value that you want."
+ echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
+ echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
+ echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
+ echo "Be sure that you record this information! Store it in a safe place you will not forget."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+
+ read -p 'Enter Node Admin Key for accessing Dojo Maintenance Tool: ' NODE_ADMIN_KEY
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$NODE_ADMIN_KEY"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New Node Admin Key: ' NODE_ADMIN_KEY
+             echo "$NODE_ADMIN_KEY"
+     esac
+ done
+ sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sed -i '15i NODE_ADMIN_KEY='$NODE_ADMIN_KEY'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+
+ echo -e "${RED}"
+ echo "****"
+ echo "Enter any value you prefer for JWT Secret Key now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 3s
+
+ read -p 'Enter the Node JWT Secret Key, use HIGH ENTROPY: ' NODE_JWT_SECRET
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$NODE_JWT_SECRET"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New Node JWT Secret: ' NODE_ADMIN_KEY
+             echo "$NODE_JWT_SECRET"
+     esac
+ done
+ sed -i '21d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sed -i '21i NODE_JWT_SECRET='$NODE_JWT_SECRET'' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+ sleep 2s
+
+ #MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ echo -e "${RED}"
+ echo "***"
+ echo "Enter your MYSQL root account password, MYSQL db User, and MYSQL db Password now..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+
+ read -p 'MYSQL root password: ' MYSQL_ROOT_PASSWORD
+
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$MYSQL_ROOT_PASSWORD"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New MYSQL Root Password: ' MYSQL_ROOT_PASSWORD
             echo "$MYSQL_ROOT_PASSWORD"
-    esac
-done
-sed -i '7d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-sed -i '7i MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+     esac
+ done
+ sed -i '7d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sed -i '7i MYSQL_ROOT_PASSWORD='$MYSQL_ROOT_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-read -p 'MYSQL db Username: ' MYSQL_USER
+ read -p 'MYSQL db Username: ' MYSQL_USER
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo    "$MYSQL_USER"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New MYSQL DB Username: ' MYSQL_USER
-            echo "$MYSQL_USER"
-    esac
-done
-sed -i '11d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-sed -i '11i MYSQL_USER='$MYSQL_USER'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$MYSQL_USER"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New MYSQL DB Username: ' MYSQL_USER
+             echo "$MYSQL_USER"
+     esac
+ done
+ sed -i '11d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sed -i '11i MYSQL_USER='$MYSQL_USER'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-read -p 'MYSQL DB Password: ' MYSQL_PASSWORD
+ read -p 'MYSQL DB Password: ' MYSQL_PASSWORD
 
-echo -e "${YELLOW}"
-echo "----------------"
-echo    "$MYSQL_PASSWORD"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New MYSQL DB Password: ' MYSQL_PASSWORD
-            echo "$MYSQL_PASSWORD"
-    esac
-done
-sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ echo -e "${YELLOW}"
+ echo "----------------"
+ echo    "$MYSQL_PASSWORD"
+ echo "----------------"
+ echo -e "${RED}"
+ echo "Is this correct?"
+ echo -e "${NC}"
+ select yn in "Yes" "No"; do
+     case $yn in
+         Yes ) break;;
+         No ) read -p 'New MYSQL DB Password: ' MYSQL_PASSWORD
+             echo "$MYSQL_PASSWORD"
+     esac
+ done
+ sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-echo -e "${RED}"
-echo "Configuration is complete!"
-sleep 3s
-echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
-sleep 3s
+ echo -e "${RED}"
+ echo "Configuration is complete!"
+ sleep 3s
+ echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
+ sleep 3s
 
-echo -e "${RED}"
-echo "***"
-echo "Installing Dojo..."
-echo "***"
-echo -e "${NC}"
-sleep 5s
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh install
-# end dojo setup
+ echo -e "${RED}"
+ echo "***"
+ echo "Installing Dojo..."
+ echo "***"
+ echo -e "${NC}"
+ sleep 5s
+ cd ~/dojo/docker/my-dojo
+ sudo ./dojo.sh install
+ # end dojo setup
+       ;;
+    *)
+ echo "Invalid input..."
+ exit 1
+ ;;
+esac

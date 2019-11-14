@@ -1,6 +1,7 @@
 # Ronin UI Guide
 
-This guide is out of date and needs to be updated! If you are testing please see section 5.
+If you are testing please see section 5.
+This guide is currently out of date, please skip to section 5.
 
 Get your Dojo running in a few easy steps! Once setup, simply enter `ronin` into the Terminal anytime to manage your System, Dojo, or other features using the Ronin UI.
 
@@ -131,17 +132,17 @@ Now that you system is setup you can continue with Ronin UI.
 
 ## 5. [RONIN UI]
 
-After first run of ./ronin.sh, you will be directly placed into Ronin UI Menu from login, to exit from there press Ctl C to get to terminal line
+After you choose to setup the system, you will be directly placed into Ronin UI Menu at each login. Press Ctl+C to exit to terminal.
 
 1. cd ~
 
-2. sudo pacman -S git
+2. sudo pacman -Syu git
 
 3. git clone -b development https://github.com/RoninDojo/RoninDojo.git
 
 4. cd RoninDojo 
 
-5. Type ```./ronin```
+5. Type `./ronin`
 
 ```
 Donations:
