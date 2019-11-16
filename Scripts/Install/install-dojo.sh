@@ -199,10 +199,10 @@ case $input in
 
  # increasing the dbcache for increased download speed
  sed -i '23d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
- sed -i '23i BITCOIND_DB_CACHE=3000' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+ sed -i '23i BITCOIND_DB_CACHE=1536' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
  # creating a 5GB swapfile
- sudo fallocate -l 5G /swapfile
+ sudo fallocate -l 1G /swapfile
  sudo chmod 600 /swapfile
  sudo mkswap /swapfile
  sudo swapon /swapfile
@@ -289,7 +289,7 @@ case $input in
 
  MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
  sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
- sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sudo sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
  echo -e "${RED}"
  echo "Configuration is complete!"
@@ -555,7 +555,7 @@ case $input in
      esac
  done
  sed -i '15d' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
- sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+ sudo sed -i '15i MYSQL_PASSWORD='$MYSQL_PASSWORD'' ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
  echo -e "${RED}"
  echo "Configuration is complete!"
