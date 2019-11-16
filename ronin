@@ -5,6 +5,9 @@ RED='\033[0;31m'
 NC='\033[0m'
 # No Color
 
+cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
+# config file for dialog color
+
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16

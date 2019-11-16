@@ -56,9 +56,6 @@ sleep 5s
 sudo rm -r /etc/motd
 # remove remove ssh banner for the script logo
 
-cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
-# config file for dialog color
-
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
@@ -89,6 +86,21 @@ rm ~/sda_tmp.txt
 sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
 # wipes partition table
 
+sudo sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
+  n # new partition
+  p # primary partition
+  1 # partition number 1
+    # default - start at beginning of disk 
+    # default, extend partition to end of disk
+  w # write the partition table
+EOF
+# to create the partitions programatically (rather than manually)
+# we're going to simulate the manual input to fdisk
+# The sed script strips off all the comments so that we can
+# document what we're doing in-line with the actual commands
+# Note that a blank line (commented as "defualt" will send a empty
+# line terminated with a newline to take the fdisk default.
+
 echo -e "${RED}"
 echo "***"
 echo "Using ext4 format, for /dev/sda1"
@@ -97,15 +109,6 @@ echo -e "${NC}"
 sleep 5s
 sudo mkfs.ext4 /dev/sda1
 # format partion1 to ext4
-
-echo -e "${RED}"
-echo "***"
-echo "Displaying the name on the external disk."
-echo "***"
-echo -e "${NC}"
-lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
-sleep 5s
-# double-check that /dev/sda exists, and that its storage capacity is what you expected
 
 echo -e "${RED}"
 echo "***"
@@ -151,11 +154,20 @@ sudo mount -a
 
 echo -e "${RED}"
 echo "***"
+echo "Displaying the name on the external disk."
+echo "***"
+echo -e "${NC}"
+lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+sleep 5s
+# double-check that /dev/sda exists, and that its storage capacity is what you expected
+
+echo -e "${RED}"
+echo "***"
 echo "Check output for /dev/sda1"
 echo "***"
 echo -e "${NC}"
 df -h
-sleep 10s
+sleep 5s
 # checks disk info
 
 echo -e "${RED}"
@@ -335,4 +347,3 @@ sudo docker info | grep "Docker Root Dir:"
 sleep 5s
 # if not showing SSD path check above
 # docker setup ends
-
