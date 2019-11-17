@@ -1,5 +1,5 @@
 # Ronin UI Guide
-
+## DISCLAIMER: This setup utilizes the Dojo development branch and may be unstable! Use at your OWN risk!
 If you are testing please see section 5.
 This guide is currently out of date, please skip to section 5.
 
