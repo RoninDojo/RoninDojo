@@ -14,29 +14,6 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-# Prepare Dojo
-echo -e "${RED}"
-echo "***"
-echo "Editing Dojo to allow for External Apps..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-sed -i '64d' 
-sed -i '64i BITCOIND_RPC_EXTERNAL=on' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf
-sleep 2s
-
-# Restart Dojo
-echo -e "${RED}"
-echo "***"
-echo "Restarting Dojo to enable change..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-cd $HOME
-cd dojo/docker/my-dojo
-sudo ./dojo.sh restart
-sleep 2s
-
 # Install Rust and Clang
 echo -e "${RED}"
 echo "***"
@@ -155,21 +132,6 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-# create Electrs tmux session and start Electrs
-#echo -e "${CYAN}"
-#echo "***"
-#echo "Starting up Electrs with tmux..."
-#echo "***"
-#echo -e "${NC}"
-#sleep 1s
-#cd /home/$USER/electrs
-#tmux new -s electrs -d
-#sleep 1s
-#cd /home/$USER/electrs
-#tmux new -s electrs -d
-#tmux send-keys -t 'electrs' "cargo run --release -- -vvv --timestamp  --index-batch-size=100 --db-dir /mnt/usb/electrs/db --electrum-rpc-addr="0.0.0.0:50001" --daemon-rpc-addr="127.0.0.1:28256"" ENTER
-#sleep 5s
-
 echo -e "${RED}"
 echo "***"
 echo "Electrs is running!"
@@ -180,6 +142,7 @@ sleep 5s
 TOR_ADDRESS=$(sudo cat /mnt/ssd/tor/hidden_service/hostname)
 echo "The Tor Hidden Service address for electrs is:"
 echo "$TOR_ADDRESS"
+sleep 5s 
 
 echo "Electrum Wallet: To connect through Tor, open the Tor Browser, and start with the following options:" 
 sleep 5s
