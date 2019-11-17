@@ -203,7 +203,7 @@ BITCOIND_MAX_MEMPOOL=1024
 
 # Db cache size in MB
 # Type: integer
-BITCOIND_DB_CACHE=1024
+BITCOIND_DB_CACHE=1536
 
 # Number of threads to service RPC calls
 # Type: integer
@@ -244,7 +244,7 @@ BITCOIND_EPHEMERAL_HS=on
 # Warning: Do not expose your RPC API to internet!
 # See BITCOIND_RPC_EXTERNAL_IP
 # Value: on | off
-BITCOIND_RPC_EXTERNAL=off
+BITCOIND_RPC_EXTERNAL=on
 
 # IP address used to expose the RPC API to external apps
 # This parameter is inactive if BITCOIND_RPC_EXTERNAL isn't set to 'on'
@@ -303,8 +303,8 @@ echo "***"
 sleep 3s
 echo -e "${NC}"
 
+# Create random set of 64 characters for API KEY and JWT Secret
 NODE_API_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-
 NODE_JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 
 echo -e "${RED}"
@@ -383,10 +383,9 @@ NODE_FEE_TYPE=ECONOMICAL
 # Create new mysql conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
+# Create random 64 character password and username for MYSQL 
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-
 MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 
 echo "
