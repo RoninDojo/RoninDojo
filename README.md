@@ -73,7 +73,7 @@ We strongly recommend getting a case that keeps the Pi or Odroid cool.
 # Contributors
 This list is continuously growing, I will do my best to update as much as I can. If you would like to contribute please feel free to pull or DM me to help!
 
-@GuerraMoneta @Burcakbaskan  @k3tan @pornaulait @crazyk031 @jaimefoo
+@GuerraMoneta @BTCxZelko @Burcakbaskan @k3tan @kdmukai @crazyk031 @jaimefoo
 
 @romanz - Electrs
 
