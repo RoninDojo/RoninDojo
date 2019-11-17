@@ -73,15 +73,27 @@ We strongly recommend getting a case that keeps the Pi or Odroid cool.
 # Contributors
 This list is continuously growing, I will do my best to update as much as I can. If you would like to contribute please feel free to pull or DM me to help!
 
-@GuerraMoneta @Burcakbaskan @bavarianledger @k3tan @pornaulait @crazyk031 @jaimefoo
+@GuerraMoneta @Burcakbaskan  @k3tan @pornaulait @crazyk031 @jaimefoo
 
 @romanz - Electrs
 
-@openoms and @rootzoll - Raspiblitz team for inspiration and Electrs implementation. 
+@openoms, @rootzoll, and @bavarianledger - Raspiblitz team for inspiration and Electrs implementation. 
 
 If we missed you please let me know.
 
-## Shout out to Samourai Wallet team for making an amazing product!
+## Support
+
+If you appreciate our work and wish to support our continued efforts in providing free, unencumbered, open source code that enhances your sovereignty please consider a donation.
+
+### Address
+
+bc1ql06r3jjx3hmd09eexs7mawczayfqxpx7r3l20hvs3cuq5suv5hvswspdaz
+
+[![address](http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=bc1qma3vyljvz0n3n0e7czaewx8tq5heugv2kvrcq2&qzone=1&margin=0&size=200x200&ecc=L)](https://oxt.me/address/bc1ql06r3jjx3hmd09eexs7mawczayfqxpx7r3l20hvs3cuq5suv5hvswspdaz)
+
+All donations will go to providing the team with more hardware for implementating new features
+
+## FINALLY, a huge Thanks to the Samourai Wallet Dev team!
 ### As long they continue to build we will continue to support!
 check out the telegram groups:
 
