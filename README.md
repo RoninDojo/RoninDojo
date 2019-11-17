@@ -67,8 +67,8 @@ We strongly recommend getting a case that keeps the Pi or Odroid cool.
    - [KSSB Case](https://ameridroid.com/products/kksb-odroid-n2-case)
    - [ODROID-N2 Case](https://ameridroid.com/products/odroid-n2-case)
 
-## Installation
-
+# Installation
+Head to our [Install Guide](https://github.com/RoninDojo/RoninDojo/blob/development/Ronin-UI-Guide.md)
 
 # Contributors
 This list is continuously growing, I will do my best to update as much as I can. If you would like to contribute please feel free to pull or DM me to help!
