@@ -36,7 +36,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
 	    sleep 5s
-	    sudo htop
+	    htop
 	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
             # returns to main menu
             ;;
@@ -47,7 +47,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 3s
-            df -h
+            sudo df -h
             # disk space info
             
             echo -e "${RED}"
@@ -62,7 +62,7 @@ case $CHOICE in
         3)
             echo -e "${RED}"
             echo "***"
-            echo "Checking for system updates..."
+            echo "Checking for system updates...Not recommended on your own"
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -77,7 +77,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 10s
-            sudo shutdown -r now
+            sudo reboot -r now
             # disk space info
             ;;
         5)
@@ -88,7 +88,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 10s
             sudo shutdown now
-            # disk space info
+            # Shut down pi
             ;;
 	6)
             echo -e "${RED}"
