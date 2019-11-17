@@ -55,7 +55,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 mkdir ~/dojo
-cp -rv samourai-dojo-master/* ~/dojo
+cp -rv samourai-dojo/* ~/dojo
 sleep 2s
 
 echo -e "${RED}"
