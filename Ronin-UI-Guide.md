@@ -134,18 +134,23 @@ Now that you system is setup you can continue with Ronin UI.
 
 After you choose to setup the system, you will be directly placed into Ronin UI Menu at each login. Press Ctl+C to exit to terminal.
 
-1. cd ~
+1. ```cd ~ ```
 
-2. sudo pacman -Syu git
+2. ``` sudo pacman -Syu git ```
 
-3. git clone -b development https://github.com/RoninDojo/RoninDojo.git
+3. ``` git clone -b development https://github.com/RoninDojo/RoninDojo.git ```
 
-4. cd RoninDojo 
+4. ``` cd RoninDojo``` 
 
-5. Type `./ronin`
+5. ``` ./ronin ``` ENTER
 
-```
-Donations:
-SegWit native address (Bech32) bc1q5s6jhl0uz9lsj3vgclvftqqap9p60ztpurpax7
-Segwit compatible address (P2SH) 3LdWJ2op2Ba51BndUkUuX7qxoecXaK5FWk
-```
+## Support
+
+If you appreciate our work and wish to support our continued efforts in providing free, unencumbered, open source code that enhances your sovereignty please consider a donation.
+
+### Address
+
+bc1ql06r3jjx3hmd09eexs7mawczayfqxpx7r3l20hvs3cuq5suv5hvswspdaz
+
+[![address](http://api.qrserver.com/v1/create-qr-code/?color=000000&bgcolor=FFFFFF&data=bc1qma3vyljvz0n3n0e7czaewx8tq5heugv2kvrcq2&qzone=1&margin=0&size=200x200&ecc=L)](https://oxt.me/address/bc1ql06r3jjx3hmd09eexs7mawczayfqxpx7r3l20hvs3cuq5suv5hvswspdaz)
+
