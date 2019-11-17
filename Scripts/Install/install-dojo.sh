@@ -101,9 +101,11 @@ sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
 sed -i '13i            ENV     GOLANG_SHA256       9fa65ae42665baff53802091b49b83af6f2e397986b6cbea2ae30e2c7ee0f2f2' ~/dojo/docker/my-dojo/tor/Dockerfile
 sleep 2s
 
-# increasing the dbcache for increased download speed
-sed -i '23d' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-sed -i '23i BITCOIND_DB_CACHE=1536' ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+# Change timeout period of docker-compose.yaml to ensure proper connection
+sed -i '36d' ~/dojo/docker/my-dojo/docker-compose.yaml
+sed -i '36i    command: "/home/node/app/wait-for-it.sh db:3306 --timeout=720 --strict -- /home/node/app/restart.sh"' ~/dojo/docker/my-dojo/docker-compose.yaml
+sed -i '56d' ~/dojo/docker/my-dojo/docker-compose.yaml
+sed -i '56i    command: "/wait-for node:8080 --timeout=720 -- nginx"' ~/dojo/docker/my-dojo/docker-compose.yaml
 
  # creating a 5GB swapfile
 sudo fallocate -l 1G /swapfile
