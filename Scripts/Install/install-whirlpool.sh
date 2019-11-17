@@ -256,8 +256,9 @@ echo "***"
 echo "Pair with GUI to unlock wallet and begin mixing"
 echo "$APIkey"
 echo "***"
+sleep 3s
 
-echo "For pairing with GUI head to full guide at: 
+echo "For pairing with GUI head to full guide at:" 
 sleep 1s
 echo "https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Raspbian/Whirlpool-Guide.md#pairing-your-with-the-whirlpool-gui"
 sleep 5s
