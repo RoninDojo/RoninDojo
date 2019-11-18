@@ -53,7 +53,7 @@ echo -e "${NC}"
 sleep 5s
 
 # system setup starts
-sudo rm -r /etc/motd
+sudo rm -rf /etc/motd
 # remove remove ssh banner for the script logo
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
