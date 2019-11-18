@@ -6,7 +6,6 @@ NC='\033[0m'
 # No Color
 
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
-rm -rf /etc/motd > /dev/null
 # config file for dialog color
 
 echo -e "${NC}"
