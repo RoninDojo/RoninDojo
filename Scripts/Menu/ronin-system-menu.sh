@@ -77,7 +77,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 10s
-            sudo reboot -r now
+            sudo shutdown -r now
             # disk space info
             ;;
         5)

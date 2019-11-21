@@ -25,7 +25,7 @@ do
             # runs dojo install script
             ;;
         3)
-            bash ~/Ronin-Dojo/Scripts/Install/install-whirlpool.sh
+            bash ~/RoninDojo/Scripts/Install/install-whirlpool.sh
             # runs electrs setup script
             ;;
         4)

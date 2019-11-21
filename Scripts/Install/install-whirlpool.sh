@@ -14,20 +14,23 @@ sleep 5s
 
 echo -e "${RED}"
 echo "***"
-echo "Making a UFW rule for Whirlpool..."
+echo "First, a UFW rule will be made for Whirlpool."
 echo "***"
 echo -e "${NC}"
 sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Allows Whirlpool GUI to access Whirlpool CLI from any machine on your Dojo's local network."
+echo "Whirlpool GUI will be able to access Whirlpool CLI from any machine on your Dojo's local network."
 echo "***"
 echo -e "${NC}"
 sleep 2s
 
 ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
 # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
+
+sed -i '2,10d' ~/ip_tmp.txt
+# delete lines 2-10
 
 cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done
 # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
@@ -61,7 +64,7 @@ sudo chown root:root /etc/ufw/user.rules
 # when /etc/ufw/user.rules is edited using awk or sed, the owner gets changed from Root to whatever User that edited that file
 # that causes a warning to be displayed as /etc/ufw/user.rules does need to be owned by root:root
 
-sudo rm ~/ip_tmp.txt ~/rule_tmp.txt
+sudo rm ~/ip_tmp.txt ~/whirlpool_rule_tmp.txt
 # removes txt files that are no longer needed
 
 echo -e "${RED}"
@@ -90,26 +93,11 @@ sleep 10s
 
 echo -e "${RED}"
 echo "***"
-echo "Whirlpool Install"
-echo "By @BTCxZelko"
-echo "***"
-echo -e "${NC}"
-sleep 3s
-
-echo -e "${RED}"
-echo "***"
-echo "Install and run Whirlpool Client CLI for continuous mixing."
-echo "***"
-echo -e "${NC}"
-sleep 5s
-
-echo -e "${RED}"
-echo "***"
-echo "Installing Whirlpool Dependencies."
+echo "Installing Whirlpool Dependencies..."
 echo "***"
 echo -e "${NC}"
 sleep 1s
-sudo pacman -S jdk11-openjdk
+sudo pacman -S --noconfirm jdk11-openjdk
 sleep 3s
 # install install openjdk
 
@@ -119,13 +107,13 @@ echo "Installing tmux..."
 echo "***"
 echo -e "${NC}"
 sleep 1s
-sudo pacman -S tmux -y
+sudo pacman -S --noconfirm tmux
 sleep 3s
 # install install tmux
 
 echo -e "${RED}" 
 echo "***"
-echo "Creating Whirlpool and a working directory."
+echo "Created a Whirlpool directory."
 echo "***"
 echo -e "${NC}"
 sleep 1s
@@ -141,7 +129,8 @@ echo "Pulling Whirlpool from github..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-curl -O https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.1-run.jar
+curl -fsSL https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.1-run.jar -o ~/whirlpool.zip
+unzip ~/whirlpool.zip
 sleep 3s
 # pull Whirlpool run times
 
@@ -151,7 +140,7 @@ echo "Installing Tor..."
 echo "***"
 echo -e "${NC}"
 sleep 1s
-sudo pacman -S tor -y
+sudo pacman -S --noconfirm tor
 sleep 2s
 # install tor
 
@@ -162,7 +151,7 @@ echo "Editing torrc..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
-sudo sed -i '52d'
+sudo sed -i '52d' /etc/tor/torrc
 sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
 sudo sed -i '56d' /etc/tor/torrc
 sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
@@ -176,15 +165,17 @@ echo -e "${RED}"
 echo "***"
 echo "Restarting..."
 echo "***"
-sleep 2s
+sleep 1s
 sudo systemctl restart tor
+sleep 3s
 
 echo -e "${RED}" 
 echo "***"
-echo "Initating Whirlpool...Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphrase"
+echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphrase."
 echo "***"
 echo -e "${NC}"
 sleep 1s
+cd ~
 java -jar whirlpool-client-cli-0.9.1-run.jar --init --tor
 sleep 3s
 # initate Whirlpool

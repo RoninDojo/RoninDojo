@@ -54,13 +54,16 @@ sleep 5s
 
 # system setup starts
 sudo rm -rf /etc/motd
-# remove remove ssh banner for the script logo
+# remove ssh banner for the script logo
+
+echo "" >> ~/.bashrc
+echo "~/RoninDojo/Scripts/.logo" >> ~/.bashrc
+echo "" >> ~/.bashrc
+echo "~/RoninDojo/ronin" >> ~/.bashrc
+# place logo & ronin execution path in ~/.bashrc
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
-
-echo "~/RoninDojo/ronin" >> ~/.bashrc
-# place ronin execution path in ~/.bashrc
 
 echo -e "${RED}"
 echo "***"

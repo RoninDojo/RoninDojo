@@ -14,10 +14,11 @@ MENU="Choose one of the following options:"
 OPTIONS=(1 "Enable Firewall"
          2 "Disable Firewall"
          3 "Firewall Status"
-         4 "Allow New IP Range for SSH"
-	 5 "Delete Rule"
-         6 "Reload Firewall"
-	 7 "Go Back")
+         4 "Add New IP Range for SSH"
+         5 "Add Specific IP for SSH"
+	 6 "Delete Rule"
+         7 "Reload Firewall"
+	 8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -75,26 +76,26 @@ case $CHOICE in
         4)
             echo -e "${RED}"
             echo "***"
-            echo "Get the local IP address of your SSH machine using ifconfig, ipconfig, etc."
+            echo "Obtain the IP address you wish to give access to SSH."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 3s
 
             echo -e "${RED}"
             echo "***"
-            echo "Your IP address on your local network may look like 192.168.4.21"
+            echo "Your IP address on your network may look like 192.168.4.21"
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
-            sleep 10s
+            sleep 3s
 
             echo -e "${RED}"
             echo "***"
-            echo "Enter the local IP address of your SSH machine now."
+            echo "Enter the local IP address you wish to give SSH access now."
             echo "***"
             echo -e "${NC}"
 
-            read ip_address
+            read -p 'Local IP Address:' ip_address
             sudo ufw allow from $ip_address/24 to any port 22 comment 'SSH access restricted to local LAN only'
 
             echo -e "${RED}"
@@ -111,8 +112,9 @@ case $CHOICE in
             echo "Showing status..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 1s
             sudo ufw status
+	    sleep 3s
             # show firewall status
             
             echo -e "${RED}"
@@ -132,6 +134,67 @@ case $CHOICE in
             # press any key to return to menu
             ;;
         5)
+            echo -e "${RED}"
+            echo "***"
+            echo "Obtain the IP address you wish to give access to SSH."
+            echo "***"
+            echo -e "${NC}"
+            sleep 3s
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Your IP address on your network may look like 192.168.4.21"
+            echo "Or it could look like 12.34.56.78"
+            echo "***"
+            echo -e "${NC}"
+            sleep 3s
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Enter the local IP address you wish to give SSH access now."
+            echo "***"
+            echo -e "${NC}"
+
+            read -p 'Local IP Address:' ip_address
+            sudo ufw allow from $ip_address to any port 22 comment 'SSH access restricted to local LAN only'
+
+	    echo -e "${RED}"
+            echo "***"
+            echo "Reloading..."
+            echo "***"
+	    sleep 1s
+            echo -e "${NC}"
+            sudo ufw reload
+            # reload the firewall
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing status..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 1s
+            sudo ufw status
+	    sleep 3s
+            # show firewall status
+            
+            echo -e "${RED}"
+            echo "***"
+            echo "Make sure that you see your new rule!"
+            echo "***"
+            echo -e "${NC}"
+	    sleep 3s
+            
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            # press any key to return to menu
+            ;;
+
+        6)
             echo -e "${RED}"
             echo "***"
             echo "Find the rule you want to delete, and type its row number to delete it."
@@ -180,7 +243,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
             # press any letter to return to menu
             ;;
-        6)
+        7)
 	    echo -e "${RED}"
             echo "***"
             echo "Reloading Firewall..."
@@ -192,7 +255,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
 	    # reload and return to menu
             ;;
-        7)
+        8)
             bash ~/RoninDojo/ronin
             # return to main menu
             ;;
