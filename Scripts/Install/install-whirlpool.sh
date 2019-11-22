@@ -130,7 +130,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 curl -fsSL https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.1-run.jar -o ~/whirlpool.zip
-unzip ~/whirlpool.zip
+unzip whirlpool.zip
 sleep 3s
 # pull Whirlpool run times
 
@@ -175,7 +175,6 @@ echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphr
 echo "***"
 echo -e "${NC}"
 sleep 1s
-cd ~
 java -jar whirlpool-client-cli-0.9.1-run.jar --init --tor
 sleep 3s
 # initate Whirlpool
@@ -204,40 +203,19 @@ USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 # adding tor location to whirlpool configuration
 sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
 
-#creating an executable file and making it executable
+# create whirlpool tmux session and start Whirlpool
+echo -e "${RED}"
+echo "***"
+echo "Opening tmux session and Start Whirlpool"
+echo "***"
+echo -e "${NC}"
+sleep 1s
+tmux new -s whirlpool -d
+sleep 1s
+tmux send-keys -t 'whirlpool' "java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --authenticate --mixs-target=0 --listen" ENTER
+sleep 5s
 
-echo "
-#!/bin/bash
-
-cd /home/$USER/whirlpool
-
-java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --mixs-target=0 --listen
-"| sudo tee -a /bin/whirlpool
-
-sudo chmod +x /bin/whirlpool
-
-# sudo nano /etc/systemd/system/whirlpool.service 
-echo "
-[Unit]
-Description=Whirlpool
-After=tor.service
-[Service]
-WorkingDirectory=/home/$USER/whirlpool
-ExecStart=/bin/whirlpool
-User=$USER
-Group=$USER
-Type=simple
-KillMode=process
-TimeoutSec=60
-Restart=always
-RestartSec=60
-[Install]
-WantedBy=multi-user.target
-" | sudo tee -a /etc/systemd/system/whirlpool.service 
-
-sudo systemctl enable whirlpool
-sudo systemctl start whirlpool
-
+echo -e "${RED}"
 echo ""
 echo "***"
 echo "Starting whirlpool in the background"
