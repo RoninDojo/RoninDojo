@@ -35,14 +35,15 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-
             echo -e "${RED}"
             echo "***"
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
             sleep 3s
-            journalctl -u whirlpool.service -n 50
+            echo "***"
+            echo "Exit with Ctrl+B then press d"
+            tmux a -t 'whirlpool'
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # press any key to return to menu
             ;;
@@ -53,7 +54,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # start here
+            tmux send-keys -t 'whirlpool' "java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --authenticate --mixs-target=3 --listen" ENTER
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # start whirlpool, return to menu
             ;;
@@ -64,7 +65,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # stop here
+            tmux kill-session -t 'whirlpool'
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # stop whirlpool, return to menu
             ;;
@@ -75,7 +76,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # start here
+            # enter here
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # enable whirlpool at startup, return to menu
             ;;
