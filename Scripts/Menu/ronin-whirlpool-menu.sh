@@ -41,9 +41,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 3s
-            echo "***"
-            echo "Exit with Ctrl+B then press d"
-            tmux a -t 'whirlpool'
+            # display logs
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # press any key to return to menu
             ;;
@@ -54,7 +52,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            tmux send-keys -t 'whirlpool' "java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --authenticate --mixs-target=3 --listen" ENTER
+            sudo systemctl start whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # start whirlpool, return to menu
             ;;
@@ -65,7 +63,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            tmux kill-session -t 'whirlpool'
+            sudo systemctl stop whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # stop whirlpool, return to menu
             ;;
@@ -76,7 +74,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # enter here
+            sudo systemctl enable whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # enable whirlpool at startup, return to menu
             ;;
@@ -87,7 +85,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            # stop here
+            sudo systemctl disable whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # disable whirlpool at startup, return to menu
             ;;
