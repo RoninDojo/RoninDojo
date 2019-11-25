@@ -101,16 +101,6 @@ sudo pacman -S --noconfirm jdk11-openjdk
 sleep 3s
 # install install openjdk
 
-echo -e "${RED}"
-echo "***"
-echo "Installing tmux..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-sudo pacman -S --noconfirm tmux
-sleep 3s
-# install install tmux
-
 echo -e "${RED}" 
 echo "***"
 echo "Created a Whirlpool directory."
@@ -131,6 +121,7 @@ echo -e "${NC}"
 sleep 2s
 curl -fsSL https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.1-run.jar -o ~/whirlpool.zip
 unzip whirlpool.zip
+mv whirlpool-client-cli-0.9.1-run.jar whirlpool.jar
 sleep 3s
 # pull Whirlpool run times
 
@@ -210,10 +201,27 @@ echo "Opening tmux session and Start Whirlpool"
 echo "***"
 echo -e "${NC}"
 sleep 1s
-tmux new -s whirlpool -d
-sleep 1s
-tmux send-keys -t 'whirlpool' "java -jar whirlpool-client-cli-0.9.1-run.jar --server=mainnet --tor --auto-mix --authenticate --mixs-target=0 --listen" ENTER
-sleep 5s
+echo "
+[Unit]
+Description=Whirlpool
+After=tor.service
+
+[Service]
+WorkingDirectory=/opt/mynode/whirlpool
+ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --mixs-target=3 --listen
+User=bitcoin
+Group=bitcoin
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+" | sudo tee -a /etc/systemd/system/whirlpool.service
+sudo systemctl daemon-reload
+sudo systemctl start whirlpool
 
 echo -e "${RED}"
 echo ""
