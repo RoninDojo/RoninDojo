@@ -207,7 +207,7 @@ Description=Whirlpool
 After=tor.service
 
 [Service]
-WorkingDirectory=/opt/mynode/whirlpool
+WorkingDirectory=/home/$USER/whirlpool
 ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --mixs-target=3 --listen
 User=bitcoin
 Group=bitcoin
