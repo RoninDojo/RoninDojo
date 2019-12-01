@@ -332,7 +332,7 @@ echo "Restarting docker..."
 echo "***"
 echo -e "${NC}"
 sudo systemctl stop docker
-sleep 10s
+sleep 15s
 sudo systemctl daemon-reload
 sleep 5s
 sudo systemctl start docker
