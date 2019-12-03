@@ -72,9 +72,9 @@ echo "Editing the bitcoin docker file, using the aarch64-linux-gnu.tar.gz source
 echo "***"
 echo -e "${NC}"
 sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.18.1/bitcoin-0.18.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 sed -i '10d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-sed -i '10i            ENV     BITCOIN_SHA256      88f343af72803b851c7da13874cc5525026b0b55e63e1b5e1298390c4688adc6' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 sleep 2s
 # method used with the sed command is to delete entire lines 9, 10 and add new lines 9, 10
 # double check ~/dojo_dir/docker/my-dojo/bitcoin/Dockerfile
