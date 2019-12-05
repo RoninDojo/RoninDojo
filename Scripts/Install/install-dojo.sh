@@ -45,6 +45,8 @@ echo "***"
 echo -e "${NC}"
 cd ~
 sleep 5s
+mkdir ~/.dojo
+cd ~/.dojo
 git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
 sleep 2s
 
