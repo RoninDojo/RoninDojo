@@ -166,7 +166,7 @@ echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphr
 echo "***"
 echo -e "${NC}"
 sleep 1s
-java -jar whirlpool-client-cli-0.9.1-run.jar --init --tor
+java -jar whirlpool-client-cli-0.9.3-run.jar --init --tor
 sleep 3s
 # initate Whirlpool
 
