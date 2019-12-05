@@ -51,8 +51,10 @@ case $CHOICE in
             echo "Starting Whirlpool..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             sudo systemctl start whirlpool
+            echo "Don't forget to login to GUI to unlock mixing"
+            sleep 1s
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # start whirlpool, return to menu
             ;;
@@ -96,9 +98,13 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            # check for updates here
+            cd ~/whirlpool
+            sudo systemctl stop whirlpool
+            sudo rm -rf *.jar
+            wget https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
+            mv whirlpool-client-cli-0.9.3-run.jar whirlpool.jar
+            sudo systemctl start whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
-            # check for updates, return to menu
             ;;
         7)
             bash ~/RoninDojo/ronin
