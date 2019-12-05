@@ -110,7 +110,7 @@ case $CHOICE in
 	    sudo ./dojo stop
 	    mkdir ~/.dojo
 	    cd ~/.dojo
-	    curl -fsSL https://github.com/Samourai-Wallet/samourai-dojo/archive/master.zip -o master.zip
+	    curl -fsSL https://github.com/Samourai-Wallet/samourai-dojo/archive/v1.3.0.zip -o master.zip
 	    unzip master.zip
 	    cp -rv samourai-dojo-master/* ~/dojo
 	    sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
