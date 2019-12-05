@@ -99,7 +99,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             cd ~/whirlpool
-            sudo systemctl stop whirlpool
+            sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
             wget https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
             mv whirlpool-client-cli-0.9.3-run.jar whirlpool.jar
