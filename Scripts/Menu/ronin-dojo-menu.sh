@@ -106,6 +106,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 30s
+	    cd ~/dojo/docker/my-dojo
+	    sudo ./dojo stop
 	    mkdir ~/.dojo
 	    cd ~/.dojo
 	    curl -fsSL https://github.com/Samourai-Wallet/samourai-dojo/archive/master.zip -o master.zip
