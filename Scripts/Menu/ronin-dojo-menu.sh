@@ -88,8 +88,7 @@ case $CHOICE in
             sleep 5s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh onion
-            
-            echo -e "${RED}"
+	    echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
@@ -107,8 +106,20 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 30s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh upgrade
+	    mkdir ~/.dojo
+	    cd ~/.dojo
+	    curl -fsSL https://github.com/Samourai-Wallet/samourai-dojo/archive/master.zip -o master.zip
+	    unzip master.zip
+	    cp -rv samourai-dojo-master/* ~/dojo
+	    sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '10d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
+	    sed -i '1i             FROM    mariadb:latest' ~/dojo/docker/my-dojo/mysql/Dockerfile
+            cd ~/dojo/docker/my-dojo/	   
+            sleep 2s
+	    sudo ./dojo.sh upgrade
             bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # upgrades dojo
             ;;
