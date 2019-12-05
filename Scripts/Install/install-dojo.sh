@@ -45,7 +45,7 @@ echo "***"
 echo -e "${NC}"
 cd ~
 sleep 5s
-git clone https://github.com/Samourai-Wallet/samourai-dojo.git
+git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
 sleep 2s
 
 echo -e "${RED}"
