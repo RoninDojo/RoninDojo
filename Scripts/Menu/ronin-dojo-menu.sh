@@ -108,7 +108,7 @@ case $CHOICE in
             sleep 30s
 	    cd ~/dojo/docker/my-dojo
 	    sudo ./dojo stop
-	    mkdir ~/.dojo
+	    mkdir ~/.dojo > /dev/null 2>&1
 	    cd ~/.dojo
 	    curl -fsSL https://github.com/Samourai-Wallet/samourai-dojo/archive/v1.3.0.zip -o master.zip
 	    unzip master.zip
