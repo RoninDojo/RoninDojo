@@ -209,8 +209,8 @@ After=tor.service
 [Service]
 WorkingDirectory=/home/$USER/whirlpool
 ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --mixs-target=3 --listen
-User=bitcoin
-Group=bitcoin
+User=$USER
+Group=$USER
 Type=simple
 KillMode=process
 TimeoutSec=60
