@@ -101,7 +101,7 @@ sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
 sed -i '13i            ENV     GOLANG_SHA256       9fa65ae42665baff53802091b49b83af6f2e397986b6cbea2ae30e2c7ee0f2f2' ~/dojo/docker/my-dojo/tor/Dockerfile
 sleep 2s
 
- # creating a 5GB swapfile
+ # creating a 1GB swapfile
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
@@ -195,11 +195,11 @@ BITCOIND_MAX_CONNECTIONS=16
 
 # Mempool maximum size in MB
 # Type: integer
-BITCOIND_MAX_MEMPOOL=1024
+BITCOIND_MAX_MEMPOOL=400
 
 # Db cache size in MB
 # Type: integer
-BITCOIND_DB_CACHE=1536
+BITCOIND_DB_CACHE=1024
 
 # Number of threads to service RPC calls
 # Type: integer
@@ -381,7 +381,7 @@ rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
 # Create random 64 character password and username for MYSQL 
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 
 echo "
