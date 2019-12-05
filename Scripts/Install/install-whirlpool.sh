@@ -119,9 +119,9 @@ echo "Pulling Whirlpool from github..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-curl -fsSL https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.1-run.jar -o ~/whirlpool.zip
+curl -fsSL https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.2-run.jar -o ~/whirlpool.zip
 unzip whirlpool.zip
-mv whirlpool-client-cli-0.9.1-run.jar whirlpool.jar
+mv whirlpool-client-cli-0.9.2-run.jar whirlpool.jar
 sleep 3s
 # pull Whirlpool run times
 
