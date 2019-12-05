@@ -1,5 +1,4 @@
 # Ronin UI Guide
-## DISCLAIMER: This setup utilizes the Dojo development branch and may be unstable! Use at your OWN risk!
 If you are testing please see section 5.
 This guide is currently out of date, please skip to section 5.
 
@@ -138,7 +137,7 @@ After you choose to setup the system, you will be directly placed into Ronin UI 
 
 2. ``` sudo pacman -Syu git ```
 
-3. ``` git clone -b development https://github.com/RoninDojo/RoninDojo.git ```
+3. ``` git clone https://github.com/RoninDojo/RoninDojo.git ```
 
 4. ``` cd RoninDojo``` 
 
