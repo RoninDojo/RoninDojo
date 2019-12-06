@@ -107,11 +107,11 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 30s
 	    cd ~/dojo/docker/my-dojo
-	    sudo ./dojo stop
+	    sudo ./dojo.sh stop
 	    mkdir ~/.dojo > /dev/null 2>&1
 	    cd ~/.dojo
 	    git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
-	    cp -rv samourai-dojo/* ~/dojo
+	    sudo cp -rv samourai-dojo/* ~/dojo
 	    sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 	    sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 	    sed -i '10d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
