@@ -169,7 +169,7 @@ sleep 3s
 # initate Whirlpool
 
 echo "Record this APIkey to connect your Whirlpool GUI:"
-APIkey=$(sudo cat /home/$HOME/whirlpool/whirlpool-cli-config.properties | grep cli.Apikey= | cut -c 12-)
+APIkey=$(sudo cat /$HOME/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
 echo "$APIkey"
 echo ""
 sleep 2s
