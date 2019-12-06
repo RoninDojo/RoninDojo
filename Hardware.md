@@ -28,7 +28,7 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
 
 ### Raspberry Pi 4 4gb 
 
-* LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://www.amazon.com/dp/B07YRSYR3M/ref=cm_sw_r_cp_apa_i_Fte1DbZTYFMM3)
+* LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
 
 
 ### Case
