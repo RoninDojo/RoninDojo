@@ -101,8 +101,7 @@ case $CHOICE in
             cd ~/whirlpool
             sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
-            wget https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
-            mv whirlpool-client-cli-0.9.3-run.jar whirlpool.jar
+            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
             sudo systemctl start whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             ;;
