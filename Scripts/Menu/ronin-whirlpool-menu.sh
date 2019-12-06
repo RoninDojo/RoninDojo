@@ -11,7 +11,7 @@ CHOICE_HEIGHT=16
 TITLE="Ronin UI"
 MENU="Choose one of the following options:"
 
-OPTIONS=(1 "View Logs"
+OPTIONS=(1 "View API key"
          2 "Start Whirlpool"
          3 "Stop Whirlpool"
          4 "Enable Whirlpool at Startup"
@@ -31,7 +31,7 @@ case $CHOICE in
         1)
             echo -e "${RED}"
             echo "***"
-            echo "Showing Logs..."
+            echo "Showing API pairing key for Whirlpool GUI..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -41,7 +41,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 3s
-            # display logs
+            cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # press any key to return to menu
             ;;
