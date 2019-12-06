@@ -96,7 +96,7 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
 ### Tier 3
 **Samourai Ronin Dojo w/screen-$313.02 w/o screen-$294.04**
 
-* LABISTS Raspberry Pi 4 4gb Complete Starter Kit -$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
+* LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
 
 * Samsung 860 QVO 1TB SSD-$109 [Amazon Affiliate Link](https://amzn.to/2OW8tot)
 
@@ -111,7 +111,7 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
 ### Tier 4
 **Geekworm Dojo-$314.55**
 
-* LABISTS Raspberry Pi 4 4gb Complete Starter Kit -$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
+* LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
 
 * Samsung 860 QVO 1TB SSD-$109 [Amazon Affiliate Link](https://amzn.to/2OW8tot)
 
