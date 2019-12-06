@@ -22,14 +22,13 @@ Active cooling is highly recommended, load/temps get high during IBD validation.
 
 ### HDMI->Micro HDMI cable
 
-Can be used with initial OS setup, you can SSH into the device after. _*Work is being done on being able to set the device up via SSH from the beginning._
-
+Can be used with initial OS setup, you can also SSH into the device for setup via root@"IP Address"
 
 ## Hardware suggestions 
 
 ### Raspberry Pi 4 4gb 
 
-* LABISTS Raspberry Pi 4 4gb Complete Starter Kit-[$99.99 Amazon](https://www.amazon.com/dp/B07YRSYR3M/ref=cm_sw_r_cp_apa_i_Fte1DbZTYFMM3)
+* LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://www.amazon.com/dp/B07YRSYR3M/ref=cm_sw_r_cp_apa_i_Fte1DbZTYFMM3)
 
 
 ### Case
@@ -37,7 +36,7 @@ Can be used with initial OS setup, you can SSH into the device after. _*Work is 
 #### Passive cooling 
 
 * Flirc-[$15.95 Amazon](https://www.amazon.com/dp/B07WG4DW52/ref=cm_sw_r_cp_apa_i_zU.0DbP89BH06)
-* Geekworm CNC Ultra-Thin Aluminum Alloy Metal Passive Cooling Case-[$26.89 Amazon](https://www.amazon.com/dp/B07X5Y81C6/ref=cm_sw_r_cp_apa_i_3iX1Db4XQ125X)
+* Geekworm CNC Ultra-Thin Aluminum Alloy Metal Passive Cooling Case-$26.89[Amazon Affiliate Link](https://www.amazon.com/dp/B07X5Y81C6/ref=cm_sw_r_cp_apa_i_3iX1Db4XQ125X)
 
 
 #### Active cooling 
