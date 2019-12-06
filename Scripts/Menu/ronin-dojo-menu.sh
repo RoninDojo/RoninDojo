@@ -119,10 +119,10 @@ case $CHOICE in
 	    sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 	    sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
 	    sed -i '1i             FROM    mariadb:latest' ~/dojo/docker/my-dojo/mysql/Dockerfile
-	    sed -i '12d' /opt/mynode/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.4.linux-armv6l.tar.gz' /opt/mynode/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '13d' /opt/mynode/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '13i ENV     GOLANG_SHA256       9f76e6353c9ae2dcad1731b7239531eb8be2fe171f29f2a9c5040945a930fd41' /opt/mynode/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.4.linux-armv6l.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '13i ENV     GOLANG_SHA256       9f76e6353c9ae2dcad1731b7239531eb8be2fe171f29f2a9c5040945a930fd41' ~/dojo/docker/my-dojo/tor/Dockerfile
             cd ~/dojo/docker/my-dojo/	   
             sleep 2s
 	    sudo ./dojo.sh upgrade
