@@ -135,7 +135,7 @@ After you choose to setup the system, you will be directly placed into Ronin UI 
 
 1. ``` sudo pacman -Syu ```
 
-2. ``` sudo pacman -Syu git ```
+2. ``` sudo pacman -S git ```
 
 3. ``` git clone -b development https://github.com/RoninDojo/RoninDojo.git ```
 
