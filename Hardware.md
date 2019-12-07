@@ -22,7 +22,32 @@ Active cooling is highly recommended, load/temps get high during IBD validation.
 
 ### HDMI->Micro HDMI cable
 
-Can be used with initial OS setup, you can also SSH into the device for setup via root@"IP Address" **You must be on an ethernet connection**
+Can be used for display. Preferably you can SSH into the device. **You must be on an ethernet connection**
+
+If your not running a Linux distro, to access terminal so you can SSH into your device. You can use these options:
+
+### Windows
+
+-  Ubuntu [Windows Store](https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6#activetab=pivot:overviewtab) 
+
+-  Putty [Putty.org](https://putty.org/) 
+
+### Mobile
+
+- Termux [Google Play store](https://play.google.com/store/apps/details?id=com.termux) 
+
+- ConnectBot [Google Play store](https://play.google.com/store/apps/details?id=org.connectbot) 
+
+### Once you've accessed terminal
+
+For system setup:
+
+`ssh root@"ip.address"`
+
+Once completed:
+
+`ssh "username"@"ip.address"`
+
 
 ## Hardware suggestions 
 
