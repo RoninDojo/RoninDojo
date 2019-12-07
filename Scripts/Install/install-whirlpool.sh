@@ -119,9 +119,7 @@ echo "Pulling Whirlpool from github..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-curl -fsSL https://github.com/Samourai-Wallet/whirlpool-runtimes/releases/download/cli-0.9.1/whirlpool-client-cli-0.9.1-run.jar -o ~/whirlpool.zip
-unzip whirlpool.zip
-mv whirlpool-client-cli-0.9.1-run.jar whirlpool.jar
+wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
 sleep 3s
 # pull Whirlpool run times
 
@@ -166,12 +164,12 @@ echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphr
 echo "***"
 echo -e "${NC}"
 sleep 1s
-java -jar whirlpool-client-cli-0.9.1-run.jar --init --tor
+java -jar whirlpool.jar --init --tor
 sleep 3s
 # initate Whirlpool
 
 echo "Record this APIkey to connect your Whirlpool GUI:"
-APIkey=$(sudo cat /home/$HOME/whirlpool/whirlpool-configuration | grep cli.Apikey= | cut -c 12-)
+APIkey=$(sudo cat /$HOME/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
 echo "$APIkey"
 echo ""
 sleep 2s
@@ -209,8 +207,8 @@ After=tor.service
 [Service]
 WorkingDirectory=/home/$USER/whirlpool
 ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --mixs-target=3 --listen
-User=bitcoin
-Group=bitcoin
+User=$USER
+Group=$USER
 Type=simple
 KillMode=process
 TimeoutSec=60

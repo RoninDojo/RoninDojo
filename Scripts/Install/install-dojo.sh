@@ -45,7 +45,9 @@ echo "***"
 echo -e "${NC}"
 cd ~
 sleep 5s
-git clone https://github.com/Samourai-Wallet/samourai-dojo.git
+mkdir ~/.dojo
+cd ~/.dojo
+git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
 sleep 2s
 
 echo -e "${RED}"
@@ -72,9 +74,9 @@ echo "Editing the bitcoin docker file, using the aarch64-linux-gnu.tar.gz source
 echo "***"
 echo -e "${NC}"
 sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.18.1/bitcoin-0.18.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 sed -i '10d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-sed -i '10i            ENV     BITCOIN_SHA256      88f343af72803b851c7da13874cc5525026b0b55e63e1b5e1298390c4688adc6' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 sleep 2s
 # method used with the sed command is to delete entire lines 9, 10 and add new lines 9, 10
 # double check ~/dojo_dir/docker/my-dojo/bitcoin/Dockerfile
@@ -96,12 +98,12 @@ echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source."
 echo "***"
 echo -e "${NC}"
 sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '12i            ENV     GOLANG_ARCHIVE      go1.13.3.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
 sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '13i            ENV     GOLANG_SHA256       9fa65ae42665baff53802091b49b83af6f2e397986b6cbea2ae30e2c7ee0f2f2' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '13i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
 sleep 2s
 
- # creating a 5GB swapfile
+ # creating a 1GB swapfile
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
@@ -195,11 +197,11 @@ BITCOIND_MAX_CONNECTIONS=16
 
 # Mempool maximum size in MB
 # Type: integer
-BITCOIND_MAX_MEMPOOL=1024
+BITCOIND_MAX_MEMPOOL=400
 
 # Db cache size in MB
 # Type: integer
-BITCOIND_DB_CACHE=1536
+BITCOIND_DB_CACHE=1024
 
 # Number of threads to service RPC calls
 # Type: integer
@@ -381,7 +383,7 @@ rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
 # Create random 64 character password and username for MYSQL 
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 
 echo "

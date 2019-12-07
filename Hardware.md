@@ -22,7 +22,7 @@ Active cooling is highly recommended, load/temps get high during IBD validation.
 
 ### HDMI->Micro HDMI cable
 
-Can be used with initial OS setup, you can also SSH into the device for setup via root@"IP Address"
+Can be used with initial OS setup, you can also SSH into the device for setup via root@"IP Address" **You must be on an ethernet connection**
 
 ## Hardware suggestions 
 
@@ -30,14 +30,12 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
 
 * LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
 
-
 ### Case
 
 #### Passive cooling 
 
 * Flirc-$15.95 [Amazon Affiliate Link](https://amzn.to/2RrOBLS)
 * Geekworm CNC Ultra-Thin Aluminum Alloy Metal Passive Cooling Case-$26.89 [Amazon Affiliate Link](https://amzn.to/36eP2wX)
-
 
 #### Active cooling 
 
@@ -48,8 +46,6 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
   * Pimoroni Fan Shim required ([installation instructions](https://learn.pimoroni.com/tutorial/sandyj/getting-started-with-fan-shim))-$12.99+$4.07 shipping [Amazon Affiliate Link](https://amzn.to/2OVt5NS)
 * Jun-Electron Dual Cooling Fan, Enclosure Aluminum Alloy Case with Heatsink Pillar-$18.99 [Amazon Affiliate Link](https://amzn.to/2DSbeAX)
 * Jun-Electron case w/3.5 inch Touchscreen & fan-$29.99 [Amazon Affiliate Link](https://amzn.to/2s7Jplt)
-
-
 
 ### External SSD
 
@@ -96,6 +92,7 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
 ### Tier 3
 **Samourai Ronin Dojo w/screen-$313.02 w/o screen-$294.04**
 
+
 * LABISTS Raspberry Pi 4 4gb Complete Starter Kit-$99.99 [Amazon Affiliate Link](https://amzn.to/2DPNkpX)
 
 * Samsung 860 QVO 1TB SSD-$109 [Amazon Affiliate Link](https://amzn.to/2OW8tot)
@@ -122,6 +119,7 @@ Can be used with initial OS setup, you can also SSH into the device for setup vi
 * Geekworm mSATA SSD Expansion Board X855 USB3.0 Shield-$27.89 [Amazon Affiliate Link](https://amzn.to/2s025Um)
 
 * Geekworm DC 5V 4A Power Adapter-$17.89 [Amazon Affiliate Link](https://amzn.to/33XvED6)
+
 
 
 

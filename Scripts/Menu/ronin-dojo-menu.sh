@@ -88,8 +88,7 @@ case $CHOICE in
             sleep 5s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh onion
-            
-            echo -e "${RED}"
+	    echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
@@ -107,8 +106,25 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 30s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh upgrade
+	    cd ~/dojo/docker/my-dojo
+	    sudo ./dojo.sh stop
+	    mkdir ~/.dojo > /dev/null 2>&1
+	    cd ~/.dojo
+	    git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
+	    sudo cp -rv samourai-dojo/* ~/dojo
+	    sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '10d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
+	    sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
+	    sed -i '1i             FROM    mariadb:latest' ~/dojo/docker/my-dojo/mysql/Dockerfile
+	    sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '13i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
+            cd ~/dojo/docker/my-dojo/	   
+            sleep 2s
+	    sudo ./dojo.sh upgrade
             bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # upgrades dojo
             ;;

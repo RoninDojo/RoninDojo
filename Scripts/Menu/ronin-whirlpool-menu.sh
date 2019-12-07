@@ -11,7 +11,7 @@ CHOICE_HEIGHT=16
 TITLE="Ronin UI"
 MENU="Choose one of the following options:"
 
-OPTIONS=(1 "View Logs"
+OPTIONS=(1 "View API key"
          2 "Start Whirlpool"
          3 "Stop Whirlpool"
          4 "Enable Whirlpool at Startup"
@@ -31,7 +31,7 @@ case $CHOICE in
         1)
             echo -e "${RED}"
             echo "***"
-            echo "Showing Logs..."
+            echo "Showing API pairing key for Whirlpool GUI..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -41,7 +41,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 3s
-            # display logs
+            cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # press any key to return to menu
             ;;
@@ -51,8 +51,10 @@ case $CHOICE in
             echo "Starting Whirlpool..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             sudo systemctl start whirlpool
+            echo "Don't forget to login to GUI to unlock mixing"
+            sleep 1s
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # start whirlpool, return to menu
             ;;
@@ -96,9 +98,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            # check for updates here
+            cd ~/whirlpool
+            sudo systemctl stop whirlpool > /dev/null 2>&1
+            sudo rm -rf *.jar
+            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
+            sudo systemctl start whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
-            # check for updates, return to menu
             ;;
         7)
             bash ~/RoninDojo/ronin
