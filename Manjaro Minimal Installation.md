@@ -22,7 +22,7 @@ Video guide](https://youtube.com/watch?v=ozAWczLqsB4)
 
 * Start the Raspberry Pi
 
-__**To setup remotely via SSH open up terminal and input root@IP address, this can only be done via an ethernet connection**__
+__**To setup remotely via SSH open up terminal and input `root@"ip.address"`, this can only be done via an ethernet connection**__
 
   * After a few seconds, the system boot is complete and the wizard appears. 
 
@@ -75,23 +75,34 @@ An ethernet connection is really the best way to get Internet access.
 
 *In progress*
 
-* Using SSH
+### Using SSH
 
 **SSH is a must-have on a minimal system**
 
-To use SSH open up terminal and input "your username"@IP address 
+If your not running a Linux distro, to access terminal so you can SSH into your device. You can use these options:
 
-    * If you want to use the root login to connect, you need to edit the configuration file: 
+### Windows
 
-          Open the configuration file:
-          sudo nano /etc/ssh/sshd_config
+-  Ubuntu [Windows Store](https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6#activetab=pivot:overviewtab) 
 
-          Then edit the PermitRootLogin line like this:
-          PermitRootLogin yes
+-  Putty [Putty.org](https://putty.org/) 
 
-          Save and exit
+### Mobile
 
-          Restart the SSH service
+- Termux [Google Play store](https://play.google.com/store/apps/details?id=com.termux) 
+
+- ConnectBot [Google Play store](https://play.google.com/store/apps/details?id=org.connectbot) 
+
+### Once you've accessed terminal
+
+For system setup:
+
+`ssh root@"ip.address"`
+
+Once completed:
+
+`ssh "username"@"ip.address"`
+
 
 ## Useful commands
 Now that you have Manjaro Minimal setup your ready to begin the Ronin/Dojo install process. Your going to need a few commands off the bat to get you going. I'll cover a couple below and add a link to the Pacman/Rosetta wiki. 
