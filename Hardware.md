@@ -22,7 +22,7 @@ Active cooling is highly recommended, load/temps get high during IBD validation.
 
 ### HDMI->Micro HDMI cable
 
-Can be used for display. Preferably you can SSH into the device. **You must be on an ethernet connection**
+Can be used for display. Preferably you can SSH into the device. **You must be on an ethernet connection for setup!**
 
 If your not running a Linux distro, to access terminal so you can SSH into your device. You can use these options:
 
