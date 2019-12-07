@@ -79,7 +79,7 @@ An ethernet connection is really the best way to get Internet access.
 
 **SSH is a must-have on a minimal system**
 
-If your not running a Linux distro, to access terminal so you can SSH into your device. You can use these options:
+If your not running a Linux distro. To access terminal, so you can SSH into your device. You can use these options:
 
 ### Windows
 
