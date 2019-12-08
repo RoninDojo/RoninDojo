@@ -24,7 +24,7 @@ Video guide](https://youtube.com/watch?v=ozAWczLqsB4)
 
 ## Manjaro Installation and Configuration
 
-* Inset the now "flashed" SD card into your device, make sure the SSD is plugged and, and power on the device.
+* Insert the now "flashed" SD card into your device, make sure the SSD is plugged and, and power on the device.
 
 __**To setup remotely via SSH open up terminal and input root@IP address, this can only be done via an ethernet connection**__
 
@@ -34,11 +34,13 @@ __**To setup remotely via SSH open up terminal and input root@IP address, this c
 
 * Then, you need to answer the following questions:
 
-  * User full name
+  * User
+  
+  * Name
 
   * User password
 
-  * Root password (yes, there is a root user available) 
+  * Root password (Root user available) 
 
    ### __*You can enter the first letter to navigate these menus quicker.*__
 
