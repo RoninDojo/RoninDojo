@@ -1,4 +1,5 @@
 # Welcome to Ronin Dojo!
+
 Ronin Dojo is the RPi4 and Odroid N2 installation variant of Samourai Wallet's Dojo. This is not a change to their code or application, rather the installation process modified specifically for RPi4/Odroid. 
 
 Ronin should help regular users get a Dojo running farily quickly and easily. Our Mission is to bring full on-chain self-sovereignity at an afforable price.
@@ -26,14 +27,19 @@ For more information on Samourai Wallet, Dojo, and Whirlpool visit the [Samourai
 For FAQs about all things Samourai Wallet, check out @PuraVida's [FAQ wiki](https://github.com/PuraVlda/samourai-wallet-android/wiki/Frequently-Asked-Questions).
 
 ## Hardware
-Head to our [Hardware Guide](https://github.com/RoninDojo/Guides/Hardware.md).
-
 The Full Dojo installation, which includes a fresh sync of the Bitcoin blockchain, requires a little over 3GB of RAM during the initial sync. Then it drops to a little less than 2GB after sync is complete. The setup will require about 350GB of data storage and growing daily.
 
-## Installation
-Head to our [Install Guide](https://github.com/RoninDojo/Guides/Ronin-UI-Guide.md).
+[Hardware Guide](https://github.com/RoninDojo/Guides/Hardware.md).
 
-The install is fairly simple. Some reading required, input values when asked, and get Dojo started within ~30 minutes.
+## Operating System
+The Ronin UI is intended for the Manjaro ARM Minimal OS. Once you have your hardware ready, you can go ahead and flash Manjaro on to an SD Card in just a few minutes time.
+
+[Manjaro Guide](https://github.com/RoninDojo/Guides/Manjaro-Minimal-Installation.md).
+
+## Ronin UI
+Using the UI fairly simple. Some reading required, a few clicks, input values when asked, and get Dojo started within ~30 minutes.
+
+[Ronin UI Guide](https://github.com/RoninDojo/Guides/Ronin-UI-Guide.md).
 
 ## Contributors
 This list is continuously growing, I will do my best to update as much as I can. If you would like to contribute please feel free to pull or DM me to help!
