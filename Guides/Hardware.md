@@ -1,4 +1,4 @@
-## Hardware
+# Hardware
 Choose one of the following:
 
 * [Raspberry Pi4 4gb](https://www.raspberrypi.org/products/raspberry-pi-4-model-b/specifications/)
