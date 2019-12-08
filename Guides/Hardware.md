@@ -54,7 +54,7 @@ A model with 4gb RAM is required to run all of the features of the Ronin Dojo st
 Need a general idea of build quality and price? Which Tier suits you wants and needs?
 
 ### Tier 1
-**Entry level Dojo-$216.98**
+**Entry Level - $216.98**
 
 *If your just looking to open your Dojo and begin financial self sovereignty this is the kit for you!*
 
@@ -65,7 +65,7 @@ Need a general idea of build quality and price? Which Tier suits you wants and n
 * ORICO External Drive Enclosure - [$7.99 Amazon](https://www.amazon.com/dp/B01M08LCXW/ref=cm_sw_r_cp_apa_i_2YE1DbQ8XNG86)
 
 ### Tier 2
-**Passive cooling Dojo-$244.94**
+**Passive Cooling - $244.94**
 
 *If you are looking for a silent Dojo this is a great choice!*
 
@@ -76,7 +76,7 @@ Need a general idea of build quality and price? Which Tier suits you wants and n
 * VectoTech Rapid 1TB External SSD - [$129 Amazon](https://www.amazon.com/dp/B01JKMZ8FA/ref=cm_sw_r_cp_apa_i_Yqe1DbP4Q1G98)
 
 ### Tier 3
-**Samourai Ronin Dojo w/screen-$313.02 w/o screen-$294.04**
+**Ronin Dojo w/ Screen - $313.02 & No Screen - $294.04**
 
 * LABISTS Raspberry Pi 4 4gb Complete Starter Kit - [$99.99 Amazon](https://www.amazon.com/dp/B07YRSYR3M/ref=cm_sw_r_cp_apa_i_Fte1DbZTYFMM3)
 
@@ -91,7 +91,7 @@ Need a general idea of build quality and price? Which Tier suits you wants and n
 * Cryptocloak Samourai Dojo Shell - [$60+](https://thecryptocloak.com/product/samourai/)
 
 ### Tier 4
-**Geekworm Dojo-$314.55**
+**Geekworm Dojo - $314.55**
 
 * LABISTS Raspberry Pi 4 4gb Complete Starter Kit - [$99.99 Amazon](https://www.amazon.com/dp/B07YRSYR3M/ref=cm_sw_r_cp_apa_i_Fte1DbZTYFMM3)
 
