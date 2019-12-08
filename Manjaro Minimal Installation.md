@@ -1,11 +1,15 @@
-# Manjaro Minimal Installation 
+# Manjaro Minimal Installation
+
+Download and verify using gpg. If you are unsure about verifying, please watch this [playlist](https://www.youtube.com/playlist?list=PLmoQ11MXEmajkNPMvmc8OEeZ0zxOKbGRa).
 
 [Manjaro Minimal Installation
 Video guide](https://youtube.com/watch?v=ozAWczLqsB4) 
 
-[Download Manjaro Minimal](https://manjaro.org/download/arm/raspberry-pi-4/arm8-raspberry-pi-4-minimal/) 
+[Manjaro Minimal Raspberry Pi 4](https://manjaro.org/download/arm/raspberry-pi-4/arm8-raspberry-pi-4-minimal/)
 
-## Flash OS image on SD card
+[Manjaro Minimal Odroid N2](http://167.71.58.234/osimages/)
+
+## Flash OS Image on SD Card
 
 * Once you have the image on your computer, you need to flash it on an SD card. If you are not familiar with this, here are the steps you have to follow:
 
@@ -16,11 +20,11 @@ Video guide](https://youtube.com/watch?v=ozAWczLqsB4)
   * Then insert an SD card. 
 **Everything on it will be erased!**
 
-  * Finally click on **“Flash!”** to start the SD card flashing. After a few minutes, the SD card is ready. You can eject it and insert it into your Raspberry Pi
+  * Finally click on **“Flash!”** to start the SD card flashing. After a few minutes, the SD card is ready. You can eject it.
 
-## Manjaro installation and configuration
+## Manjaro Installation and Configuration
 
-* Start the Raspberry Pi
+* Inset the now "flashed" SD card into your device, make sure the SSD is plugged and, and power on the device.
 
 __**To setup remotely via SSH open up terminal and input root@IP address, this can only be done via an ethernet connection**__
 
@@ -40,8 +44,7 @@ __**To setup remotely via SSH open up terminal and input root@IP address, this c
 
    * Timezone
 
-    You can use this site to help with selecting your correct timezone. 
-    [World Time Zone](https://worldtimezone.com/)
+    You can use [this](https://worldtimezone.com/) site to help with selecting your correct timezone.
 
    * Locale
 
@@ -66,7 +69,7 @@ __**To setup remotely via SSH open up terminal and input root@IP address, this c
 
 * The basic configuration takes a few seconds. Then the system resizes the SD card partition and reboots. After the reboot, the system is ready to use with your settings. 
 
-## Network configuration
+## Network Configuration
   * Ethernet 
 
 An ethernet connection is really the best way to get Internet access. 
@@ -79,7 +82,9 @@ An ethernet connection is really the best way to get Internet access.
 
 **SSH is a must-have on a minimal system**
 
-To use SSH open up terminal and input "your username"@IP address 
+To use SSH open up terminal and input "your username"@IP address.
+
+Example: `user123@192.168.0.5`
 
     * If you want to use the root login to connect, you need to edit the configuration file: 
 
@@ -93,27 +98,25 @@ To use SSH open up terminal and input "your username"@IP address
 
           Restart the SSH service
 
-## Useful commands
-Now that you have Manjaro Minimal setup your ready to begin the Ronin/Dojo install process. Your going to need a few commands off the bat to get you going. I'll cover a couple below and add a link to the Pacman/Rosetta wiki. 
-
+## Useful Commands
+Now Manjaro Minimal is setup, you are ready to begin the Ronin/Dojo install process. Your going to need a few commands off the bat to get you going. I'll cover a couple below and add a link to the Pacman/Rosetta wiki. 
 
 * To install a new package:
- pacman -S < package >
+`pacman -S < package >`
 
 * To search a package name: 
- pacman -Ss < search >
+`pacman -Ss < search >`
 
 * To update the system:
- pacman -Syu
+`pacman -Syu`
 
-## Find your Raspberry Pi IP Address:
+## Find Device's IP Address:
 
-* ifconfig is not available by default, you need to install it with: pacman -S net-tools
+* ifconfig is not available by default, you need to install it with: 
+`pacman -S net-tools`
 
-* Now you can use it: ifconfig
+* Now you can use it by typing: 
+`ifconfig`
 
 For more commands reference:
 [ArchLinux Pacman/Rosetta](https://wiki.archlinux.org/index.php/Pacman/Rosetta)
-
-
-
