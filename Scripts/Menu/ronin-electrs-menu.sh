@@ -33,14 +33,14 @@ case $CHOICE in
             echo "Showing Logs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            sleep 3s
             
             echo -e "${RED}"
             echo "***"
             echo "Use Ctrl+C to exit anytime."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             sudo journalctl -u electrs.service -e
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
@@ -51,7 +51,7 @@ case $CHOICE in
             echo "Starting Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 3s
             sudo systemctl start electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
@@ -62,7 +62,7 @@ case $CHOICE in
             echo "Stopping Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 3s
             sudo systemctl stop electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
@@ -73,7 +73,7 @@ case $CHOICE in
             echo "Enable Electrs at Startup..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 3s
             sudo systemctl enable electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # enable electrs at startup, return to menu
@@ -84,8 +84,8 @@ case $CHOICE in
             echo "Disable Electrs at Startup..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
-            sudo systemctl enable electrs
+            sleep 3s
+            sudo systemctl disable electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # disable electrs at startup, return to menu
             ;;
@@ -95,11 +95,18 @@ case $CHOICE in
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            sleep 3s
             sudo cat /mnt/usb/tor/hidden_service/hostname
-	    sleep 5s
+	    # displaying electrs tor address to connect to electrum
+	    
+	    echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
-            # disable electrs at startup, return to menu
+            # press any letter return to menu
             ;;
 	7)
             bash ~/RoninDojo/ronin
