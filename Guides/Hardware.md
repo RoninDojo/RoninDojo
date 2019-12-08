@@ -23,11 +23,11 @@ A model with 4gb RAM is required to run all of the features of the Ronin Dojo st
   </a>
 </p>
 
-* Cryptocloak Samourai Dojo Shell - ([$60+](https://thecryptocloak.com/product/samourai/))
+* Pi4 Cryptocloak Samourai Dojo Shell - ([$60+](https://thecryptocloak.com/product/samourai/))
 *Max drive size (140mm x 100mm x 52mm/5.5inch x 4inch x 2.1inch)*
-* Pimoroni Fan Shim required ([installation instructions](https://learn.pimoroni.com/tutorial/sandyj/getting-started-with-fan-shim)) - [$12.99 Amazon](https://www.amazon.com/dp/B07TTTCN8H/ref=cm_sw_r_cp_apa_i_fmc1DbHNVC940)
-* Jun-Electron Dual Cooling Fan, Enclosure Aluminum Alloy Case with Heatsink Pillar - [$18.99 Amazon](https://www.amazon.com/dp/B07TZQHXZ6/ref=cm_sw_r_cp_apa_i_GpG1Db6DBKV5J)
-* Jun-Electron case w/3.5 inch Touchscreen & fan - [$29.99 Amazon](https://www.amazon.com/dp/B07WQW6H9S/ref=cm_sw_r_cp_apa_i_jdX1DbT9AAZ6C)
+* Pi4 Pimoroni Fan Shim required ([installation instructions](https://learn.pimoroni.com/tutorial/sandyj/getting-started-with-fan-shim)) - [$12.99 Amazon](https://www.amazon.com/dp/B07TTTCN8H/ref=cm_sw_r_cp_apa_i_fmc1DbHNVC940)
+* Pi4 Jun-Electron Dual Cooling Fan, Enclosure Aluminum Alloy Case with Heatsink Pillar - [$18.99 Amazon](https://www.amazon.com/dp/B07TZQHXZ6/ref=cm_sw_r_cp_apa_i_GpG1Db6DBKV5J)
+* Pi4 Jun-Electron case w/3.5 inch Touchscreen & fan - [$29.99 Amazon](https://www.amazon.com/dp/B07WQW6H9S/ref=cm_sw_r_cp_apa_i_jdX1DbT9AAZ6C)
 
 ### Passive cooling 
 * Pi4 Flirc - [$15.95 Amazon](https://www.amazon.com/dp/B07WG4DW52/ref=cm_sw_r_cp_apa_i_zU.0DbP89BH06)
@@ -67,7 +67,7 @@ Need a general idea of build quality and price? Which Tier suits you wants and n
 ### Tier 2
 **Passive cooling Dojo-$244.94**
 
-*If your looking for a silent Dojo this is a great choice!*
+*If you are looking for a silent Dojo this is a great choice!*
 
 * LABISTS Raspberry Pi 4 4gb Complete Starter Kit - [$99.99 Amazon](https://www.amazon.com/dp/B07YRSYR3M/ref=cm_sw_r_cp_apa_i_Fte1DbZTYFMM3)
 
