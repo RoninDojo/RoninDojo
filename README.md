@@ -1,9 +1,7 @@
-# Welcome to Ronin Dojo
+# Welcome to Ronin Dojo!
 Ronin Dojo is the RPi4 and Odroid N2 installation variant of Samourai Wallet's Dojo. This is not a change to their code or application, rather the installation process modified specifically for RPi4/Odroid. 
 
-Ronin should help regular users get a Dojo running farily quickly and easily.
-
-Our Mission is to bring full on-chain self-sovereignity at an afforable price!
+Ronin should help regular users get a Dojo running farily quickly and easily. Our Mission is to bring full on-chain self-sovereignity at an afforable price.
 
 “I dreamt of worldly success once.”
 
@@ -15,7 +13,7 @@ Our Mission is to bring full on-chain self-sovereignity at an afforable price!
 
 “Know your enemy, know his sword.”
 
-Be Your own MASTER!
+Be Your own master!
 
 # What is Samourai Dojo?
 As stated by the Samourai Team:
@@ -32,12 +30,12 @@ Head to our [Hardware Guide](https://github.com/RoninDojo/Guides/Hardware.md).
 
 The Full Dojo installation, which includes a fresh sync of the Bitcoin blockchain, requires a little over 3GB of RAM during the initial sync. Then it drops to a little less than 2GB after sync is complete. The setup will require about 350GB of data storage and growing daily.
 
-# Installation
+## Installation
 Head to our [Install Guide](https://github.com/RoninDojo/Guides/Ronin-UI-Guide.md).
 
 The install is fairly simple. Some reading required, input values when asked, and get Dojo started within ~30 minutes.
 
-# Contributors
+## Contributors
 This list is continuously growing, I will do my best to update as much as I can. If you would like to contribute please feel free to pull or DM me to help!
 
 @GuerraMoneta @BTCxZelko @Burcakbaskan @k3tan @kdmukai @crazyk031 @jaimefoo - Ronin UI
@@ -52,7 +50,7 @@ If we missed you please let us know.
 
 If you appreciate our work and wish to support our continued efforts in providing free, unencumbered, open source code that enhances your sovereignty please consider a donation.
 
-### Address
+## Address
 
 bc1ql06r3jjx3hmd09eexs7mawczayfqxpx7r3l20hvs3cuq5suv5hvswspdaz
 
@@ -60,12 +58,10 @@ bc1ql06r3jjx3hmd09eexs7mawczayfqxpx7r3l20hvs3cuq5suv5hvswspdaz
 
 All donations will go to providing the team with more hardware for implementating new features.
 
-## FINALLY, a huge Thanks to the Samourai Wallet Dev team!
+## A huge thank you to the Samourai Wallet Dev team.
 ### As long they continue to build we will continue to support!
 
-Questions, discussion, etc?
-
-Check out the Telegram groups:
+Questions, discussion, etc? Check out the Telegram groups:
 
 [Samourai Wallet](https://t.me/SamouraiWallet)
 
