@@ -8,6 +8,9 @@ NC='\033[0m'
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
 
+rm -f ~/ronin-update.sh
+# removes ronin-update script if found, will not output error if not found which keeps things clean
+
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16

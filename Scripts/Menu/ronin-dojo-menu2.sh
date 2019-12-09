@@ -74,7 +74,7 @@ case $CHOICE in
             echo "Dojo.service is enabled and will launch at system start up."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu2.sh
             # start dojo, return to menu
             ;; 
@@ -96,7 +96,7 @@ case $CHOICE in
             echo "Dojo.service is enabled and will launch at system start up."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 3s
             bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu2.sh
             # start dojo, return to menu
             ;;
@@ -106,7 +106,7 @@ case $CHOICE in
             echo "Uninstalling Dojo in 30s..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 3s
 
             echo -e "${RED}"
             echo "***"

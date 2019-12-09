@@ -36,13 +36,12 @@ echo "***"
 echo "Creating Database location for Electrs..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 sudo mkdir /mnt/usb/electrs
 sudo mkdir /mnt/usb/electrs/db
 sudo chown -R $USER:$USER /mnt/usb/electrs/
 sudo chmod 755 /mnt/usb/electrs/
 sudo chmod 755 /mnt/usb/electrs/db
-sleep 3s
 
 # Installing Electrs
 echo -e "${RED}" 
@@ -50,12 +49,11 @@ echo "***"
 echo "Installing Electrs, this may take some time..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 cd $HOME
 git clone https://github.com/romanz/electrs /home/$USER/electrs
 cd /home/$USER/electrs
 cargo build --release
-sleep 3s
 
 # Configure Electrs
 echo -e "${RED}" 
@@ -63,7 +61,7 @@ echo "***"
 echo "Editing the Electrs config.toml file..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 RPC_USER=$(sudo cat /home/$USER/dojo/docker/my-dojo/conf/docker-bitcoind.conf | grep BITCOIND_RPC_USER= | cut -c 19-)
 RPC_PASS=$(sudo cat /home/$USER/dojo/docker/my-dojo/conf/docker-bitcoind.conf | grep BITCOIND_RPC_PASSWORD= | cut -c 23-)
 sudo mkdir /home/electrs/.electrs
@@ -82,7 +80,7 @@ EOF
 
 sudo mv /home/$USER/config.toml /home/$USER/.electrs/config.toml
 # move config file
-sleep 3s
+sleep 2s
 
 # edit torrc
 echo -e "${RED}" 
@@ -90,7 +88,7 @@ echo "***"
 echo "Editting torrc..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 sudo sed -i '78i HiddenServiceDir /mnt/usb/tor/hidden_service/' /etc/tor/torrc
 sudo sed -i '79i HiddenServiceVersion 3' /etc/tor/torrc
 sudo sed -i '80i HiddenServicePort 50001 127.0.0.1:50001' /etc/tor/torrc
@@ -100,8 +98,8 @@ echo "***"
 echo "Restarting Tor..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
 sudo systemctl restart tor
+sleep 3s
 
 # sudo nano /etc/systemd/system/electrs.service 
 echo "
@@ -123,21 +121,23 @@ WantedBy=multi-user.target
 " | sudo tee -a /etc/systemd/system/electrs.service 
 
 sudo systemctl enable electrs
+sleep 2s
 sudo systemctl start electrs
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
 echo "Electrs will run in the background, and at startup. To disable go to Electrs menu."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
 echo "Electrs is running!"
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 2s
 
 TOR_ADDRESS=$(sudo cat /mnt/ssd/tor/hidden_service/hostname)
 echo "The Tor Hidden Service address for electrs is:"

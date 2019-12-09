@@ -39,7 +39,6 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh start
-            sleep 3s
             bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # start dojo, return to menu
             ;;
@@ -52,7 +51,6 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh stop
-            sleep 3s
 	    bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
             # stop dojo, return to menu
             ;;
@@ -70,7 +68,7 @@ case $CHOICE in
             echo -e "${RED}"
             echo "Running" $requested_logs "logs now. Use Ctrl+C at any time to exit and return to menu."
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh logs $requested_logs
             # utilizing user input from $requested_logs for ./dojo.sh logs
@@ -85,7 +83,7 @@ case $CHOICE in
 	    echo "Use the v3 address to connect to the Maintenance Tool"
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh onion
 	    echo -e "${RED}"
@@ -134,7 +132,7 @@ case $CHOICE in
             echo "Displaying the version info..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh version
             

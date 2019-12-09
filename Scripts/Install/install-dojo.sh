@@ -13,7 +13,7 @@ echo "***"
 echo "Running Dojo install in 30s..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 5s
 
 echo -e "${RED}"
 echo "***"
@@ -44,11 +44,10 @@ echo "Downloading and extracting latest Dojo release."
 echo "***"
 echo -e "${NC}"
 cd ~
-sleep 5s
+sleep 2s
 mkdir ~/.dojo
 cd ~/.dojo
 git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
-sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -58,7 +57,6 @@ echo -e "${NC}"
 sleep 2s
 mkdir ~/dojo
 cp -rv samourai-dojo/* ~/dojo
-sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -115,7 +113,7 @@ echo "***"
 echo "Configure your Dojo .conf.tpl files when prompted."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 #RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
 echo -e "${RED}"
@@ -123,7 +121,7 @@ echo "****"
 echo "Set the RPC User and Password now."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -290,7 +288,7 @@ echo "****"
 echo "Setting the Node API Key and JWT Secret now..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -298,7 +296,7 @@ echo "NOTICE:"
 echo "An automatically generated random 64 character value will generate for both."
 echo "These can be accessed in the the conf folders at any time."
 echo "***"
-sleep 3s
+sleep 2s
 echo -e "${NC}"
 
 # Create random set of 64 characters for API KEY and JWT Secret
@@ -310,7 +308,7 @@ echo "****"
 echo "Set the Node Admin Key now."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -409,7 +407,7 @@ echo "***"
 echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 2s
 # end dojo setup
 
 echo -e "${RED}"

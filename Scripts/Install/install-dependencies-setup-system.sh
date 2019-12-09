@@ -56,11 +56,12 @@ sleep 5s
 sudo rm -rf /etc/motd
 # remove ssh banner for the script logo
 
+sudo cp ~/RoninDojo/ronin /usr/local/bin
+# place it main ronin scriptunder /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
+
 echo "" >> ~/.bashrc
 echo "~/RoninDojo/Scripts/.logo" >> ~/.bashrc
-echo "" >> ~/.bashrc
-echo "~/RoninDojo/ronin" >> ~/.bashrc
-# place logo & ronin execution path in ~/.bashrc
+# place logo ~/.bashrc
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
@@ -70,7 +71,7 @@ echo "***"
 echo "Formatting the SSD..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 
 ls /dev | grep sda > ~/sda_tmp.txt
 # temp file looking for sda
@@ -109,7 +110,7 @@ echo "***"
 echo "Using ext4 format, for /dev/sda1"
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 2s
 sudo mkfs.ext4 /dev/sda1
 # format partion1 to ext4
 
@@ -118,7 +119,7 @@ echo "***"
 echo "Editing /etc/fstab to input UUID for sda1 and adjust settings."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 2s
 
 lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
 # this will look up uuid of sda1 and makes txt file with that value
@@ -144,14 +145,14 @@ echo "Created a /mnt/usb directory."
 echo "***"
 echo -e "${NC}"
 sudo mkdir /mnt/usb
-sleep 3s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
 echo "Mounting all drives..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 sudo mount -a
 # mount all drives
 
@@ -161,7 +162,7 @@ echo "Displaying the name on the external disk."
 echo "***"
 echo -e "${NC}"
 lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
-sleep 5s
+sleep 2s
 # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
 echo -e "${RED}"
@@ -170,7 +171,7 @@ echo "Check output for /dev/sda1"
 echo "***"
 echo -e "${NC}"
 df -h
-sleep 5s
+sleep 2s
 # checks disk info
 
 echo -e "${RED}"
@@ -200,11 +201,11 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Installing ufw, fail2ban, htop, docker, docker-compose, vim, unzip, net-tools, and others recommended."
+echo "Installing ufw, fail2ban, htop, docker, docker-compose, vim, unzip, net-tools, which and others recommended."
 echo "***"
 echo -e "${NC}"
-sleep 5s
-sudo pacman -Syu --noconfirm ufw fail2ban htop docker docker-compose vim unzip net-tools
+sleep 2s
+sudo pacman -Syu --noconfirm ufw fail2ban htop docker docker-compose vim unzip net-tools which
 
 sudo systemctl enable docker
 # enables docker to run at startup
@@ -283,14 +284,13 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 sudo ufw status
-sleep 5s
 
 echo -e "${RED}"
 echo "***"
-echo "Take a moment to check the rule that was just created."
+echo "Take a moment to check the UFW rule that was just created."
 echo "***"
 echo -e "${NC}"
-sleep 10s
+sleep 5s
 # ufw setup ends
 
 # docker setup starts
@@ -300,7 +300,7 @@ echo "***"
 echo "Now configuring docker to use the external SSD."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 3s
 sudo mkdir /mnt/usb/docker
 # makes directroy to store docker/dojo data
 
@@ -324,7 +324,7 @@ echo "Checking docker version."
 echo "***"
 echo -e "${NC}"
 docker -v
-sleep 5s
+sleep 3s
 
 echo -e "${RED}"
 echo "***"
@@ -347,6 +347,6 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 sudo docker info | grep "Docker Root Dir:"
-sleep 5s
+sleep 3s
 # if not showing SSD path check above
 # docker setup ends

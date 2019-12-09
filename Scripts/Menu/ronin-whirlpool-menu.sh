@@ -35,12 +35,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            echo -e "${RED}"
-            echo "***"
+           
+	    echo -e "${RED}"
+	    echo "***"
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
             cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # press any key to return to menu
@@ -53,8 +53,13 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl start whirlpool
-            echo "Don't forget to login to GUI to unlock mixing"
-            sleep 1s
+
+            echo -e "${RED}"
+            echo "***"
+	    echo "Don't forget to login to GUI to unlock mixing!"
+            echo "***"
+            echo -e "${NC}"
+            sleep 5s
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # start whirlpool, return to menu
             ;;
@@ -64,7 +69,7 @@ case $CHOICE in
             echo "Stopping Whirlpool..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             sudo systemctl stop whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # stop whirlpool, return to menu
@@ -75,7 +80,7 @@ case $CHOICE in
             echo "Enable Whirlpool at Startup..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             sudo systemctl enable whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # enable whirlpool at startup, return to menu
@@ -86,7 +91,7 @@ case $CHOICE in
             echo "Disable Whirlpool at Startup..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            sleep 2s
             sudo systemctl disable whirlpool
             bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
             # disable whirlpool at startup, return to menu

@@ -82,14 +82,13 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 sudo ufw status
-sleep 5s
 
 echo -e "${RED}"
 echo "***"
 echo "Take a moment to check the rule that was just created."
 echo "***"
 echo -e "${NC}"
-sleep 10s
+sleep 5s
 
 echo -e "${RED}"
 echo "***"
@@ -106,11 +105,10 @@ echo "***"
 echo "Created a Whirlpool directory."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 cd $HOME
 mkdir whirlpool
 cd whirlpool
-sleep 3s
 # create whirlpool directory
 
 echo -e "${RED}" 
@@ -120,7 +118,6 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
-sleep 3s
 # pull Whirlpool run times
 
 echo -e "${RED}" 
@@ -128,9 +125,8 @@ echo "***"
 echo "Installing Tor..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
-sudo pacman -S --noconfirm tor
 sleep 2s
+sudo pacman -S --noconfirm tor
 # install tor
 
 # edit torrc
@@ -139,7 +135,7 @@ echo "***"
 echo "Editing torrc..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 sudo sed -i '52d' /etc/tor/torrc
 sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
 sudo sed -i '56d' /etc/tor/torrc
@@ -154,18 +150,17 @@ echo -e "${RED}"
 echo "***"
 echo "Restarting..."
 echo "***"
-sleep 1s
+sleep 2s
 sudo systemctl restart tor
-sleep 3s
+sleep 5s
 
 echo -e "${RED}" 
 echo "***"
 echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphrase."
 echo "***"
 echo -e "${NC}"
-sleep 1s
-java -jar whirlpool.jar --init --tor
 sleep 3s
+java -jar whirlpool.jar --init --tor
 # initate Whirlpool
 
 echo "Record this APIkey to connect your Whirlpool GUI:"
@@ -183,7 +178,7 @@ read -n 1 -r -s
 
 echo -e "${RED}"
 echo "***"
-echo "Opening tmux session and starting Whirlpool..."
+echo "Setting Whirlpool Service..."
 echo "***"
 echo -e "${NC}"
 # setting whirlpool as a Service
@@ -195,10 +190,10 @@ sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpo
 # create whirlpool tmux session and start Whirlpool
 echo -e "${RED}"
 echo "***"
-echo "Opening tmux session and Start Whirlpool"
+echo "Opening tmux session and Starting Whirlpool..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 echo "
 [Unit]
 Description=Whirlpool
@@ -224,23 +219,22 @@ sudo systemctl start whirlpool
 echo -e "${RED}"
 echo ""
 echo "***"
-echo "Starting whirlpool in the background"
+echo "Starting whirlpool in the background..."
 echo "***"
 sleep 2s
 echo "***"
-echo "Pair with GUI to unlock wallet and begin mixing"
+echo "Pair with GUI to unlock wallet and begin mixing..."
 echo "$APIkey"
 echo "***"
-sleep 3s
+sleep 2s
 
 echo "For pairing with GUI head to full guide at:" 
 sleep 1s
 echo "https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Raspbian/Whirlpool-Guide.md#pairing-your-with-the-whirlpool-gui"
-sleep 5s
+sleep 2s
 echo -e "${RED}"
 echo "***"
 echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh

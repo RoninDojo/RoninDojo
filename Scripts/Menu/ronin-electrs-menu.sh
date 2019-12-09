@@ -28,12 +28,13 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
+	1)
             echo -e "${RED}"
             echo "***"
-            echo "Showing Logs..."
+            echo "Showing Electrs Logs..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             
             echo -e "${RED}"
             echo "***"
@@ -51,7 +52,7 @@ case $CHOICE in
             echo "Starting Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo systemctl start electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
@@ -62,7 +63,7 @@ case $CHOICE in
             echo "Stopping Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo systemctl stop electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # start electrs, return to menu
@@ -73,7 +74,7 @@ case $CHOICE in
             echo "Enable Electrs at Startup..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo systemctl enable electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # enable electrs at startup, return to menu
@@ -84,7 +85,7 @@ case $CHOICE in
             echo "Disable Electrs at Startup..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo systemctl disable electrs
             bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
             # disable electrs at startup, return to menu
@@ -95,7 +96,7 @@ case $CHOICE in
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo cat /mnt/usb/tor/hidden_service/hostname
 	    # displaying electrs tor address to connect to electrum
 	    

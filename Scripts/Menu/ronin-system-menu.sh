@@ -13,12 +13,13 @@ MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Task Manager"
          2 "Check Disk Space"
-	 3 "Check for Updates"
+	 3 "Check for System Updates"
          4 "Restart"
          5 "Power Off"
 	 6 "Lock Root User"
 	 7 "Unlock Root User"
-	 8 "Go Back")
+	 8 "Update Ronin UI"
+	 9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -35,7 +36,7 @@ case $CHOICE in
             echo "Use Ctrl+C at any time to exit Task Manager."
             echo "***"
             echo -e "${NC}"
-	    sleep 5s
+	    sleep 3s
 	    htop
 	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
             # returns to main menu
@@ -46,7 +47,7 @@ case $CHOICE in
             echo "Showing Disk Space Info..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo df -h
             # disk space info
             
@@ -62,10 +63,10 @@ case $CHOICE in
         3)
             echo -e "${RED}"
             echo "***"
-            echo "Checking for system updates...Not recommended on your own"
+            echo "Checking for system updates, not recommended on your own!"
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            sleep 5s
             sudo pacman -Syu
 	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
             # check for system updates, then return to menu
@@ -96,7 +97,7 @@ case $CHOICE in
             echo "Locking Root User..."
             echo "***"
             echo -e "${NC}"
-	    sleep 5s
+	    sleep 2s
 	    sudo passwd -l root
 	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
             # uses passwd to lock root user, returns to menu
@@ -107,12 +108,28 @@ case $CHOICE in
             echo "Unlocking Root User..."
             echo "***"
             echo -e "${NC}"
-	    sleep 5s
+	    sleep 2s
 	    sudo passwd -u root
 	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
-            # uses passwd to unlock root user, returns to menu
+	    # uses passwd to unlock root user, returns to menu
             ;;
         8)
+            echo -e "${RED}"
+            echo "***"
+            echo "Updating Ronin UI..."
+            echo "***"
+            echo -e "${NC}"
+	    sleep 2s
+	    echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
+	    echo "cd ~" >> ~/ronin-update.sh
+	    echo "git clone -b development https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
+	    echo "bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh" >> ~/ronin-update.sh
+	    sudo chmod +x ~/ronin-update.sh
+	    bash ~/ronin-update.sh
+            # returns to main menu
+            ;;
+
+        9)
             bash ~/RoninDojo/ronin
             # returns to main menu
             ;;

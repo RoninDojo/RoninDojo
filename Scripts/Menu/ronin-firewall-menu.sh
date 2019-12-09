@@ -35,7 +35,7 @@ case $CHOICE in
             echo "Enabling Firewall..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            sleep 2s
             sudo ufw enable
             sleep 1s
             bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
@@ -47,7 +47,7 @@ case $CHOICE in
             echo "Disabling Firewall..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            sleep 2s
             sudo ufw disable
             sleep 1s
             bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
@@ -59,9 +59,8 @@ case $CHOICE in
             echo "Showing Status..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            sleep 2s
             sudo ufw status
-            sleep 3s
             # shows ufw status
             
             echo -e "${RED}"
@@ -79,7 +78,7 @@ case $CHOICE in
             echo "Obtain the IP address you wish to give access to SSH."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
 
             echo -e "${RED}"
             echo "***"
@@ -87,7 +86,7 @@ case $CHOICE in
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
 
             echo -e "${RED}"
             echo "***"
@@ -102,7 +101,7 @@ case $CHOICE in
             echo "***"
             echo "Reloading..."
             echo "***"
-	    sleep 1s
+	    sleep 2s
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -112,9 +111,8 @@ case $CHOICE in
             echo "Showing status..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            sleep 2s
             sudo ufw status
-	    sleep 3s
             # show firewall status
             
             echo -e "${RED}"
@@ -122,7 +120,6 @@ case $CHOICE in
             echo "Make sure that you see your new rule!"
             echo "***"
             echo -e "${NC}"
-	    sleep 3s
             
             echo -e "${RED}"
             echo "***"
@@ -139,7 +136,7 @@ case $CHOICE in
             echo "Obtain the IP address you wish to give access to SSH."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
 
             echo -e "${RED}"
             echo "***"
@@ -147,7 +144,7 @@ case $CHOICE in
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
 
             echo -e "${RED}"
             echo "***"
@@ -162,7 +159,7 @@ case $CHOICE in
             echo "***"
             echo "Reloading..."
             echo "***"
-	    sleep 1s
+	    sleep 2s
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -172,9 +169,8 @@ case $CHOICE in
             echo "Showing status..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            sleep 2s
             sudo ufw status
-	    sleep 3s
             # show firewall status
             
             echo -e "${RED}"
@@ -182,7 +178,6 @@ case $CHOICE in
             echo "Make sure that you see your new rule!"
             echo "***"
             echo -e "${NC}"
-	    sleep 3s
             
             echo -e "${RED}"
             echo "***"
@@ -200,9 +195,8 @@ case $CHOICE in
             echo "Find the rule you want to delete, and type its row number to delete it."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo ufw status
-	    sleep 3s
             # show firewall status
             
             echo -e "${RED}"
@@ -210,7 +204,7 @@ case $CHOICE in
             echo "Example: If you want to delete the 3rd rule listed, press the number 3, then press Enter."
             echo "***"
             echo -e "${NC}"
-	    sleep 3s
+	    sleep 2s
 	    
             read -p "Please type the rule number to delete now:" ufw_rule_number
             sudo ufw delete $ufw_rule_number
@@ -220,7 +214,7 @@ case $CHOICE in
             echo "***"
             echo "Reloading..."
             echo "***"
-	    sleep 1s
+	    sleep 2s
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -230,7 +224,7 @@ case $CHOICE in
             echo "Showing status..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 2s
             sudo ufw status
             # show firewall status
             
@@ -249,9 +243,8 @@ case $CHOICE in
             echo "Reloading Firewall..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            sleep 2s
             sudo ufw reload
-            sleep 1s
             bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
 	    # reload and return to menu
             ;;
