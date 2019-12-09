@@ -201,11 +201,11 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Installing ufw, fail2ban, htop, docker, docker-compose, vim, unzip, net-tools, which and others recommended."
+echo "Installing ufw, fail2ban, htop, docker, docker-compose, vim, unzip, net-tools, which, wget and others recommended."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-sudo pacman -Syu --noconfirm ufw fail2ban htop docker docker-compose vim unzip net-tools which
+sudo pacman -Syu --noconfirm ufw fail2ban htop docker docker-compose vim unzip net-tools which wget
 
 sudo systemctl enable docker
 # enables docker to run at startup
