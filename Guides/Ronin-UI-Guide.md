@@ -12,7 +12,7 @@ Please enter following commands to update your system, reboot, install git, down
 
 3. ``` sudo pacman -S git ```
 
-4. ``` git clone -b development https://github.com/RoninDojo/RoninDojo.git ```
+4. ``` git clone https://github.com/RoninDojo/RoninDojo.git ```
 
 5. ``` cd RoninDojo``` 
 
