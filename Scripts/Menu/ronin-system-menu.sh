@@ -122,7 +122,7 @@ case $CHOICE in
 	    sleep 2s
 	    echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
 	    echo "cd ~" >> ~/ronin-update.sh
-	    echo "git clone -b development https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
+	    echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
 	    echo "bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh" >> ~/ronin-update.sh
 	    sudo chmod +x ~/ronin-update.sh
 	    bash ~/ronin-update.sh
