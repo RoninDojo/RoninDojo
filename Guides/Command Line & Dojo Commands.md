@@ -18,9 +18,11 @@ Show Docker version: `sudo docker -v`
 
 Docker status: `sudo systemctl status docker`
 
+Make directory to mount Docker on USB: `sudo mkdir /mnt/usb/docker`
+
 **Chmod**
 
-Makes file executable: `sudo chmod +x ~/"RoninDojo/ronin.sh"`
+Makes file executable: `sudo chmod +x ~/"file"`
  
 **Pacman**
 
@@ -28,11 +30,19 @@ Sync & Upgrade: `sudo pacman -Syu`
 
 Downloads and installs git: `sudo pacman -S git`
 
-**SD & Drive info** 
+**Drives** 
 
 Show attached drives info: `sudo lsblk -f`
 
 Shows mounted USB drive info: `sudo df -h /dev/sda1` or `sudo df -h /mnt/usb`
+
+Format to ext4: `sudo mkfs.ext4 /dev/sda1`
+
+Create USB mount directory: `sudo mkdir /mnt/usb`
+
+Mount all drives: `sudo mount -a`
+
+Check disc info: `df -h`
 
 **Systemctl**
 
@@ -40,17 +50,17 @@ Reload daemon: `sudo systemctl daemon-reload`
 
 Stop Docker: `sudo systemctl stop docker`
 
-Start Docker: `sudo systemctl start docker` or `sudo systemctl enable docker `
+Start Docker: `sudo systemctl start docker` or `sudo systemctl enable docker`
 
-Remove file: `sudo rm -r ~/`
+Remove file: `sudo rm -r ~/"file"`
 
-Remove file by force: `sudo rm -rf ~/`
+Remove file by force: `sudo rm -rf ~/"file"`
 
 **Git**
 
-Clone git repository: `git clone "url" `
+Clone git repository: `git clone "url"`
 
-Clone a branch of repository(must choose branch, ie "development") : `git clone -b "development" "url" `
+Clone a branch of repository(must choose branch, ie "development") : `git clone -b "development" "url"`
 
 Switches to development branch: `git checkout development`
  
@@ -125,3 +135,5 @@ Delete your Dojo. **Be careful! This command will also remove all data**: `unins
 Upgrade your Dojo: `upgrade` 
 
 Display the version of dojo: `version` 
+
+
