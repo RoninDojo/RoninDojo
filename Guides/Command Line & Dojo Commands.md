@@ -1,5 +1,7 @@
 # General CL
 
+### *This is an incomplete list!*
+
 Shutdown device: `sudo shutdown`
 
 Reboot device: `sudo reboot`
@@ -18,19 +20,17 @@ Docker status: `sudo systemctl status docker`
 
 **Chmod**
 
-?: `sudo chmod +x ~/RoninDojo/ronin.sh`
+Makes file executable: `sudo chmod +x ~/"RoninDojo/ronin.sh"`
  
 **Pacman**
 
-Run system wide update: `sudo pacman -Syu`
+Sync & Upgrade: `sudo pacman -Syu`
 
 Downloads and installs git: `sudo pacman -S git`
 
 **SD & Drive info** 
 
 Show attached drives info: `sudo lsblk -f`
-
-Shows SD card info: `? `
 
 Shows mounted USB drive info: `sudo df -h /dev/sda1` or `sudo df -h /mnt/usb`
 
@@ -46,8 +46,6 @@ Remove file: `sudo rm -r ~/`
 
 Remove file by force: `sudo rm -rf ~/`
 
-
-
 **Git**
 
 Clone git repository: `git clone "url" `
@@ -62,7 +60,7 @@ Launch file explorer: `sudo nano`
 
 # Dojo
  
-### Usage: `./dojo.sh  "command"  ["module"] ["options"]`
+### Usage: `./dojo.sh  "command"  "module" "options"`
 
 **To use these commands you must be in the correct directory**
 
@@ -84,7 +82,7 @@ Install your Dojo: `install`
 
 ----
 
-`logs [module] [options]`
+`logs "module" "options"`
 
 Display the logs of your Dojo. Use `CTRL+C` to stop the logs. 
 
@@ -127,5 +125,3 @@ Delete your Dojo. **Be careful! This command will also remove all data**: `unins
 Upgrade your Dojo: `upgrade` 
 
 Display the version of dojo: `version` 
-
-
