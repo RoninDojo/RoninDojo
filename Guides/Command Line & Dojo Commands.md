@@ -1,128 +1,84 @@
 # General CL
 
-`sudo shutdown`
+Shutdown device: `sudo shutdown`
 
-Shutdown device
+Reboot device: `sudo reboot`
 
-`sudo reboot`
-
-Reboots device 
-
-`CTRL+C`
-
-Back out of any menu or go back to CL
+Go back: `CTRL+C`
 
 **Docker:**
 
-`sudo docker info`
+Docker info: `sudo docker info` or `sudo docker info | grep "Docker Root Dir:"`
 
-`sudo docker info | grep "Docker Root Dir:"`
+Restart tor: `sudo docker restart tor`
 
-Pulls docker info
+Show Docker version: `sudo docker -v`
 
-`sudo docker restart tor`
-
-Restarts tor
-
-`sudo docker -v`
-
-Shows docker version
-
-`sudo systemctl status docker`
-
-Docker status 
+Docker status: `sudo systemctl status docker`
 
 **Chmod**
 
-`sudo chmod +x ~/RoninDojo/ronin.sh`
-
-? 
-
+?: `sudo chmod +x ~/RoninDojo/ronin.sh`
+ 
 **Pacman**
 
-`sudo pacman -Syu`
+Run system wide update: `sudo pacman -Syu`
 
-Runs system wide update 
-
-`sudo pacman -S git`
-
-Downloads and installs git
+Downloads and installs git: `sudo pacman -S git`
 
 **SD & Drive info** 
 
-`sudo lsblk -f`
+Show attached drives info: `sudo lsblk -f`
 
-Shows attached drives data
+Shows SD card info: `? `
 
-`sudo df -h /dev/sda1`
-
-Shows SD card info
-
-`sudo df -h /mnt/usb`
-
-Shows mounted USB drive info 
+Shows mounted USB drive info: `sudo df -h /dev/sda1` or `sudo df -h /mnt/usb`
 
 **Systemctl**
 
-`sudo systemctl daemon-reload`
+Reload daemon: `sudo systemctl daemon-reload`
 
-Reloads daemon
+Stop Docker: `sudo systemctl stop docker`
 
-`sudo systemctl stop docker`
+Start Docker: `sudo systemctl start docker` or `sudo systemctl enable docker `
 
-Stop docker
+Remove file: `sudo rm -r ~/`
 
-`sudo systemctl start docker`
+Remove file by force: `sudo rm -rf ~/`
 
-`sudo systemctl enable docker `
 
-Start docker
-
-`sudo rm -rf ~/`
-
-Remove file by force, can drop f
 
 **Git**
 
-`git clone (url) `
+Clone git repository: `git clone "url" `
 
-`git clone -b development (url) `
+Clone a branch of repository(must choose branch, ie "development") : `git clone -b "development" "url" `
 
-Clones a branch of git, must specify branch
-
-`git checkout development`
+Switches to development branch: `git checkout development`
  
-Switches to development branch
-
 **Nano**
 
-`sudo nano`
-
-Launch file explorer 
-
-
+Launch file explorer: `sudo nano`
 
 # Dojo
  
-### Usage: `./dojo.sh command [module] [options] `
+### Usage: `./dojo.sh  "command"  ["module"] ["options"]`
+
+**To use these commands you must be in the correct directory**
+
+So first:
+
+`cd dojo/docker/my-dojo`
 
 **Available commands:**
 
-`help` 
+Display the help message: `help` 
 
-Display the help message. 
+Launch a bitcoin-cli console for interacting with bitcoind RPC API: `bitcoin-cli` 
 
-`bitcoin-cli` 
+Free disk space by deleting docker dangling images and images of previous versions: `clean` 
 
-Launch a bitcoin-cli console for interacting with bitcoind RPC API. 
-
-`clean` 
-
-Free disk space by deleting docker dangling images and images of previous versions.
-
-`install`
-
- Install your Dojo. 
+Install your Dojo: `install`
 
 **Logs**
 
@@ -134,54 +90,42 @@ Display the logs of your Dojo. Use `CTRL+C` to stop the logs.
 
 **Available modules:**
 
-`dojo.sh logs` : display the logs of all containers 
+Display the logs of all containers: `dojo.sh logs` 
 
-`dojo.sh logs bitcoind` : display the logs of bitcoind 
+Display the logs of bitcoind: `dojo.sh logs bitcoind`
 
-`dojo.sh logs db` : display the logs of the MySQL database 
+Display the logs of the MySQL database: `dojo.sh logs db` 
 
-`dojo.sh logs tor` : display the logs of tor 
+Display the logs of tor: `dojo.sh logs tor`
 
-`dojo.sh logs api` : display the logs of the REST API (nodejs) 
+Display the logs of the REST API (nodejs): `dojo.sh logs api`
 
-`dojo.sh logs tracker` : display the logs of the Tracker (nodejs) 
+Display the logs of the Tracker (nodejs): `dojo.sh logs tracker`
 
-`dojo.sh logs pushtx` : display the logs of the pushTx API (nodejs) 
+Display the logs of the pushTx API (nodejs): `dojo.sh logs pushtx`
 
-`dojo.sh logs pushtx-orchest` : display the logs of the Orchestrator (nodejs) 
+Display the logs of the Orchestrator (nodejs): `dojo.sh logs pushtx-orchest`
 
 **Available options:** _(for api, tracker, pushtx and pushtx-orchest modules):_
 
-`-d [VALUE]` : select the type of log to be displayed. VALUE can be output (default) or error.
+Select the type of log to be displayed. VALUE can be output (default) or error: `-d [VALUE]`
 
-` -n [VALUE]` : display the last VALUE lines 
+Display the last VALUE lines: ` -n [VALUE]`
 
 ----
 
-`onion` 
+Display the Tor onion address allowing your wallet to access your Dojo: `onion` 
 
-Display the Tor onion address allowing your wallet to access your Dojo. 
+Restart your Dojo: `restart` 
 
-`restart` 
+Start your Dojo: `start` 
 
-Restart your Dojo. 
+Stop your Dojo: `stop` 
 
-`start` 
+Delete your Dojo. **Be careful! This command will also remove all data**: `uninstall` 
 
-Start your Dojo. 
+Upgrade your Dojo: `upgrade` 
 
-`stop` 
+Display the version of dojo: `version` 
 
-Stop your Dojo. 
 
-`uninstall` 
-
-Delete your Dojo. Be careful! This command will also remove all data. 
-
-`upgrade` 
-
-Upgrade your Dojo. 
-
-`version` 
-
-Display the version of dojo.
