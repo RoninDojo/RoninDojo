@@ -159,14 +159,24 @@ echo "***"
 echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphrase."
 echo "***"
 echo -e "${NC}"
-sleep 3s
 java -jar whirlpool.jar --init --tor
 # initate Whirlpool
+sleep 2s
 
-echo "Record this APIkey to connect your Whirlpool GUI:"
 APIkey=$(sudo cat /$HOME/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
+
+echo -e "${RED}" 
+echo "***"
+echo "Record this APIkey to connect your Whirlpool GUI:"
+echo "***"
+echo -e "${NC}"
+sleep 2s
+
+echo -e "${RED}" 
+echo "***"
 echo "$APIkey"
-echo ""
+echo "***"
+echo -e "${NC}"
 sleep 2s
 
 echo -e "${RED}"
@@ -181,9 +191,10 @@ echo "***"
 echo "Setting Whirlpool Service..."
 echo "***"
 echo -e "${NC}"
+
 # setting whirlpool as a Service
-echo -e "${NC}" 
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+
 # adding tor location to whirlpool configuration
 sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
 
@@ -194,6 +205,7 @@ echo "Opening tmux session and Starting Whirlpool..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
+
 echo "
 [Unit]
 Description=Whirlpool
@@ -213,25 +225,37 @@ RestartSec=60
 [Install]
 WantedBy=multi-user.target
 " | sudo tee -a /etc/systemd/system/whirlpool.service
+
 sudo systemctl daemon-reload
-sudo systemctl start whirlpool
+sleep 3s
 
 echo -e "${RED}"
 echo ""
 echo "***"
 echo "Starting whirlpool in the background..."
 echo "***"
+echo -e "${NC}"
 sleep 2s
+
+sudo systemctl start whirlpool
+sleep 3s
+
+echo -e "${RED}"
 echo "***"
 echo "Pair with GUI to unlock wallet and begin mixing..."
 echo "$APIkey"
 echo "***"
+echo -e "${NC}"
 sleep 2s
 
+echo -e "${RED}"
+echo "***"
 echo "For pairing with GUI head to full guide at:" 
-sleep 1s
 echo "https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Raspbian/Whirlpool-Guide.md#pairing-your-with-the-whirlpool-gui"
+echo "***"
+echo -e "${NC}"
 sleep 2s
+
 echo -e "${RED}"
 echo "***"
 echo "Press any letter to return..."
