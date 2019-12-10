@@ -26,7 +26,7 @@ Video guide](https://youtube.com/watch?v=ozAWczLqsB4)
 
 * Insert the now "flashed" SD card into your device, make sure the SSD is plugged and, and power on the device.
 
-__**To setup remotely via SSH open up terminal and input root@IP address, this can only be done via an ethernet connection**__
+__**To setup remotely via SSH open up terminal and input `root@"Ip.address"`, this can only be done via an ethernet connection**__
 
   * After a few seconds, the system boot is complete and the wizard appears. 
 
