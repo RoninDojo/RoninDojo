@@ -26,7 +26,7 @@ Video guide](https://youtube.com/watch?v=ozAWczLqsB4)
 
 * Insert the now "flashed" SD card into your device, make sure the SSD is plugged and, and power on the device.
 
-__**To setup remotely via SSH open up terminal and input root@IP address, this can only be done via an ethernet connection**__
+__**To setup remotely via SSH open up terminal and input `root@"Ip.address"`, this can only be done via an ethernet connection**__
 
   * After a few seconds, the system boot is complete and the wizard appears. 
 
@@ -80,25 +80,33 @@ An ethernet connection is really the best way to get Internet access.
 
 *In progress*
 
-* Using SSH
+### Using SSH
 
 **SSH is a must-have on a minimal system**
 
-To use SSH open up terminal and input "your username"@IP address.
+If your not running a Linux distro. To access terminal, so you can SSH into your device. You can use these options:
 
-Example: `user123@192.168.0.5`
+### Windows
 
-    * If you want to use the root login to connect, you need to edit the configuration file: 
+-  Ubuntu [Windows Store](https://www.microsoft.com/en-us/p/ubuntu/9nblggh4msv6#activetab=pivot:overviewtab) 
 
-          Open the configuration file:
-          sudo nano /etc/ssh/sshd_config
+-  Putty [Putty.org](https://putty.org/) 
 
-          Then edit the PermitRootLogin line like this:
-          PermitRootLogin yes
+### Mobile
 
-          Save and exit
+- Termux [Google Play store](https://play.google.com/store/apps/details?id=com.termux) 
 
-          Restart the SSH service
+- ConnectBot [Google Play store](https://play.google.com/store/apps/details?id=org.connectbot) 
+
+### Once you've accessed terminal
+
+For system setup:
+
+`ssh root@"ip.address"`
+
+Once completed:
+
+`ssh "username"@"ip.address"`
 
 ## Useful Commands
 Now Manjaro Minimal is setup, you are ready to begin the Ronin/Dojo install process. Your going to need a few commands off the bat to get you going. I'll cover a couple below and add a link to the Pacman/Rosetta wiki. 
