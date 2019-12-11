@@ -92,7 +92,19 @@ Install your Dojo: `install`
 
 ----
 
-`logs "module" "options"`
+`sudo logs "module" "options"`
+
+**Examples**
+
+For logs:
+
+`sudo ./dojo.sh logs api`
+
+For error logs:
+
+`sudo ./dojo.sh logs api -d error -n 500`
+
+This shows the Api errors for up to 500 lines
 
 Display the logs of your Dojo. Use `CTRL+C` to stop the logs. 
 
