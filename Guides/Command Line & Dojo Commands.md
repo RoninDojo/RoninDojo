@@ -8,7 +8,11 @@ Reboot device: `sudo reboot`
 
 Go back: `CTRL+C`
 
+Show the files/directories for a user: `ls`
+
 **Docker:**
+
+Show files/directories in the docker container: `sudo docker container ls`
 
 Docker info: `sudo docker info` or `sudo docker info | grep "Docker Root Dir:"`
 
@@ -27,6 +31,8 @@ Makes file executable: `sudo chmod +x ~/"file"`
 **Pacman**
 
 Sync & Upgrade: `sudo pacman -Syu`
+
+Downloads and installs package: `sudo pacman -S "package"`
 
 Downloads and installs git: `sudo pacman -S git`
 
@@ -132,8 +138,6 @@ Select the type of log to be displayed. VALUE can be output (default) or error: 
 
 Display the last VALUE lines: ` -n [VALUE]`
 
-----
-
 Display the Tor onion address allowing your wallet to access your Dojo: `onion` 
 
 Restart your Dojo: `restart` 
@@ -148,4 +152,13 @@ Upgrade your Dojo: `upgrade`
 
 Display the version of dojo: `version` 
 
+
+----
+**Other information**
+
+Show current blockchain info: `sudo ./dojo.sh bitcoin-cli getblockchaininfo`
+
+Show Dojo network info: `sudo ./dojo.sh bitcoin-cli getnetworkinfo`
+
+----
 
