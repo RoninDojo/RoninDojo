@@ -138,6 +138,15 @@ Select the type of log to be displayed. VALUE can be output (default) or error: 
 
 Display the last VALUE lines: ` -n [VALUE]`
 
+----
+**Other information**
+
+Show current blockchain info: `sudo ./dojo.sh bitcoin-cli getblockchaininfo`
+
+Show Dojo network info: `sudo ./dojo.sh bitcoin-cli getnetworkinfo`
+
+----
+
 Display the Tor onion address allowing your wallet to access your Dojo: `onion` 
 
 Restart your Dojo: `restart` 
@@ -152,13 +161,4 @@ Upgrade your Dojo: `upgrade`
 
 Display the version of dojo: `version` 
 
-
-----
-**Other information**
-
-Show current blockchain info: `sudo ./dojo.sh bitcoin-cli getblockchaininfo`
-
-Show Dojo network info: `sudo ./dojo.sh bitcoin-cli getnetworkinfo`
-
-----
 
