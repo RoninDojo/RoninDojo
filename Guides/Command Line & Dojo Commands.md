@@ -143,7 +143,7 @@ Display the last VALUE lines: ` -n [VALUE]`
 
 Show current blockchain info: `sudo ./dojo.sh bitcoin-cli getblockchaininfo`
 
-Show Dojo network info: `sudo ./dojo.sh bitcoin-cli getnetworkinfo`
+Show Dojo network info: `sudo ./dojo.sh bitcoin-cli getnetworkinfo` or `./dojo.sh bitcoin-cli --getinfo`
 
 ----
 
