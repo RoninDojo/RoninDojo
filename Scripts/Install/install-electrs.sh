@@ -64,7 +64,7 @@ echo -e "${NC}"
 sleep 2s
 RPC_USER=$(sudo cat /home/$USER/dojo/docker/my-dojo/conf/docker-bitcoind.conf | grep BITCOIND_RPC_USER= | cut -c 19-)
 RPC_PASS=$(sudo cat /home/$USER/dojo/docker/my-dojo/conf/docker-bitcoind.conf | grep BITCOIND_RPC_PASSWORD= | cut -c 23-)
-sudo mkdir /home/$USER/electrs/.electrs
+sudo mkdir /home/$USER/.electrs
 touch /home/$USER/config.toml
 chmod 600 /home/$USER/config.toml || exit 1 
 cat > /home/$USER/config.toml <<EOF
@@ -78,7 +78,7 @@ daemon_dir = "/mnt/usb/docker/volumes/my-dojo_bitcoind_data/_data"
 daemon_rpc_addr = "127.0.0.1:28256"
 EOF
 
-sudo mv /home/$USER/config.toml /home/$USER/electrs/.electrs
+sudo mv /home/$USER/config.toml /home/$USER/.electrs/config.toml
 # move config file
 sleep 2s
 
