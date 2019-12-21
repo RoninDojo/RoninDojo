@@ -8,7 +8,11 @@ Reboot device: `sudo reboot`
 
 Go back: `CTRL+C`
 
+Show the files/directories for a user: `ls`
+
 **Docker:**
+
+Show files/directories in the docker container: `sudo docker container ls`
 
 Docker info: `sudo docker info` or `sudo docker info | grep "Docker Root Dir:"`
 
@@ -27,6 +31,8 @@ Makes file executable: `sudo chmod +x ~/"file"`
 **Pacman**
 
 Sync & Upgrade: `sudo pacman -Syu`
+
+Downloads and installs package: `sudo pacman -S "package"`
 
 Downloads and installs git: `sudo pacman -S git`
 
@@ -131,6 +137,13 @@ Display the logs of the Orchestrator (nodejs): `dojo.sh logs pushtx-orchest`
 Select the type of log to be displayed. VALUE can be output (default) or error: `-d [VALUE]`
 
 Display the last VALUE lines: ` -n [VALUE]`
+
+----
+**Other information**
+
+Show current blockchain info: `sudo ./dojo.sh bitcoin-cli getblockchaininfo`
+
+Show Dojo network info: `sudo ./dojo.sh bitcoin-cli getnetworkinfo` or `./dojo.sh bitcoin-cli --getinfo`
 
 ----
 
