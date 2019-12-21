@@ -26,25 +26,14 @@ For more information on Samourai Wallet, Dojo, and Whirlpool visit the [Samourai
 
 For FAQs about all things Samourai Wallet, check out @PuraVida's [FAQ wiki](https://github.com/PuraVlda/samourai-wallet-android/wiki/Frequently-Asked-Questions).
 
-## Hardware
-The Full Dojo installation, which includes a fresh sync of the Bitcoin blockchain, requires a little over 3GB of RAM during the initial sync. Then it drops to a little less than 2GB after sync is complete. The setup will require about 350GB of data storage and growing daily.
-
-[Hardware Guide](https://github.com/RoninDojo/Guides/Hardware.md)
-
-## Operating System
-The Ronin UI is intended for the Manjaro ARM Minimal OS. Once you have your hardware ready, you can go ahead and flash Manjaro on to an SD Card in just a few minutes time.
-
-[Manjaro Guide](https://github.com/RoninDojo/Guides/Manjaro-Minimal-Installation.md)
-
-## Ronin UI
-Using the UI fairly simple. Some reading required, a few clicks, input values when asked, and get Dojo started within ~30 minutes.
-
-[Ronin UI Guide](https://github.com/RoninDojo/Guides/Ronin-UI-Guide.md)
+## RoninDojo Wiki
+For Installation Guides, Common Commands, How-to Vidoes, and more Checkout:
+[RoninDojo Wiki](https://github.com/RoninDojo/RoninDojo/wiki)
 
 ## Contributors
 This list is continuously growing, I will do my best to update as much as I can. If you would like to contribute please feel free to pull or DM me to help!
 
-@GuerraMoneta @BTCxZelko @Burcakbaskan @k3tan @kdmukai @crazyk031 @jaimefoo - Ronin UI
+@GuerraMoneta @BTCxZelko @Burcakbaskan @k3tan @kdmukai @crazyk031 @jaimefoo - RoninDojo
 
 @romanz - Electrs
 
