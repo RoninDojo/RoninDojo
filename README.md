@@ -26,8 +26,11 @@ For more information on Samourai Wallet, Dojo, and Whirlpool visit the [Samourai
 
 For FAQs about all things Samourai Wallet, check out @PuraVida's [FAQ wiki](https://github.com/PuraVlda/samourai-wallet-android/wiki/Frequently-Asked-Questions).
 
+# Quick Start
+[Quick Start Guide](https://github.com/RoninDojo/RoninDojo/wiki/Initial-Setup#initial-setup-for-ronindojo)
+
 ## RoninDojo Wiki
-For Installation Guides, Common Commands, How-to Vidoes, and more:
+For Recommended Hardware, Installation Guides, Common Commands, How-to Vidoes, and more:
 
 https://github.com/RoninDojo/RoninDojo/wiki
 
