@@ -337,6 +337,7 @@ sudo systemctl daemon-reload
 sleep 5s
 sudo systemctl start docker
 sleep 10s
+sudo systemctl enable docker
 # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
 # see systemctl status docker.service and journalctl -xe for details on error
 
