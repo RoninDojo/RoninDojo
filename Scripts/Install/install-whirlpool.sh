@@ -201,7 +201,7 @@ sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpo
 # create whirlpool tmux session and start Whirlpool
 echo -e "${RED}"
 echo "***"
-echo "Opening tmux session and Starting Whirlpool..."
+echo "Setting Whirlpool as a service..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
