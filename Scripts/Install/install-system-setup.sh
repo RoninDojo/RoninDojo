@@ -369,8 +369,8 @@ sleep 3s
 # docker setup ends
 echo -e "${RED}"
 echo "***"
-echo ""Dependencies installed!""
-echo ""Install Dojo next!""
+echo "Dependencies installed!"
+echo "Install Dojo next!"
 echo "***"
 echo -e "${NC}"
-#end
+# end
