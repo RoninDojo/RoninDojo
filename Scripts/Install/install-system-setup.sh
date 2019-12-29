@@ -367,3 +367,10 @@ sudo docker info | grep "Docker Root Dir:"
 sleep 3s
 # if not showing SSD path check above
 # docker setup ends
+echo -e "${RED}"
+echo "***"
+echo "Dependencies installed!"
+echo "Install Dojo next!"
+echo "***"
+echo -e "${NC}"
+# end
