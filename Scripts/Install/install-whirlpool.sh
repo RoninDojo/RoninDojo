@@ -14,7 +14,7 @@ sleep 5s
 
 echo -e "${RED}"
 echo "***"
-echo "First, a UFW rule will be made for Whirlpool."
+echo "A UFW rule will be made for Whirlpool."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -113,7 +113,7 @@ cd whirlpool
 
 echo -e "${RED}" 
 echo "***"
-echo "Pulling Whirlpool from github..."
+echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -156,9 +156,24 @@ sleep 5s
 
 echo -e "${RED}" 
 echo "***"
-echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet and Passphrase."
+echo "Obtain the Whirlpool Pairing Code in Samourai Wallet. Go to Settings > Transactions > Pair to Whirlpool."
 echo "***"
 echo -e "${NC}"
+sleep 2s
+
+echo -e "${RED}" 
+echo "***"
+echo "Initating Whirlpool..."
+echo "***"
+echo -e "${NC}"
+sleep 2s
+
+echo -e "${RED}" 
+echo "***"
+echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet."
+echo "***"
+echo -e "${NC}"
+sleep 5s
 java -jar whirlpool.jar --init --tor
 # initate Whirlpool
 sleep 2s
@@ -168,16 +183,9 @@ APIkey=$(sudo cat /$HOME/whirlpool/whirlpool-cli-config.properties | grep cli.ap
 echo -e "${RED}" 
 echo "***"
 echo "Record this APIkey to connect your Whirlpool GUI:"
-echo "***"
-echo -e "${NC}"
-sleep 2s
-
-echo -e "${RED}" 
-echo "***"
-echo "$APIkey"
-echo "***"
-echo -e "${NC}"
-sleep 2s
+echo -e "${NC}$APIkey"
+echo -e "${RED}***"
+sleep 3s
 
 echo -e "${RED}"
 echo "***"
@@ -191,6 +199,7 @@ echo "***"
 echo "Setting Whirlpool Service..."
 echo "***"
 echo -e "${NC}"
+sleep 2s
 
 # setting whirlpool as a Service
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
@@ -199,12 +208,6 @@ USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
 
 # create whirlpool tmux session and start Whirlpool
-echo -e "${RED}"
-echo "***"
-echo "Setting Whirlpool as a service..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
 
 echo "
 [Unit]
@@ -230,9 +233,8 @@ sudo systemctl daemon-reload
 sleep 3s
 
 echo -e "${RED}"
-echo ""
 echo "***"
-echo "Starting whirlpool in the background..."
+echo "Starting Whirlpool in the background..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -251,9 +253,8 @@ sleep 2s
 echo -e "${RED}"
 echo "***"
 echo "For pairing with GUI head to full guide at:" 
-echo "https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Raspbian/Whirlpool-Guide.md#pairing-your-with-the-whirlpool-gui"
-echo "***"
-echo -e "${NC}"
+echo -e "${NC}https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Raspbian/Whirlpool-Guide.md#pairing-your-with-the-whirlpool-gui"
+echo -e "${RED}***"
 sleep 2s
 
 echo -e "${RED}"

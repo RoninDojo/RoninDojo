@@ -39,7 +39,7 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh start
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # start dojo, return to menu
             ;;
         2)
@@ -51,36 +51,17 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh stop
-	    bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
+	    bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # stop dojo, return to menu
             ;;
         3)
-            echo -e "${RED}"
-            echo "***"
-            echo "Type one of the following options now: (bitcoind, db, tor, api, tracker, pushtx, pushtx-orchest)"
-            echo "Or just press 'Enter' to show logs for all containers, which will take some time."
-            echo "***"
-            echo -e "${NC}"
-            
-            read -p "Which logs would you like to view?: " requested_logs
-            # get user input for logs
-
-            echo -e "${RED}"
-            echo "Running" $requested_logs "logs now. Use Ctrl+C at any time to exit and return to menu."
-            echo -e "${NC}"
-            sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs $requested_logs
-            # utilizing user input from $requested_logs for ./dojo.sh logs
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
-            # return to main menu
+            bash ~/RoninDojo/Scripts/Menu/dojo-logs-menu.sh
+            # go to dojo logs menu
             ;;
         4)
             echo -e "${RED}"
             echo "***"
-            echo "Showing the Tor Hidden Service Address."
-            echo "This .onion address allows your wallet to access your Dojo."
-	    echo "Use the v3 address to connect to the Maintenance Tool"
+	    echo "Use the v3 address to connect to the Maintenance Tool."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -92,7 +73,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # press any key to return to menu
             # shows .onion and returns to menu
             ;;
@@ -123,8 +104,9 @@ case $CHOICE in
             cd ~/dojo/docker/my-dojo/	   
             sleep 2s
 	    sudo ./dojo.sh upgrade
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
-            # upgrades dojo
+	    sleep 2s
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            # upgrades dojo and returns to menu
             ;;
         6)
             echo -e "${RED}"
@@ -142,7 +124,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # display dojo version info
             # press any letter to return
             ;;
@@ -156,14 +138,16 @@ case $CHOICE in
             sleep 15s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh clean
-            # free disk space by deleting docker dangling images and images of previous versions
+	    sleep 2s
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh
             # takes you to ronin dojo menu2
             ;;
         9)
             bash ~/RoninDojo/ronin
-            # return to main ronin.sh menu
+            # return to main ronin menu
             ;;
 esac

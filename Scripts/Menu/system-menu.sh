@@ -38,7 +38,7 @@ case $CHOICE in
             echo -e "${NC}"
 	    sleep 3s
 	    htop
-	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # returns to main menu
             ;;
 	2)
@@ -57,18 +57,18 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # press any key to return to menu
             ;;
         3)
             echo -e "${RED}"
             echo "***"
-            echo "Checking for system updates, not recommended on your own!"
+            echo "Checking for system updates..."
             echo "***"
             echo -e "${NC}"
             sleep 5s
             sudo pacman -Syu
-	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # check for system updates, then return to menu
             ;;
         4)
@@ -78,8 +78,16 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 10s
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Shutting down Dojo if running..."
+            echo "***"
+            echo -e "${NC}"
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh stop
             sudo shutdown -r now
-            # disk space info
+            # stop dojo and restart machine
             ;;
         5)
             echo -e "${RED}"
@@ -88,8 +96,9 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 10s
+
             sudo shutdown now
-            # Shut down pi
+            # stop dojo and restart machine
             ;;
 	6)
             echo -e "${RED}"
@@ -99,7 +108,7 @@ case $CHOICE in
             echo -e "${NC}"
 	    sleep 2s
 	    sudo passwd -l root
-	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # uses passwd to lock root user, returns to menu
             ;;
 	7)
@@ -110,7 +119,7 @@ case $CHOICE in
             echo -e "${NC}"
 	    sleep 2s
 	    sudo passwd -u root
-	    bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
 	    # uses passwd to unlock root user, returns to menu
             ;;
         8)
@@ -123,10 +132,10 @@ case $CHOICE in
 	    echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
 	    echo "cd ~" >> ~/ronin-update.sh
 	    echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
-	    echo "bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh" >> ~/ronin-update.sh
+	    echo "bash ~/RoninDojo/Scripts/Menu/system-menu.sh" >> ~/ronin-update.sh
 	    sudo chmod +x ~/ronin-update.sh
 	    bash ~/ronin-update.sh
-            # returns to main menu
+            # returns to menu
             ;;
 
         9)

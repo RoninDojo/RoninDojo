@@ -43,7 +43,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo journalctl -u electrs.service -e
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
 	2)
@@ -54,7 +54,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl start electrs
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
         3)
@@ -65,7 +65,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl stop electrs
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
         4)
@@ -76,7 +76,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl enable electrs
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # enable electrs at startup, return to menu
             ;;
         5)
@@ -87,7 +87,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl disable electrs
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # disable electrs at startup, return to menu
             ;;
         6)
@@ -106,7 +106,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # press any letter return to menu
             ;;
 	7)

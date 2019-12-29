@@ -40,7 +40,7 @@ sleep 5s
 # start dojo setup
 echo -e "${RED}"
 echo "***"
-echo "Downloading and extracting latest Dojo release."
+echo "Downloading and extracting latest Dojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
@@ -51,7 +51,7 @@ git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
 
 echo -e "${RED}"
 echo "***"
-echo "Making ~/dojo and copying data."
+echo "Making ~/dojo and copying data..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -60,7 +60,7 @@ cp -rv samourai-dojo/* ~/dojo
 
 echo -e "${RED}"
 echo "***"
-echo "Removing all the files no longer needed."
+echo "Removing all the files no longer needed..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -68,7 +68,7 @@ rm -rvf samourai-dojo/
 
 echo -e "${RED}"
 echo "***"
-echo "Editing the bitcoin docker file, using the aarch64-linux-gnu.tar.gz source."
+echo "Editing the bitcoin docker file, using the aarch64-linux-gnu.tar.gz source..."
 echo "***"
 echo -e "${NC}"
 sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
@@ -81,7 +81,7 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Editing mysql dockerfile to use a compatible database."
+echo "Editing mysql dockerfile to use a compatible database..."
 echo "***"
 echo -e "${NC}"
 sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
@@ -92,7 +92,7 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source."
+echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source..."
 echo "***"
 echo -e "${NC}"
 sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
@@ -128,7 +128,7 @@ echo "***"
 echo "NOTICE:"
 echo "Enter any value that you want."
 echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
-echo "Alphanumerical values only. No special characters such as (*&^%$#@!)."
+echo "Alphanumerical values ONLY. No special characters such as (*&^%$#@!)."
 echo "Be sure that you record this information! Store it in a safe place you will not forget."
 echo "***"
 echo -e "${NC}"
@@ -316,7 +316,7 @@ echo "NOTICE:"
 echo "Enter any value that you want."
 echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
 echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
+echo "Use alphanumerical value ONLY! No special characters such as (*&^%$#@!)."
 echo "Be sure that you record this information! Store it in a safe place you will not forget."
 echo "***"
 echo -e "${NC}"
@@ -404,7 +404,7 @@ MYSQL_PASSWORD=$MYSQL_PASSWORD
 
 echo -e "${RED}"
 echo "***"
-echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
+echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md for more info."
 echo "***"
 echo -e "${NC}"
 sleep 2s

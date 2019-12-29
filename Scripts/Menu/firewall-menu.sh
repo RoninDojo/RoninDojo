@@ -38,7 +38,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw enable
             sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # enables firewall
             ;;
         2)
@@ -50,7 +50,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw disable
             sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # disables firewall
             ;;
         3)
@@ -69,7 +69,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # press any key to return to menu
             ;;
         4)
@@ -94,7 +94,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
 
-            read -p 'Local IP Address:' ip_address
+            read -p 'Local IP Address: ' ip_address
             sudo ufw allow from $ip_address/24 to any port 22 comment 'SSH access restricted to local LAN only'
 
             echo -e "${RED}"
@@ -127,7 +127,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # press any key to return to menu
             ;;
         5)
@@ -152,7 +152,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
 
-            read -p 'Local IP Address:' ip_address
+            read -p 'Local IP Address: ' ip_address
             sudo ufw allow from $ip_address to any port 22 comment 'SSH access restricted to local LAN only'
 
 	    echo -e "${RED}"
@@ -185,7 +185,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # press any key to return to menu
             ;;
 
@@ -201,12 +201,12 @@ case $CHOICE in
             
             echo -e "${RED}"
             echo "***"
-            echo "Example: If you want to delete the 3rd rule listed, press the number 3, then press Enter."
+            echo "Example: If you want to delete the 3rd rule listed, press the number 3, and press Enter."
             echo "***"
             echo -e "${NC}"
 	    sleep 2s
 	    
-            read -p "Please type the rule number to delete now:" ufw_rule_number
+            read -p "Please type the rule number to delete now: " ufw_rule_number
             sudo ufw delete $ufw_rule_number
 	    # use user input to delete a certain number ufw rule
 	    
@@ -234,7 +234,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # press any letter to return to menu
             ;;
         7)
@@ -245,7 +245,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo ufw reload
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
 	    # reload and return to menu
             ;;
         8)

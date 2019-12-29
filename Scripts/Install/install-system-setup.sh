@@ -61,7 +61,9 @@ sudo cp ~/RoninDojo/ronin /usr/local/bin
 
 echo "" >> ~/.bashrc
 echo "~/RoninDojo/Scripts/.logo" >> ~/.bashrc
-# place logo ~/.bashrc
+echo "" >> ~/.bashrc
+echo "~/RoninDojo/ronin" >> ~/.bashrc
+# place logo and ronin main menu script ~/.bashrc to run at each login
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
@@ -107,7 +109,7 @@ EOF
 
 echo -e "${RED}"
 echo "***"
-echo "Using ext4 format, for /dev/sda1"
+echo "Using ext4 format for /dev/sda1 partition..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -116,7 +118,7 @@ sudo mkfs.ext4 /dev/sda1
 
 echo -e "${RED}"
 echo "***"
-echo "Editing /etc/fstab to input UUID for sda1 and adjust settings."
+echo "Editing /etc/fstab to input UUID for sda1 and adjust settings..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -141,7 +143,7 @@ rm ~/uuid.txt
 
 echo -e "${RED}"
 echo "***"
-echo "Created a /mnt/usb directory."
+echo "Creating /mnt/usb directory..."
 echo "***"
 echo -e "${NC}"
 sudo mkdir /mnt/usb
@@ -158,7 +160,7 @@ sudo mount -a
 
 echo -e "${RED}"
 echo "***"
-echo "Displaying the name on the external disk."
+echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
 lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
@@ -167,7 +169,7 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Check output for /dev/sda1"
+echo "Check output for /dev/sda1 and make sure everything looks ok."
 echo "***"
 echo -e "${NC}"
 df -h
@@ -214,7 +216,7 @@ sudo systemctl enable docker
 # ufw setup starts
 echo -e "${RED}"
 echo "***"
-echo "Setting up UFW."
+echo "Setting up UFW..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -279,7 +281,7 @@ sudo ufw reload
 
 echo -e "${RED}"
 echo "***"
-echo "Checking UFW status."
+echo "Checking UFW status..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -291,13 +293,27 @@ echo "Take a moment to check the UFW rule that was just created."
 echo "***"
 echo -e "${NC}"
 sleep 5s
+
+echo -e "${RED}"
+echo "***"
+echo "Any computer connected to the same local network as your Dojo will have SSH access."
+echo "***"
+echo -e "${NC}"
+sleep 2s
+
+echo -e "${RED}"
+echo "***"
+echo "Additional local network SSH access will have to done manually using the Firewall Menu."
+echo "***"
+echo -e "${NC}"
+sleep 2s
 # ufw setup ends
 
 # docker setup starts
 
 echo -e "${RED}"
 echo "***"
-echo "Now configuring docker to use the external SSD."
+echo "Now configuring docker to use the external SSD..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
@@ -320,7 +336,7 @@ rm ~/daemon.json
 
 echo -e "${RED}"
 echo "***"
-echo "Checking docker version."
+echo "Checking docker version..."
 echo "***"
 echo -e "${NC}"
 docker -v
