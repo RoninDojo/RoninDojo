@@ -97,10 +97,42 @@ case $CHOICE in
 	    sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
 	    sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
 	    sed -i '1i             FROM    mariadb:latest' ~/dojo/docker/my-dojo/mysql/Dockerfile
-	    sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
 	    sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '13i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '13i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '14d' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    sed -i '14i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
+	    # install new explorer
+	    echo -e "${RED}"
+	    echo "Installing your Dojo-backed Bitcoin Explorer"
+	    sleep 1s
+	    echo -e "${YELLOW}"
+	    echo "This password should be something you can remember and is alphanumerical"
+	    sleep 1s
+	    echo -e "${NC}"
+	    if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+    	    	read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
+    	    	sleep 1s
+   	        echo -e "${YELLOW}"
+    	    	echo "----------------"
+    		echo "$EXPLORER_PASS"
+    	    	echo "----------------"
+    	    	echo -e "${RED}"
+    	    	echo "Is this correct?"
+    	    	echo -e "${NC}"
+    	    	select yn in "Yes" "No"; do
+        	    case $yn in
+            	    	Yes ) break;;
+            	    	No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
+            	    	echo "$EXPLORER_PASS"
+        	    esac
+    	    	done
+   	    	echo -e "${RED}"
+    	    	echo "$EXPLORER_PASS"
+	    else
+    	    	echo "Explorer is already installed"
+	    fi
+	    sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+	    sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
             cd ~/dojo/docker/my-dojo/	   
             sleep 2s
 	    sudo ./dojo.sh upgrade
