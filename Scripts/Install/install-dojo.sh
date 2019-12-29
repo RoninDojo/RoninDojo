@@ -95,10 +95,10 @@ echo "***"
 echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source..."
 echo "***"
 echo -e "${NC}"
-sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
 sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '13i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '13i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '14d' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '14i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
 sleep 2s
 
  # creating a 1GB swapfile
