@@ -40,11 +40,12 @@ case $CHOICE in
   
 	    echo -e "${RED}"
 	    echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
             cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            read -n 1 -r -s            
+	    bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # press any key to return to menu
             ;;
         2)
