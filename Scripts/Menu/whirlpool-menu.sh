@@ -40,11 +40,12 @@ case $CHOICE in
   
 	    echo -e "${RED}"
 	    echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
             cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            read -n 1 -r -s            
+	    bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # press any key to return to menu
             ;;
         2)
@@ -143,7 +144,7 @@ case $CHOICE in
             cd ~/whirlpool
             sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
-            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
+            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.0/whirlpool-client-cli-0.10.0-run.jar
             sudo systemctl start whirlpool
             bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             ;;
