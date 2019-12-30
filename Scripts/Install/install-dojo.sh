@@ -199,7 +199,7 @@ BITCOIND_MAX_MEMPOOL=400
 
 # Db cache size in MB
 # Type: integer
-BITCOIND_DB_CACHE=1024
+BITCOIND_DB_CACHE=700
 
 # Number of threads to service RPC calls
 # Type: integer
