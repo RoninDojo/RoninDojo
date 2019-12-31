@@ -106,7 +106,7 @@ case $CHOICE in
             network_tx=$(ifconfig eth0 | grep 'TX packets' | awk '{ print $6$7 }' | sed 's/[()]//g')
             echo "        Receive: $network_rx"
             echo "        Transmit: $network_tx"
-            # cpu network info, use wlan0 for wireless
+            # network info, use wlan0 for wireless
             
             echo -e "${RED}"
             echo "***"
