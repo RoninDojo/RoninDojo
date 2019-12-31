@@ -15,12 +15,13 @@ OPTIONS=(1 "Task Manager"
          2 "Check Disk Space"
 	 3 "Check for System Updates"
 	 4 "Check Temperature"
-         5 "Restart"
-         6 "Power Off"
-	 7 "Lock Root User"
-	 8 "Unlock Root User"
-	 9 "Update Ronin UI"
-	 10 "Go Back")
+	 5 "Check Network Stats"
+         6 "Restart"
+         7 "Power Off"
+	 8 "Lock Root User"
+	 9 "Unlock Root User"
+	 10 "Update Ronin UI"
+	 11 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -93,7 +94,30 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # press any key to return to menu
             ;;
-        5)
+	5)
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing network stats..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 1s
+            ifconfig eth0 | grep 'inet'
+            network_rx=$(ifconfig eth0 | grep 'RX packets' | awk '{ print $6$7 }' | sed 's/[()]//g')
+            network_tx=$(ifconfig eth0 | grep 'TX packets' | awk '{ print $6$7 }' | sed 's/[()]//g')
+            echo "        Receive: $network_rx"
+            echo "        Transmit: $network_tx"
+            # cpu network info, use wlan0 for wireless
+            
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            # press any key to return to menu
+            ;;
+        6)
             echo -e "${RED}"
             echo "***"
             echo "Restarting in 10s, or press Ctrl + C to cancel now..."
@@ -111,7 +135,7 @@ case $CHOICE in
             sudo shutdown -r now
             # stop dojo and restart machine
             ;;
-        6)
+        7)
             echo -e "${RED}"
             echo "***"
             echo "Powering off in 10s, press Ctrl + C to cancel..."
@@ -122,7 +146,7 @@ case $CHOICE in
             sudo shutdown now
             # stop dojo and restart machine
             ;;
-	7)
+	8)
             echo -e "${RED}"
             echo "***"
             echo "Locking Root User..."
@@ -133,7 +157,7 @@ case $CHOICE in
 	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # uses passwd to lock root user, returns to menu
             ;;
-	8)
+	9)
             echo -e "${RED}"
             echo "***"
             echo "Unlocking Root User..."
@@ -144,7 +168,7 @@ case $CHOICE in
 	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
 	    # uses passwd to unlock root user, returns to menu
             ;;
-        9)
+        10)
             echo -e "${RED}"
             echo "***"
             echo "Updating Ronin UI..."
@@ -160,7 +184,7 @@ case $CHOICE in
             # returns to menu
             ;;
 
-        10)
+        11)
             bash ~/RoninDojo/ronin
             # returns to main menu
             ;;
