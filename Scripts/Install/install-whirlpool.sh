@@ -205,7 +205,7 @@ sleep 2s
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
 # adding tor location to whirlpool configuration
-sed -i '25i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
+sed -i '4i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
 
 # create whirlpool tmux session and start Whirlpool
 
