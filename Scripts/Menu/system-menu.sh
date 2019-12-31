@@ -14,12 +14,13 @@ MENU="Choose one of the following options:"
 OPTIONS=(1 "Task Manager"
          2 "Check Disk Space"
 	 3 "Check for System Updates"
-         4 "Restart"
-         5 "Power Off"
-	 6 "Lock Root User"
-	 7 "Unlock Root User"
-	 8 "Update Ronin UI"
-	 9 "Go Back")
+	 4 "Check Temperature"
+         5 "Restart"
+         6 "Power Off"
+	 7 "Lock Root User"
+	 8 "Unlock Root User"
+	 9 "Update Ronin UI"
+	 10 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -71,7 +72,28 @@ case $CHOICE in
 	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # check for system updates, then return to menu
             ;;
-        4)
+	4)
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing CPU temp..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 1s
+            cpu=$(cat /sys/class/thermal/thermal_zone0/temp)
+            tempC=$((cpu/1000))
+            echo $tempC $'\xc2\xb0'C
+            # cpu temp info
+            
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            # press any key to return to menu
+            ;;
+        5)
             echo -e "${RED}"
             echo "***"
             echo "Restarting in 10s, or press Ctrl + C to cancel now..."
@@ -89,7 +111,7 @@ case $CHOICE in
             sudo shutdown -r now
             # stop dojo and restart machine
             ;;
-        5)
+        6)
             echo -e "${RED}"
             echo "***"
             echo "Powering off in 10s, press Ctrl + C to cancel..."
@@ -100,7 +122,7 @@ case $CHOICE in
             sudo shutdown now
             # stop dojo and restart machine
             ;;
-	6)
+	7)
             echo -e "${RED}"
             echo "***"
             echo "Locking Root User..."
@@ -111,7 +133,7 @@ case $CHOICE in
 	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # uses passwd to lock root user, returns to menu
             ;;
-	7)
+	8)
             echo -e "${RED}"
             echo "***"
             echo "Unlocking Root User..."
@@ -122,7 +144,7 @@ case $CHOICE in
 	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
 	    # uses passwd to unlock root user, returns to menu
             ;;
-        8)
+        9)
             echo -e "${RED}"
             echo "***"
             echo "Updating Ronin UI..."
@@ -138,7 +160,7 @@ case $CHOICE in
             # returns to menu
             ;;
 
-        9)
+        10)
             bash ~/RoninDojo/ronin
             # returns to main menu
             ;;
