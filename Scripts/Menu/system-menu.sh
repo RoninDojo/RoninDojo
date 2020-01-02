@@ -50,7 +50,13 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo df -h
+	    
+            sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
+            sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")
+            echo "Remaining Internal: "${sd}
+            hdd_free_ratio=$(printf "%s" "$(df  | grep "/mnt/usb" | awk '{ print $4/$2*100 }')") 2>/dev/null
+            hdd=$(printf "%s (%s%%)" "$(df -h | grep "/mnt/usb" | awk '{ print $4 }')" "${hdd_free_ratio}")
+            echo "Remaining External: " ${hdd}
             # disk space info
             
             echo -e "${RED}"
