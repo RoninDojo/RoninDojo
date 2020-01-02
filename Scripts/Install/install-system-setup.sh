@@ -386,5 +386,5 @@ sleep 1s
 echo "1"
 sleep 1s
 echo "0"
-bash ~/RoninDojo/ronin.sh
+bash ~/RoninDojo/ronin
 # end
