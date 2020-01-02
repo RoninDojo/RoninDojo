@@ -370,7 +370,8 @@ sleep 3s
 echo -e "${RED}"
 echo "***"
 echo "Dependencies installed!"
-echo "Install Dojo next!"
+echo "Installing Dojo next!"
 echo "***"
 echo -e "${NC}"
+sleep 3s
 # end
