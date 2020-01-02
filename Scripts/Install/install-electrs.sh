@@ -168,3 +168,4 @@ echo "Complete!"
 echo "***"
 echo -e "${NC}"
 sleep 2s
+bash ~/RoninDojo/ronin
