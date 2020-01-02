@@ -372,5 +372,20 @@ echo "***"
 echo "Dependencies installed!"
 echo "Install Dojo next!"
 echo "***"
+sleep 2s
+echo "Returning to Menu in"
+sleep 1s
+echo "5"
+sleep 1s
+echo "4"
+sleep 1s
+echo "3"
+sleep 1s
+echo "2"
+sleep 1s
+echo "1"
+sleep 1s
+echo "0"
+bash ~/RoninDojo/ronin.sh
 echo -e "${NC}"
 # end
