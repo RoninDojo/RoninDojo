@@ -184,6 +184,7 @@ case $CHOICE in
 	    echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
 	    echo "cd ~" >> ~/ronin-update.sh
 	    echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
+	    echo "sudo cp ~/RoninDojo/ronin /usr/local/bin"
 	    echo "bash ~/RoninDojo/Scripts/Menu/system-menu.sh" >> ~/ronin-update.sh
 	    sudo chmod +x ~/ronin-update.sh
 	    bash ~/ronin-update.sh
