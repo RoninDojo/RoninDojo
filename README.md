@@ -1,4 +1,5 @@
-![RoninDojo-01b.png](https://github.com/Crazyk031/RoninDojo/blob/Images/RoninDojo%20Images/RoninDojo-01b.png)
+<img src="https://github.com/Crazyk031/RoninDojo/blob/Images/RoninDojo%20Images/RoninDojo-01b.png" width="200" height="200" />
+
 # RoninDojo
 An Installation Assistant and UI for Samourai Wallet's Dojo. Runs on a Raspberry Pi4 or Odroid N2.
 
