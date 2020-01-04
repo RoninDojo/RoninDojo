@@ -18,10 +18,8 @@ OPTIONS=(1 "Task Manager"
 	 5 "Check Network Stats"
          6 "Restart"
          7 "Power Off"
-	 8 "Lock Root User"
-	 9 "Unlock Root User"
-	 10 "Update Ronin UI"
-	 11 "Go Back")
+	 8 "Next Page"
+	 9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -152,46 +150,11 @@ case $CHOICE in
             sudo shutdown now
             # stop dojo and restart machine
             ;;
-	8)
-            echo -e "${RED}"
-            echo "***"
-            echo "Locking Root User..."
-            echo "***"
-            echo -e "${NC}"
-	    sleep 2s
-	    sudo passwd -l root
-	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
-            # uses passwd to lock root user, returns to menu
+        8)
+            bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
+            # goes to next page
             ;;
-	9)
-            echo -e "${RED}"
-            echo "***"
-            echo "Unlocking Root User..."
-            echo "***"
-            echo -e "${NC}"
-	    sleep 2s
-	    sudo passwd -u root
-	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
-	    # uses passwd to unlock root user, returns to menu
-            ;;
-        10)
-            echo -e "${RED}"
-            echo "***"
-            echo "Updating Ronin UI..."
-            echo "***"
-            echo -e "${NC}"
-	    sleep 2s
-	    echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
-	    echo "cd ~" >> ~/ronin-update.sh
-	    echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
-	    echo "sudo cp ~/RoninDojo/ronin /usr/local/bin"
-	    echo "bash ~/RoninDojo/Scripts/Menu/system-menu.sh" >> ~/ronin-update.sh
-	    sudo chmod +x ~/ronin-update.sh
-	    bash ~/ronin-update.sh
-            # returns to menu
-            ;;
-
-        11)
+        9)
             bash ~/RoninDojo/ronin
             # returns to main menu
             ;;
