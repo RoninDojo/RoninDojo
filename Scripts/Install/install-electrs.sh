@@ -89,7 +89,7 @@ echo "Editting torrc..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-sudo sed -i '78i HiddenServiceDir /mnt/usb/tor/hidden_service/' /etc/tor/torrc
+sudo sed -i '78i HiddenServiceDir /var/lib/tor/hidden_service/' /etc/tor/torrc
 sudo sed -i '79i HiddenServiceVersion 3' /etc/tor/torrc
 sudo sed -i '80i HiddenServicePort 50001 127.0.0.1:50001' /etc/tor/torrc
 
@@ -105,7 +105,7 @@ sleep 3s
 echo "
 [Unit]
 Description=Electrs
-After=dojo.service
+After=docker.service
 [Service]
 WorkingDirectory=/home/$USER/electrs
 ExecStart=/home/$USER/electrs/target/release/electrs --electrum-rpc-addr="0.0.0.0:50001"
@@ -138,7 +138,7 @@ sleep 2s
 sudo systemctl start electrs
 sleep 2s
 
-TOR_ADDRESS=$(sudo cat /mnt/usb/tor/hidden_service/hostname)
+TOR_ADDRESS=$(sudo cat /var/lib/tor/hidden_service/hostname)
 echo -e "${RED}"
 echo "The Tor Hidden Service address for electrs is:"
 echo -e "${NC}"
