@@ -95,10 +95,10 @@ echo "***"
 echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source..."
 echo "***"
 echo -e "${NC}"
+sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
 sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '13i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '14d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '14i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '13i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
 sleep 2s
 
  # creating a 1GB swapfile
@@ -281,41 +281,6 @@ BITCOIND_ZMQ_RAWTXS=9501
 # Type: integer
 BITCOIND_ZMQ_BLK_HASH=9502
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-
-#Password COnfiguration for BTC-Explorer
-echo -e "${RED}"
-echo "Installing your Dojo-backed Bitcoin Explorer"
-sleep 1s
-echo -e "${YELLOW}"
-echo "This password should be something you can remember and is alphanumerical"
-sleep 1s
-echo -e "${NC}"
-if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
-    sleep 1s
-    echo -e "${YELLOW}"
-    echo "----------------"
-    echo "$EXPLORER_PASS"
-    echo "----------------"
-    echo -e "${RED}"
-    echo "Is this correct?"
-    echo -e "${NC}"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) break;;
-            No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
-            echo "$EXPLORER_PASS"
-        esac
-    done
-    echo -e "${RED}"
-    echo "$EXPLORER_PASS"
-else
-    echo "Explorer is already installed"
-fi
-
-sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sleep 1s
 
 #Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
