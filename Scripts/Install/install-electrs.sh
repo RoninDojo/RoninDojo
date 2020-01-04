@@ -27,7 +27,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 source $HOME/.cargo/env
 rustup install 1.37.0 --force
 rustup override set 1.37.0
-sudo pacman -S clang -y
+sudo pacman -S --noconfirm clang
 sleep 2s
 
 # Make electrs database dir and give permissions
@@ -139,21 +139,27 @@ sudo systemctl start electrs
 sleep 2s
 
 TOR_ADDRESS=$(sudo cat /mnt/usb/tor/hidden_service/hostname)
+echo -e "${RED}"
 echo "The Tor Hidden Service address for electrs is:"
+echo -e "${NC}"
 echo "$TOR_ADDRESS"
 sleep 5s 
 
+echo -e "${RED}"
 echo "Electrum Wallet: To connect through Tor, open the Tor Browser, and start with the following options:" 
 sleep 5s
 echo "\`electrum --oneserver --server=$TOR_ADDRESS:50001:s --proxy socks5:127.0.0.1:9050\`"
 echo "***"
+echo -e "${NC}"
 sleep 5s
 
+echo -e "${RED}"
 echo "Electrum Wallet: To connect through Tor Daemon, start with the following options:"
 sleep 5s
 echo "\`electrum --oneserver --server=$TOR_ADDRESS:50001:s --proxy socks5:127.0.0.1:9050\`"
 sleep 5s
 echo "For pairing with GUI see full guide: https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Manjaro/Minimal/Electrs.md"
+echo -e "${NC}"
 sleep 5s
 
 echo -e "${RED}"
@@ -162,3 +168,4 @@ echo "Complete!"
 echo "***"
 echo -e "${NC}"
 sleep 2s
+bash ~/RoninDojo/ronin

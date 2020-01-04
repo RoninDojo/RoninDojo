@@ -40,7 +40,7 @@ sleep 5s
 # start dojo setup
 echo -e "${RED}"
 echo "***"
-echo "Downloading and extracting latest Dojo release."
+echo "Downloading and extracting latest Dojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
@@ -51,7 +51,7 @@ git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
 
 echo -e "${RED}"
 echo "***"
-echo "Making ~/dojo and copying data."
+echo "Making ~/dojo and copying data..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -60,7 +60,7 @@ cp -rv samourai-dojo/* ~/dojo
 
 echo -e "${RED}"
 echo "***"
-echo "Removing all the files no longer needed."
+echo "Removing all the files no longer needed..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -68,7 +68,7 @@ rm -rvf samourai-dojo/
 
 echo -e "${RED}"
 echo "***"
-echo "Editing the bitcoin docker file, using the aarch64-linux-gnu.tar.gz source."
+echo "Editing the bitcoin docker file, using the aarch64-linux-gnu.tar.gz source..."
 echo "***"
 echo -e "${NC}"
 sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
@@ -81,7 +81,7 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Editing mysql dockerfile to use a compatible database."
+echo "Editing mysql dockerfile to use a compatible database..."
 echo "***"
 echo -e "${NC}"
 sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
@@ -92,13 +92,13 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source."
+echo "Editing the Tor dockerfile, using the aarch64-linux-gnu.tar.gz source..."
 echo "***"
 echo -e "${NC}"
-sed -i '12d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '12i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
 sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
-sed -i '13i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '13i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '14d' ~/dojo/docker/my-dojo/tor/Dockerfile
+sed -i '14i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
 sleep 2s
 
  # creating a 1GB swapfile
@@ -128,7 +128,7 @@ echo "***"
 echo "NOTICE:"
 echo "Enter any value that you want."
 echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
-echo "Alphanumerical values only. No special characters such as (*&^%$#@!)."
+echo "Alphanumerical values ONLY. No special characters such as (*&^%$#@!)."
 echo "Be sure that you record this information! Store it in a safe place you will not forget."
 echo "***"
 echo -e "${NC}"
@@ -199,7 +199,7 @@ BITCOIND_MAX_MEMPOOL=400
 
 # Db cache size in MB
 # Type: integer
-BITCOIND_DB_CACHE=1024
+BITCOIND_DB_CACHE=700
 
 # Number of threads to service RPC calls
 # Type: integer
@@ -282,6 +282,41 @@ BITCOIND_ZMQ_RAWTXS=9501
 BITCOIND_ZMQ_BLK_HASH=9502
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
+#Password COnfiguration for BTC-Explorer
+echo -e "${RED}"
+echo "Installing your Dojo-backed Bitcoin Explorer"
+sleep 1s
+echo -e "${YELLOW}"
+echo "This password should be something you can remember and is alphanumerical"
+sleep 1s
+echo -e "${NC}"
+if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+    read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
+    sleep 1s
+    echo -e "${YELLOW}"
+    echo "----------------"
+    echo "$EXPLORER_PASS"
+    echo "----------------"
+    echo -e "${RED}"
+    echo "Is this correct?"
+    echo -e "${NC}"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes ) break;;
+            No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
+            echo "$EXPLORER_PASS"
+        esac
+    done
+    echo -e "${RED}"
+    echo "$EXPLORER_PASS"
+else
+    echo "Explorer is already installed"
+fi
+
+sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+sleep 1s
+
 #Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
 echo "****"
@@ -316,7 +351,7 @@ echo "NOTICE:"
 echo "Enter any value that you want."
 echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
 echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
+echo "Use alphanumerical value ONLY! No special characters such as (*&^%$#@!)."
 echo "Be sure that you record this information! Store it in a safe place you will not forget."
 echo "***"
 echo -e "${NC}"
@@ -404,7 +439,7 @@ MYSQL_PASSWORD=$MYSQL_PASSWORD
 
 echo -e "${RED}"
 echo "***"
-echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md"
+echo "See documentation at https://github.com/Samourai-Wallet/samourai-dojo/blob/master/doc/DOCKER_setup.md for more info."
 echo "***"
 echo -e "${NC}"
 sleep 2s

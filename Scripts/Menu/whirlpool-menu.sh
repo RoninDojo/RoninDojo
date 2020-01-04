@@ -40,11 +40,12 @@ case $CHOICE in
   
 	    echo -e "${RED}"
 	    echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
             cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            read -n 1 -r -s            
+	    bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # press any key to return to menu
             ;;
         2)
@@ -61,7 +62,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sudo journalctl -r -u whirlpool.service
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # view whirlpool cli logs via journalctl, return to menui
 	    # note that it's in order of newest to oldest, and blob means that it's repeat information
             ;;
@@ -79,7 +80,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sudo systemctl status whirlpool
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # view status, return to menu
             ;;
         4)
@@ -97,7 +98,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # start whirlpool, return to menu
             ;;
         5)
@@ -108,18 +109,18 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl stop whirlpool
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # stop whirlpool, return to menu
             ;;
         6)
             echo -e "${RED}"
             echo "***"
-            echo "Restarting..."
+            echo "Restarting Whirlpool..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
             sudo systemctl restart whirlpool
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # enable whirlpool at startup, return to menu
             ;;
         7)
@@ -130,7 +131,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl disable whirlpool
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # disable whirlpool at startup, return to menu
             ;;
         8)
@@ -143,9 +144,9 @@ case $CHOICE in
             cd ~/whirlpool
             sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
-            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.9.3/whirlpool-client-cli-0.9.3-run.jar
+            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.1/whirlpool-client-cli-0.10.1-run.jar
             sudo systemctl start whirlpool
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             ;;
         9)
             bash ~/RoninDojo/ronin

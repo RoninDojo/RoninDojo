@@ -9,15 +9,14 @@ cmd=(dialog --title "Ronin UI" --separate-output --checklist "Use Spacebar to se
 options=(1 "Setup System & Install Dependencies" off    # any option can be set to default to "on"
          2 "Install Dojo" off
          3 "Install Whirlpool" off
-	 4 "Install Electrs" off
-	 5 "Go Back" off)
+	 4 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices
 do
     case $choice in
         1)
-            bash ~/RoninDojo/Scripts/Install/install-dependencies-setup-system.sh
+            bash ~/RoninDojo/Scripts/Install/install-system-setup.sh
 	    # runs system setup script which will installs dependencies, setup ssd, assigns local ip range to ufw, etc. 
             ;;
         2)
@@ -29,10 +28,6 @@ do
             # runs electrs setup script
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Install/install-electrs.sh
-            # runs electrs setup script
-            ;;
-        5)
             bash ~/RoninDojo/ronin
             # return to main ronin menu
             ;;

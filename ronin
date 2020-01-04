@@ -22,7 +22,8 @@ OPTIONS=(1 "Dojo Menu"
          3 "Electrs Menu"
          4 "Firewall Menu"
 	 5 "System Menu"
-         6 "System Setup & Installs")
+         6 "System Setup & Installations"
+         7 "Bonus Installations")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -34,27 +35,31 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            bash ~/RoninDojo/Scripts/Menu/ronin-dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # runs dojo management menu script
             ;;
         2)
-            bash ~/RoninDojo/Scripts/Menu/ronin-whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # runs the whirlpool menu script
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Menu/ronin-electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # runs electrs menu script
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/ronin-firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
             # runs firewall menu script
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Menu/ronin-system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # runs system menu script
             ;;
         6)
-            bash ~/RoninDojo/Scripts/Menu/ronin-install-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/install-menu.sh
 	    # runs installs menu
+            ;;
+        7)
+            bash ~/RoninDojo/Scripts/Menu/install-menu-bonus.sh
+	    # runs bonus installs menu
             ;;
 esac
