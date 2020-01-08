@@ -11,11 +11,13 @@ NC='\033[0m'
 echo -e "${RED}"
 echo "***"
 echo "Adding Electrs into Dojo stack..."
+sleep 1s
+echo "This will update your Dojo...this may take some time"
 echo "***"
 echo -e "${NC}"
 sleep 5s
 
-# Install Rust and Clang
+# electrs branch of Dojo
 cd ~/dojo/docker/my-dojo
 sudo ./dojo.sh stop
 mkdir ~/.dojo > /dev/null 2>&1
