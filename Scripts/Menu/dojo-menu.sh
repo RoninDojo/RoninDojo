@@ -89,27 +89,22 @@ case $CHOICE in
 	    sudo ./dojo.sh stop
 	    mkdir ~/.dojo > /dev/null 2>&1
 	    cd ~/.dojo
-	    git clone -b master https://github.com/Samourai-Wallet/samourai-dojo.git
+	    # Check if user has Electrs+Dojo installed
+	    if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-electrs.conf ]; then
+   	        git clone -b feat_electrs https://github.com/RoninDojo/samourai-dojo.git;
+       	    else  
+        	git clone -b master https://github.com/RoninDojo/samourai-dojo.git;
+	    fi
 	    sudo cp -rv samourai-dojo/* ~/dojo
-	    sed -i '9d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-	    sed -i '9i             ENV     BITCOIN_URL         https://bitcoincore.org/bin/bitcoin-core-0.19.0.1/bitcoin-0.19.0.1-aarch64-linux-gnu.tar.gz' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-	    sed -i '10d' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-	    sed -i '10i            ENV     BITCOIN_SHA256      c258c6416225afb08c4396847eb3d5da61a124f1b5c61cccb5a2e903e453ce7f' ~/dojo/docker/my-dojo/bitcoin/Dockerfile
-	    sed -i '1d' ~/dojo/docker/my-dojo/mysql/Dockerfile
-	    sed -i '1i             FROM    mariadb:latest' ~/dojo/docker/my-dojo/mysql/Dockerfile
-	    sed -i '13d' ~/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '13i ENV     GOLANG_ARCHIVE      go1.13.5.linux-arm64.tar.gz' ~/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '14d' ~/dojo/docker/my-dojo/tor/Dockerfile
-	    sed -i '14i ENV     GOLANG_SHA256       227b718923e20c846460bbecddde9cb86bad73acc5fb6f8e1a96b81b5c84668b' ~/dojo/docker/my-dojo/tor/Dockerfile
 	    # install new explorer
 	    echo -e "${RED}"
-	    echo "Installing your Dojo-backed Bitcoin Explorer"
-	    sleep 1s
-	    echo -e "${YELLOW}"
-	    echo "This password should be something you can remember and is alphanumerical"
+	    echo "Checking for Dojo-backed Bitcoin Explorer"
 	    sleep 1s
 	    echo -e "${NC}"
 	    if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+	    	echo "Installing Dojo BTC-Explorer, create a Password"
+		sleep 1s
+	    	echo "This password should be something you can remember and is alphanumerical"
     	    	read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
     	    	sleep 1s
    	        echo -e "${YELLOW}"
@@ -128,11 +123,12 @@ case $CHOICE in
     	    	done
    	    	echo -e "${RED}"
     	    	echo "$EXPLORER_PASS"
+		echo -e "${NC}"
+		sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+		sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 	    else
     	    	echo "Explorer is already installed"
-	    fi
-	    sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-	    sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+	    fi	       
             cd ~/dojo/docker/my-dojo/	   
             sleep 2s
 	    sudo ./dojo.sh upgrade
