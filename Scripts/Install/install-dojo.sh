@@ -383,7 +383,7 @@ EXPLORER_INSTALL=on
 # Provide a value with a high entropy!
 # Type: alphanumeric
 EXPLORER_KEY=$EXPLORER_PASS
-" | sudo -a tee ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 sleep 1s
 
 echo -e "${RED}"
