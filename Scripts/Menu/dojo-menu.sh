@@ -39,8 +39,15 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh start
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
             bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
-            # start dojo, return to menu
+            # start dojo, press any letter to return to menu
             ;;
         2)
             echo -e "${RED}"
@@ -51,8 +58,15 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh stop
-	    bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
-            # stop dojo, return to menu
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            # stop dojo, press any letter to return to menu
             ;;
         3)
             bash ~/RoninDojo/Scripts/Menu/dojo-logs-menu.sh
@@ -61,13 +75,13 @@ case $CHOICE in
         4)
             echo -e "${RED}"
             echo "***"
-	    echo "Use the v3 address to connect to the Maintenance Tool."
+            echo "Use the v3 address to connect to the Maintenance Tool."
             echo "***"
             echo -e "${NC}"
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh onion
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
@@ -85,54 +99,70 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 30s
-	    cd ~/dojo/docker/my-dojo
-	    sudo ./dojo.sh stop
-	    mkdir ~/.dojo > /dev/null 2>&1
-	    cd ~/.dojo
-	    # Check if user has Electrs+Dojo installed
-	    if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-electrs.conf ]; then
-   	        git clone -b feat_electrs https://github.com/RoninDojo/samourai-dojo.git;
-       	    else  
-        	git clone -b master https://github.com/RoninDojo/samourai-dojo.git;
+            cd ~/dojo/docker/my-dojo
+            sudo ./dojo.sh stop
+            mkdir ~/.dojo > /dev/null 2>&1
+            cd ~/.dojo
+            # Check if user has Electrs+Dojo installed
+
+            if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-electrs.conf ]; then
+                git clone -b feat_electrs https://github.com/RoninDojo/samourai-dojo.git;
+       	    else
+                git clone -b master https://github.com/RoninDojo/samourai-dojo.git;
+            fi
+            sudo cp -rv samourai-dojo/* ~/dojo
+            # install new explorer
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Checking for Dojo-backed Bitcoin Explorer"
+            echo "***"
+            echo -e "${NC}"
+            sleep 1s
+            if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+                echo -e "${RED}"
+                echo "***"
+                echo "Installing Dojo BTC-Explorer, create a Password..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
+                echo -e "${RED}"
+                echo "***"
+                echo "This password should be something you can remember and is only alphanumeric!"
+                echo "***"
+                echo -e "${NC}"
+                read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
+                sleep 1s
+                echo -e "${YELLOW}"
+                echo "----------------"
+                echo "$EXPLORER_PASS"
+                echo "----------------"
+                echo -e "${RED}"
+                echo "Is this correct?"
+                echo -e "${NC}"
+                select yn in "Yes" "No"; do
+                    case $yn in
+                        Yes ) break;;
+                        No ) read -p 'New Dojo Explorer Password: ' EXPLORER_PASS
+                        echo "$EXPLORER_PASS"
+                    esac
+                done
+                echo -e "${RED}"
+                echo "$EXPLORER_PASS"
+                echo -e "${NC}"
+                sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+                sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+            else
+                echo -e "${RED}"
+                echo "***"
+                echo "Explorer is already installed!"
+                echo "***"
+                echo -e "${NC}"
 	    fi
-	    sudo cp -rv samourai-dojo/* ~/dojo
-	    # install new explorer
-	    echo -e "${RED}"
-	    echo "Checking for Dojo-backed Bitcoin Explorer"
-	    sleep 1s
-	    echo -e "${NC}"
-	    if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-	    	echo "Installing Dojo BTC-Explorer, create a Password"
-		sleep 1s
-	    	echo "This password should be something you can remember and is alphanumerical"
-    	    	read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
-    	    	sleep 1s
-   	        echo -e "${YELLOW}"
-    	    	echo "----------------"
-    		echo "$EXPLORER_PASS"
-    	    	echo "----------------"
-    	    	echo -e "${RED}"
-    	    	echo "Is this correct?"
-    	    	echo -e "${NC}"
-    	    	select yn in "Yes" "No"; do
-        	    case $yn in
-            	    	Yes ) break;;
-            	    	No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
-            	    	echo "$EXPLORER_PASS"
-        	    esac
-    	    	done
-   	    	echo -e "${RED}"
-    	    	echo "$EXPLORER_PASS"
-		echo -e "${NC}"
-		sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-		sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-	    else
-    	    	echo "Explorer is already installed"
-	    fi	       
-            cd ~/dojo/docker/my-dojo/	   
+            cd ~/dojo/docker/my-dojo/
             sleep 2s
-	    sudo ./dojo.sh upgrade
-	    sleep 2s
+            sudo ./dojo.sh upgrade
+            sleep 2s
             bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # upgrades dojo and returns to menu
             ;;
@@ -145,7 +175,7 @@ case $CHOICE in
             sleep 2s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh version
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -166,7 +196,7 @@ case $CHOICE in
             sleep 15s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh clean
-	    sleep 2s
+            sleep 2s
             bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;

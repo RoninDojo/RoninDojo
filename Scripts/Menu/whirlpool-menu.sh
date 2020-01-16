@@ -12,8 +12,8 @@ TITLE="Ronin UI"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "View API key"
-	 2 "View Logs"
-	 3 "View Status" 
+         2 "View Logs"
+         3 "View Status" 
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
          6 "Restart"
@@ -37,15 +37,15 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-  
-	    echo -e "${RED}"
-	    echo "***"
+
+            echo -e "${RED}"
+            echo "***"
             echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
             cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
-            read -n 1 -r -s            
-	    bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
             # press any key to return to menu
             ;;
         2)
@@ -56,15 +56,15 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
 
-	    echo -e "${RED}"
-	    echo "***"
+            echo -e "${RED}"
+            echo "***"
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
             sudo journalctl -r -u whirlpool.service
             bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
-            # view whirlpool cli logs via journalctl, return to menui
-	    # note that it's in order of newest to oldest, and blob means that it's repeat information
+            # view whirlpool cli logs via journalctl, return to menu
+            # note that it's in order of newest to oldest, and blob means that it's repeat information
             ;;
         3)
             echo -e "${RED}"
@@ -74,8 +74,8 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
 
-	    echo -e "${RED}"
-	    echo "***"
+            echo -e "${RED}"
+            echo "***"
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
@@ -94,7 +94,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-	    echo "Don't forget to login to GUI to unlock mixing!"
+            echo "Don't forget to login to GUI to unlock mixing!"
             echo "***"
             echo -e "${NC}"
             sleep 5s

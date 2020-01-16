@@ -13,13 +13,13 @@ MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Task Manager"
          2 "Check Disk Space"
-	 3 "Check for System Updates"
-	 4 "Check Temperature"
-	 5 "Check Network Stats"
+         3 "Check for System Updates"
+         4 "Check Temperature"
+         5 "Check Network Stats"
          6 "Restart"
          7 "Power Off"
-	 8 "Next Page"
-	 9 "Go Back")
+         8 "Next Page"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -36,9 +36,9 @@ case $CHOICE in
             echo "Use Ctrl+C at any time to exit Task Manager."
             echo "***"
             echo -e "${NC}"
-	    sleep 3s
-	    htop
-	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            sleep 3s
+            htop
+            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # returns to main menu
             ;;
 	2)
@@ -48,7 +48,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-	    
+
             sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
             sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")
             echo "Internal: "${sd} "remaining"
@@ -56,7 +56,7 @@ case $CHOICE in
             hdd=$(printf "%s (%s%%)" "$(df -h | grep "/mnt/usb" | awk '{ print $4 }')" "${hdd_free_ratio}")
             echo "External: " ${hdd} "remaining"
             # disk space info
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -74,7 +74,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 5s
             sudo pacman -Syu
-	    bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
             # check for system updates, then return to menu
             ;;
 	4)
@@ -88,7 +88,7 @@ case $CHOICE in
             tempC=$((cpu/1000))
             echo $tempC $'\xc2\xb0'C
             # cpu temp info
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -111,7 +111,7 @@ case $CHOICE in
             echo "        Receive: $network_rx"
             echo "        Transmit: $network_tx"
             # network info, use wlan0 for wireless
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -124,11 +124,22 @@ case $CHOICE in
         6)
             echo -e "${RED}"
             echo "***"
+            echo "Shutting down Dojo if running..."
+            echo "***"
+            echo -e "${NC}"
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh stop
+
+            echo -e "${RED}"
+            echo "***"
             echo "Restarting in 10s, or press Ctrl + C to cancel now..."
             echo "***"
             echo -e "${NC}"
             sleep 10s
-
+	    sudo shutdown -r now
+            # stop dojo and restart machine
+            ;;
+        7)
             echo -e "${RED}"
             echo "***"
             echo "Shutting down Dojo if running..."
@@ -136,19 +147,15 @@ case $CHOICE in
             echo -e "${NC}"
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh stop
-            sudo shutdown -r now
-            # stop dojo and restart machine
-            ;;
-        7)
+
             echo -e "${RED}"
             echo "***"
             echo "Powering off in 10s, press Ctrl + C to cancel..."
             echo "***"
             echo -e "${NC}"
             sleep 10s
-
-            sudo shutdown now
-            # stop dojo and restart machine
+	    sudo shutdown now
+            # stop dojo and shut down machine
             ;;
         8)
             bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
