@@ -13,8 +13,8 @@ MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Uninstall Dojo"
          2 "Receive Block Data from Backup"
-	 3 "Send Block Data to Backup"
-	 4 "Go Back")
+         3 "Send Block Data to Backup"
+         4 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \

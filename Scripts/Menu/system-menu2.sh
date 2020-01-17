@@ -14,8 +14,8 @@ MENU="Choose one of the following options:"
 OPTIONS=(1 "Lock Root User"
          2 "Unlock Root User"
          3 "Upgrade Ronin"
-	 4 "Mount Existing Backup Drive"
-	 5 "Format & Mount New Backup Drive"
+         4 "Mount Existing Backup Drive"
+         5 "Format & Mount New Backup Drive"
          6 "Go Back")
 
 CHOICE=$(dialog --clear \
@@ -47,7 +47,7 @@ case $CHOICE in
             sleep 2s
             sudo passwd -u root
             bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
-	    # uses passwd to unlock root user, returns to menu
+            # uses passwd to unlock root user, returns to menu
             ;;
         3)
             echo -e "${RED}"
