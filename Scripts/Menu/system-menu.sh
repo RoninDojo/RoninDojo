@@ -136,7 +136,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 10s
-	    sudo shutdown -r now
+            sudo shutdown -r now
             # stop dojo and restart machine
             ;;
         7)
@@ -154,7 +154,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 10s
-	    sudo shutdown now
+            sudo shutdown now
             # stop dojo and shut down machine
             ;;
         8)

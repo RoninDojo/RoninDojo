@@ -13,10 +13,10 @@ MENU="Choose one of the following options:"
 
 OPTIONS=(1 "View Logs"
          2 "Start Electrs"
-	 3 "Stop Electrs"
+         3 "Stop Electrs"
          4 "Restart Electrs"
-	 5 "Show Tor Hiddenservice Address"
-	 6 "Go Back")
+         5 "Show Tor Hiddenservice Address"
+         6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -34,7 +34,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Use any key to exit."
@@ -42,7 +42,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo ~/dojo/docker/my-dojo/dojo.sh logs electrs
-	    read -n 1 -r -s
+            read -n 1 -r -s
             bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
@@ -80,16 +80,16 @@ case $CHOICE in
             # enable electrs at startup, return to menu
             ;;
         5)
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
             sudo sudo ~/dojo/docker/my-dojo/dojo.sh onion
-	    # displaying electrs tor address to connect to electrum
-	    
-	    echo -e "${RED}"
+            # displaying electrs tor address to connect to electrum
+
+            echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
