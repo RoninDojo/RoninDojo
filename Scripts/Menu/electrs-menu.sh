@@ -14,10 +14,9 @@ MENU="Choose one of the following options:"
 OPTIONS=(1 "View Logs"
          2 "Start Electrs"
 	 3 "Stop Electrs"
-         4 "Enable Electrs at Startup"
-         5 "Disable Electrs at Startup"
-	 6 "Show Tor Hiddenservice Address"
-	 7 "Go Back")
+         4 "Restart Electrs"
+	 5 "Show Tor Hiddenservice Address"
+	 6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -38,11 +37,12 @@ case $CHOICE in
             
             echo -e "${RED}"
             echo "***"
-            echo "Use Ctrl+C to exit anytime."
+            echo "Use any key to exit."
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo journalctl -u electrs.service -e
+            sudo ~/dojo/docker/my-dojo/dojo.sh logs electrs
+	    read -n 1 -r -s
             bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
@@ -53,7 +53,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl start electrs
+            sudo docker start electrs
             bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
@@ -64,40 +64,29 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl stop electrs
+            sudo docker stop electrs
             bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # start electrs, return to menu
             ;;
         4)
             echo -e "${RED}"
             echo "***"
-            echo "Enable Electrs at Startup..."
+            echo "Restart Electrs"
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl enable electrs
+            sudo docker restart electrs
             bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # enable electrs at startup, return to menu
             ;;
         5)
-            echo -e "${RED}"
-            echo "***"
-            echo "Disable Electrs at Startup..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            sudo systemctl disable electrs
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
-            # disable electrs at startup, return to menu
-            ;;
-        6)
 	    echo -e "${RED}"
             echo "***"
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo cat /mnt/usb/tor/hidden_service/hostname
+            sudo sudo ~/dojo/docker/my-dojo/dojo.sh onion
 	    # displaying electrs tor address to connect to electrum
 	    
 	    echo -e "${RED}"
@@ -109,7 +98,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
             # press any letter return to menu
             ;;
-	7)
+	6)
             bash ~/RoninDojo/ronin
             # returns to main menu
             ;;

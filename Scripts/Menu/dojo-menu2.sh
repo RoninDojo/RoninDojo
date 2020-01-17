@@ -12,7 +12,9 @@ TITLE="Ronin UI"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Uninstall Dojo"
-         2 "Go Back")
+         2 "Receive Block Data from Backup"
+	 3 "Send Block Data to Backup"
+	 4 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -42,6 +44,14 @@ case $CHOICE in
             # uninstall dojo
             ;;
         2)
+            bash ~/RoninDojo/Scripts/Install/install-receive-block-data.sh
+            # copy block data from backup drive
+            ;;
+        3)
+            bash ~/RoninDojo/Scripts/Install/install-send-block-data.sh
+            # copy block data to backup drive
+            ;;
+        4)
             bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
             # return to main menu
             ;;

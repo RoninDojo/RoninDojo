@@ -16,9 +16,9 @@ OPTIONS=(1 "Enable Firewall"
          3 "Firewall Status"
          4 "Add New IP Range for SSH"
          5 "Add Specific IP for SSH"
-	 6 "Delete Rule"
+         6 "Delete Rule"
          7 "Reload Firewall"
-	 8 "Go Back")
+         8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -62,7 +62,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw status
             # shows ufw status
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -101,7 +101,7 @@ case $CHOICE in
             echo "***"
             echo "Reloading..."
             echo "***"
-	    sleep 2s
+            sleep 2s
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -114,13 +114,13 @@ case $CHOICE in
             sleep 2s
             sudo ufw status
             # show firewall status
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Make sure that you see your new rule!"
             echo "***"
             echo -e "${NC}"
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -155,11 +155,11 @@ case $CHOICE in
             read -p 'Local IP Address: ' ip_address
             sudo ufw allow from $ip_address to any port 22 comment 'SSH access restricted to local LAN only'
 
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Reloading..."
             echo "***"
-	    sleep 2s
+            sleep 2s
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -172,13 +172,13 @@ case $CHOICE in
             sleep 2s
             sudo ufw status
             # show firewall status
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Make sure that you see your new rule!"
             echo "***"
             echo -e "${NC}"
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -198,23 +198,23 @@ case $CHOICE in
             sleep 2s
             sudo ufw status
             # show firewall status
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Example: If you want to delete the 3rd rule listed, press the number 3, and press Enter."
             echo "***"
             echo -e "${NC}"
-	    sleep 2s
-	    
+            sleep 2s
+
             read -p "Please type the rule number to delete now: " ufw_rule_number
             sudo ufw delete $ufw_rule_number
-	    # use user input to delete a certain number ufw rule
-	    
-	    echo -e "${RED}"
+            # use user input to delete a certain number ufw rule
+
+            echo -e "${RED}"
             echo "***"
             echo "Reloading..."
             echo "***"
-	    sleep 2s
+            sleep 2s
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -227,7 +227,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw status
             # show firewall status
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
@@ -238,7 +238,7 @@ case $CHOICE in
             # press any letter to return to menu
             ;;
         7)
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Reloading Firewall..."
             echo "***"
@@ -246,7 +246,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw reload
             bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
-	    # reload and return to menu
+            # reload and return to menu
             ;;
         8)
             bash ~/RoninDojo/ronin

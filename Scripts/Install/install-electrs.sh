@@ -1,3 +1,4 @@
+ 
 #!/bin/bash
 
 RED='\033[0;31m'
@@ -9,52 +10,24 @@ NC='\033[0m'
 
 echo -e "${RED}"
 echo "***"
-echo "Installing Electrs..."
+echo "Adding Electrs into Dojo stack..."
+sleep 1s
+echo "This will update your Dojo...this may take some time"
 echo "***"
 echo -e "${NC}"
 sleep 5s
 
-# Install Rust and Clang
-echo -e "${RED}"
-echo "***"
-echo "Installing Rust and Clang for Electrs..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
-cd $HOME
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
-rustup install 1.37.0 --force
-rustup override set 1.37.0
-sudo pacman -S --noconfirm clang
-sleep 2s
+# electrs branch of Dojo
+cd ~/dojo/docker/my-dojo
+sudo ./dojo.sh stop
+mkdir ~/.dojo > /dev/null 2>&1
+cd ~/.dojo
+git clone -b feat_electrs https://github.com/RoninDojo/samourai-dojo.git
+sudo cp -rv samourai-dojo/* ~/dojo
+cd ~/dojo/docker/my-dojo/
+sudo ./dojo.sh upgrade
 
-# Make electrs database dir and give permissions
-echo -e "${RED}" 
-echo "***"
-echo "Creating Database location for Electrs..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-sudo mkdir /mnt/usb/electrs
-sudo mkdir /mnt/usb/electrs/db
-sudo chown -R $USER:$USER /mnt/usb/electrs/
-sudo chmod 755 /mnt/usb/electrs/
-sudo chmod 755 /mnt/usb/electrs/db
-
-# Installing Electrs
-echo -e "${RED}" 
-echo "***"
-echo "Installing Electrs, this may take some time..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-cd $HOME
-git clone https://github.com/romanz/electrs /home/$USER/electrs
-cd /home/$USER/electrs
-cargo build --release
-
+<<<<<<< HEAD
 # Configure Electrs
 echo -e "${RED}" 
 echo "***"
@@ -146,20 +119,11 @@ echo "$TOR_ADDRESS"
 sleep 5s 
 
 echo -e "${RED}"
+=======
+>>>>>>> electrs
 echo "Electrum Wallet: To connect through Tor, open the Tor Browser, and start with the following options:" 
-sleep 5s
-echo "\`electrum --oneserver --server=$TOR_ADDRESS:50001:s --proxy socks5:127.0.0.1:9050\`"
-echo "***"
-echo -e "${NC}"
-sleep 5s
-
-echo -e "${RED}"
-echo "Electrum Wallet: To connect through Tor Daemon, start with the following options:"
-sleep 5s
-echo "\`electrum --oneserver --server=$TOR_ADDRESS:50001:s --proxy socks5:127.0.0.1:9050\`"
-sleep 5s
+sleep 1s
 echo "For pairing with GUI see full guide: https://github.com/BTCxZelko/Ronin-Dojo/blob/master/RPi4/Manjaro/Minimal/Electrs.md"
-echo -e "${NC}"
 sleep 5s
 
 echo -e "${RED}"

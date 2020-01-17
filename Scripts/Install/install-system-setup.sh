@@ -96,7 +96,7 @@ sudo sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
   n # new partition
   p # primary partition
   1 # partition number 1
-    # default - start at beginning of disk 
+    # default - start at beginning of disk
     # default, extend partition to end of disk
   w # write the partition table
 EOF
@@ -129,7 +129,7 @@ lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
 sed -i 's/ └─sda1//g' ~/uuid.txt
 # removes the text sda1 after the uuid in txt file
 
-sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,auto,nouser,async,nofail 0 2 &|' ~/uuid.txt
+sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
 # adds a necessary line with the path and other options after the uuid in txt file
 
 sed -i 's/^/UUID=/' ~/uuid.txt
@@ -151,12 +151,12 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Mounting all drives..."
+echo "Mounting drive..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-sudo mount -a
-# mount all drives
+sudo mount /dev/sda1 /mnt/usb
+# mount main storage drive to /mnt/usb directory
 
 echo -e "${RED}"
 echo "***"
@@ -238,11 +238,11 @@ ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > 
 
 cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done
 # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-# for line 19 in /etc/ufw/user.rules 
+# for line 19 in /etc/ufw/user.rules
 
 cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done
 # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-# for line 20 /etc/ufw/user.rules 
+# for line 20 /etc/ufw/user.rules
 
 cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p udp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done
 # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
@@ -258,7 +258,7 @@ sudo awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/rule_tmp.txt /etc/ufw/use
 # copying from line 2 in rule_tmp.txt to line 20 in /etc/ufw/user.rules
 
 sudo awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
-# copying from line 3 in rule_tmp.txt to line 21 in /etc/ufw/user.rules 
+# copying from line 3 in rule_tmp.txt to line 21 in /etc/ufw/user.rules
 
 sudo sed -i "18G" /etc/ufw/user.rules
 # adds a space to keep things formatted nicely
@@ -375,3 +375,4 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 # end
+
