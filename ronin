@@ -21,9 +21,8 @@ OPTIONS=(1 "Dojo Menu"
          2 "Whirlpool Menu"
          3 "Electrs Menu"
          4 "Firewall Menu"
-	 5 "System Menu"
-         6 "System Setup & Installations"
-         7 "Bonus Installations")
+         5 "System Menu"
+         6 "System Setup & Installations")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -57,9 +56,5 @@ case $CHOICE in
         6)
             bash ~/RoninDojo/Scripts/Menu/install-menu.sh
 	    # runs installs menu
-            ;;
-        7)
-            bash ~/RoninDojo/Scripts/Menu/install-menu-bonus.sh
-	    # runs bonus installs menu
             ;;
 esac
