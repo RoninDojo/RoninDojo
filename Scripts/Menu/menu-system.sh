@@ -8,7 +8,7 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Task Manager"
@@ -38,7 +38,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 3s
             htop
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # returns to main menu
             ;;
 	2)
@@ -63,7 +63,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
         3)
@@ -74,7 +74,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 5s
             sudo pacman -Syu
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # check for system updates, then return to menu
             ;;
 	4)
@@ -95,7 +95,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
 	5)
@@ -118,7 +118,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
         6)
@@ -158,7 +158,7 @@ case $CHOICE in
             # stop dojo and shut down machine
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # goes to next page
             ;;
         9)

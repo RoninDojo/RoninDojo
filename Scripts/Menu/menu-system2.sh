@@ -8,7 +8,7 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Lock Root User"
@@ -35,7 +35,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo passwd -l root
-            bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to lock root user, returns to menu
             ;;
 	2)
@@ -46,7 +46,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo passwd -u root
-            bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to unlock root user, returns to menu
             ;;
         3)
@@ -60,7 +60,7 @@ case $CHOICE in
             echo "cd ~" >> ~/ronin-update.sh
             echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
             echo "sudo cp ~/RoninDojo/ronin /usr/local/bin"
-            echo "bash ~/RoninDojo/Scripts/Menu/system-menu2.sh" >> ~/ronin-update.sh
+            echo "bash ~/RoninDojo/Scripts/Menu/menu-system2.sh" >> ~/ronin-update.sh
             sudo chmod +x ~/ronin-update.sh
             bash ~/ronin-update.sh
             # returns to menu
@@ -74,7 +74,7 @@ case $CHOICE in
             # formats /dev/sdb1 to ext 4 and mounts to /mnt/usb1 for backing up data on /dev/sda1 or /mnt/usb
             ;;
         6)
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # returns to menu
             ;;
 esac

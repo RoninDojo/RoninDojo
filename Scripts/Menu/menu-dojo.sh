@@ -8,7 +8,7 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Start Dojo"
@@ -31,6 +31,19 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
+            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            if [ $? -eq 1 ] || [ "$isRunning" == "true" ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Dojo is already started!"
+              echo "***"
+              echo -e "${NC}"
+              sleep 5s
+              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+              exit
+            fi
+            # checks if dojo is running (check the db container), if running, tells user to dojo has already started
+
             echo -e "${RED}"
             echo "***"
             echo "Starting Dojo..."
@@ -46,10 +59,23 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # start dojo, press any letter to return to menu
             ;;
         2)
+            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Dojo is already stopped!"
+              echo "***"
+              echo -e "${NC}"
+              sleep 5s
+              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+              exit
+            fi
+            # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+
             echo -e "${RED}"
             echo "***"
             echo "Stopping Dojo..."
@@ -65,14 +91,27 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # stop dojo, press any letter to return to menu
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Menu/dojo-logs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;
         4)
+            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Please start Dojo first!"
+              echo "***"
+              echo -e "${NC}"
+              sleep 5s
+              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+              exit
+            fi
+            # checks if dojo is not running (check the db container), if not running, tells user to start dojo first
+
             echo -e "${RED}"
             echo "***"
             echo "Use the v3 address to connect to the Maintenance Tool."
@@ -87,7 +126,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # press any key to return to menu
             # shows .onion and returns to menu
             ;;
@@ -164,7 +203,7 @@ case $CHOICE in
             sleep 2s
             sudo ./dojo.sh upgrade
             sleep 2s
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # upgrades dojo and returns to menu
             ;;
         6)
@@ -183,7 +222,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # display dojo version info
             # press any letter to return
             ;;
@@ -191,18 +230,24 @@ case $CHOICE in
             echo -e "${RED}"
             echo "***"
             echo "Deleting docker dangling images and images of previous versions in 15s..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 1s
+
+            echo -e "${RED}"
+            echo "***"
             echo "Use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            sleep 15s
+            sleep 14s
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh clean
             sleep 2s
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # takes you to ronin dojo menu2
             ;;
         9)

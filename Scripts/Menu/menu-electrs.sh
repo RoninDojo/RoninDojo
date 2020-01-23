@@ -8,7 +8,7 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "View Logs"
@@ -43,7 +43,7 @@ case $CHOICE in
             sleep 2s
             sudo ~/dojo/docker/my-dojo/dojo.sh logs electrs
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
 	2)
@@ -54,7 +54,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo docker start electrs
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
         3)
@@ -65,7 +65,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo docker stop electrs
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
         4)
@@ -76,7 +76,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo docker restart electrs
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # enable electrs at startup, return to menu
             ;;
         5)
@@ -95,7 +95,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # press any letter return to menu
             ;;
 	6)

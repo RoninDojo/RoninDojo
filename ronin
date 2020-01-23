@@ -14,7 +14,7 @@ rm -f ~/ronin-update.sh
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Dojo Menu"
@@ -34,27 +34,27 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # runs dojo management menu script
             ;;
         2)
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # runs the whirlpool menu script
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Menu/electrs-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # runs electrs menu script
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # runs firewall menu script
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Menu/system-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # runs system menu script
             ;;
         6)
-            bash ~/RoninDojo/Scripts/Menu/install-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-install.sh
 	    # runs installs menu
             ;;
 esac

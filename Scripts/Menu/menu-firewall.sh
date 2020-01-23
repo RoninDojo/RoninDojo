@@ -8,7 +8,7 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Enable Firewall"
@@ -38,7 +38,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw enable
             sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # enables firewall
             ;;
         2)
@@ -50,7 +50,7 @@ case $CHOICE in
             sleep 2s
             sudo ufw disable
             sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # disables firewall
             ;;
         3)
@@ -69,7 +69,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
         4)
@@ -127,7 +127,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
         5)
@@ -185,7 +185,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
 
@@ -234,7 +234,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any letter to return to menu
             ;;
         7)
@@ -245,7 +245,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo ufw reload
-            bash ~/RoninDojo/Scripts/Menu/firewall-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # reload and return to menu
             ;;
         8)

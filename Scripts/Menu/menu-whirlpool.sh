@@ -8,12 +8,12 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "View API key"
          2 "View Logs"
-         3 "View Status" 
+         3 "View Status"
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
          6 "Restart"
@@ -45,7 +45,7 @@ case $CHOICE in
             echo -e "${NC}"
             cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # press any key to return to menu
             ;;
         2)
@@ -62,7 +62,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sudo journalctl -r -u whirlpool.service
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # view whirlpool cli logs via journalctl, return to menu
             # note that it's in order of newest to oldest, and blob means that it's repeat information
             ;;
@@ -80,7 +80,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sudo systemctl status whirlpool
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # view status, return to menu
             ;;
         4)
@@ -98,7 +98,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # start whirlpool, return to menu
             ;;
         5)
@@ -109,7 +109,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl stop whirlpool
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # stop whirlpool, return to menu
             ;;
         6)
@@ -120,7 +120,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl restart whirlpool
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # enable whirlpool at startup, return to menu
             ;;
         7)
@@ -131,7 +131,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo systemctl disable whirlpool
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # disable whirlpool at startup, return to menu
             ;;
         8)
@@ -146,7 +146,7 @@ case $CHOICE in
             sudo rm -rf *.jar
             wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.1/whirlpool-client-cli-0.10.1-run.jar
             sudo systemctl start whirlpool
-            bash ~/RoninDojo/Scripts/Menu/whirlpool-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             ;;
         9)
             bash ~/RoninDojo/ronin

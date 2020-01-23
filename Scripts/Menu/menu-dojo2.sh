@@ -8,7 +8,7 @@ NC='\033[0m'
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="Ronin UI"
+TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Uninstall Dojo"
@@ -42,6 +42,14 @@ case $CHOICE in
             cd ~/dojo/docker/my-dojo/
             sudo ./dojo.sh uninstall
             # uninstall dojo
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Complete!"
+            echo "***"
+            echo -e "${NC}"
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+            # return to menu
             ;;
         2)
             bash ~/RoninDojo/Scripts/Install/install-receive-block-data.sh
@@ -52,7 +60,7 @@ case $CHOICE in
             # copy block data to backup drive
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/dojo-menu.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # return to main menu
             ;;
 esac

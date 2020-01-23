@@ -15,11 +15,14 @@ sleep 3s
 echo -e "${RED}"
 echo "Have you plugged in your new Backup Data Drive?"
 echo -e "${NC}"
-select yn in "Yes" "No"
-case $yn in
-    Yes ) break;;
-    No ) exit;;
-esac
+while true; do
+    read -p "Y/N?: " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/system-menu2.sh;exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 echo -e "${RED}"
 echo "***"
@@ -31,11 +34,14 @@ sleep 3s
 echo -e "${RED}"
 echo "Are you sure?"
 echo -e "${NC}"
-select yn in "Yes" "No"
-case $yn in
-    Yes ) break;;
-    No ) exit;;
-esac
+while true; do
+    read -p "Y/N?: " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/system-menu2.sh;exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 
 echo -e "${RED}"
 echo "***"
