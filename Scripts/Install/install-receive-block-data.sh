@@ -47,6 +47,15 @@ sudo ./dojo.sh stop
 
 echo -e "${RED}"
 echo "***"
+echo "Removing old Data..."
+echo "***"
+echo -e "${NC}"
+sleep 2s
+sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/
+sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/
+
+echo -e "${RED}"
+echo "***"
 echo "Copying..."
 echo "***"
 echo -e "${NC}"
