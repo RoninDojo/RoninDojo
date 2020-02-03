@@ -19,7 +19,7 @@ while true; do
     read -p "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh;exit;;
+        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -31,7 +31,7 @@ while true; do
     read -p "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh;exit;;
+        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -69,4 +69,4 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh
+bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh

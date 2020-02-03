@@ -19,7 +19,7 @@ while true; do
     read -p "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh;exit;;
+        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -31,7 +31,7 @@ while true; do
     read -p "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh;exit;;
+        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -63,10 +63,22 @@ sleep 2s
 
 sudo cp -rv /mnt/usb1/chainstate/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/
 sudo cp -rv /mnt/usb1/blocks/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/
-# copy blockchain data from back up drive to dojo bitcoind data directory
+# copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+
+echo -e "${RED}"
+echo "***"
+echo "Press any letter to continue..."
+echo "***"
+echo -e "${NC}"
+read -n 1 -r -s
+# press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
 
 sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/*
 # change ownership of blockchain data
+
+sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+# chmod so only root has rwx access
 
 echo -e "${RED}"
 echo "***"
@@ -81,4 +93,4 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/dojo-menu2.sh
+bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
