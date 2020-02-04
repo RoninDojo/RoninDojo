@@ -101,5 +101,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/system-menu2.sh
-# press any letter to return to system-menu2
+bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+# press any letter to return to menu-system2.sh
