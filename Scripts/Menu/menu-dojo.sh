@@ -142,7 +142,7 @@ case $CHOICE in
             sudo ./dojo.sh stop
             mkdir ~/.dojo > /dev/null 2>&1
             cd ~/.dojo
-	    sudo rm -rf samourai-dojo > /dev/null 2>&1
+            sudo rm -rf samourai-dojo > /dev/null 2>&1
             # Check if user has Electrs+Dojo installed
 
             if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-electrs.conf ]; then
