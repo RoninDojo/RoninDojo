@@ -73,7 +73,14 @@ fi
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in
-    [Y/y]* ) bash ~/indexer.sh;;
+    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/electrs-indexer.sh;;
     [N/n]* ) echo "Electrs not installed.";;
     * ) echo "Please answer yes or no.";;
 esac
+
+# Run upgrade
+cd ~/dojo/docker/my-dojo
+sudo ./dojo.sh upgrade
+
+# Return to menu
+bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
