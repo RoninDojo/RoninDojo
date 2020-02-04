@@ -37,12 +37,11 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Use any key to exit."
+            echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo ~/dojo/docker/my-dojo/dojo.sh logs electrs
-            read -n 1 -r -s
+            sudo ~/dojo/docker/my-dojo/dojo.sh logs indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -53,7 +52,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker start electrs
+            sudo docker start indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -64,7 +63,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker stop electrs
+            sudo docker stop indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -75,7 +74,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker restart electrs
+            sudo docker restart indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # enable electrs at startup, return to menu
             ;;
@@ -86,7 +85,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo sudo ~/dojo/docker/my-dojo/dojo.sh onion
+            V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
+            echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
+            sleep 1s
+            echo "The command to connect to electrum desktop wallet is the follow:"
+	    echo "electrum --oneserver --server $V3_ADDR_ELECTRS:50001:t --proxy socks5:127.0.0.1:9050"
             # displaying electrs tor address to connect to electrum
 
             echo -e "${RED}"
