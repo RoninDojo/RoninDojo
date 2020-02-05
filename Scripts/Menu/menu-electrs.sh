@@ -85,7 +85,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
+            V3_ADDR_ELECTRS=$( sudo docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
             echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
             sleep 1s
             echo "The command to connect to electrum desktop wallet is the follow:"
