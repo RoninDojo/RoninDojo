@@ -129,9 +129,9 @@ case $CHOICE in
 	    # if Explorer is installed then display Onion and Password
 	    if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
     	      V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
-              EXPLORER_PASS=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
+              EXPLORER_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
               echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
-  	      echo "No username required. Explorer Password = $EXPLORER_PASS"
+  	      echo "No username required. Explorer Password = $EXPLORER_KEY"
 	    fi
 	    
 	    echo -e "${RED}"
