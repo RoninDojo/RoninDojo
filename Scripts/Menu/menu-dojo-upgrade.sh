@@ -29,47 +29,30 @@ echo -e "${RED}"
 echo "Installing your Dojo-backed Bitcoin Explorer"
 sleep 1s
 echo -e "${YELLOW}"
-echo "This password should be something you can remember and is alphanumerical"
+echo "A randomly generated 16 character password will be created if you haven't already made one."
 sleep 1s
 echo -e "${NC}"
-if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
-    sleep 1s
-    echo -e "${YELLOW}"
-    echo "----------------"
-    echo "$EXPLORER_PASS"
-    echo "----------------"
-    echo -e "${RED}"
-    echo "Is this correct?"
-    echo -e "${NC}"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) break;;
-            No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
-            echo "$EXPLORER_PASS"
-        esac
-    done
-    echo -e "${RED}"
-    echo "$EXPLORER_PASS"
+if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
 else
     echo "Explorer is already installed"
 fi
 
-sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+sed -i '16i EXPLORER_KEY='$EXPLORER_KEY'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 
 # Install Indexer
 
-if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
+if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
     read -p "Do you want to install an indexer? [y/n]" yn
     case $yn in
         [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
         [N/n]* ) echo "Indexer will not installed";;
         * ) echo "Please answer yes or no.";;
-    esac 
-else 
+    esac
+else
     echo "Indexer already installed"
-fi 
+fi
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in

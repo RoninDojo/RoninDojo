@@ -40,33 +40,16 @@ echo "Installing your Dojo-backed Bitcoin Explorer"
 sleep 1s
 echo -e "${YELLOW}"
 echo "This password should be something you can remember and is alphanumerical"
-sleep 1s
+echo "This password can be found in the Dojo Tor Onion option"
+sleep 2s
 echo -e "${NC}"
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
-    sleep 1s
-    echo -e "${YELLOW}"
-    echo "----------------"
-    echo "$EXPLORER_PASS"
-    echo "----------------"
-    echo -e "${RED}"
-    echo "Is this correct?"
-    echo -e "${NC}"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) break;;
-            No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
-            echo "$EXPLORER_PASS"
-        esac
-    done
-    echo -e "${RED}"
-    echo "$EXPLORER_PASS"
+    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+    sudo sed -i '16i EXPLORER_KEY='$EXPLORER_KEY'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+    sudo sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 else
     echo "Explorer is already installed"
 fi
-
-sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 
 # Install Indexer
 read -p "Do you want to install Electrs? [y/n]" yn

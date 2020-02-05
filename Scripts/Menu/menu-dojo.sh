@@ -99,17 +99,17 @@ case $CHOICE in
             # go to dojo logs menu
             ;;
         4)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Please start Dojo first!"
-              echo "***"
-              echo -e "${NC}"
-              sleep 5s
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
-              exit
-            fi
+#            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+#            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
+#              echo -e "${RED}"
+#              echo "***"
+#              echo "Please start Dojo first!"
+#              echo "***"
+#              echo -e "${NC}"
+#              sleep 5s
+#              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+#              exit
+#            fi
             # checks if dojo is not running (check the db container), if not running, tells user to start dojo first
 
             echo -e "${RED}"
@@ -118,9 +118,17 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh onion
-            echo -e "${RED}"
+            V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
+	    NODE_ADMIN_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-node.conf | grep NODE_ADMIN_KEY | cut -c 16-)
+            echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
+	    echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
+            if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+    	      V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
+              EXPLORER_PASS=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
+              echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
+  	      echo "No username required. Explorer Password = $EXPLORER_PASS"
+	    fi
+	    echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
@@ -131,7 +139,7 @@ case $CHOICE in
             # shows .onion and returns to menu
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Menu/menu-upgrade-dojo.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
             # upgrades dojo and returns to menu
             ;;
         6)
