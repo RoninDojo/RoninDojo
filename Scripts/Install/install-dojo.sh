@@ -306,6 +306,26 @@ EXPLORER_KEY=$EXPLORER_KEY
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 sleep 1s
 
+# Install Indexer
+
+if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
+    read -p "Do you want to install an indexer? [y/n]" yn
+    case $yn in
+        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+        [N/n]* ) echo "Indexer will not installed";;
+        * ) echo "Please answer yes or no.";;
+    esac
+else
+    echo "Indexer already installed"
+fi
+
+read -p "Do you want to install Electrs? [y/n]" yn
+case $yn in
+    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/electrs-indexer.sh;;
+    [N/n]* ) echo "Electrs not installed.";;
+    * ) echo "Please answer yes or no.";;
+esac
+
 echo -e "${RED}"
 echo "***"
 echo "See documentation at https://github.com/RoninDojo/RoninDojo/wiki"
