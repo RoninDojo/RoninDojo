@@ -75,8 +75,8 @@ sudo sed -i '5i ENV     INDEXER_URL         https://github.com/romanz/electrs/ar
 # using sed \ to not ignore spaces on 7i, 17i, 18i, and 19i
 # using sed \\ to not ignore inserting a backslash on 7i, 17i, 18i, and 19i
 # using sed 19G to add empty lines after
-sudo sed -i '7d' ~/dojo/docker/my-dojo/indexer/Dockerfile
-sudo sed -i '7i \        apt-get install -y clang cmake git wget && \\' ~/dojo/docker/my-dojo/indexer/Dockerfile
+sudo sed -i '8d' ~/dojo/docker/my-dojo/indexer/Dockerfile
+sudo sed -i '8i \        apt-get install -y clang cmake git wget && \\' ~/dojo/docker/my-dojo/indexer/Dockerfile
 sudo sed -i '16d' ~/dojo/docker/my-dojo/indexer/Dockerfile
 sudo sed -i '17d' ~/dojo/docker/my-dojo/indexer/Dockerfile
 sudo sed -i '16i RUN     mkdir "$INDEXER_HOME/electrs" && \\' ~/dojo/docker/my-dojo/indexer/Dockerfile
