@@ -61,6 +61,7 @@ case $CHOICE in
             echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
 	    echo "cd RoninDojo"
             echo "sudo cp ~/RoninDojo/ronin /usr/local/bin"
+	    echo "cd ~"
             echo "bash ~/RoninDojo/Scripts/Menu/menu-system2.sh" >> ~/ronin-update.sh
             sudo chmod +x ~/ronin-update.sh
             bash ~/ronin-update.sh
