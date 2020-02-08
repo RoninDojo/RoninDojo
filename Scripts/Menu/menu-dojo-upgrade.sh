@@ -15,9 +15,9 @@ echo "Upgrading Dojo in 30s..."
 echo "Use Ctrl+C to exit if needed!"
 echo "***"
 echo -e "${NC}"
-sleep 30s
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh stop
+#sleep 30s
+#cd ~/dojo/docker/my-dojo
+#sudo ./dojo.sh stop
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
@@ -56,14 +56,14 @@ fi
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in
-    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/electrs-indexer.sh;;
+    [Y/y]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
     [N/n]* ) echo "Electrs not installed.";;
     * ) echo "Please answer yes or no.";;
 esac
 
 # Run upgrade
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh upgrade
+#cd ~/dojo/docker/my-dojo
+#sudo ./dojo.sh upgrade
 
 # Return to menu
 bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh

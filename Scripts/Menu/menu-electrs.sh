@@ -84,12 +84,9 @@ case $CHOICE in
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
             V3_ADDR_ELECTRS=$( sudo docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
             echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
             sleep 1s
-            echo "The command to connect to electrum desktop wallet is the follow:"
-	    echo "electrum --oneserver --server $V3_ADDR_ELECTRS:50001:t --proxy socks5:127.0.0.1:9050"
             # displaying electrs tor address to connect to electrum
 
             echo -e "${RED}"

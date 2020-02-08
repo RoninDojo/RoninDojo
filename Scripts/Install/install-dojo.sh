@@ -13,28 +13,28 @@ echo "***"
 echo "Running Dojo install in 30s..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+#sleep 3s
 
 echo -e "${RED}"
 echo "***"
 echo "If you have already installed Dojo on your system, use Ctrl+C to exit now!"
 echo "***"
 echo -e "${NC}"
-sleep 10s
+#sleep 10s
 
 echo -e "${RED}"
 echo "***"
 echo "WARNING: You might bork your system if you have already installed Dojo!!!"
 echo "***"
 echo -e "${NC}"
-sleep 10s
+#sleep 10s
 
 echo -e "${RED}"
 echo "***"
 echo "If you are a new user sit back, relax, and enjoy."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+#sleep 5s
 # end of warning
 
 # start dojo setup
@@ -44,7 +44,7 @@ echo "Downloading and extracting latest Ronin release."
 echo "***"
 echo -e "${NC}"
 cd ~
-sleep 5s
+#sleep 5s
 mkdir ~/.dojo
 cd ~/.dojo
 git clone -b feat_mydojo_local_indexer https://github.com/BTCxZelko/samourai-dojo.git
@@ -70,11 +70,11 @@ rm -rvf samourai-dojo/
 sleep 1s
 
  # creating a 1GB swapfile
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
+#sudo fallocate -l 1G /swapfile
+#sudo chmod 600 /swapfile
+#sudo mkswap /swapfile
+#sudo swapon /swapfile
+#sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
 
 echo -e "${RED}"
 echo "***"
@@ -231,19 +231,23 @@ echo "
 # Provide a value with a high entropy!
 # Type: alphanumeric
 NODE_API_KEY=$NODE_API_KEY
+
 # API key required for accessing the admin/maintenance services provided by the server
 # Keep this Admin key secret!
 # Provide a value with a high entropy!
 # Type: alphanumeric
 NODE_ADMIN_KEY=$NODE_ADMIN_KEY
+
 # Secret used by the server for signing Json Web Token
 # Keep this value secret!
 # Provide a value with a high entropy!
 # Type: alphanumeric
 NODE_JWT_SECRET=$NODE_JWT_SECRET
+
 # Indexer or third-party service used for imports and rescans of addresses
 # Values: local_bitcoind | third_party_explorer
 NODE_ACTIVE_INDEXER=local_bitcoind
+
 # FEE TYPE USED FOR FEES ESTIMATIONS BY BITCOIND
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
@@ -321,7 +325,7 @@ fi
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in
-    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/electrs-indexer.sh;;
+    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
     [N/n]* ) echo "Electrs not installed.";;
     * ) echo "Please answer yes or no.";;
 esac
@@ -340,5 +344,5 @@ echo "Installing Dojo..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh install
+#cd ~/dojo/docker/my-dojo
+#sudo ./dojo.sh install

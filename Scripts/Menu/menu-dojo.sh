@@ -116,16 +116,14 @@ case $CHOICE in
             echo "***"
             echo "Use the v3 address to connect to the Maintenance Tool."
             echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            
+
 	    # Pull Maintenance Tool Onion and Password
 	    V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
 	    NODE_ADMIN_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-node.conf | grep NODE_ADMIN_KEY | cut -c 16-)
-            
+
 	    echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
 	    echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
-            
+
 	    # if Explorer is installed then display Onion and Password
 	    if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
     	      V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
@@ -133,7 +131,7 @@ case $CHOICE in
               echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
   	      echo "No username required. Explorer Password = $EXPLORER_KEY"
 	    fi
-	    
+
 	    echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
