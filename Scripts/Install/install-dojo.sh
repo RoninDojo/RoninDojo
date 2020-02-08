@@ -13,28 +13,28 @@ echo "***"
 echo "Running Dojo install in 30s..."
 echo "***"
 echo -e "${NC}"
-#sleep 3s
+sleep 3s
 
 echo -e "${RED}"
 echo "***"
 echo "If you have already installed Dojo on your system, use Ctrl+C to exit now!"
 echo "***"
 echo -e "${NC}"
-#sleep 10s
+sleep 10s
 
 echo -e "${RED}"
 echo "***"
 echo "WARNING: You might bork your system if you have already installed Dojo!!!"
 echo "***"
 echo -e "${NC}"
-#sleep 10s
+sleep 10s
 
 echo -e "${RED}"
 echo "***"
 echo "If you are a new user sit back, relax, and enjoy."
 echo "***"
 echo -e "${NC}"
-#sleep 5s
+sleep 5s
 # end of warning
 
 # start dojo setup
@@ -44,7 +44,7 @@ echo "Downloading and extracting latest Ronin release."
 echo "***"
 echo -e "${NC}"
 cd ~
-#sleep 5s
+sleep 5s
 mkdir ~/.dojo
 cd ~/.dojo
 git clone -b feat_mydojo_local_indexer https://github.com/BTCxZelko/samourai-dojo.git
@@ -70,11 +70,11 @@ rm -rvf samourai-dojo/
 sleep 1s
 
  # creating a 1GB swapfile
-#sudo fallocate -l 1G /swapfile
-#sudo chmod 600 /swapfile
-#sudo mkswap /swapfile
-#sudo swapon /swapfile
-#sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
 
 echo -e "${RED}"
 echo "***"
@@ -344,5 +344,5 @@ echo "Installing Dojo..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-#cd ~/dojo/docker/my-dojo
-#sudo ./dojo.sh install
+cd ~/dojo/docker/my-dojo
+sudo ./dojo.sh install
