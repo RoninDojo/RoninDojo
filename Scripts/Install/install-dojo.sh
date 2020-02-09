@@ -47,7 +47,7 @@ cd ~
 sleep 5s
 mkdir ~/.dojo
 cd ~/.dojo
-git clone -b master https://github.com/RoninDojo/samourai-dojo.git
+git clone -b feat_mydojo_local_indexer https://code.samourai.io/BTCxZelko/samourai-dojo.git # CHANGE
 sleep 2s
 
 echo -e "${RED}"
@@ -69,80 +69,33 @@ sleep 2s
 rm -rvf samourai-dojo/
 sleep 1s
 
- # creating a 1GB swapfile
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
+# created a 1GB swapfile
 
 echo -e "${RED}"
 echo "***"
-echo "Configure your Dojo .conf.tpl files when prompted."
+echo "Setting the RPC User and Password..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
-#RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-
-echo -e "${RED}"
-echo "****"
-echo "Set the RPC User and Password now."
-echo "***"
-echo -e "${NC}"
-sleep 3s
+sleep 1s
 
 echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
-echo "Enter any value that you want."
-echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
-echo "Alphanumerical values only. No special characters such as (*&^%$#@!)."
-echo "Be sure that you record this information! Store it in a safe place you will not forget."
+echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 3s
 
+RPC_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
 #RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-read -p 'Your Dojo RPC Username: ' RPC_USER
-sleep 1s
-echo -e "${YELLOW}"
-echo "----------------"
-echo     "$RPC_USER"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New RPC Username: ' RPC_USER
-            echo "$RPC_USER"
-    esac
-done
 
-echo ""
-sleep 1s
-read -p 'Your Dojo RPC Password: ' RPC_PASS
-sleep 1s
-echo -e "${YELLOW}"
-echo "----------------"
-echo     "$RPC_PASS"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-sleep 1s
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New Dojo RPC Password: ' RPC_PASS
-            echo "$RPC_PASS"
-    esac
-done
-sleep 1s
-
-# Create new docker bitcoind conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+# Create new docker bitcoind conf file
 
 echo "
 #########################################
@@ -150,7 +103,7 @@ echo "
 #########################################
 # User account used for rpc access to bitcoind
 # Type: alphanumeric
-BITCOIND_RPC_USER=$RPC_USER
+BITCOIND_RPC_USER=RoninDojo
 # Password of user account used for rpc access to bitcoind
 # Type: alphanumeric
 BITCOIND_RPC_PASSWORD=$RPC_PASS
@@ -226,65 +179,51 @@ BITCOIND_ZMQ_RAWTXS=9501
 BITCOIND_ZMQ_BLK_HASH=9502
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
-#Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
+# configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
 echo "****"
-echo "Setting the Node API Key and JWT Secret now..."
+echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 1s
 
 echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
-echo "An automatically generated random 64 character value will generate for both."
-echo "These can be accessed in the the conf folders at any time."
+echo "Randomly generated 64 character value is used, and can be found in Dojo conf directory."
 echo "***"
-sleep 3s
+sleep 2s
 echo -e "${NC}"
 
-# Create random set of 64 characters for API KEY and JWT Secret
 NODE_API_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 NODE_JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+# Create random set of 64 characters for API KEY and JWT Secret
 
 echo -e "${RED}"
 echo "****"
-echo "Set the Node Admin Key now."
+echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"
+sleep 1s
+
+echo -e "${RED}"
+echo "****"
+echo "The Node Admin Key is password used to enter the Dojo Maintenance Tool."
+echo "***"
 sleep 3s
+echo -e "${NC}"
 
 echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
-echo "Enter any value that you want."
-echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
-echo "Use high entropy for these values. Use weak passwords at your own risk!!!"
-echo "Use alphanumerical value only! No special characters such as (*&^%$#@!)."
-echo "Be sure that you record this information! Store it in a safe place you will not forget."
+echo "See randomly generated 32 character password in Dojo Menu by using Tor Hidden Service Address option."
 echo "***"
 echo -e "${NC}"
 sleep 5s
 
-read -p 'Enter Node Admin Key for accessing Dojo Maintenance Tool: ' NODE_ADMIN_KEY
+NODE_ADMIN_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+# Create random set of 32 characters for Node Admin Key
 
-echo -e "${YELLOW}" 
-echo "----------------"
-echo    "$NODE_ADMIN_KEY"
-echo "----------------"
-echo -e "${RED}"
-echo "Is this correct?"
-echo -e "${NC}"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) read -p 'New Node Admin Key: ' NODE_ADMIN_KEY
-             echo "$NODE_ADMIN_KEY"
-    esac
-done
-sleep 1s
-
-# Create new docker node conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 
 echo "
@@ -296,32 +235,36 @@ echo "
 # Provide a value with a high entropy!
 # Type: alphanumeric
 NODE_API_KEY=$NODE_API_KEY
+
 # API key required for accessing the admin/maintenance services provided by the server
 # Keep this Admin key secret!
 # Provide a value with a high entropy!
 # Type: alphanumeric
 NODE_ADMIN_KEY=$NODE_ADMIN_KEY
+
 # Secret used by the server for signing Json Web Token
 # Keep this value secret!
 # Provide a value with a high entropy!
 # Type: alphanumeric
 NODE_JWT_SECRET=$NODE_JWT_SECRET
+
 # Indexer or third-party service used for imports and rescans of addresses
 # Values: local_bitcoind | third_party_explorer
 NODE_ACTIVE_INDEXER=local_bitcoind
+
 # FEE TYPE USED FOR FEES ESTIMATIONS BY BITCOIND
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl 
+" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+# Create new docker node conf file 
 
-#MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-# Create new mysql conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-# Create random 64 character password and username for MYSQL 
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+# Create random 64 character password and username for MYSQL 
+#MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
 echo "
 #########################################
@@ -336,37 +279,37 @@ MYSQL_USER=$MYSQL_USER
 # Password of of user account
 # Type: alphanumeric
 MYSQL_PASSWORD=$MYSQL_PASSWORD
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl 
+" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+# Create new mysql conf file
 
 # BTC-EXPLORER PASSWORD
 echo -e "${RED}"
-echo "Installing your Dojo-backed Bitcoin Explorer"
-sleep 1s
-echo -e "${YELLOW}"
-echo "This password should be something you can remember and is alphanumerical"
-sleep 1s
+echo "***"
+echo "Installing your Dojo-backed Bitcoin Explorer..."
+echo "***"
 echo -e "${NC}"
+sleep 1s
+
+echo -e "${RED}"
+echo "***"
+echo "This is a fully functioning Bitcoin Blockchain Explorer in a Web Browser."
+echo "***"
+echo -e "${NC}"
+sleep 3s
+
+echo -e "${RED}"
+echo "***"
+echo "NOTICE:"
+echo "See randomly generated 16 character password in Dojo Menu by using Tor Hidden Service Address option."
+echo "***"
+echo -e "${NC}"
+sleep 5s
+
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
+    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
     sleep 1s
-    echo -e "${YELLOW}"
-    echo "----------------"
-    echo "$EXPLORER_PASS"
-    echo "----------------"
-    echo -e "${RED}"
-    echo "Is this correct?"
-    echo -e "${NC}"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) break;;
-            No ) read -p 'New Dojo Explorer password: ' EXPLORER_PASS
-            echo "$EXPLORER_PASS"
-        esac
-    done
-    echo -e "${RED}"
-    echo "$EXPLORER_PASS"
 else
-    echo "Explorer is already installed"
+    echo "Explorer is already installed!"
 fi
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
@@ -382,13 +325,33 @@ EXPLORER_INSTALL=on
 # Keep this password secret!
 # Provide a value with a high entropy!
 # Type: alphanumeric
-EXPLORER_KEY=$EXPLORER_PASS
+EXPLORER_KEY=$EXPLORER_KEY
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sleep 1s
+# Create new explorer conf file
+
+# Install Indexer
+
+if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
+    read -p "Do you want to install an indexer? [y/n]" yn
+    case $yn in
+        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+        [N/n]* ) echo "Indexer will not be installed!";;
+        * ) echo "Please answer Yes or No.";;
+    esac
+else
+    echo "Indexer is already installed!"
+fi
+
+read -p "Do you want to install Electrs? [y/n]" yn
+case $yn in
+    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
+    [N/n]* ) echo "Electrs will not be installed!";;
+    * ) echo "Please answer Yes or No.";;
+esac
 
 echo -e "${RED}"
 echo "***"
-echo "See documentation at https://github.com/RoninDojo/RoninDojo/wiki"
+echo "See documentation at https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
 echo "***"
 echo -e "${NC}"
 sleep 5s
