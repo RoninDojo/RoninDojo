@@ -37,6 +37,7 @@ case $CHOICE in
                 sleep 2s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
+            fi 
             # check if electrs is already installed 
 
             echo -e "${RED}"
@@ -63,6 +64,7 @@ case $CHOICE in
                 sleep 2s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
+            fi 
             # check if electrs is already installed
 
             echo -e "${RED}"
@@ -86,6 +88,7 @@ case $CHOICE in
                 sleep 2s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
+            fi 
             # check if electrs is already installed
             
             echo -e "${RED}"
@@ -108,6 +111,7 @@ case $CHOICE in
                 sleep 2s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
+            fi 
             # check if electrs is already installed
             
             echo -e "${RED}"
@@ -130,6 +134,7 @@ case $CHOICE in
                 sleep 2s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
+            fi 
             # check if electrs is already installed
             
             echo -e "${RED}"
