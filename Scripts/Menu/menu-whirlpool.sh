@@ -130,13 +130,13 @@ case $CHOICE in
             echo "***"
             read -p "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
             case $yn in
-                [Y/y]* ) echo "Re-initiating Whirlpool..."
-                        sudo systemctl stop whirlpool
-                        cd ~/whirlpool
-                        rm -rf *.json whirlpool-cli-config.properties
-                        sudo systemctl start whirlpool 
-                        echo "Re-initation complete..."
-                        sleep 1s
+                [Y/y]* ) echo "Re-initiating Whirlpool...";
+                        sudo systemctl stop whirlpool;
+                        cd ~/whirlpool;
+                        rm -rf *.json whirlpool-cli-config.properties;
+                        sudo systemctl start whirlpool;
+                        echo "Re-initation complete...";
+                        sleep 1s;
                         echo "Paste your pairing payload into whirlpool GUI";;
                 [N/n]* ) echo "Returning to menu...";;
                      * ) echo "Please answer yes or no.";;
@@ -162,6 +162,8 @@ case $CHOICE in
             sudo rm -rf *.jar
             wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
             sudo systemctl start whirlpool
+            echo "Upgrade complete... head to GUI to unlock mixing."
+            sleep 2s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             ;;
         9)
