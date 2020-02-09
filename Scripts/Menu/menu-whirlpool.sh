@@ -132,6 +132,7 @@ case $CHOICE in
             case $yn in
                 [Y/y]* ) echo "Re-initiating Whirlpool..."
                         sudo systemctl stop whirlpool
+                        cd ~/whirlpool
                         rm -rf *.json whirlpool-cli-config.properties
                         sudo systemctl start whirlpool 
                         echo "Re-initation complete..."
