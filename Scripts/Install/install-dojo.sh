@@ -47,7 +47,7 @@ cd ~
 sleep 5s
 mkdir ~/.dojo
 cd ~/.dojo
-git clone -b feat_mydojo_local_indexer https://github.com/BTCxZelko/samourai-dojo.git
+git clone -b feat_mydojo_local_indexer https://code.samourai.io/BTCxZelko/samourai-dojo.git # CHANGE
 sleep 2s
 
 echo -e "${RED}"
@@ -332,7 +332,7 @@ esac
 
 echo -e "${RED}"
 echo "***"
-echo "See documentation at https://github.com/RoninDojo/RoninDojo/wiki"
+echo "See documentation at https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
 echo "***"
 echo -e "${NC}"
 sleep 5s
