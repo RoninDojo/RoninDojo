@@ -28,13 +28,20 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
 	1)
-            echo -e "${RED}"
-            echo "Checking if Electrs is installed..."
-            echo -e "${NC}"
             if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
                 echo -e "${RED}"
-                echo "Electrs is not installed...returning to menu"
+                echo "***"
+                echo "Electrs is not installed!"
+                echo "***"
+                echo -e "${NC}"
                 sleep 2s
+
+                echo -e "${RED}"
+                echo "***"
+                echo "Returning to menu..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi 
@@ -45,6 +52,7 @@ case $CHOICE in
             echo "Showing Electrs Logs..."
             echo "***"
             sleep 1s
+
             echo "***"
             echo "Press Ctrl + C to exit at any time."
             echo "***"
@@ -55,13 +63,20 @@ case $CHOICE in
             # start electrs, return to menu
             ;;
 	2)
-            echo -e "${RED}"
-            echo "Checking if Electrs is installed..."
-            echo -e "${NC}"
             if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
                 echo -e "${RED}"
-                echo "Electrs is not installed...returning to menu"
+                echo "***"
+                echo "Electrs is not installed!"
+                echo "***"
+                echo -e "${NC}"
                 sleep 2s
+
+                echo -e "${RED}"
+                echo "***"
+                echo "Returning to menu..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi 
@@ -75,17 +90,23 @@ case $CHOICE in
             sleep 2s
             sudo docker start indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
-            
             # start electrs, return to menu
             ;;
         3)
-            echo -e "${RED}"
-            echo "Checking if Electrs is installed...returning to menu"
-            echo -e "${NC}"
             if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
                 echo -e "${RED}"
-                echo "Electrs is not installed...returning to menu"
+                echo "***"
+                echo "Electrs is not installed!"
+                echo "***"
+                echo -e "${NC}"
                 sleep 2s
+
+                echo -e "${RED}"
+                echo "***"
+                echo "Returning to menu..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi 
@@ -99,16 +120,23 @@ case $CHOICE in
             sleep 2s
             sudo docker stop indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
-            # start electrs, return to menu
+            # stop electrs, return to menu
             ;;
         4)
-            echo -e "${RED}"
-            echo "Checking if Electrs is installed..."
-            echo -e "${NC}"
             if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
                 echo -e "${RED}"
-                echo "Electrs is not installed...returning to menu"
+                echo "***"
+                echo "Electrs is not installed!"
+                echo "***"
+                echo -e "${NC}"
                 sleep 2s
+
+                echo -e "${RED}"
+                echo "***"
+                echo "Returning to menu..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi 
@@ -122,16 +150,23 @@ case $CHOICE in
             sleep 2s
             sudo docker restart indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
-            # enable electrs at startup, return to menu
+            # restart electrs, return to menu
             ;;
         5)
-            echo -e "${RED}"
-            echo "Checking if Electrs is installed"
-            echo -e "${NC}"
             if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
                 echo -e "${RED}"
-                echo "Electrs is not installed...returning to menu"
+                echo "***"
+                echo "Electrs is not installed!"
+                echo "***"
+                echo -e "${NC}"
                 sleep 2s
+
+                echo -e "${RED}"
+                echo "***"
+                echo "Returning to menu..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi 
@@ -149,15 +184,19 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Check the RoninDojo wiki for pairing information"
+            echo "Check the RoninDojo Wiki for pairing information."
+            echo "***"
+            echo -e "${NC}"
             sleep 1s
 
+            echo -e "${RED}"
+            echo "***"
             echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
-            # press any letter return to menu
+            # return to menu
             ;;
 	6)
             bash ~/RoninDojo/ronin

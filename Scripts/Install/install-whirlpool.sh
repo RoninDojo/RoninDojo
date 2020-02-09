@@ -13,9 +13,13 @@ echo -e "${NC}"
 if [-f ~/whirlpool/whirlpool.jar];then
     echo -e "${RED}"
     echo "***"
-    echo "Whirlpool is already installed..."
+    echo "Whirlpool is installed!"
+    sleep 1s
     echo "***"
-    echo "Returning to Menu"
+    echo -e "${NC}"
+
+    echo "***"
+    echo "Returning to Menu..."
     echo "***"
     echo -e "${NC}"
     sleep 2s
@@ -23,10 +27,12 @@ if [-f ~/whirlpool/whirlpool.jar];then
     exit
 fi
 
+echo -e "${RED}"
+echo "***"
 echo "Installing Whirlpool..."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+sleep 3s
 
 echo -e "${RED}"
 echo "***"
@@ -40,7 +46,7 @@ echo "***"
 echo "Whirlpool GUI will be able to access Whirlpool CLI from any machine on your Dojo's local network."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 3s
 
 ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
 # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
@@ -88,12 +94,12 @@ echo "***"
 echo "Reloading UFW..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 sudo ufw reload
 
 echo -e "${RED}"
 echo "***"
-echo "Checking UFW status."
+echo "Checking UFW status..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -121,7 +127,7 @@ echo "***"
 echo "Created a Whirlpool directory."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 cd $HOME
 mkdir whirlpool
 cd whirlpool
@@ -132,7 +138,7 @@ echo "***"
 echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
 # pull Whirlpool run times
 
@@ -141,7 +147,7 @@ echo "***"
 echo "Installing Tor..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 sudo pacman -S --noconfirm tor
 # install tor
 
@@ -151,7 +157,7 @@ echo "***"
 echo "Editing torrc..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 sudo sed -i '52d' /etc/tor/torrc
 sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
 sudo sed -i '56d' /etc/tor/torrc
@@ -166,7 +172,7 @@ echo -e "${RED}"
 echo "***"
 echo "Restarting..."
 echo "***"
-sleep 2s
+sleep 1s
 sudo systemctl restart tor
 sleep 2s
 
@@ -175,7 +181,7 @@ echo "***"
 echo "Setting Whirlpool Service..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 
 # setting whirlpool as a Service
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
@@ -210,7 +216,7 @@ echo "***"
 echo "Starting Whirlpool in the background..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 
 sudo systemctl start whirlpool
 sleep 3s
@@ -220,14 +226,15 @@ echo "***"
 echo "Paste whirlpool payload into GUI to unlock wallet and begin mixing..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 3s
 
 echo -e "${RED}"
 echo "***"
 echo "For pairing with GUI head to full guide at:" 
-echo -e "${NC}https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
-echo -e "${RED}***"
-sleep 2s
+echo "https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "***"
+echo -e "${NC}"
+sleep 3s
 
 echo -e "${RED}"
 echo "***"

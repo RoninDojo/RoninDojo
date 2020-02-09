@@ -69,37 +69,33 @@ sleep 2s
 rm -rvf samourai-dojo/
 sleep 1s
 
- # creating a 1GB swapfile
 sudo fallocate -l 1G /swapfile
 sudo chmod 600 /swapfile
 sudo mkswap /swapfile
 sudo swapon /swapfile
 sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
+# created a 1GB swapfile
 
 echo -e "${RED}"
 echo "***"
-echo "Configure your Dojo .conf.tpl files when prompted."
+echo "Setting the RPC User and Password..."
+echo "***"
+echo -e "${NC}"
+sleep 1s
+
+echo -e "${RED}"
+echo "***"
+echo "NOTICE:"
+echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory."
 echo "***"
 echo -e "${NC}"
 sleep 3s
-#RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
-echo -e "${RED}"
-echo "****"
-echo "An automatically generated random 32 character value will generate for RPC Password."
-echo "This can be accessed in the the conf folders at any time."
-echo "***"
-sleep 1s
-echo "Setting the RPC User and Password now."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-
-#RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 RPC_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+#RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
-# Create new docker bitcoind conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+# Create new docker bitcoind conf file
 
 echo "
 #########################################
@@ -183,43 +179,51 @@ BITCOIND_ZMQ_RAWTXS=9501
 BITCOIND_ZMQ_BLK_HASH=9502
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
-#Password Configuration that will be used to access DOJO MAINTENANCE TOOL at dojo/docker/my-dojo/conf/docker-node.conf.tpl
+docker-node.conf.tpl
 echo -e "${RED}"
 echo "****"
-echo "Setting the Node API Key and JWT Secret now..."
+echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+sleep 1s
 
 echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
-echo "An automatically generated random 64 character value will generate for both."
-echo "These can be accessed in the the conf folders at any time."
+echo "Randomly generated 64 character value is used, and can be found in Dojo conf directory."
 echo "***"
 sleep 2s
 echo -e "${NC}"
 
-# Create random set of 64 characters for API KEY and JWT Secret
 NODE_API_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 NODE_JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+# Create random set of 64 characters for API KEY and JWT Secret
 
-# Create random set of 32 characters for Node Admin Key
+echo -e "${RED}"
+echo "****"
+echo "Setting the Node Admin Key..."
+echo "***"
+echo -e "${NC}"
+sleep 1s
+
+echo -e "${RED}"
+echo "****"
+echo "The Node Admin Key is password used to enter the Dojo Maintenance Tool."
+echo "***"
+sleep 3s
+echo -e "${NC}"
+
 echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
-echo "The Node Admin Key is the password you will enter in the Maintenance Tool."
-echo "A randomly generated 32 character password will be created."
-echo "You can find this password in Dojo Menu Tor Onion option"
+echo "See randomly generated 32 character password in Dojo Menu by using Tor Hidden Service Address option."
 echo "***"
 echo -e "${NC}"
 sleep 5s
 
 NODE_ADMIN_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+# Create random set of 32 characters for Node Admin Key
 
-sleep 1s
-
-# Create new docker node conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 
 echo "
@@ -251,16 +255,16 @@ NODE_ACTIVE_INDEXER=local_bitcoind
 # FEE TYPE USED FOR FEES ESTIMATIONS BY BITCOIND
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl 
+" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+# Create new docker node conf file 
 
-#MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-# Create new mysql conf file
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-# Create random 64 character password and username for MYSQL 
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+# Create random 64 character password and username for MYSQL 
+#MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
 echo "
 #########################################
@@ -275,22 +279,37 @@ MYSQL_USER=$MYSQL_USER
 # Password of of user account
 # Type: alphanumeric
 MYSQL_PASSWORD=$MYSQL_PASSWORD
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl 
+" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+# Create new mysql conf file
 
 # BTC-EXPLORER PASSWORD
 echo -e "${RED}"
-echo "Installing your Dojo-backed Bitcoin Explorer"
-sleep 1s
-echo -e "${YELLOW}"
-echo "A randomly generated 16 character password will be generated."
-echo "You can find this password in the Dojo Tor Onion option"
-sleep 1s
+echo "***"
+echo "Installing your Dojo-backed Bitcoin Explorer..."
+echo "***"
 echo -e "${NC}"
+sleep 1s
+
+echo -e "${RED}"
+echo "***"
+echo "This is a fully functioning Bitcoin Blockchain Explorer in a Web Browser."
+echo "***"
+echo -e "${NC}"
+sleep 3s
+
+echo -e "${RED}"
+echo "***"
+echo "NOTICE:"
+echo "See randomly generated 16 character password in Dojo Menu by using Tor Hidden Service Address option."
+echo "***"
+echo -e "${NC}"
+sleep 5s
+
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
     EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
     sleep 1s
 else
-    echo "Explorer is already installed"
+    echo "Explorer is already installed!"
 fi
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
@@ -308,7 +327,7 @@ EXPLORER_INSTALL=on
 # Type: alphanumeric
 EXPLORER_KEY=$EXPLORER_KEY
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sleep 1s
+# Create new explorer conf file
 
 # Install Indexer
 
@@ -316,18 +335,18 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
     read -p "Do you want to install an indexer? [y/n]" yn
     case $yn in
         [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
-        [N/n]* ) echo "Indexer will not installed";;
-        * ) echo "Please answer yes or no.";;
+        [N/n]* ) echo "Indexer will not be installed!";;
+        * ) echo "Please answer Yes or No.";;
     esac
 else
-    echo "Indexer already installed"
+    echo "Indexer is already installed!"
 fi
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in
     [Y/y]* ) bash ~/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
-    [N/n]* ) echo "Electrs not installed.";;
-    * ) echo "Please answer yes or no.";;
+    [N/n]* ) echo "Electrs will not be installed!";;
+    * ) echo "Please answer Yes or No.";;
 esac
 
 echo -e "${RED}"
