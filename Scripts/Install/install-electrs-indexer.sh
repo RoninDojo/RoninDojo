@@ -58,4 +58,4 @@ sudo sed -i '22d' ~/dojo/docker/my-dojo/indexer/restart.sh
 ###### Modify Indexer Dockerfile to Electrs ######
 sudo rm -rf ~/dojo/docker/my-dojo/indexer/Dockerfile
 cd ~/dojo/docker/my-dojo/indexer
-wget https://raw.githubusercontent.com/RoninDojo/samourai-dojo/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
+wget https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
