@@ -124,8 +124,10 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
+            echo -e "${NC}"
             echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
 	        echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
+            echo -e "${RED}"
             echo "***"
             echo -e "${NC}"
 
@@ -136,8 +138,10 @@ case $CHOICE in
                 
                 echo -e "${RED}"
                 echo "***"
+                echo -e "${NC}"
                 echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
                 echo "No username required. Explorer Password = $EXPLORER_KEY"
+                echo -e "${RED}"
                 echo "***"
                 echo -e "${NC}"
 	        fi
