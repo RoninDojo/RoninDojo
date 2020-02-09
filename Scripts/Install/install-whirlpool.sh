@@ -7,6 +7,22 @@ NC='\033[0m'
 
 echo -e "${RED}"
 echo "***"
+echo "Checking if Whirlpool is already installed..."
+echo "***"
+echo -e "${NC}"
+if [-f ~/whirlpool/whirlpool.jar];then
+    echo -e "${RED}"
+    echo "***"
+    echo "Whirlpool is already installed..."
+    echo "***"
+    echo "Returning to Menu"
+    echo "***"
+    echo -e "${NC}"
+    sleep 2s
+    bash ~/RoninDojo/ronin
+    exit
+fi
+
 echo "Installing Whirlpool..."
 echo "***"
 echo -e "${NC}"
