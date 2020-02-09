@@ -6,7 +6,7 @@ NC='\033[0m'
 # No Color
 
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
-options=(1 "Install Electrs" off    # any option can be set to default to "on"
+options=(1 "Install Electrs"    # any option can be set to default to "on"
          2 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear

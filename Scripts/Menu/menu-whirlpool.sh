@@ -17,7 +17,7 @@ OPTIONS=(1 "View API key"
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
          6 "Restart"
-         7 "Disable Whirlpool at Startup"
+         7 "Re-initiate Whirlpool"
          8 "Update Whirlpool"
          9 "Go Back")
 
@@ -126,13 +126,25 @@ case $CHOICE in
         7)
             echo -e "${RED}"
             echo "***"
-            echo "Disable Whirlpool at Startup..."
+            echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
             echo "***"
+            read -p "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
+            case $yn in
+                [Y/y]* ) echo "Re-initiating Whirlpool...";
+                        sudo systemctl stop whirlpool;
+                        cd ~/whirlpool;
+                        rm -rf *.json whirlpool-cli-config.properties;
+                        sudo systemctl start whirlpool;
+                        echo "Re-initation complete...";
+                        sleep 1s;
+                        echo "Paste your pairing payload into whirlpool GUI";;
+                [N/n]* ) echo "Returning to menu...";;
+                     * ) echo "Please answer yes or no.";;
+            esac
             echo -e "${NC}"
-            sleep 2s
-            sudo systemctl disable whirlpool
+            sleep 1s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # disable whirlpool at startup, return to menu
+            # re-initate whirlpool, return to menu
             ;;
         8)
             echo -e "${RED}"
@@ -141,11 +153,17 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
+            echo "Upgrading to Whirlpool Client CLI 0.10.2..."
+            sleep 2s
+            echo "Press Ctrl+C to exit..."
+            sleep 5s
             cd ~/whirlpool
             sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
-            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.1/whirlpool-client-cli-0.10.1-run.jar
+            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
             sudo systemctl start whirlpool
+            echo "Upgrade complete... head to GUI to unlock mixing."
+            sleep 2s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             ;;
         9)

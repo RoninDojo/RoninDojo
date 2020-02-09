@@ -114,13 +114,35 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Use the v3 address to connect to the Maintenance Tool."
+            echo "Displaying your Tor Onion addresses..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh onion
+
+            V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
+            NODE_ADMIN_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-node.conf | grep NODE_ADMIN_KEY | cut -c 16-)
+            # Maintenance Tool Onion and Password
+
             echo -e "${RED}"
+            echo "***"
+            echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
+	        echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
+            echo "***"
+            echo -e "${NC}"
+
+	        if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+    	        V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
+                EXPLORER_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
+                # if Explorer is installed then display Onion and Password
+                
+                echo -e "${RED}"
+                echo "***"
+                echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
+                echo "No username required. Explorer Password = $EXPLORER_KEY"
+                echo "***"
+                echo -e "${NC}"
+	        fi
+
+	        echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
@@ -131,79 +153,7 @@ case $CHOICE in
             # shows .onion and returns to menu
             ;;
         5)
-            echo -e "${RED}"
-            echo "***"
-            echo "Upgrading Dojo in 30s..."
-            echo "Use Ctrl+C to exit if needed!"
-            echo "***"
-            echo -e "${NC}"
-            sleep 30s
-            cd ~/dojo/docker/my-dojo
-            sudo ./dojo.sh stop
-            mkdir ~/.dojo > /dev/null 2>&1
-            cd ~/.dojo
-            sudo rm -rf samourai-dojo > /dev/null 2>&1
-            # Check if user has Electrs+Dojo installed
-
-            if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-electrs.conf ]; then
-                git clone -b master https://github.com/RoninDojo/samourai-dojo.git;
-            else
-                git clone -b feat_electrs https://github.com/RoninDojo/samourai-dojo.git;
-            fi
-            sudo cp -rv samourai-dojo/* ~/dojo
-            # install new explorer
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Checking for Dojo-backed Bitcoin Explorer"
-            echo "***"
-            echo -e "${NC}"
-            sleep 1s
-            if [ ! -f /home/$USER/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-                echo -e "${RED}"
-                echo "***"
-                echo "Installing Dojo BTC-Explorer, create a Password..."
-                echo "***"
-                echo -e "${NC}"
-                sleep 1s
-                echo -e "${RED}"
-                echo "***"
-                echo "This password should be something you can remember and is only alphanumeric!"
-                echo "***"
-                echo -e "${NC}"
-                read -p 'Your Dojo Explorer password: ' EXPLORER_PASS
-                sleep 1s
-                echo -e "${YELLOW}"
-                echo "----------------"
-                echo "$EXPLORER_PASS"
-                echo "----------------"
-                echo -e "${RED}"
-                echo "Is this correct?"
-                echo -e "${NC}"
-                select yn in "Yes" "No"; do
-                    case $yn in
-                        Yes ) break;;
-                        No ) read -p 'New Dojo Explorer Password: ' EXPLORER_PASS
-                        echo "$EXPLORER_PASS"
-                    esac
-                done
-                echo -e "${RED}"
-                echo "$EXPLORER_PASS"
-                echo -e "${NC}"
-                sed -i '16i EXPLORER_KEY='$EXPLORER_PASS'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-                sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-            else
-                echo -e "${RED}"
-                echo "***"
-                echo "Explorer is already installed!"
-                echo "***"
-                echo -e "${NC}"
-	    fi
-            cd ~/dojo/docker/my-dojo/
-            sleep 2s
-            sudo ./dojo.sh upgrade
-            sleep 2s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
             # upgrades dojo and returns to menu
             ;;
         6)
