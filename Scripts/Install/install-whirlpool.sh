@@ -152,47 +152,7 @@ echo "Restarting..."
 echo "***"
 sleep 2s
 sudo systemctl restart tor
-sleep 5s
-
-echo -e "${RED}" 
-echo "***"
-echo "Obtain the Whirlpool Pairing Code in Samourai Wallet. Go to Settings > Transactions > Pair to Whirlpool."
-echo "***"
-echo -e "${NC}"
 sleep 2s
-
-echo -e "${RED}" 
-echo "***"
-echo "Initating Whirlpool..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-
-echo -e "${RED}" 
-echo "***"
-echo "Be prepared to paste Whirlpool Pairing Code from Mobile Wallet."
-echo "***"
-echo -e "${NC}"
-sleep 5s
-java -jar whirlpool.jar --init --tor
-# initate Whirlpool
-sleep 2s
-
-APIkey=$(sudo cat /$HOME/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
-
-echo -e "${RED}" 
-echo "***"
-echo "Record this APIkey to connect your Whirlpool GUI:"
-echo -e "${NC}$APIkey"
-echo -e "${RED}***"
-sleep 3s
-
-echo -e "${RED}"
-echo "***"
-echo "Press any letter to continue..."
-echo "***"
-echo -e "${NC}"
-read -n 1 -r -s
 
 echo -e "${RED}"
 echo "***"
@@ -203,9 +163,6 @@ sleep 2s
 
 # setting whirlpool as a Service
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
-
-# adding tor location to whirlpool configuration
-sed -i '4i cli.torConfig.executable=/usr/bin/tor' /home/$USER/whirlpool/whirlpool-cli-config.properties
 
 # create whirlpool tmux session and start Whirlpool
 
@@ -244,8 +201,7 @@ sleep 3s
 
 echo -e "${RED}"
 echo "***"
-echo "Pair with GUI to unlock wallet and begin mixing..."
-echo "$APIkey"
+echo "Paste whirlpool payload into GUI to unlock wallet and begin mixing..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
@@ -253,7 +209,7 @@ sleep 2s
 echo -e "${RED}"
 echo "***"
 echo "For pairing with GUI head to full guide at:" 
-echo -e "${NC}https://github.com/RoninDojo/wiki"
+echo -e "${NC}https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
 echo -e "${RED}***"
 sleep 2s
 
