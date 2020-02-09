@@ -5,4 +5,4 @@ RoninDojo is an Installation Assistant and UI for Samourai Wallet's Dojo. We use
 
 Guides, information, and more can be found on the RoninDojo Wiki page.
 
-[**RoninDojo Wiki Home**](https://code.samourai.io/Ronin/RoninDojo/-/wikis/home)
+[**RoninDojo Wiki Home**](https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home)
