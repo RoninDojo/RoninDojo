@@ -179,7 +179,7 @@ BITCOIND_ZMQ_RAWTXS=9501
 BITCOIND_ZMQ_BLK_HASH=9502
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
-docker-node.conf.tpl
+# configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
 echo "****"
 echo "Setting the Node API Key and JWT Secret..."
