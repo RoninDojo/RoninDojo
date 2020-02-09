@@ -15,14 +15,14 @@ echo "Upgrading Dojo in 30s..."
 echo "Use Ctrl+C to exit if needed!"
 echo "***"
 echo -e "${NC}"
-#sleep 30s
-#cd ~/dojo/docker/my-dojo
-#sudo ./dojo.sh stop
+sleep 30s
+cd ~/dojo/docker/my-dojo
+sudo ./dojo.sh stop
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
 sudo rm -rf samourai-dojo > /dev/null 2>&1
-git clone -b feat_mydojo_local_indexer https://github.com/BTCxZelko/samourai-dojo.git
+git clone -b feat_mydojo_local_indexer https://code.samourai.io/BTCxZelko/samourai-dojo.git
 cp -rv samourai-dojo/* ~/dojo
 
 echo -e "${RED}"
@@ -46,7 +46,10 @@ sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
     read -p "Do you want to install an indexer? [y/n]" yn
     case $yn in
-        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; 
+                sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; 
+                sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; 
+                sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
         [N/n]* ) echo "Indexer will not installed";;
         * ) echo "Please answer yes or no.";;
     esac
@@ -62,8 +65,8 @@ case $yn in
 esac
 
 # Run upgrade
-#cd ~/dojo/docker/my-dojo
-#sudo ./dojo.sh upgrade
+cd ~/dojo/docker/my-dojo
+sudo ./dojo.sh upgrade
 
 # Return to menu
 bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
