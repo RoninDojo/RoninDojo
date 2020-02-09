@@ -114,7 +114,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Use the v3 address to connect to the Maintenance Tool."
+            echo "Displaying your Tor Onion addresses..."
             echo "***"
 
 	    # Pull Maintenance Tool Onion and Password
@@ -126,10 +126,10 @@ case $CHOICE in
 
 	    # if Explorer is installed then display Onion and Password
 	    if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    	      V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
-              EXPLORER_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
-              echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
-  	      echo "No username required. Explorer Password = $EXPLORER_KEY"
+    	    V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
+            EXPLORER_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
+            echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
+  	        echo "No username required. Explorer Password = $EXPLORER_KEY"
 	    fi
 
 	    echo -e "${RED}"
