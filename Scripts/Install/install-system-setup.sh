@@ -112,9 +112,12 @@ echo "***"
 echo "Using ext4 format for /dev/sda1 partition..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
-sudo mkfs.ext4 /dev/sda1
-# format partion1 to ext4
+sleep 
+# format partition1 to ext4
+# https://linux.die.net/man/8/mkfs.ext4:
+# -F: Force mke2fs to create a filesystem, even if the specified
+# device is not a partition on a block special device.
+sudo mkfs.ext4 -F /dev/sda1
 
 echo -e "${RED}"
 echo "***"
