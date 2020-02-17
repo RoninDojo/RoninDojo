@@ -178,6 +178,26 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
+echo "Installing Java"
+echo "***"
+echo -e "${NC}"
+sleep 2s
+sudo pacman -Syu --noconfirm jdk11-openjdk
+# installs java jdk11-openjdk 
+
+
+echo -e "${RED}"
+echo "***"
+echo "Installing Tor"
+echo "***"
+echo -e "${NC}"
+sleep 2s
+sudo pacman -Syu --noconfirm tor 
+# installs tor 
+
+
+echo -e "${RED}"
+echo "***"
 echo "Checking for Python... "
 echo "***"
 echo -e "${NC}"

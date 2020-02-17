@@ -112,16 +112,6 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-echo -e "${RED}"
-echo "***"
-echo "Installing Whirlpool Dependencies..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-sudo pacman -S --noconfirm jdk11-openjdk
-sleep 3s
-# install install openjdk
-
 echo -e "${RED}" 
 echo "***"
 echo "Created a Whirlpool directory."
@@ -141,15 +131,6 @@ echo -e "${NC}"
 sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
 # pull Whirlpool run times
-
-echo -e "${RED}" 
-echo "***"
-echo "Installing Tor..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-sudo pacman -S --noconfirm tor
-# install tor
 
 # edit torrc
 echo -e "${RED}" 
