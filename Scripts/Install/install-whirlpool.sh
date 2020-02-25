@@ -132,62 +132,49 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
 # pull Whirlpool run times
 
-# edit torrc
-echo -e "${RED}" 
-echo "***"
-echo "Editing torrc..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-sudo sed -i '52d' /etc/tor/torrc
-sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
-sudo sed -i '56d' /etc/tor/torrc
-sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
-sudo sed -i '60d' /etc/tor/torrc
-sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
-sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
-sudo mkdir /mnt/usb/tor/
-sudo chown -R tor:tor /mnt/usb/tor/
-
-echo -e "${RED}"
-echo "***"
-echo "Restarting..."
-echo "***"
-sleep 1s
-sudo systemctl restart tor
-sleep 2s
-
-echo -e "${RED}"
-echo "***"
-echo "Setting Whirlpool Service..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-
-# setting whirlpool as a Service
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
-# create whirlpool tmux session and start Whirlpool
+# whirlpool service. Check if present else create it
+echo -e "${RED}"
+echo "***"
+echo "Checking if Whirlpool.service is already exists..."
+echo "***"
+echo -e "${NC}"
+if [-f /etc/systemd/system/whirlpool.service];then
+    echo -e "${RED}"
+    echo "***"
+    echo "Whirlpool Service already is installed!"
+    echo "***"
+    sleep 1s
+    sudo systemctl stop whirlpool
+else
+    echo -e "${RED}"
+    echo "***"
+    echo "Setting Whirlpool Service..."
+    echo "***"
+    echo -e "${NC}"
+    sleep 1s
 
-echo "
-[Unit]
-Description=Whirlpool
-After=tor.service
+    echo "
+    [Unit]
+    Description=Whirlpool
+    After=tor.service
 
-[Service]
-WorkingDirectory=/home/$USER/whirlpool
-ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --mixs-target=3 --listen
-User=$USER
-Group=$USER
-Type=simple
-KillMode=process
-TimeoutSec=60
-Restart=always
-RestartSec=60
+    [Service]
+    WorkingDirectory=/home/$USER/whirlpool
+    ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --mixs-target=3 --listen
+    User=$USER
+    Group=$USER
+    Type=simple
+    KillMode=process
+    TimeoutSec=60
+    Restart=always
+    RestartSec=60
 
-[Install]
-WantedBy=multi-user.target
-" | sudo tee -a /etc/systemd/system/whirlpool.service
+    [Install]
+    WantedBy=multi-user.target
+    " | sudo tee -a /etc/systemd/system/whirlpool.service
+fi 
 
 sudo systemctl daemon-reload
 sleep 3s
