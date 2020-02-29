@@ -132,6 +132,19 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
 # pull Whirlpool run times
 
+echo -e "${RED}" 
+echo "***"
+echo "Initiating whirlpool..."
+echo "Grab your Whirlpool Pairing payload from your Samourai Wallet"
+echo "Paste it when prompted"
+sleep 1s
+echo "Press any key to continue"
+echo "***"
+echo -e "${NC}"
+read -n 1 -r -s
+java -jar whirlpool.jar --init --tor 
+# initiating whirlpool 
+
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
 # whirlpool service. Check if present else create it
@@ -187,11 +200,12 @@ echo -e "${NC}"
 sleep 1s
 
 sudo systemctl start whirlpool
+sudo systemctl enable whirlpool  
 sleep 3s
 
 echo -e "${RED}"
 echo "***"
-echo "Paste whirlpool payload into GUI to unlock wallet and begin mixing..."
+echo "Paste APIKey (found in Whirlpool Menu) into Whirlpool GUI to unlock wallet and begin mixing..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
@@ -210,3 +224,4 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
+bash ~/RoninDojo/Menu/menu-whirlpool.sh 
