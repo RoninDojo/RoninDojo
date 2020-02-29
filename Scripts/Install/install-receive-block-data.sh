@@ -82,6 +82,25 @@ sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
 
 echo -e "${RED}"
 echo "***"
+echo "Unmounting..."
+echo "***"
+echo -e "${NC}"
+sleep 2s
+
+sudo umount -l /dev/sdb1
+sleep 5s
+rm -rf /mnt/usb1
+
+echo -e "${RED}"
+echo "***"
+echo "You can now safely unplug your backup drive!"
+echo "***"
+echo -e "${NC}"
+sleep 2s
+
+
+echo -e "${RED}"
+echo "***"
 echo "Complete!"
 echo "***"
 echo -e "${NC}"

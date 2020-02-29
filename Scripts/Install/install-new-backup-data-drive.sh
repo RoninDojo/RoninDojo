@@ -88,7 +88,7 @@ echo "Using ext4 format for /dev/sdb1 partition..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-sudo mkfs.ext4 /dev/sdb1
+sudo mkfs.ext4 -F /dev/sdb1
 # format partion1 to ext4
 
 echo -e "${RED}"

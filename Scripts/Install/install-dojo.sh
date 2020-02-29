@@ -10,24 +10,17 @@ NC='\033[0m'
 # start of warning
 echo -e "${RED}"
 echo "***"
-echo "Running Dojo install in 30s..."
+echo "Running Dojo install in 15s..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 5s
 
 echo -e "${RED}"
 echo "***"
 echo "If you have already installed Dojo on your system, use Ctrl+C to exit now!"
 echo "***"
 echo -e "${NC}"
-sleep 10s
-
-echo -e "${RED}"
-echo "***"
-echo "WARNING: You might bork your system if you have already installed Dojo!!!"
-echo "***"
-echo -e "${NC}"
-sleep 10s
+sleep 5s
 
 echo -e "${RED}"
 echo "***"
@@ -40,15 +33,11 @@ sleep 5s
 # start dojo setup
 echo -e "${RED}"
 echo "***"
-echo "Downloading and extracting latest Ronin release."
+echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
-sleep 5s
-mkdir ~/.dojo
-cd ~/.dojo
 git clone -b feat_mydojo_local_indexer https://code.samourai.io/BTCxZelko/samourai-dojo.git # CHANGE
-sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -68,13 +57,6 @@ echo -e "${NC}"
 sleep 2s
 rm -rvf samourai-dojo/
 sleep 1s
-
-sudo fallocate -l 1G /swapfile
-sudo chmod 600 /swapfile
-sudo mkswap /swapfile
-sudo swapon /swapfile
-sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-# created a 1GB swapfile
 
 echo -e "${RED}"
 echo "***"
@@ -365,3 +347,59 @@ echo -e "${NC}"
 sleep 2s
 cd ~/dojo/docker/my-dojo
 sudo ./dojo.sh install
+# once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
+
+if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
+  cd ~/dojo/docker/my-dojo
+  sudo ./dojo.sh stop
+  sudo cp -rv /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo cp -rv /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/  
+  sudo rm -rf /mnt/usb/uninstall-salvage/chainstate
+  sudo rm -rf /mnt/usb/uninstall-salvage/blocks
+  sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo rm -rf /mnt/usb/uninstall-salvage/
+  sudo rm -rf /mnt/usb/system-setup-salvage/
+  sudo sudo ./dojo.sh start
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage complete!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 3s
+else
+  echo ""
+fi
+
+if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
+  cd ~/dojo/docker/my-dojo
+  sudo ./dojo.sh stop
+  sudo cp -rv /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo cp -rv /mnt/usb/system-setup-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo rm -rf /mnt/usb/system-setup-salvage/chainstate
+  sudo rm -rf /mnt/usb/system-setup-salvage/blocks
+  sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo rm -rf /mnt/usb/system-setup-salvage/
+  sudo rm -rf /mnt/usb/uninstall-salvage/
+  sudo sudo ./dojo.sh start
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage complete!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 3s
+else
+  echo ""
+fi
+
+echo -e "${RED}"
+echo "***"
+echo "Whirlpool is ready to be installed!"
+echo "***"
+echo -e "${NC}"
+sleep 3s

@@ -31,19 +31,64 @@ case $CHOICE in
             echo "Uninstalling Dojo in 30s..."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            sleep 5s
 
             echo -e "${RED}"
             echo "***"
-            echo "WARNING: This will uninstall Dojo, use Ctrl+C to exit if needed!"
+            echo "You will be asked if you wish to salvage any data..."
             echo "***"
             echo -e "${NC}"
-            sleep 30s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh uninstall
-            # uninstall dojo
+            sleep 5s
+
+	    echo -e "${RED}"
+            echo "***"
+            echo "Users with a fully sync'd Blockchain should answer yes to salvage!"
+            echo "***"
+            echo -e "${NC}"
+            sleep 5s
 
             echo -e "${RED}"
+            echo "***"
+            echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
+            echo "***"
+            echo -e "${NC}"
+            sleep 15s
+
+            echo -e "${RED}"
+            echo "Do you want to salvage your Blockchain data?"
+            echo -e "${NC}"
+            while true; do
+                read -p "Y/N?: " yn
+                case $yn in
+                    [Yy]* ) echo -e "${RED}"
+                            echo "***"
+                            echo "Copying block data to temporary directory..."
+                            echo "***"
+                            echo -e "${NC}"
+                            sleep 2s
+			    cd ~/dojo/docker/my-dojo/
+			    sudo ./dojo.sh stop
+                            sudo mkdir /uninstall-salvage/
+                            sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
+                            sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/
+                            # stops dojo, copies blockchain data to uninstall-salvage to be used by the dojo install script
+			    break;;
+                    [Nn]* ) break;;
+                    * ) echo "Please answer yes or no.";;
+                esac
+            done
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Uninstalling Dojo..."
+            echo "***"
+            echo -e "${NC}"
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh uninstall
+	    sudo rm -rf ~/dojo
+            # uninstall dojo
+
+	    echo -e "${RED}"
             echo "***"
             echo "Complete!"
             echo "***"
