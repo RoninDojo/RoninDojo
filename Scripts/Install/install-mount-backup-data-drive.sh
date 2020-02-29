@@ -5,6 +5,32 @@ RED='\033[0;31m'
 NC='\033[0m'
 # No Color
 
+if lsblk -o NAME | grep sdb1 > /dev/null ; then
+  echo -e "${RED}"
+  echo "***"
+  echo "Your backup drive partition 1 has been detected..."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+  # checks for /dev/sdb1
+else
+  echo -e "${RED}"
+  echo "***"
+  echo "No backup drive partition 1 detected! Please make sure it is plugged in and has power if needed."
+  echo "***"
+  echo -e "${NC}"
+  sleep 5s 
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to return..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+  # no drive detected, press any letter to return to menu
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Preparing to Mount /dev/sdb1 to /mnt/usb1..."
@@ -13,7 +39,7 @@ echo -e "${NC}"
 sleep 3s
 
 echo -e "${RED}"
-echo "Have you plugged in your Backup Data Drive?"
+echo "Are you ready to mount?"
 echo -e "${NC}"
 while true; do
     read -p "Y/N?: " yn

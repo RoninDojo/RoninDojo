@@ -5,31 +5,45 @@ RED='\033[0;31m'
 NC='\033[0m'
 # No Color
 
+if lsblk -o NAME | grep sdb > /dev/null ; then
+  echo -e "${RED}"
+  echo "***"
+  echo "Your new backup drive has been detected..."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+  # checks for /dev/sdb 
+else
+  echo -e "${RED}"
+  echo "***"
+  echo "No backup drive detected! Please make sure it is plugged in and has power if needed."
+  echo "***"
+  echo -e "${NC}"
+  sleep 5s 
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to return..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+  # no drive detected, press any letter to return to menu
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Preparing to Format and Mount /dev/sdb1 to /mnt/usb1..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
-
-echo -e "${RED}"
-echo "Have you plugged in your new Backup Data Drive?"
-echo -e "${NC}"
-while true; do
-    read -p "Y/N?: " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-system2.sh;exit;;
-        * ) echo "Please answer yes or no.";;
-    esac
-done
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "WARNING: Any pre-existing data on this drive will be lost!!!"
+echo "WARNING: Any pre-existing data on this backup drive will be lost!!!"
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 2s
 
 echo -e "${RED}"
 echo "Are you sure?"
