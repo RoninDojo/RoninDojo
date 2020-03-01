@@ -143,6 +143,7 @@ echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
 java -jar whirlpool.jar --init --tor 
+sed -i '9i cli.torConfig.executable=/usr/bin/tor' ~/whirlpool/whirlpool-cli-config.properties
 # initiating whirlpool 
 
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
