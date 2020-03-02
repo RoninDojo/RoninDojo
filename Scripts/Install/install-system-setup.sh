@@ -90,22 +90,31 @@ fi
 
 check3=/usr/bin/tor
 if pacman -Ql | grep $check3  > /dev/null ; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Tor already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
+    echo -e "${RED}"
+    echo "***"
+    echo "Tor already installed..."
+    echo "***"
+    echo -e "${NC}"
+    sleep 1s
 else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Tor..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm tor
+    echo -e "${RED}"
+    echo "***"
+    echo "Installing Tor..."
+    echo "***"
+    echo -e "${NC}"
+    sudo pacman -S --noconfirm tor
+    sleep 1s
+    sudo sed -i '52d' /etc/tor/torrc
+    sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
+    sudo sed -i '56d' /etc/tor/torrc
+    sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
+    sudo sed -i '60d' /etc/tor/torrc
+    sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
+    sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
+    sudo mkdir /mnt/usb/tor/
+    sudo chown -R tor:tor /mnt/usb/tor/
 fi
-# installs tor
+# check if tor is installed, if not install and modify torrc
 
 check4=python3
 if pacman -Qs $check4 > /dev/null ; then
