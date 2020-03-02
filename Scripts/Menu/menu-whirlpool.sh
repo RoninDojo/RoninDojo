@@ -16,7 +16,7 @@ OPTIONS=(1 "View API key"
          3 "View Status"
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
-         6 "Restart"
+         6 "Restart Whirlpool"
          7 "Re-initiate Whirlpool"
          8 "Update Whirlpool"
          9 "Go Back")
