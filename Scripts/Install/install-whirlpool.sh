@@ -11,7 +11,7 @@ echo "Checking if Whirlpool is already installed..."
 echo "***"
 echo -e "${NC}"
 
-if ls ~/whirlpool | grep whirlpool.jar  > /dev/null ; then   
+if ls ~/whirlpool | grep whirlpool.jar  > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool is installed!"
@@ -82,7 +82,7 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-if sudo ufw status | grep 22 > /dev/null ; then
+if sudo ufw status | grep 8899 > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool firewall rule already setup..."
@@ -93,16 +93,17 @@ else
     ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
     # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-    sed -i '2,10d' ~/ip_tmp.txt
-    # delete lines 2-10
+    sed -i '2,11d' ~/ip_tmp.txt
+    # delete lines 2-11 (in the systemsetup script it is 2,10d
+    # had to be modified for whirlpool setup as an extra value gets added to ~/ip_tmp.txt)
 
     cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-    # for line 19 in /etc/ufw/user.rules 
+    # for line 19 in /etc/ufw/user.rules
 
     cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-    # for line 20 /etc/ufw/user.rules 
+    # for line 20 /etc/ufw/user.rules
 
     cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
@@ -118,7 +119,7 @@ else
     # copying from line 2 in whirlpool_rule_tmp.txt to line 20 in /etc/ufw/user.rules
 
     sudo awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
-    # copying from line 3 in whirlpool_rule_tmp.txt to line 21 in /etc/ufw/user.rules 
+    # copying from line 3 in whirlpool_rule_tmp.txt to line 21 in /etc/ufw/user.rules
 
     sudo sed -i "18G" /etc/ufw/user.rules
     # adds a space to keep things formatted nicely
@@ -148,7 +149,7 @@ echo -e "${NC}"
 sleep 2s
 sudo ufw status
 
-echo -e "${RED}" 
+echo -e "${RED}"
 echo "***"
 echo "Created a Whirlpool directory."
 echo "***"
@@ -159,7 +160,7 @@ mkdir whirlpool
 cd whirlpool
 # create whirlpool directory
 
-echo -e "${RED}" 
+echo -e "${RED}"
 echo "***"
 echo "Pulling Whirlpool from Github..."
 echo "***"
@@ -168,7 +169,7 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
 # pull Whirlpool run times
 
-echo -e "${RED}" 
+echo -e "${RED}"
 echo "***"
 echo "Initiating whirlpool..."
 echo "Grab your Whirlpool Pairing payload from your Samourai Wallet"
@@ -178,9 +179,9 @@ echo "Press any key to continue"
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-java -jar whirlpool.jar --init --tor 
+java -jar whirlpool.jar --init --tor
 sed -i '9i cli.torConfig.executable=/usr/bin/tor' ~/whirlpool/whirlpool-cli-config.properties
-# initiating whirlpool 
+# initiating whirlpool
 
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
@@ -224,7 +225,7 @@ else
     [Install]
     WantedBy=multi-user.target
     " | sudo tee -a /etc/systemd/system/whirlpool.service
-fi 
+fi
 
 sudo systemctl daemon-reload
 sleep 3s
@@ -237,7 +238,7 @@ echo -e "${NC}"
 sleep 1s
 
 sudo systemctl start whirlpool
-sudo systemctl enable whirlpool  
+sudo systemctl enable whirlpool
 sleep 3s
 
 echo -e "${RED}"
@@ -249,8 +250,7 @@ sleep 3s
 
 echo -e "${RED}"
 echo "***"
-echo "For pairing with GUI head to full guide at:" 
-echo "https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "For pairing with GUI head to full guide at: https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
 echo "***"
 echo -e "${NC}"
 sleep 3s
@@ -261,4 +261,4 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Menu/menu-whirlpool.sh 
+bash ~/RoninDojo/Menu/menu-whirlpool.sh

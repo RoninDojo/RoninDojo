@@ -11,8 +11,7 @@ if ls ~ | grep dojo > /dev/null ; then
   echo "Dojo directory found, please uninstall Dojo first!"
   echo "***"
   echo -e "${NC}"
-  sleep 2s
-  # checks for ~/dojo directory
+  sleep 5s
   bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
 else
   echo -e "${RED}"
@@ -20,8 +19,9 @@ else
   echo "Setting up system and installing Dependencies in 15s..."
   echo "***"
   echo -e "${NC}"
-  sleep 5s 
+  sleep 5s
 fi
+# checks for ~/dojo directory, if found kicks back to menu
 
 echo -e "${RED}"
 echo "***"
@@ -468,7 +468,6 @@ if grep "sda1" ~/sda_tmp.txt > /dev/null ; then
   echo -e "${NC}"
   sleep 2s
   sudo mount /dev/sda1 /mnt/salvage
-  # mount main storage drive to /mnt/salvage directory
 else
   echo -e "${RED}"
   echo "***"
@@ -476,13 +475,14 @@ else
   echo "***"
   echo -e "${NC}"
 fi
+# mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
 rm -f ~/sda_tmp.txt
 
 if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo -e "${RED}"
   echo "***"
-  echo "FoundBlockchain data for salvage!"
+  echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
   sudo rm -rf /mnt/salvage/docker
@@ -490,6 +490,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   sudo umount -l /dev/sda1
   sleep 5s
   sudo rm -rf /mnt/salvage
+  # if uninstall-salvage is found, delete older docker directory and swapfile, then unmount sda1
 
   echo -e "${RED}"
   echo "***"
@@ -630,24 +631,23 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 3s
-  # end
-
   bash ~/RoninDojo/Scripts/Install/install-dojo.sh
   # run dojo install
   exit
 else
   echo -e "${RED}"
   echo "***"
-  echo "No Blockchain data found for salvage check 1."
+  echo "No Blockchain data found for salvage check 1..."
   echo "***"
   echo -e "${NC}"
   sleep 3s
 fi
+# checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to salvage check 2
 
 if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep blocks > /dev/null ; then
   echo -e "${RED}"
   echo "***"
-  echo "FoundBlockchain data for salvage!"
+  echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
 
@@ -665,6 +665,29 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   sudo umount -l /dev/sda1
   sleep 3s
   sudo rm -rf /mnt/salvage
+  # copies blockchain salvage data to /mnt/salvage if found
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage complete!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Please contact RoninDojo support if you have any problems."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to continue..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
 
   echo -e "${RED}"
   echo "***"
@@ -805,15 +828,13 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   sleep 3s
-  # end
-
   bash ~/RoninDojo/Scripts/Install/install-dojo.sh
   # run dojo install
   exit
 else
   echo -e "${RED}"
   echo "***"
-  echo "No Blockchain data found for salvage check 2."
+  echo "No Blockchain data found for salvage check 2..."
   echo "***"
   echo -e "${NC}"
   sleep 3s
@@ -822,6 +843,7 @@ else
   sleep 5s
   sudo rm -rf /mnt/salvage
 fi
+# checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to format drive
 
 echo -e "${RED}"
 echo "***"
@@ -1032,4 +1054,3 @@ echo "Dojo is ready to be installed!"
 echo "***"
 echo -e "${NC}"
 sleep 3s
-# end

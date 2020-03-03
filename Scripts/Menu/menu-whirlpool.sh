@@ -131,13 +131,13 @@ case $CHOICE in
             read -p "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
             case $yn in
                 [Y/y]* ) echo "Re-initiating Whirlpool...";
-                        sudo systemctl stop whirlpool;
-                        cd ~/whirlpool;
-                        rm -rf *.json whirlpool-cli-config.properties;
-                        sudo systemctl start whirlpool;
-                        echo "Re-initation complete...";
-                        sleep 1s;
-                        echo "Paste your pairing payload into whirlpool GUI";;
+                         sudo systemctl stop whirlpool;
+                         cd ~/whirlpool;
+                         rm -rf *.json whirlpool-cli-config.properties;
+                         sudo systemctl start whirlpool;
+                         echo "Re-initation complete...";
+                         sleep 1s;
+                         echo "Paste your pairing payload into whirlpool GUI";;
                 [N/n]* ) echo "Returning to menu...";;
                      * ) echo "Please answer yes or no.";;
             esac

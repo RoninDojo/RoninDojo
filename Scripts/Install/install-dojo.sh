@@ -353,7 +353,7 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   cd ~/dojo/docker/my-dojo
   sudo ./dojo.sh stop
   sudo cp -rv /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo cp -rv /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/  
+  sudo cp -rv /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   sudo rm -rf /mnt/usb/uninstall-salvage/chainstate
   sudo rm -rf /mnt/usb/uninstall-salvage/blocks
   sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -369,9 +369,25 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 3s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Please contact RoninDojo support if you have any problems."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to continue..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
 else
-  echo ""
+  echo "No Blockchain data found for salvage check 1..."
 fi
+# check for uninstall-salvage, if not found continue
 
 if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   cd ~/dojo/docker/my-dojo
@@ -393,9 +409,25 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 3s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Please contact RoninDojo support if you have any problems."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to continue..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
 else
-  echo ""
+  echo "No Blockchain data found for salvage check 2..."
 fi
+# check for system-setup-salvage, if not found continue
 
 echo -e "${RED}"
 echo "***"
