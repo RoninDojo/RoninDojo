@@ -350,20 +350,9 @@ sudo ./dojo.sh install
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
 if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
-  sudo cp -rv /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo cp -rv /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   echo -e "${RED}"
   echo "***"
-  echo "Blockchain data salvage complete!"
-  echo "***"
-  echo -e "${NC}"
-  sleep 3s
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Please contact RoninDojo support if you have any problems."
+  echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
   sleep 2s
@@ -375,6 +364,18 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
+  cd ~/dojo/docker/my-dojo
+  sudo ./dojo.sh stop
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo mv -v /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo mv -v /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage complete!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 3s
   sudo rm -rf /mnt/usb/uninstall-salvage/chainstate
   sudo rm -rf /mnt/usb/uninstall-salvage/blocks
   sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -389,20 +390,9 @@ fi
 # check for uninstall-salvage, if not found continue
 
 if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
-  sudo cp -rv /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo cp -rv /mnt/usb/system-setup-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   echo -e "${RED}"
   echo "***"
-  echo "Blockchain data salvage complete!"
-  echo "***"
-  echo -e "${NC}"
-  sleep 3s
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Please contact RoninDojo support if you have any problems."
+  echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
   sleep 2s
@@ -413,7 +403,18 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
+  cd ~/dojo/docker/my-dojo
+  sudo ./dojo.sh stop
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo mv -v /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo mv -v /mnt/usb/system-setup-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage complete!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 3s
   sudo rm -rf /mnt/usb/system-setup-salvage/chainstate
   sudo rm -rf /mnt/usb/system-setup-salvage/blocks
   sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/

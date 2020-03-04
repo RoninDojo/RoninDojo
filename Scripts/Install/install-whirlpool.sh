@@ -257,8 +257,8 @@ sleep 3s
 
 echo -e "${RED}"
 echo "***"
-echo "Press any letter to return..."
+echo "Press any letter to continue..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Menu/menu-whirlpool.sh
+# will return to menu as long as [*] Go Back was selected

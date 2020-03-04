@@ -631,8 +631,6 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 3s
-  bash ~/RoninDojo/Scripts/Install/install-dojo.sh
-  # run dojo install
   exit
 else
   echo -e "${RED}"
@@ -653,34 +651,27 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
 
   echo -e "${RED}"
   echo "***"
-  echo "Copying to temporary directory..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo mkdir /mnt/salvage/system-setup-salvage/
-  sudo cp -rv /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
-  sudo cp -rv /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data salvage complete!"
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Please contact RoninDojo support if you have any problems."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-
-  echo -e "${RED}"
-  echo "***"
   echo "Press any letter to continue..."
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Moving to temporary directory..."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+  sudo mkdir /mnt/salvage/system-setup-salvage/
+  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
+  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data prepared for salvage!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
   sudo rm -rf /mnt/salvage/docker
   sudo rm -f /mnt/salvage/swapfile
   sudo umount -l /dev/sda1
@@ -827,8 +818,6 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   sleep 3s
-  bash ~/RoninDojo/Scripts/Install/install-dojo.sh
-  # run dojo install
   exit
 else
   echo -e "${RED}"
