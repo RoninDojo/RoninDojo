@@ -660,13 +660,6 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   sudo mkdir /mnt/salvage/system-setup-salvage/
   sudo cp -rv /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
   sudo cp -rv /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
-  sudo rm -rf /mnt/salvage/docker
-  sudo rm -f /mnt/salvage/swapfile
-  sudo umount -l /dev/sda1
-  sleep 3s
-  sudo rm -rf /mnt/salvage
-  # copies blockchain salvage data to /mnt/salvage if found
-
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage complete!"
@@ -688,6 +681,12 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
+  sudo rm -rf /mnt/salvage/docker
+  sudo rm -f /mnt/salvage/swapfile
+  sudo umount -l /dev/sda1
+  sleep 3s
+  sudo rm -rf /mnt/salvage
+  # copies blockchain salvage data to /mnt/salvage if found
 
   echo -e "${RED}"
   echo "***"

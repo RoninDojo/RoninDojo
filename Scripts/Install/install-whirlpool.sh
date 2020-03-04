@@ -93,8 +93,8 @@ else
     ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
     # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-    sed -i '2,11d' ~/ip_tmp.txt
-    # delete lines 2-11 (in the systemsetup script it is 2,10d
+    sed -i '2,12d' ~/ip_tmp.txt
+    # delete lines 2-12 (in the systemsetup script it is 2,10d
     # had to be modified for whirlpool setup as an extra value gets added to ~/ip_tmp.txt)
 
     cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done
@@ -109,27 +109,27 @@ else
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 21 /etc/ufw/user.rules
 
-    sudo awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+     sudo awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 1 in whirlpool_rule_tmp.txt to line 19 in /etc/ufw/user.rules
     # using awk to get /lib/ufw/user.rules output, including newly added values, then makes a tmp file
     # after temp file is made it is mv to /lib/ufw/user.rules
     # awk does not have -i to write changes like sed does, that's why I took this approach
 
-    sudo awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+     sudo awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 2 in whirlpool_rule_tmp.txt to line 20 in /etc/ufw/user.rules
 
-    sudo awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+     sudo awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 3 in whirlpool_rule_tmp.txt to line 21 in /etc/ufw/user.rules
 
-    sudo sed -i "18G" /etc/ufw/user.rules
+     sudo sed -i "18G" /etc/ufw/user.rules
     # adds a space to keep things formatted nicely
 
-    sudo chown root:root /etc/ufw/user.rules
+     sudo chown root:root /etc/ufw/user.rules
     # this command changes ownership back to root:root
     # when /etc/ufw/user.rules is edited using awk or sed, the owner gets changed from Root to whatever User that edited that file
     # that causes a warning to be displayed as /etc/ufw/user.rules does need to be owned by root:root
 
-    sudo rm ~/ip_tmp.txt ~/whirlpool_rule_tmp.txt
+     sudo rm ~/ip_tmp.txt ~/whirlpool_rule_tmp.txt
     # removes txt files that are no longer needed
 
     echo -e "${RED}"

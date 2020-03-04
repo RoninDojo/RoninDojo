@@ -354,15 +354,6 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   sudo ./dojo.sh stop
   sudo cp -rv /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   sudo cp -rv /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo rm -rf /mnt/usb/uninstall-salvage/chainstate
-  sudo rm -rf /mnt/usb/uninstall-salvage/blocks
-  sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
-  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
-  sudo rm -rf /mnt/usb/uninstall-salvage/
-  sudo rm -rf /mnt/usb/system-setup-salvage/
-  sudo sudo ./dojo.sh start
-
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage complete!"
@@ -384,6 +375,14 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
+  sudo rm -rf /mnt/usb/uninstall-salvage/chainstate
+  sudo rm -rf /mnt/usb/uninstall-salvage/blocks
+  sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo rm -rf /mnt/usb/uninstall-salvage/
+  sudo rm -rf /mnt/usb/system-setup-salvage/
+  sudo sudo ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
@@ -394,15 +393,6 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   sudo ./dojo.sh stop
   sudo cp -rv /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   sudo cp -rv /mnt/usb/system-setup-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo rm -rf /mnt/usb/system-setup-salvage/chainstate
-  sudo rm -rf /mnt/usb/system-setup-salvage/blocks
-  sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
-  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
-  sudo rm -rf /mnt/usb/system-setup-salvage/
-  sudo rm -rf /mnt/usb/uninstall-salvage/
-  sudo sudo ./dojo.sh start
-
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage complete!"
@@ -424,6 +414,14 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
+  sudo rm -rf /mnt/usb/system-setup-salvage/chainstate
+  sudo rm -rf /mnt/usb/system-setup-salvage/blocks
+  sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo rm -rf /mnt/usb/system-setup-salvage/
+  sudo rm -rf /mnt/usb/uninstall-salvage/
+  sudo sudo ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 2..."
 fi
