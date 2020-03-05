@@ -46,7 +46,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 mkdir ~/dojo
-cp -rv samourai-dojo/* ~/dojo
+cp -r samourai-dojo/* ~/dojo
 sleep 2s
 
 echo -e "${RED}"
@@ -55,7 +55,7 @@ echo "Removing all the files no longer needed."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-rm -rvf samourai-dojo/
+rm -rf samourai-dojo/
 sleep 1s
 
 echo -e "${RED}"
@@ -434,3 +434,4 @@ echo "Whirlpool is ready to be installed!"
 echo "***"
 echo -e "${NC}"
 sleep 3s
+# will continue to whirlpool install, if it was selected from the install menu

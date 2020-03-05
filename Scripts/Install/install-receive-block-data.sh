@@ -61,8 +61,8 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-sudo cp -rv /mnt/usb1/chainstate/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/
-sudo cp -rv /mnt/usb1/blocks/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/
+sudo cp -rv /mnt/usb1/system-setup-salvage/chainstate/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/
+sudo cp -rv /mnt/usb1/system-setup-salvage/blocks/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"

@@ -651,14 +651,6 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
 
   echo -e "${RED}"
   echo "***"
-  echo "Press any letter to continue..."
-  echo "***"
-  echo -e "${NC}"
-  read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
-
-  echo -e "${RED}"
-  echo "***"
   echo "Moving to temporary directory..."
   echo "***"
   echo -e "${NC}"
@@ -1042,3 +1034,4 @@ echo "Dojo is ready to be installed!"
 echo "***"
 echo -e "${NC}"
 sleep 3s
+# will continue to dojo install if it was selected on the install menu

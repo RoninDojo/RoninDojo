@@ -27,6 +27,7 @@ if ls ~/whirlpool | grep whirlpool.jar  > /dev/null ; then
     bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
     exit
 fi
+# checks if whirlpool.jar exists, if so kick back to menu
 
 echo -e "${RED}"
 echo "***"
@@ -140,6 +141,7 @@ else
     sleep 1s
     sudo ufw reload
 fi
+# checks for port 8899 ufw rule and skips if found, if not found it is set up
 
 echo -e "${RED}"
 echo "***"
@@ -172,9 +174,26 @@ wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/re
 echo -e "${RED}"
 echo "***"
 echo "Initiating whirlpool..."
-echo "Grab your Whirlpool Pairing payload from your Samourai Wallet"
-echo "Paste it when prompted"
+echo "***"
+echo -e "${NC}"
 sleep 1s
+
+echo -e "${RED}"
+echo "***"
+echo "Grab your Whirlpool Pairing payload from your Samourai Wallet!"
+echo "***"
+echo -e "${NC}"
+sleep 3s
+
+echo -e "${RED}"
+echo "***"
+echo "Paste it when prompted..."
+echo "***"
+echo -e "${NC}"
+sleep 1s
+
+echo -e "${RED}"
+echo "***"
 echo "Press any key to continue"
 echo "***"
 echo -e "${NC}"
@@ -191,7 +210,8 @@ echo "***"
 echo "Checking if Whirlpool.service is already exists..."
 echo "***"
 echo -e "${NC}"
-if [-f /etc/systemd/system/whirlpool.service];then
+
+if ls /etc/systemd/system | grep whirlpool.service  > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool Service already is installed!"
@@ -226,6 +246,7 @@ else
     WantedBy=multi-user.target
     " | sudo tee -a /etc/systemd/system/whirlpool.service
 fi
+# checks for whirlpool.service and if found skips, if not found sets up whirlpool.service
 
 sudo systemctl daemon-reload
 sleep 3s
