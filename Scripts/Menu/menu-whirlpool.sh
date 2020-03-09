@@ -18,7 +18,7 @@ OPTIONS=(1 "View API key"
          5 "Stop Whirlpool"
          6 "Restart Whirlpool"
          7 "Re-initiate Whirlpool"
-         8 "Update Whirlpool"
+         8 "Next Page"
          9 "Go Back")
 
 CHOICE=$(dialog --clear \
@@ -147,24 +147,8 @@ case $CHOICE in
             # re-initate whirlpool, return to menu
             ;;
         8)
-            echo -e "${RED}"
-            echo "***"
-            echo "Checking for updates..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            echo "Upgrading to Whirlpool Client CLI 0.10.2..."
-            sleep 2s
-            echo "Press Ctrl+C to exit..."
-            sleep 5s
-            cd ~/whirlpool
-            sudo systemctl stop whirlpool > /dev/null 2>&1
-            sudo rm -rf *.jar
-            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
-            sudo systemctl start whirlpool
-            echo "Upgrade complete... head to GUI to unlock mixing."
-            sleep 2s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool2.sh
+            # Go to next page
             ;;
         9)
             bash ~/RoninDojo/ronin
