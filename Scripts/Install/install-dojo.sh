@@ -46,7 +46,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 mkdir ~/dojo
-cp -rv samourai-dojo/* ~/dojo
+cp -r samourai-dojo/* ~/dojo
 sleep 2s
 
 echo -e "${RED}"
@@ -55,7 +55,7 @@ echo "Removing all the files no longer needed."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-rm -rvf samourai-dojo/
+rm -rf samourai-dojo/
 sleep 1s
 
 echo -e "${RED}"
@@ -350,10 +350,32 @@ sudo ./dojo.sh install
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
 if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage starting..."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to continue..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
   cd ~/dojo/docker/my-dojo
   sudo ./dojo.sh stop
-  sudo cp -rv /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo cp -rv /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/  
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo mv -v /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo mv -v /mnt/usb/uninstall-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage complete!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 3s
   sudo rm -rf /mnt/usb/uninstall-salvage/chainstate
   sudo rm -rf /mnt/usb/uninstall-salvage/blocks
   sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -362,22 +384,37 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   sudo rm -rf /mnt/usb/uninstall-salvage/
   sudo rm -rf /mnt/usb/system-setup-salvage/
   sudo sudo ./dojo.sh start
+else
+  echo "No Blockchain data found for salvage check 1..."
+fi
+# check for uninstall-salvage, if not found continue
 
+if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data salvage starting..."
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Press any letter to continue..."
+  echo "***"
+  echo -e "${NC}"
+  read -n 1 -r -s
+  cd ~/dojo/docker/my-dojo
+  sudo ./dojo.sh stop
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
+  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
+  sudo mv -v /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo mv -v /mnt/usb/system-setup-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
   sleep 3s
-else
-  echo ""
-fi
-
-if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
-  sudo cp -rv /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-  sudo cp -rv /mnt/usb/system-setup-salvage/blocks /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
   sudo rm -rf /mnt/usb/system-setup-salvage/chainstate
   sudo rm -rf /mnt/usb/system-setup-salvage/blocks
   sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -386,16 +423,10 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   sudo rm -rf /mnt/usb/system-setup-salvage/
   sudo rm -rf /mnt/usb/uninstall-salvage/
   sudo sudo ./dojo.sh start
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data salvage complete!"
-  echo "***"
-  echo -e "${NC}"
-  sleep 3s
 else
-  echo ""
+  echo "No Blockchain data found for salvage check 2..."
 fi
+# check for system-setup-salvage, if not found continue
 
 echo -e "${RED}"
 echo "***"
@@ -403,3 +434,4 @@ echo "Whirlpool is ready to be installed!"
 echo "***"
 echo -e "${NC}"
 sleep 3s
+# will continue to whirlpool install, if it was selected from the install menu

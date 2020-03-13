@@ -63,7 +63,7 @@ case $CHOICE in
             echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
             echo "sudo rm -rf /usr/local/bin/ronin" >> ~/ronin-update.sh
             echo "cd ~" >> ~/ronin-update.sh
-            echo "git clone https://github.com/RoninDojo/RoninDojo.git" >> ~/ronin-update.sh
+            echo "git clone https://code.samourai.io/ronindojo/RoninDojo" >> ~/ronin-update.sh
             echo "sudo cp -rv ~/RoninDojo/ronin /usr/local/bin" >> ~/ronin-update.sh
             # removes RoninDojo directory and ronin main menu script
 	    # changes to home directory, clones RoninDojo master branch, and copies new ronin menu to /user/local/bin

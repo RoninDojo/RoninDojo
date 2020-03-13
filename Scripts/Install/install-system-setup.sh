@@ -11,8 +11,7 @@ if ls ~ | grep dojo > /dev/null ; then
   echo "Dojo directory found, please uninstall Dojo first!"
   echo "***"
   echo -e "${NC}"
-  sleep 2s
-  # checks for ~/dojo directory
+  sleep 5s
   bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
 else
   echo -e "${RED}"
@@ -20,8 +19,9 @@ else
   echo "Setting up system and installing Dependencies in 15s..."
   echo "***"
   echo -e "${NC}"
-  sleep 5s 
+  sleep 5s
 fi
+# checks for ~/dojo directory, if found kicks back to menu
 
 echo -e "${RED}"
 echo "***"
@@ -90,22 +90,31 @@ fi
 
 check3=/usr/bin/tor
 if pacman -Ql | grep $check3  > /dev/null ; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Tor already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
+    echo -e "${RED}"
+    echo "***"
+    echo "Tor already installed..."
+    echo "***"
+    echo -e "${NC}"
+    sleep 1s
 else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Tor..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm tor
+    echo -e "${RED}"
+    echo "***"
+    echo "Installing Tor..."
+    echo "***"
+    echo -e "${NC}"
+    sudo pacman -S --noconfirm tor
+    sleep 1s
+    sudo sed -i '52d' /etc/tor/torrc
+    sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
+    sudo sed -i '56d' /etc/tor/torrc
+    sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
+    sudo sed -i '60d' /etc/tor/torrc
+    sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
+    sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
+    sudo mkdir /mnt/usb/tor/
+    sudo chown -R tor:tor /mnt/usb/tor/
 fi
-# installs tor
+# check if tor is installed, if not install and modify torrc
 
 check4=python3
 if pacman -Qs $check4 > /dev/null ; then
@@ -459,7 +468,6 @@ if grep "sda1" ~/sda_tmp.txt > /dev/null ; then
   echo -e "${NC}"
   sleep 2s
   sudo mount /dev/sda1 /mnt/salvage
-  # mount main storage drive to /mnt/salvage directory
 else
   echo -e "${RED}"
   echo "***"
@@ -467,13 +475,14 @@ else
   echo "***"
   echo -e "${NC}"
 fi
+# mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
 rm -f ~/sda_tmp.txt
 
 if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo -e "${RED}"
   echo "***"
-  echo "FoundBlockchain data for salvage!"
+  echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
   sudo rm -rf /mnt/salvage/docker
@@ -481,6 +490,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   sudo umount -l /dev/sda1
   sleep 5s
   sudo rm -rf /mnt/salvage
+  # if uninstall-salvage is found, delete older docker directory and swapfile, then unmount sda1
 
   echo -e "${RED}"
   echo "***"
@@ -621,41 +631,45 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 3s
-  # end
-
-  bash ~/RoninDojo/Scripts/Install/install-dojo.sh
-  # run dojo install
   exit
 else
   echo -e "${RED}"
   echo "***"
-  echo "No Blockchain data found for salvage check 1."
+  echo "No Blockchain data found for salvage check 1..."
   echo "***"
   echo -e "${NC}"
   sleep 3s
 fi
+# checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to salvage check 2
 
 if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep blocks > /dev/null ; then
   echo -e "${RED}"
   echo "***"
-  echo "FoundBlockchain data for salvage!"
+  echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
 
   echo -e "${RED}"
   echo "***"
-  echo "Copying to temporary directory..."
+  echo "Moving to temporary directory..."
   echo "***"
   echo -e "${NC}"
   sleep 2s
   sudo mkdir /mnt/salvage/system-setup-salvage/
-  sudo cp -rv /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
-  sudo cp -rv /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
+  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
+  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data prepared for salvage!"
+  echo "***"
+  echo -e "${NC}"
+  sleep 2s
   sudo rm -rf /mnt/salvage/docker
   sudo rm -f /mnt/salvage/swapfile
   sudo umount -l /dev/sda1
   sleep 3s
   sudo rm -rf /mnt/salvage
+  # copies blockchain salvage data to /mnt/salvage if found
 
   echo -e "${RED}"
   echo "***"
@@ -796,15 +810,11 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   sleep 3s
-  # end
-
-  bash ~/RoninDojo/Scripts/Install/install-dojo.sh
-  # run dojo install
   exit
 else
   echo -e "${RED}"
   echo "***"
-  echo "No Blockchain data found for salvage check 2."
+  echo "No Blockchain data found for salvage check 2..."
   echo "***"
   echo -e "${NC}"
   sleep 3s
@@ -813,6 +823,7 @@ else
   sleep 5s
   sudo rm -rf /mnt/salvage
 fi
+# checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to format drive
 
 echo -e "${RED}"
 echo "***"
@@ -1023,4 +1034,4 @@ echo "Dojo is ready to be installed!"
 echo "***"
 echo -e "${NC}"
 sleep 3s
-# end
+# will continue to dojo install if it was selected on the install menu
