@@ -16,9 +16,9 @@ OPTIONS=(1 "View API key"
          3 "View Status"
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
-         6 "Restart"
-         7 "Re-initiate Whirlpool"
-         8 "Update Whirlpool"
+         6 "Restart Whirlpool"
+         7 "Whirlpool Stat Tool"
+         8 "Next Page"
          9 "Go Back")
 
 CHOICE=$(dialog --clear \
@@ -126,45 +126,20 @@ case $CHOICE in
         7)
             echo -e "${RED}"
             echo "***"
-            echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
+            echo "Starting Whirlpool Stat Tool..."
+            echo "Press Ctrl+C to exit"
             echo "***"
-            read -p "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
-            case $yn in
-                [Y/y]* ) echo "Re-initiating Whirlpool...";
-                         sudo systemctl stop whirlpool;
-                         cd ~/whirlpool;
-                         rm -rf *.json whirlpool-cli-config.properties;
-                         sudo systemctl start whirlpool;
-                         echo "Re-initation complete...";
-                         sleep 1s;
-                         echo "Paste your pairing payload into whirlpool GUI";;
-                [N/n]* ) echo "Returning to menu...";;
-                     * ) echo "Please answer yes or no.";;
-            esac
+            echo -e "${NC}"
+            sleep 1s
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
             sleep 1s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # re-initate whirlpool, return to menu
+            # check for wst install and/or launch wst, return to menu
             ;;
         8)
-            echo -e "${RED}"
-            echo "***"
-            echo "Checking for updates..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            echo "Upgrading to Whirlpool Client CLI 0.10.2..."
-            sleep 2s
-            echo "Press Ctrl+C to exit..."
-            sleep 5s
-            cd ~/whirlpool
-            sudo systemctl stop whirlpool > /dev/null 2>&1
-            sudo rm -rf *.jar
-            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.2/whirlpool-client-cli-0.10.2-run.jar
-            sudo systemctl start whirlpool
-            echo "Upgrade complete... head to GUI to unlock mixing."
-            sleep 2s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool2.sh
+            # Go to next page
             ;;
         9)
             bash ~/RoninDojo/ronin
