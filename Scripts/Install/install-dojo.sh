@@ -37,7 +37,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
-git clone -b feat_mydojo_local_indexer https://code.samourai.io/BTCxZelko/samourai-dojo.git # CHANGE
+git clone https://code.samourai.io/Ronin/samourai-dojo.git # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
