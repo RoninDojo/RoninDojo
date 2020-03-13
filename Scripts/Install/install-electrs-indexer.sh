@@ -39,11 +39,11 @@ sudo sed -i '80i \      - ./conf/docker-indexer.conf' ~/dojo/docker/my-dojo/dock
 
 ###### Modify dojo.sh for electrs ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '224i \  if [ "$INDEXER_INSTALL" == "on" ]; then' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '225i \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '226i \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '227i \  fi' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '227G' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '273i \  if [ "$INDEXER_INSTALL" == "on" ]; then' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '274i \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '275i \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '276i \  fi' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '276G' ~/dojo/docker/my-dojo/dojo.sh
 
 
 ###### Modify indexer/restart.sh for Electrs ######
