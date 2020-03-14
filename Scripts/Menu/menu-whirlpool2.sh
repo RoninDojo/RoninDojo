@@ -91,10 +91,10 @@ case $CHOICE in
                             echo -e "${NC}"
                             sleep 2s
                             sudo systemctl stop whirlpool 
-			                sudo rm -rf /etc/systemd/system/whirlpool.service
-			                sudo rm -rf ~/whirlpool
-			                sudo systemctl daemon-reload
-			                echo -e "${RED}"
+                            sudo rm -rf /etc/systemd/system/whirlpool.service
+                            sudo rm -rf ~/whirlpool
+                            sudo systemctl daemon-reload
+                            echo -e "${RED}"
                             echo "***"
                             echo "Whirlpool is uninstalled... returning to menu"
                             echo "***"
@@ -119,4 +119,3 @@ case $CHOICE in
 	    # return to menu
 	    ;;
 esac
-

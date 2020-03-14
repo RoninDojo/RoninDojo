@@ -5,13 +5,14 @@ RED='\033[0;31m'
 NC='\033[0m'
 # No Color
 
-
 echo -e "${RED}"
-echo "Checking for Whirlpool Stat Tool"
+echo "Checking for Whirlpool Stat Tool..."
 echo -e "${NC}"
 if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
     echo -e "${RED}"
-    echo "Installing Whirlpool Stat Tool ..."
+    echo "***"
+    echo "Installing Whirlpool Stat Tool..."
+    echo "***"
     echo -e "${NC}"
     mkdir ~/wst;
     cd ~/wst;
@@ -23,8 +24,16 @@ if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
     cd whirlpool_stats;
 else 
     echo -e "${RED}"
-    echo "Whirlpool Stat Tool Already Installed";
+    echo "***"
+    echo "Whirlpool Stat Tool Already Installed!";
+    echo "***"
+    echo -e "${NC}"
+    sleep 2s
+    
+    echo -e "${RED}"
+    echo "***"
     echo "Launching Whirlpool Stat Tool..."
+    echo "***"
     echo -e "${NC}"
     cd ~/wst/whirlpool_stats/whirlpool_stats
 fi

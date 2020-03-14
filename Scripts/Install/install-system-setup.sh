@@ -53,6 +53,31 @@ sleep 5s
 sudo rm -rf /etc/motd
 # remove ssh banner for the script logo
 
+if ls /boot | grep cmdline.txt > /dev/null ; then
+  echo -e "${RED}"
+  echo "***"
+  echo "Disabling Ipv6 for Raspberry Pi4..."
+  echo "***"
+  echo -e "${NC}"
+  cat /boot/cmdline.txt > ~/cmdline.txt
+  sudo sed -i '/^root=/s/$/ ipv6.disable=1/' ~/cmdline.txt
+  sudo mv ~/cmdline.txt /boot/cmdline.txt
+  sleep 2s
+else
+  echo -e "${RED}"
+  echo "***"
+  echo "Disabling Ipv6 for Odroid N2..."
+  echo "***"
+  echo -e "${NC}"
+  cat /boot/boot.ini > ~/boot.ini
+  sudo sed -i '/^setenv bootargs/s/$/ ipv6.disable=1/' ~/boot.ini
+  sudo mv ~/boot.ini /boot/boot.ini
+  sleep 2s
+fi
+# disable ipv6
+# /boot/cmdline.txt file will only be there if it's a Raspberry Pi
+# /boot/boot.ini is for Odroid N2
+
 check1=ronin
 if ls /usr/local/bin | grep $check1 > /dev/null ; then
   echo ""
