@@ -79,7 +79,7 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            sudo systemctl status whirlpool
+            sudo watch -n 0.2 systemctl status whirlpool —lines=10
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # view status, return to menu
             ;;
