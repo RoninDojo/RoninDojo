@@ -22,7 +22,7 @@ sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
 sudo rm -rf samourai-dojo > /dev/null 2>&1
-git clone -b feat_mydojo_local_indexer https://code.samourai.io/BTCxZelko/samourai-dojo.git
+git clone https://code.samourai.io/Ronin/samourai-dojo.git
 cp -rv samourai-dojo/* ~/dojo
 
 echo -e "${RED}"
