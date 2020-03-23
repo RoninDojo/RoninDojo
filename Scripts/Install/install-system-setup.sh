@@ -87,7 +87,7 @@ check1=ronin
 if ls /usr/local/bin | grep $check1 > /dev/null ; then
   echo ""
 else
-  sudo cp ~/RoninDojo/ronin /usr/local/bin
+  sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
   echo "" >> ~/.bashrc
   echo "~/RoninDojo/Scripts/.logo" >> ~/.bashrc
   echo "" >> ~/.bashrc
