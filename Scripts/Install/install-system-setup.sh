@@ -141,8 +141,6 @@ else
     sudo sed -i '60d' /etc/tor/torrc
     sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
     sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
-    sudo mkdir /mnt/usb/tor/
-    sudo chown -R tor:tor /mnt/usb/tor/
 fi
 # check if tor is installed, if not install and modify torrc
 
@@ -988,6 +986,15 @@ else
   sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
 fi
 # created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+
+echo -e "${RED}"
+echo "***"
+echo "Creating Tor directory on the external SSD..."
+echo "***"
+echo -e "${NC}"
+sleep 3s
+sudo mkdir /mnt/usb/tor/
+sudo chown -R tor:tor /mnt/usb/tor/
 
 echo -e "${RED}"
 echo "***"
