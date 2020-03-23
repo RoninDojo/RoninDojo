@@ -17,10 +17,10 @@ if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
     mkdir ~/wst;
     cd ~/wst;
     git clone https://github.com/Samourai-Wallet/whirlpool_stats.git;
-    sudo pacman -Syyu
+    sudo pacman -Syyu && pacman -Syu
     sudo pacman -S python-pip 19.3.1-1;
     cd whirlpool_stats;
-    pip3 install -r ./requirements.txt;
+    sudo pacman -S python-pip
     cd whirlpool_stats;
 else 
     echo -e "${RED}"
