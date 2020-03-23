@@ -9,19 +9,7 @@ echo -e "${RED}"
 echo "Checking for Whirlpool Stat Tool..."
 echo -e "${NC}"
 if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
-    echo -e "${RED}"
-    echo "***"
-    echo "Installing Whirlpool Stat Tool..."
-    echo "***"
-    echo -e "${NC}"
-    mkdir ~/wst;
-    cd ~/wst;
-    git clone https://github.com/Samourai-Wallet/whirlpool_stats.git;
-    sudo pacman -Syyu
-    sudo pacman -S python-pip 19.3.1-1;
-    cd whirlpool_stats;
-    pip3 install -r ./requirements.txt;
-    cd whirlpool_stats;
+    bash ~/RoninDojo/Scripts/Install/install-wst.sh
 else 
     echo -e "${RED}"
     echo "***"
