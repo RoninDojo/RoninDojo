@@ -585,7 +585,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 1s
-  sudo fallocate -l 1G /mnt/usb/swapfile
+  sudo fallocate -l 2G /mnt/usb/swapfile
   sudo chmod 600 /mnt/usb/swapfile
   sudo mkswap /mnt/usb/swapfile
   sudo swapon /mnt/usb/swapfile
