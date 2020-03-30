@@ -171,37 +171,6 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.3/whirlpool-client-cli-0.10.3-run.jar
 # pull Whirlpool run times
 
-echo -e "${RED}"
-echo "***"
-echo "Initiating whirlpool..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-
-echo -e "${RED}"
-echo "***"
-echo "Grab your Whirlpool Pairing payload from your Samourai Wallet!"
-echo "***"
-echo -e "${NC}"
-sleep 3s
-
-echo -e "${RED}"
-echo "***"
-echo "Paste it when prompted..."
-echo "***"
-echo -e "${NC}"
-sleep 1s
-
-echo -e "${RED}"
-echo "***"
-echo "Press any key to continue"
-echo "***"
-echo -e "${NC}"
-read -n 1 -r -s
-java -jar whirlpool.jar --init --tor
-sed -i '9i cli.torConfig.executable=/usr/bin/tor' ~/whirlpool/whirlpool-cli-config.properties
-# initiating whirlpool
-
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
 # whirlpool service. Check if present else create it
@@ -264,7 +233,7 @@ sleep 3s
 
 echo -e "${RED}"
 echo "***"
-echo "Paste APIKey (found in Whirlpool Menu) into Whirlpool GUI to unlock wallet and begin mixing..."
+echo "Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixing..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
