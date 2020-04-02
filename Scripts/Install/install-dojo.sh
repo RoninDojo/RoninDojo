@@ -383,7 +383,7 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo rm -rf /mnt/usb/uninstall-salvage/
   sudo rm -rf /mnt/usb/system-setup-salvage/
-  sudo sudo ./dojo.sh start
+  sudo ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
@@ -422,7 +422,7 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo rm -rf /mnt/usb/system-setup-salvage/
   sudo rm -rf /mnt/usb/uninstall-salvage/
-  sudo sudo ./dojo.sh start
+  sudo ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 2..."
 fi
