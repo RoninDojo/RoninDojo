@@ -313,16 +313,12 @@ EXPLORER_KEY=$EXPLORER_KEY
 
 # Install Indexer
 
-if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
-    read -p "Do you want to install an indexer? [y/n]" yn
-    case $yn in
-        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
-        [N/n]* ) echo "Indexer will not be installed!";;
-        * ) echo "Please answer Yes or No.";;
-    esac
-else
-    echo "Indexer is already installed!"
-fi
+read -p "Do you want to install an indexer? [y/n]" yn
+case $yn in
+    [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+    [N/n]* ) echo "Indexer will not be installed!";;
+    * ) echo "Please answer Yes or No.";;
+esac
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in
