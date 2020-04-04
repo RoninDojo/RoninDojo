@@ -99,7 +99,7 @@ fi
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
-check2=jdk11-openjdk
+check2=/usr/bin/java
 if pacman -Ql | grep $check2 > /dev/null ; then
   echo -e "${RED}"
   echo "***"
