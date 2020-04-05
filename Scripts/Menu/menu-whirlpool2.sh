@@ -57,7 +57,7 @@ case $CHOICE in
         2)  
             echo -e "${RED}"
             echo "***"
-            echo "Upgrading to Whirlpool Client CLI 0.10.3..."
+            echo "Upgrading to Whirlpool Client CLI 0.10.4..."
             echo "***"            
             sleep 2s
             echo "Press Ctrl+C to exit..."
@@ -65,7 +65,7 @@ case $CHOICE in
             cd ~/whirlpool
             sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
-            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.3/whirlpool-client-cli-0.10.3-run.jar
+            wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
             sudo systemctl start whirlpool
             echo "Upgrade complete... head to GUI to unlock mixing."
             sleep 2s
