@@ -37,15 +37,13 @@ case $CHOICE in
                         sudo systemctl stop whirlpool
                         cd ~/whirlpool
                         rm -rf *.json whirlpool-cli-config.properties
-                        echo -e "${RED}"
-			echo "Re-initation complete..."
                         sleep 1s
-                        echo "Paste your pairing payload when prompted"
-			echo -e "${NC}"
-			java -jar whirlpool.jar --init --tor
-			sudo systemctl start whirlpool
-			echo -e "${RED}"
-			echo "Re-initation complete...";;
+                        echo "Re-pair with Whirlpool GUI"
+                        echo -e "${NC}"
+			            sudo systemctl start whirlpool
+			            echo -e "${RED}"
+			            echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
+                        sleep 5s;;
                 [N/n]* ) echo "Returning to menu...";;
                      * ) echo "Please answer yes or no.";;
             esac
