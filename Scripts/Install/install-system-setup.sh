@@ -99,8 +99,8 @@ fi
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
-check2=/usr/bin/java
-if pacman -Ql | grep $check2 > /dev/null ; then
+check2='jdk11-openjdk /usr/share/licenses/java11-openjdk/'
+if pacman -Ql | grep "$check2" > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Java already installed..."
@@ -117,6 +117,8 @@ else
   sudo pacman -S --noconfirm jdk11-openjdk
 fi
 # installs java jdk11-openjdk
+# in had to use '' and "" for the check to work correctly
+# single quotes won't interpolate anything, but double quotes will
 
 check3=/usr/bin/tor
 if pacman -Ql | grep $check3  > /dev/null ; then
@@ -144,8 +146,8 @@ else
 fi
 # check if tor is installed, if not install and modify torrc
 
-check4=python3
-if pacman -Qs $check4 > /dev/null ; then
+check4='python /usr/bin/python3'
+if pacman -Ql | grep "$check4" > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Python3 already installed..."
@@ -162,14 +164,8 @@ else
   sudo pacman -S --noconfirm python3
 fi
 # checks for python, if python not found then it is installed
-
-echo -e "${RED}"
-echo "***"
-echo "Showing version... "
-echo "***"
-echo -e "${NC}"
-python3 --version
-sleep 3s
+# in had to use '' and "" for the check to work correctly
+# single quotes won't interpolate anything, but double quotes will
 
 check5=fail2ban
 if pacman -Qs $check5 > /dev/null ; then
@@ -446,27 +442,28 @@ else
   echo -e "${NC}"
   sleep 2s
   sudo ufw status
+  sleep 4s
 
   echo -e "${RED}"
   echo "***"
-  echo "Take a moment to check the UFW rule that was just created."
+  echo "Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access."
   echo "***"
   echo -e "${NC}"
   sleep 5s
 
   echo -e "${RED}"
   echo "***"
-  echo "Any computer connected to the same local network as your Dojo will have SSH access."
+  echo "Leaving this setting default is NOT RECOMMENDED for users who are conncting to something like University, Public Internet, Etc."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  sleep 5s
 
   echo -e "${RED}"
   echo "***"
-  echo "Additional local network SSH access will have to done manually using the Firewall Menu."
+  echo "Firewall rules can be adjusted using the RoninDojo Firewall Menu."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  sleep 5s
   # ufw setup ends
 fi
 
@@ -502,10 +499,12 @@ else
   echo "Did not find /dev/sda1 for Blockchain data salvage."
   echo "***"
   echo -e "${NC}"
+  sleep 2s
 fi
 # mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
 rm -f ~/sda_tmp.txt
+# remove temp file, looking for sda1
 
 if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo -e "${RED}"
@@ -551,6 +550,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sudo mkdir /mnt/usb
+  sleep 2s
 
   echo -e "${RED}"
   echo "***"
@@ -559,6 +559,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo -e "${NC}"
   sleep 2s
   sudo mount /dev/sda1 /mnt/usb
+  sleep 1s
   # mount main storage drive to /mnt/usb directory
 
   echo -e "${RED}"
@@ -566,17 +567,18 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
+  sleep 2s
   lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
   sleep 2s
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
   echo -e "${RED}"
   echo "***"
-  echo "Check output for /dev/sda1 and make sure everything looks ok."
+  echo "Check output above for /dev/sda1 and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
   df -h
-  sleep 2s
+  sleep 4s
   # checks disk info
 
   echo -e "${RED}"
@@ -584,7 +586,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "Creating swapfile..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  sleep 2s
   sudo fallocate -l 2G /mnt/usb/swapfile
   sudo chmod 600 /mnt/usb/swapfile
   sudo mkswap /mnt/usb/swapfile
@@ -594,10 +596,10 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
 
   echo -e "${RED}"
   echo "***"
-  echo "Now configuring docker to use the external drive..."
+  echo "Configuring docker to use the external drive..."
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  sleep 2s
   sudo mkdir /mnt/usb/docker
   # makes directroy to store docker/dojo data
 
@@ -626,7 +628,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   docker -v
-  sleep 3s
+  sleep 2s
 
   echo -e "${RED}"
   echo "***"
@@ -668,7 +670,7 @@ else
   echo -e "${NC}"
   sleep 3s
 fi
-# checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to salvage check 2
+# checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
 if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep blocks > /dev/null ; then
   echo -e "${RED}"
@@ -676,6 +678,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
+  sleep 2s
 
   echo -e "${RED}"
   echo "***"
@@ -730,6 +733,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   sudo mkdir /mnt/usb
+  sleep 2s
 
   echo -e "${RED}"
   echo "***"
@@ -738,6 +742,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo -e "${NC}"
   sleep 2s
   sudo mount /dev/sda1 /mnt/usb
+  sleep 1s
   # mount main storage drive to /mnt/usb directory
 
   echo -e "${RED}"
@@ -745,6 +750,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
+  sleep 2s
   lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
   sleep 2s
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
@@ -755,7 +761,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   df -h
-  sleep 2s
+  sleep 4s
   # checks disk info
 
   echo -e "${RED}"
@@ -763,7 +769,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "Creating swapfile..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  sleep 2s
   sudo fallocate -l 1G /mnt/usb/swapfile
   sudo chmod 600 /mnt/usb/swapfile
   sudo mkswap /mnt/usb/swapfile
@@ -805,7 +811,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   docker -v
-  sleep 3s
+  sleep 2s
 
   echo -e "${RED}"
   echo "***"
@@ -944,6 +950,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 sudo mount /dev/sda1 /mnt/usb
+sleep 1s
 # mount main storage drive to /mnt/usb directory
 
 echo -e "${RED}"
@@ -951,6 +958,7 @@ echo "***"
 echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
+sleep 2s
 lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
 sleep 2s
 # double-check that /dev/sda exists, and that its storage capacity is what you expected
@@ -971,14 +979,14 @@ if ls /mnt/usb | grep $check16 > /dev/null ; then
   echo "Swapfile already created..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  sleep 2s
 else
   echo -e "${RED}"
   echo "***"
   echo "Creating swapfile..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  sleep 2s
   sudo fallocate -l 1G /mnt/usb/swapfile
   sudo chmod 600 /mnt/usb/swapfile
   sudo mkswap /mnt/usb/swapfile
