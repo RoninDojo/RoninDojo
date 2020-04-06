@@ -50,7 +50,7 @@ sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 
 # Install Indexer
 
-if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
+if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
     read -p "Do you want to install an Indexer? [y/n]" yn
     case $yn in
         [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; 
@@ -60,16 +60,32 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ]; then
         [N/n]* ) echo "Indexer will not be installed!";;
         * ) echo "Please answer Yes or No.";;
     esac
-else
-    echo "Indexer is already installed!"
+elif cat ~/dojo/docker/my-dojo/conf/docker-indexer.conf | grep "INDEXER_INSTALL=off" > /dev/null ; then
+        read -p "Do you want to install an Indexer? [y/n]" yn
+        case $yn in
+            [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
+                     sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
+                     sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf;
+                     sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf;;
+            [N/n]* ) echo "Indexer will not be installed!";;
+            * ) echo "Please answer Yes or No.";;
+        esac  
+    else 
+        echo "Indexer is already installed! If you were running Electrs press y at next prompt";
 fi
 
-read -p "Do you want to install Electrs? [y/n]" yn
-case $yn in
-    [Y/y]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-    [N/n]* ) echo "Electrs will not be installed!";;
-    * ) echo "Please answer Yes or No.";;
-esac
+if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ] ; then
+   read -p "Do you want to install Electrs? [y/n]" yn
+   case $yn in
+       [Y/y]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+       [N/n]* ) echo "Electrs will not be installed!";;
+       * ) echo "Please answer Yes or No.";;
+    esac
+else 
+   echo "Electrs is was previously installed!";
+   sleep 3s
+   bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;
+fi
 
 # Run upgrade
 cd ~/dojo/docker/my-dojo
