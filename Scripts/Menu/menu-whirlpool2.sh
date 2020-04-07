@@ -30,24 +30,43 @@ case $CHOICE in
             echo "***"
             echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
             echo "***"
+            echo -e "${NC}"
+            
             read -p "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
             case $yn in
-                [Y/y]* ) echo "Re-initiating Whirlpool..."
-			echo -e "${NC}"
-                        sudo systemctl stop whirlpool
-                        cd ~/whirlpool
-                        rm -rf *.json whirlpool-cli-config.properties
-                        sleep 1s
-                        echo "Re-pair with Whirlpool GUI"
-                        echo -e "${NC}"
-			            sudo systemctl start whirlpool
-			            echo -e "${RED}"
-			            echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
-                        sleep 5s;;
-                [N/n]* ) echo "Returning to menu...";;
-                     * ) echo "Please answer yes or no.";;
+                [Y/y]* ) echo -e "${RED}"
+                         echo "***"
+                         echo "Re-initiating Whirlpool..."
+                         echo "***"
+                         echo -e "${NC}"
+                         sudo systemctl stop whirlpool
+                         cd ~/whirlpool
+                         rm -rf *.json whirlpool-cli-config.properties
+                         sleep 1s
+                         
+                         echo -e "${RED}"
+                         echo "***"
+                         echo "Re-pair with Whirlpool GUI"
+                         echo "***"
+                         echo -e "${NC}"
+                         sudo systemctl start whirlpool
+			             
+                         echo -e "${RED}"
+                         echo "***"
+                         echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
+                         echo "***"
+                         echo -e "${NC}"
+                         sleep 5s;;
+                         
+                [N/n]* ) echo -e "${RED}"
+                         echo "***"
+                         echo "Returning to menu..."
+                         echo "***"
+                         echo -e "${NC}"
+                         sleep 2s
+                         break;;
+                * ) echo "Please answer yes or no.";;
             esac
-            echo -e "${NC}"
             sleep 1s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # re-initate whirlpool, return to menu
@@ -56,16 +75,26 @@ case $CHOICE in
             echo -e "${RED}"
             echo "***"
             echo "Upgrading to Whirlpool Client CLI 0.10.4..."
-            echo "***"            
+            echo "***"
+            echo -e "${NC}"
             sleep 2s
+            
+            echo -e "${RED}"
+            echo "***"
             echo "Press Ctrl+C to exit..."
+            echo "***"
+            echo -e "${NC}"
             sleep 5s
             cd ~/whirlpool
             sudo systemctl stop whirlpool > /dev/null 2>&1
             sudo rm -rf *.jar
             wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
             sudo systemctl start whirlpool
+            echo -e "${RED}"
+            echo "***"
             echo "Upgrade complete... head to GUI to unlock mixing."
+            echo "***"
+            echo -e "${NC}"
             sleep 2s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # upgrade whirlpool
@@ -76,8 +105,13 @@ case $CHOICE in
             echo "***"
             echo "Uninstalling Whirlpool..."
             echo "***"
+            echo -e "${NC}"
             sleep 2s
+            
+            echo -e "${RED}"
+            echo "***"
             echo "Do you want to uninstall Whirlpool?"
+            echo "***"
             echo -e "${NC}"
             while true; do
                 read -p "Y/N?: " yn
@@ -92,16 +126,20 @@ case $CHOICE in
                             sudo rm -rf /etc/systemd/system/whirlpool.service
                             sudo rm -rf ~/whirlpool
                             sudo systemctl daemon-reload
+                            
                             echo -e "${RED}"
                             echo "***"
                             echo "Whirlpool is uninstalled... returning to menu"
                             echo "***"
+                            echo -e "${NC}"
                             sleep 2s
                             break;;
+                            
                     [Nn]* ) echo -e "${RED}"
                             echo "***"
                             echo "Returning to menu..."
                             echo "***"
+                            echo -e "${NC}"
                             sleep 2s
                             break;;
                     * ) echo "Please answer yes or no.";;
