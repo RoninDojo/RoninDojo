@@ -63,7 +63,7 @@ echo "***"
 echo "Setting the RPC User and Password..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -167,7 +167,7 @@ echo "****"
 echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 
 echo -e "${RED}"
 echo "***"
@@ -186,7 +186,7 @@ echo "****"
 echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+sleep 2s
 
 echo -e "${RED}"
 echo "****"
@@ -245,7 +245,7 @@ rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
 MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
 MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-# Create random 64 character password and username for MYSQL 
+# Create random 64 character password and username for MYSQL
 #MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
 echo "
@@ -291,8 +291,13 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
     EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
     sleep 1s
 else
+    echo -e "${RED}"
+    echo "***"
     echo "Explorer is already installed!"
+    echo "***"
+    echo -e "${NC}"
 fi
+# install block explorer
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 echo "
@@ -309,16 +314,18 @@ EXPLORER_INSTALL=on
 # Type: alphanumeric
 EXPLORER_KEY=$EXPLORER_KEY
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-# Create new explorer conf file
-
-# Install Indexer
+# create new block explorer conf file
 
 read -p "Do you want to install an indexer? [y/n]" yn
 case $yn in
-    [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl; sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl; sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+    [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
+             sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
+             sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;
+             sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
     [N/n]* ) echo "Indexer will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac
+# install indexer
 
 read -p "Do you want to install Electrs? [y/n]" yn
 case $yn in
@@ -326,6 +333,7 @@ case $yn in
     [N/n]* ) echo "Electrs will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac
+# install electrs
 
 echo -e "${RED}"
 echo "***"

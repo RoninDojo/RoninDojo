@@ -78,10 +78,10 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
-echo "Whirlpool GUI will be able to access Whirlpool CLI from any machine on your Dojo's local network."
+echo "Whirlpool GUI will be able to access Whirlpool CLI from any machine on your RoninDojo's local network."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+sleep 5s
 
 if sudo ufw status | grep 8899 > /dev/null ; then
     echo -e "${RED}"
