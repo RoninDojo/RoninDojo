@@ -90,7 +90,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl start whirlpool
+            bash ~/RoninDojo/Scripts/Standalone/whirlpool-start.sh
 
             echo -e "${RED}"
             echo "***"
@@ -108,7 +108,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl stop whirlpool
+            bash ~/RoninDojo/Scripts/Standalone/whirlpool-stop.sh
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # stop whirlpool, return to menu
             ;;
@@ -119,7 +119,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl restart whirlpool
+            bash ~/RoninDojo/Scripts/Standalone/whirlpool-restart.sh
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # enable whirlpool at startup, return to menu
             ;;

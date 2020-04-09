@@ -186,7 +186,7 @@ if ls /etc/systemd/system | grep whirlpool.service  > /dev/null ; then
     echo "Whirlpool Service already is installed!"
     echo "***"
     sleep 1s
-    sudo systemctl stop whirlpool
+    bash ~/RoninDojo/Scripts/Standalone/whirlpool-stop.sh
 else
     echo -e "${RED}"
     echo "***"
@@ -227,7 +227,7 @@ echo "***"
 echo -e "${NC}"
 sleep 1s
 
-sudo systemctl start whirlpool
+bash ~/RoninDojo/Scripts/Standalone/whirlpool-start.sh
 sudo systemctl enable whirlpool
 sleep 3s
 
