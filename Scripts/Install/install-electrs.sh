@@ -31,8 +31,7 @@ echo "***"
 echo -e "${NC}"
 sleep 7s
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh stop
+bash ~/RoninDojo/Scripts/Standalone/dojo-stop.sh
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
@@ -96,8 +95,7 @@ sleep 1s
 echo "1..."
 sleep 1s
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh upgrade
+bash ~/RoninDojo/Scripts/Standalone/dojo-upgrade.sh
 # run Upgrade to electrs
 
 bash ~/RoninDojo/ronin

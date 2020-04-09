@@ -66,8 +66,7 @@ case $CHOICE in
                             echo "***"
                             echo -e "${NC}"
                             sleep 2s
-			    cd ~/dojo/docker/my-dojo/
-			    sudo ./dojo.sh stop
+			    bash ~/RoninDojo/Scripts/Standalone/dojo-stop.sh
                             sudo mkdir /uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/

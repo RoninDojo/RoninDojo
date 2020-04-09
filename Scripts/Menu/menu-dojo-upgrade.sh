@@ -23,8 +23,7 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh stop
+bash ~/RoninDojo/Scripts/Standalone/dojo-stop.sh
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
@@ -119,8 +118,7 @@ else
 fi
 # install electrs
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh upgrade
+bash ~/RoninDojo/Scripts/Standalone/dojo-upgrade.sh
 # run upgrade
 
 bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh

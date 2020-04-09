@@ -238,7 +238,7 @@ NODE_ACTIVE_INDEXER=local_bitcoind
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
 " | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-# Create new docker node conf file 
+# Create new docker node conf file
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
@@ -349,8 +349,7 @@ echo "Installing Dojo..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh install
+bash ~/RoninDojo/Scripts/Standalone/dojo-install.sh
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
 if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
@@ -368,8 +367,7 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
+  bash ~/RoninDojo/Scripts/Standalone/dojo-stop.sh
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo mv -v /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -387,7 +385,7 @@ if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo rm -rf /mnt/usb/uninstall-salvage/
   sudo rm -rf /mnt/usb/system-setup-salvage/
-  sudo ./dojo.sh start
+  bash ~/RoninDojo/Scripts/Standalone/dojo-start.sh
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
@@ -407,8 +405,7 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
+  bash ~/RoninDojo/Scripts/Standalone/dojo-stop.sh
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo mv -v /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -426,7 +423,7 @@ if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo rm -rf /mnt/usb/system-setup-salvage/
   sudo rm -rf /mnt/usb/uninstall-salvage/
-  sudo ./dojo.sh start
+  bash ~/RoninDojo/Scripts/Standalone/dojo-start.sh
 else
   echo "No Blockchain data found for salvage check 2..."
 fi

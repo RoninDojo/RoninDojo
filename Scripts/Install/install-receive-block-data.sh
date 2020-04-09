@@ -42,8 +42,7 @@ echo "Making sure Dojo is stopped..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-cd ~/dojo/docker/my-dojo/
-sudo ./dojo.sh stop
+bash ~/RoninDojo/Scripts/Standalone/dojo-stop.sh
 
 echo -e "${RED}"
 echo "***"
