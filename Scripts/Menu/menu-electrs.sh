@@ -44,8 +44,8 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
-            # check if electrs is already installed 
+            fi
+            # check if electrs is already installed
 
             echo -e "${RED}"
             echo "***"
@@ -79,7 +79,7 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
 
             echo -e "${RED}"
@@ -88,7 +88,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker start indexer
+            bash ~/RoninDojo/Scripts/Standalone/indexer-start.sh
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -109,16 +109,16 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Stopping Electrs..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker stop indexer
+            bash ~/RoninDojo/Scripts/Standalone/indexer-stop.sh
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # stop electrs, return to menu
             ;;
@@ -139,16 +139,16 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Restarting Electrs..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker restart indexer
+            bash ~/RoninDojo/Scripts/Standalone/indexer-restart.sh
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # restart electrs, return to menu
             ;;
@@ -169,9 +169,9 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
