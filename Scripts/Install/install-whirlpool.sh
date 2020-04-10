@@ -98,15 +98,15 @@ else
     # delete lines 2-12 (in the systemsetup script it is 2,10d
     # had to be modified for whirlpool setup as an extra value gets added to ~/ip_tmp.txt)
 
-    cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done
+    while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 19 in /etc/ufw/user.rules
 
-    cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done
+    while read ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 20 /etc/ufw/user.rules
 
-    cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done
+    while read ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 21 /etc/ufw/user.rules
 
@@ -171,7 +171,7 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
 # pull Whirlpool run times
 
-USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+USER=$(sudo grep 1000 /etc/passwd | awk -F: '{ print $1}' | cut -c 1-)
 
 # whirlpool service. Check if present else create it
 echo -e "${RED}"

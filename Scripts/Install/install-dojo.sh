@@ -73,7 +73,7 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-RPC_PASS=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 #RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
@@ -177,8 +177,8 @@ echo "***"
 sleep 2s
 echo -e "${NC}"
 
-NODE_API_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-NODE_JWT_SECRET=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+NODE_API_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
+NODE_JWT_SECRET=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 # Create random set of 64 characters for API KEY and JWT Secret
 
 echo -e "${RED}"
@@ -203,7 +203,7 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-NODE_ADMIN_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+NODE_ADMIN_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 # Create random set of 32 characters for Node Admin Key
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
@@ -242,9 +242,9 @@ NODE_FEE_TYPE=ECONOMICAL
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-MYSQL_ROOT_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
-MYSQL_USER=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1)
-MYSQL_PASSWORD=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 64 | head -n 1)
+MYSQL_ROOT_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
+MYSQL_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 12 | head -n 1)
+MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 # Create random 64 character password and username for MYSQL
 #MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
@@ -288,7 +288,7 @@ echo -e "${NC}"
 sleep 5s
 
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+    EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
     sleep 1s
 else
     echo -e "${RED}"

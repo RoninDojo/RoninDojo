@@ -43,7 +43,7 @@ case $CHOICE in
             echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
-            cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
+            grep cli.apiKey= ~/whirlpool/whirlpool-cli-config.properties | cut -c 12-
             read -n 1 -r -s
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # press any key to return to menu
