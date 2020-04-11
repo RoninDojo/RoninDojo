@@ -37,26 +37,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
-git clone https://code.samourai.io/Ronin/samourai-dojo.git # CHANGE TO MASTER AFTER MERGE
-
-echo -e "${RED}"
-echo "***"
-echo "Making ~/dojo and copying data."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-mkdir ~/dojo
-cp -r samourai-dojo/* ~/dojo
-sleep 2s
-
-echo -e "${RED}"
-echo "***"
-echo "Removing all the files no longer needed."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-rm -rf samourai-dojo/
-sleep 1s
+git clone https://code.samourai.io/Ronin/samourai-dojo.git dojo # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
