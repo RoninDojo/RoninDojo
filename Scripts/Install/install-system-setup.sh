@@ -30,24 +30,7 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-echo -e "${NC}"
-echo " _____________________________________________________|_._._._._._._._._, "
-echo " \____________________________________________________|_|_|_|_|_|_|_|_|_| "
-echo "                                                      !                   "
-echo -e "${RED}"
-echo " I dreamt of        ______            _          _   _ _                  "
-echo "   worldly success  | ___ \          (_)        | | | (_)                 "
-echo "               once.| |_/ /___  _ __  _ _ __    | | | |_|                 "
-echo "                    |    // _ \| '_ \| | '_ \   | | | | |                 "
-echo "                    | |\ \ (_) | | | | | | | |  | |_| | |                 "
-echo "                    \_| \_\___/|_| |_|_|_| |_|by\____/|_|                 "
-echo "                                              @GuerraMoneta               "
-echo -e "                                            & @BTCxZelko          ${NC}"
-echo " ,_._._._._._._._._|_____________________________________________________ "
-echo " |_|_|_|_|_|_|_|_|_|____________________________________________________/ "
-echo "                   !                                                      "
-echo -e "${NC}"
-sleep 5s
+~/RoninDojo/Scripts/.logo
 
 # system setup starts
 sudo rm -rf /etc/motd
@@ -88,10 +71,12 @@ if ls /usr/local/bin | grep $check1 > /dev/null ; then
   echo ""
 else
   sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
-  echo "" >> ~/.bashrc
-  echo "~/RoninDojo/Scripts/.logo" >> ~/.bashrc
-  echo "" >> ~/.bashrc
-  echo "~/RoninDojo/ronin" >> ~/.bashrc
+cat << EOF >> ~/.bashrc
+
+~/RoninDojo/Scripts/.logo
+
+~/RoninDojo/ronin
+EOF
 fi
 # place main ronin menu  script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
@@ -611,16 +596,11 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   sudo mkdir /etc/docker
   # makes docker directory
 
-  sudo echo "{" > ~/daemon.json
-  sudo echo '                  "data-root": "/mnt/usb/docker"' >> ~/daemon.json
-  sudo echo "}" >> ~/daemon.json
-  # using echo > to create file with first line, then using echo >> to append following two lines
-
-  cat ~/daemon.json | sudo tee -a /etc/docker/daemon.json > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/docker, so using sudo tee -a
-
-  rm ~/daemon.json
-  # removes temp file
+sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{
+  "data-root": "/mnt/usb/docker"
+}
+EOF'
 
   echo -e "${RED}"
   echo "***"
@@ -794,16 +774,11 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   sudo mkdir /etc/docker
   # makes docker directory
 
-  sudo echo "{" > ~/daemon.json
-  sudo echo '                  "data-root": "/mnt/usb/docker"' >> ~/daemon.json
-  sudo echo "}" >> ~/daemon.json
-  # using echo > to create file with first line, then using echo >> to append following two lines
-
-  cat ~/daemon.json | sudo tee -a /etc/docker/daemon.json > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/docker, so using sudo tee -a
-
-  rm ~/daemon.json
-  # removes temp file
+sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{
+  "data-root": "/mnt/usb/docker"
+}
+EOF'
 
   echo -e "${RED}"
   echo "***"
