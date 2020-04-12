@@ -8,6 +8,7 @@ NC='\033[0m'
 cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
 
+DIALOG_ESC=255
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
@@ -19,7 +20,8 @@ OPTIONS=(1 "Dojo Menu"
          3 "Electrs Menu"
          4 "Firewall Menu"
          5 "System Menu"
-         6 "System Setup & Installations")
+         6 "System Setup & Installations"
+         7 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -54,4 +56,11 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-install.sh
 	    # runs installs menu
             ;;
+    	7|$DIALOG_ESC)
+            clear
+	        echo -e "${RED}RoninDojo Exiting...${NC}" >&2
+	        sleep 2
+	        exit 1
+        # exits Ronin
+	        ;;
 esac
