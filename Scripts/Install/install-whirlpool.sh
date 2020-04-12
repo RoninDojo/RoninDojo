@@ -195,25 +195,25 @@ else
     echo -e "${NC}"
     sleep 1s
 
-    echo "
-    [Unit]
-    Description=Whirlpool
-    After=tor.service
+cat << EOF > /etc/systemd/system/whirlpool.service
+[Unit]
+Description=Whirlpool
+After=tor.service
 
-    [Service]
-    WorkingDirectory=/home/$USER/whirlpool
-    ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
-    User=$USER
-    Group=$USER
-    Type=simple
-    KillMode=process
-    TimeoutSec=60
-    Restart=always
-    RestartSec=60
+[Service]
+WorkingDirectory=/home/$USER/whirlpool
+ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
+User=$USER
+Group=$USER
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
 
-    [Install]
-    WantedBy=multi-user.target
-    " | sudo tee -a /etc/systemd/system/whirlpool.service
+[Install]
+WantedBy=multi-user.target
+EOF
 fi
 # checks for whirlpool.service and if found skips, if not found sets up whirlpool.service
 
