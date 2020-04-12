@@ -60,7 +60,7 @@ RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 rm -rf ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 # Create new docker bitcoind conf file
 
-echo "
+cat << EOF > ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 #########################################
 # CONFIGURATION OF BITCOIND CONTAINER
 #########################################
@@ -140,7 +140,7 @@ BITCOIND_ZMQ_RAWTXS=9501
 # Set value to 9502 if BITCOIND_INSTALL is set to 'on'
 # Type: integer
 BITCOIND_ZMQ_BLK_HASH=9502
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+EOF
 
 # configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
@@ -189,7 +189,7 @@ NODE_ADMIN_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 
-echo "
+cat << EOF > ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 #########################################
 # CONFIGURATION OF NODE JS CONTAINER
 #########################################
@@ -218,7 +218,7 @@ NODE_ACTIVE_INDEXER=local_bitcoind
 # FEE TYPE USED FOR FEES ESTIMATIONS BY BITCOIND
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+EOF
 # Create new docker node conf file 
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
@@ -229,7 +229,7 @@ MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 # Create random 64 character password and username for MYSQL
 #MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
-echo "
+cat << EOF > ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 #########################################
 # CONFIGURATION OF MYSQL CONTAINER
 #########################################
@@ -242,7 +242,7 @@ MYSQL_USER=$MYSQL_USER
 # Password of of user account
 # Type: alphanumeric
 MYSQL_PASSWORD=$MYSQL_PASSWORD
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+EOF
 # Create new mysql conf file
 
 # BTC-EXPLORER PASSWORD
@@ -281,7 +281,7 @@ fi
 # install block explorer
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-echo "
+cat << EOF > ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 #########################################
 # CONFIGURATION OF EXPLORER CONTAINER
 #########################################
@@ -294,7 +294,7 @@ EXPLORER_INSTALL=on
 # Provide a value with a high entropy!
 # Type: alphanumeric
 EXPLORER_KEY=$EXPLORER_KEY
-" | sudo tee -a ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+EOF
 # create new block explorer conf file
 
 read -p "Do you want to install an indexer? [y/n]" yn
