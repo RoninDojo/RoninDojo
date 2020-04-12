@@ -119,7 +119,7 @@ case $CHOICE in
             echo -e "${NC}"
 
             V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
-            NODE_ADMIN_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-node.conf | grep NODE_ADMIN_KEY | cut -c 16-)
+            NODE_ADMIN_KEY=$(grep NODE_ADMIN_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -c 16-)
             # Maintenance Tool Onion and Password
 
             echo -e "${RED}"
@@ -133,7 +133,7 @@ case $CHOICE in
 
 	        if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
     	        V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
-                EXPLORER_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
+                EXPLORER_KEY=$(grep EXPLORER_KEY ~/dojo/docker/my-dojo/conf/docker-explorer.conf | cut -c 14-)
                 # if Explorer is installed then display Onion and Password
 
                 echo -e "${RED}"

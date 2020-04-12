@@ -8,7 +8,7 @@ NC='\033[0m'
 # No Color
 
 
-USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+USER=$(sudo grep 1000 /etc/passwd | awk -F: '{ print $1}' | cut -c 1-)
 
 echo -e "${RED}"
 echo "***"

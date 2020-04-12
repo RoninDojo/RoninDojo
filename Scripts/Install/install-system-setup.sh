@@ -392,15 +392,15 @@ else
   ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
   # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-  cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done
+  while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done <~/ip_tmp.txt 
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 19 in /etc/ufw/user.rules
 
-  cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done
+  while read ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 20 /etc/ufw/user.rules
 
-  cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p udp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done
+  while read ip ; do echo "-A ufw-user-input -p udp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 21 /etc/ufw/user.rules
 

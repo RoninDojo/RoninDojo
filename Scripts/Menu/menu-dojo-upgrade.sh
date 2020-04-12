@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 # No Color
 
-USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+USER=$(sudo grep 1000 /etc/passwd | awk -F: '{ print $1}' | cut -c 1-)
 
 echo -e "${RED}"
 echo "***"
@@ -48,7 +48,7 @@ echo -e "${NC}"
 sleep 3s
 
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ] ; then
-    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
+    EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
 else
     echo -e "${RED}"
     echo "***"
@@ -74,7 +74,7 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
                  echo -e "${NC}";;
         * ) echo "Please answer Yes or No.";;
     esac
-elif cat ~/dojo/docker/my-dojo/conf/docker-indexer.conf | grep "INDEXER_INSTALL=off" > /dev/null ; then
+elif grep "INDEXER_INSTALL=off" ~/dojo/docker/my-dojo/conf/docker-indexer.conf > /dev/null ; then
         read -p "Do you want to install an Indexer? [y/n]" yn
         case $yn in
             [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
