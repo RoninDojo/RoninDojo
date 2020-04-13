@@ -1,14 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-YELLOW='\033[1;33m'
-# used for color with ${YELLOW}
-NC='\033[0m'
-# No Color
-
-
-USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+. ~/RoninDojo/Scripts/defaults.sh
 
 echo -e "${RED}"
 echo "***"
