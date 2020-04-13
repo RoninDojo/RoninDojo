@@ -168,8 +168,6 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
 # pull Whirlpool run times
 
-USER=$(sudo grep 1000 /etc/passwd | awk -F: '{ print $1}' | cut -c 1-)
-
 # whirlpool service. Check if present else create it
 echo -e "${RED}"
 echo "***"
@@ -192,7 +190,7 @@ else
     echo -e "${NC}"
     sleep 1s
 
-cat << EOF > /etc/systemd/system/whirlpool.service
+sudo bash -c 'cat << EOF > /etc/systemd/system/whirlpool.service
 [Unit]
 Description=Whirlpool
 After=tor.service
@@ -210,7 +208,7 @@ RestartSec=60
 
 [Install]
 WantedBy=multi-user.target
-EOF
+EOF'
 fi
 # checks for whirlpool.service and if found skips, if not found sets up whirlpool.service
 
