@@ -5,7 +5,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m'
 # No Color
 
-SAMOURAI_REPO = 'https://code.samourai.io/Ronin/samourai-dojo.git'
+SAMOURAI_REPO='https://code.samourai.io/Ronin/samourai-dojo.git'
 USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
 #
