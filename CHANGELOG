@@ -1,0 +1,10 @@
+RoninDojo v1.4 Change Log
+
+- Added Electrs for Hardware Wallet support, now an option during Dojo install or upgrade
+- Added blockchain data salvage, now users can easily recover from system failure
+- Added Whirlpool Stat Tool, for users to check their anon-set
+- Changed Whirlpool setup, see Wiki for instructions
+- Changed to Manjaro ARM XFCE  for long term support, Minimal is no longer supported
+- Polished the system-setup script
+- Ipv6 is now disabled during the system-setup script
+- Cleaned up text output, sleep timers, and code spacing to improve readablilty
