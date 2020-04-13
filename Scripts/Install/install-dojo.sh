@@ -1,11 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-YELLOW='\033[1;33m'
-# used for color with ${YELLOW}
-NC='\033[0m'
-# No Color
+. ~/RoninDojo/Scripts/defaults.sh
 
 # start of warning
 echo -e "${RED}"
@@ -37,7 +32,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
-git clone https://code.samourai.io/Ronin/samourai-dojo.git # CHANGE TO MASTER AFTER MERGE
+git clone ${SAMOURAI_REPO} # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
@@ -68,15 +63,12 @@ sleep 2s
 echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
-echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory."
+echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory"
+echo "located at ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl"
 echo "***"
 echo -e "${NC}"
 sleep 3s
 
-RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
-#RPC Configuration at dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
-
-rm -rf ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
 # Create new docker bitcoind conf file
 
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
@@ -160,6 +152,7 @@ BITCOIND_ZMQ_RAWTXS=9501
 # Type: integer
 BITCOIND_ZMQ_BLK_HASH=9502
 EOF
+# Create new docker bitcoind conf file 
 
 # configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
@@ -177,10 +170,13 @@ echo "***"
 sleep 2s
 echo -e "${NC}"
 
+<<<<<<< HEAD
 NODE_API_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 NODE_JWT_SECRET=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 # Create random set of 64 characters for API KEY and JWT Secret
 
+=======
+>>>>>>> d773972... 1. Move common configuration variables to one location
 echo -e "${RED}"
 echo "****"
 echo "Setting the Node Admin Key..."
@@ -203,11 +199,14 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
+<<<<<<< HEAD
 NODE_ADMIN_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 # Create random set of 32 characters for Node Admin Key
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 
+=======
+>>>>>>> d773972... 1. Move common configuration variables to one location
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 #########################################
 # CONFIGURATION OF NODE JS CONTAINER
@@ -240,6 +239,7 @@ NODE_FEE_TYPE=ECONOMICAL
 EOF
 # Create new docker node conf file 
 
+<<<<<<< HEAD
 rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
 MYSQL_ROOT_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
@@ -248,6 +248,8 @@ MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 # Create random 64 character password and username for MYSQL
 #MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 
+=======
+>>>>>>> d773972... 1. Move common configuration variables to one location
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 #########################################
 # CONFIGURATION OF MYSQL CONTAINER
@@ -287,6 +289,7 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
+<<<<<<< HEAD
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
     EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
     sleep 1s
@@ -300,6 +303,8 @@ fi
 # install block explorer
 
 rm -rf ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+=======
+>>>>>>> d773972... 1. Move common configuration variables to one location
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 #########################################
 # CONFIGURATION OF EXPLORER CONTAINER

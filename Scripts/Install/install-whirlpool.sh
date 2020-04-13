@@ -1,9 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. ~/RoninDojo/Scripts/defaults.sh
 
 echo -e "${RED}"
 echo "***"
