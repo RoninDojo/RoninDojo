@@ -170,13 +170,6 @@ echo "***"
 sleep 2s
 echo -e "${NC}"
 
-<<<<<<< HEAD
-NODE_API_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-NODE_JWT_SECRET=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-# Create random set of 64 characters for API KEY and JWT Secret
-
-=======
->>>>>>> d773972... 1. Move common configuration variables to one location
 echo -e "${RED}"
 echo "****"
 echo "Setting the Node Admin Key..."
@@ -199,14 +192,6 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-<<<<<<< HEAD
-NODE_ADMIN_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
-# Create random set of 32 characters for Node Admin Key
-
-rm -rf ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-
-=======
->>>>>>> d773972... 1. Move common configuration variables to one location
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 #########################################
 # CONFIGURATION OF NODE JS CONTAINER
@@ -239,17 +224,6 @@ NODE_FEE_TYPE=ECONOMICAL
 EOF
 # Create new docker node conf file 
 
-<<<<<<< HEAD
-rm -rf ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-
-MYSQL_ROOT_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-MYSQL_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 12 | head -n 1)
-MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-# Create random 64 character password and username for MYSQL
-#MYSQL User and Password Configuration at dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
-
-=======
->>>>>>> d773972... 1. Move common configuration variables to one location
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 #########################################
 # CONFIGURATION OF MYSQL CONTAINER
@@ -289,22 +263,6 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-<<<<<<< HEAD
-if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
-    sleep 1s
-else
-    echo -e "${RED}"
-    echo "***"
-    echo "Explorer is already installed!"
-    echo "***"
-    echo -e "${NC}"
-fi
-# install block explorer
-
-rm -rf ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-=======
->>>>>>> d773972... 1. Move common configuration variables to one location
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 #########################################
 # CONFIGURATION OF EXPLORER CONTAINER
