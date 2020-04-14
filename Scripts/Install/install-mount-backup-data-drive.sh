@@ -1,8 +1,8 @@
 #!/bin/bash
 
-RED='\033[0;31m'
+RED=$(tput setaf 1)
 # used for color with ${RED}
-NC='\033[0m'
+NC=$(tput sgr0)
 # No Color
 
 if lsblk -o NAME | grep sdb1 > /dev/null ; then

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-RED='\033[0;31m'
+RED=$(tput setaf 1)
 # used for color with ${RED}
-YELLOW='\033[1;33m'
+YELLOW=$(tput setaf 3)
 # used for color with ${YELLOW}
-NC='\033[0m'
+NC=$(tput sgr0)
 # No Color
 
 
