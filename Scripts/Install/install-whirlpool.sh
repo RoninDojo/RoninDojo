@@ -168,7 +168,7 @@ echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
 sleep 1s
-wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
+wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
 # pull Whirlpool run times
 
 USER=$(sudo grep 1000 /etc/passwd | awk -F: '{ print $1}' | cut -c 1-)

@@ -77,14 +77,24 @@ case $CHOICE in
             echo "Checking for latest Whirlpool release..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl+C to exit..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 5s
+            sleep 1s
+            check2='jq /usr/bin/jq/'
+            if pacman -Ql | grep "$check2" > /dev/null ; then
+                echo -e "${RED}"
+                echo "***"
+                echo "jq already installed..."
+                echo "***"
+                echo -e "${NC}"
+            else
+                echo -e "${RED}"
+                echo "***"
+                echo "Installing jq..."
+                echo "***"
+                echo -e "${NC}"
+                sleep 1s
+                sudo pacman -S --noconfirm jq
+            fi
+
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-upgrade.sh
             echo -e "${RED}"
             echo "***"
