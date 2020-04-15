@@ -78,8 +78,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            check2='jq /usr/bin/jq/'
-            if pacman -Ql | grep "$check2" > /dev/null ; then
+            if pacman -Q jq > /dev/null ; then
                 echo -e "${RED}"
                 echo "***"
                 echo "jq already installed..."
