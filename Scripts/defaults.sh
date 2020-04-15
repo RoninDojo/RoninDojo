@@ -1,7 +1,8 @@
+#
+# Terminal Colors
+#
 RED='\033[0;31m'
-# used for color with ${RED}
 YELLOW='\033[1;33m'
-# used for color with ${YELLOW}
 NC='\033[0m'
 # No Color
 
@@ -23,8 +24,7 @@ MENU="Choose one of the following options:"
 
 # bitcoind 
 RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
-RPC_USER=$(grep BITCOIND_RPC_USER= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
-RPC_PASS=$(grep BITCOIND_RPC_PASSWORD= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
+RPC_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 
 # node
 NODE_API_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
