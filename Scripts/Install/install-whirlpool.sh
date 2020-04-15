@@ -8,7 +8,7 @@ echo "Checking if Whirlpool is already installed..."
 echo "***"
 echo -e "${NC}"
 
-if ls ~/whirlpool | grep whirlpool.jar  > /dev/null ; then
+if [ -f ~/whirlpool/whirlpool.jar ]; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool is installed!"
@@ -32,8 +32,7 @@ echo "Checking if Tor is installed..."
 echo "***"
 echo -e "${NC}"
 
-torcheck=/usr/bin/tor
-if pacman -Ql | grep $torcheck  > /dev/null ; then
+if pacman -Q tor > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "The package $package is installed."
@@ -175,7 +174,7 @@ echo "Checking if Whirlpool.service is already exists..."
 echo "***"
 echo -e "${NC}"
 
-if ls /etc/systemd/system | grep whirlpool.service  > /dev/null ; then
+if [ -f /etc/systemd/system/whirlpool.service ]; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool Service already is installed!"

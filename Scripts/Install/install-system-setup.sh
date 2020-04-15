@@ -2,7 +2,7 @@
 
 . ~/RoninDojo/Scripts/defaults.sh
 
-if ls ~ | grep dojo > /dev/null ; then
+if [ -d ~/dojo ]; then
   echo -e "${RED}"
   echo "***"
   echo "Dojo directory found, please uninstall Dojo first!"
@@ -33,7 +33,7 @@ sleep 5s
 sudo rm -rf /etc/motd
 # remove ssh banner for the script logo
 
-if ls /boot | grep cmdline.txt > /dev/null ; then
+if [ -f /boot/cmdline.txt ]; then
   echo -e "${RED}"
   echo "***"
   echo "Disabling Ipv6 for Raspberry Pi4..."
@@ -63,26 +63,21 @@ fi
 # /boot/cmdline.txt file will only be there if it's a Raspberry Pi
 # /boot/boot.ini is for Odroid N2
 
-check1=ronin
-if ls /usr/local/bin | grep $check1 > /dev/null ; then
-  echo ""
-else
+if [ ! -f /usr/local/bin/ronin ]; then
   sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
-cat << EOF >> ~/.bashrc
-
+  cat << EOF >> ~/.bashrc
 ~/RoninDojo/Scripts/.logo
 
 ~/RoninDojo/ronin
 EOF
 fi
-# place main ronin menu  script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
+# place main ronin menu script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
-check2='jdk11-openjdk /usr/share/licenses/java11-openjdk/'
-if pacman -Ql | grep "$check2" > /dev/null ; then
+if pacman -Q jdk11-openjdk &>/dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Java already installed..."
@@ -102,8 +97,7 @@ fi
 # in had to use '' and "" for the check to work correctly
 # single quotes won't interpolate anything, but double quotes will
 
-check3=/usr/bin/tor
-if pacman -Ql | grep $check3  > /dev/null ; then
+if pacman -Q tor > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "Tor already installed..."
@@ -128,8 +122,7 @@ else
 fi
 # check if tor is installed, if not install and modify torrc
 
-check4='python /usr/bin/python3'
-if pacman -Ql | grep "$check4" > /dev/null ; then
+if pacman -Q python3 > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Python3 already installed..."
@@ -149,8 +142,7 @@ fi
 # in had to use '' and "" for the check to work correctly
 # single quotes won't interpolate anything, but double quotes will
 
-check5=fail2ban
-if pacman -Qs $check5 > /dev/null ; then
+if pacman -Q fail2ban > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Fail2ban already installed..."
@@ -168,8 +160,7 @@ else
 fi
 # check for / install fail2ban
 
-check6=htop
-if pacman -Qs $check6 > /dev/null ; then
+if pacman -Q htop > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Htop already installed..."
@@ -187,8 +178,7 @@ else
 fi
 # check for / install htop
 
-check7=vim
-if pacman -Qs $check7 > /dev/null ; then
+if pacman -Q vim > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Vim already installed..."
@@ -206,8 +196,7 @@ else
 fi
 # check for / install vim
 
-check8=unzip
-if pacman -Qs $check8 > /dev/null ; then
+if pacman -Q unzip > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Unzip already installed..."
@@ -225,8 +214,7 @@ else
 fi
 # check for / install unzip
 
-check9=net-tools
-if pacman -Qs $check9 > /dev/null ; then
+if pacman -Q net-tools > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Net-tools already installed..."
@@ -244,8 +232,7 @@ else
 fi
 # check for / install net tools
 
-check10=/usr/bin/which
-if sudo pacman -Ql | grep $check10 > /dev/null ; then
+if sudo pacman -Q which > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Which already installed..."
@@ -263,8 +250,7 @@ else
 fi
 # check for / install which
 
-check11=wget
-if pacman -Qs $check11 > /dev/null ; then
+if pacman -Q wget > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Wget already installed..."
@@ -282,8 +268,7 @@ else
 fi
 # check for / install wget
 
-check12=docker
-if pacman -Qs $check12 > /dev/null ; then
+if pacman -Q docker > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Docker already installed..."
@@ -301,8 +286,7 @@ else
 fi
 # check for / install docker
 
-check13=docker-compose
-if pacman -Qs $check13 > /dev/null ; then
+if pacman -Q docker-compose > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Docker-compose already installed..."
@@ -324,8 +308,7 @@ sudo systemctl enable docker
 # enables docker to run at startup
 # system setup ends
 
-check14=ufw
-if pacman -Qs $check14 > /dev/null ; then
+if pacman -Q ufw > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Ufw already installed..."
@@ -456,10 +439,7 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-ls /dev | grep sda > ~/sda_tmp.txt
-# temp file, looking for sda1
-
-if grep "sda1" ~/sda_tmp.txt > /dev/null ; then
+if [ -b /dev/sda1 ]; then
   echo -e "${RED}"
   echo "***"
   echo "Creating /mnt/salvage directory..."
@@ -485,17 +465,13 @@ else
 fi
 # mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
-rm -f ~/sda_tmp.txt
-# remove temp file, looking for sda1
-
-if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
+if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sudo rm -rf /mnt/salvage/docker
-  sudo rm -f /mnt/salvage/swapfile
+  sudo rm -rf /mnt/salvage/*
   sudo umount -l /dev/sda1
   sleep 5s
   sudo rm -rf /mnt/salvage
@@ -649,7 +625,7 @@ else
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep blocks > /dev/null ; then
+if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -664,8 +640,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo -e "${NC}"
   sleep 2s
   sudo mkdir /mnt/salvage/system-setup-salvage/
-  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
-  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
+  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data prepared for salvage!"
@@ -674,7 +649,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   sleep 2s
   sudo rm -rf /mnt/salvage/docker
   sudo rm -f /mnt/salvage/swapfile
-  sudo umount -l /dev/sda1
+  sudo umount -l /mnt/salvage
   sleep 3s
   sudo rm -rf /mnt/salvage
   # copies blockchain salvage data to /mnt/salvage if found
@@ -838,22 +813,12 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-ls /dev | grep sda > ~/sda_tmp.txt
-# temp file looking for sda
-
-check15=$( grep -ic "sda1" ~/sda_tmp.txt )
-if [ $check15 -eq 1 ]
+if [ -b /dev/sda1 ]
 then
   echo "Found sda1, using wipefs."
   sudo wipefs --all --force /dev/sda1
 fi
 # if sda1 exists, use wipefs to erase possible sig
-
-rm ~/sda_tmp.txt
-# remove temp file
-
-sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
-# wipes partition table
 
 sudo sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
   n # new partition
@@ -944,8 +909,7 @@ df -h
 sleep 2s
 # checks disk info
 
-check16=swapfile
-if ls /mnt/usb | grep $check16 > /dev/null ; then
+if grep 'Swap' /proc/meminfo > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Swapfile already created..."
@@ -985,7 +949,7 @@ sleep 3s
 sudo mkdir /mnt/usb/docker
 # makes directroy to store docker/dojo data
 
-if ls /etc | grep docker  > /dev/null ; then
+if [ -d /etc/docker ]; then
   echo -e "${RED}"
   echo "***"
   echo "The /etc/docker directory already exists..."
