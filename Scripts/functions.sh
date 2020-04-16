@@ -156,8 +156,6 @@ check_swap() {
 # TODO enable multiple swapfiles/partitions
 #
 create_swap() {
-    local path="/mnt/usb" # override with --path argument
-
     test ! check_swap && return 1 # exit if swap available
 
     # Parse Arguments
@@ -169,15 +167,6 @@ create_swap() {
                 ;;
             --size|-s)
                 size=${2}
-                shift 2
-                ;;
-            --path|-p)
-                if [[ "${2}" == */ ]]; then
-                    # remove leading slash
-                    path=${2::-1}
-                else
-                    path=${2}
-                fi
                 shift 2
                 ;;
             -*|--*=) # unsupported flags
@@ -196,10 +185,10 @@ Creating swapfile...
 $(echo -e $(tput sgr0))
 EOF
         sleep 2s
-        sudo fallocate -l ${size} ${path}/${file}
-        sudo chmod 600 ${path}/${file}
-        sudo mkswap -p 0 ${path}/${file}
-        sudo swapon ${path}/${file}
+        sudo fallocate -l ${size} ${file}
+        sudo chmod 600 ${file}
+        sudo mkswap -p 0 ${file}
+        sudo swapon ${file}
     else
         cat <<EOF
 $(echo -e $(tput sgr0))
@@ -211,9 +200,9 @@ EOF
     fi
 
     # Include fstab value
-    if ! grep '${path}/${file}' /etc/fstab; then
+    if ! grep '${file}' /etc/fstab; then
         sudo bash -c 'cat <<OEF >>/etc/fstab
-${path}/${file} swap swap defaults,pri=0 0 0
+${file} swap swap defaults,pri=0 0 0
 EOF'
     fi
 }
