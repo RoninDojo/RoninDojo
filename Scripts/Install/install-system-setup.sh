@@ -705,8 +705,8 @@ EOF'
   sleep 4s
   # checks disk info
 
-  sudo create_swap --file /mnt/usb/swapfile --size 1G
-  # created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+  sudo create_swap --file /mnt/usb/swapfile --size 2G
+  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
   echo "***"
