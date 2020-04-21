@@ -10,6 +10,7 @@ find_pkg() {
 
 #
 # Check fs type
+# Shows the filesystem type of a giving partition
 #
 check_fstype() {
     local device="${1}"
