@@ -1,9 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. ~/RoninDojo/Scripts/defaults.sh
 
 echo -e "${RED}"
 echo "***"
@@ -171,8 +168,6 @@ sleep 1s
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
 # pull Whirlpool run times
 
-USER=$(sudo grep 1000 /etc/passwd | awk -F: '{ print $1}' | cut -c 1-)
-
 # whirlpool service. Check if present else create it
 echo -e "${RED}"
 echo "***"
@@ -195,25 +190,25 @@ else
     echo -e "${NC}"
     sleep 1s
 
-    echo "
-    [Unit]
-    Description=Whirlpool
-    After=tor.service
+sudo bash -c 'cat << EOF > /etc/systemd/system/whirlpool.service
+[Unit]
+Description=Whirlpool
+After=tor.service
 
-    [Service]
-    WorkingDirectory=/home/$USER/whirlpool
-    ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
-    User=$USER
-    Group=$USER
-    Type=simple
-    KillMode=process
-    TimeoutSec=60
-    Restart=always
-    RestartSec=60
+[Service]
+WorkingDirectory=/home/$USER/whirlpool
+ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
+User=$USER
+Group=$USER
+Type=simple
+KillMode=process
+TimeoutSec=60
+Restart=always
+RestartSec=60
 
-    [Install]
-    WantedBy=multi-user.target
-    " | sudo tee -a /etc/systemd/system/whirlpool.service
+[Install]
+WantedBy=multi-user.target
+EOF'
 fi
 # checks for whirlpool.service and if found skips, if not found sets up whirlpool.service
 

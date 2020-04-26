@@ -1,7 +1,7 @@
 #!/bin/bash
 
-RPC_USER=$(sudo grep BITCOIND_RPC_USER= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -c 19-)
-RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -c 23-)
+RPC_USER=$(sudo grep BITCOIND_RPC_USER= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -d ':' -f2)
+RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -d ':' -f2)
 
 ###### Modify docker-indexer.conf.tpl to turn ON indexer ######
 sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
