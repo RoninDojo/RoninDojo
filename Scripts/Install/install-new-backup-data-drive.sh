@@ -61,22 +61,11 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-ls /dev | grep sdb > ~/sdb_tmp.txt
-# temp file looking for sdb
-
-sdb1=$( grep -ic "sdb1" ~/sdb_tmp.txt )
-if [ $sdb1 -eq 1 ]
-then
-  echo "Found sdb1, using wipefs."
-  sudo wipefs --all --force /dev/sdb1
+if [ -b /dev/sdb ]; then
+  echo "Found sdb, using wipefs."
+  sudo wipefs --all --force /dev/sdb
 fi
-# if sdb1 exists, use wipefs to erase possible sig
-
-rm ~/sdb_tmp.txt
-# remove temp file
-
-sudo dd if=/dev/zero of=/dev/sdb bs=512 count=1 conv=notrunc
-# wipes partition table
+# if sdb exists, use wipefs to erase wipes partition table
 
 sudo sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sdb
   n # new partition
