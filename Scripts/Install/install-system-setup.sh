@@ -472,11 +472,11 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sudo rm -rf /mnt/salvage/*
+  sudo rm -rf /mnt/salvage/{swapfile,docker}
   sudo umount -l /dev/sda1
   sleep 5s
   sudo rm -rf /mnt/salvage
-  # if uninstall-salvage is found, delete older docker directory and swapfile, then unmount sda1
+  # if uninstall-salvage directory is found, delete older docker directory and swapfile, then unmount sda1
 
   echo -e "${RED}"
   echo "***"
@@ -485,23 +485,19 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo -e "${NC}"
   sleep 2s
 
-  lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
-  # this will look up uuid of sda1 and makes txt file with that value
+  uuid=$(lsblk -no UUID /dev/sda1)
+  fstype=$(check_fstype /dev/sda1)
 
-  sed -i 's/ └─sda1//g' ~/uuid.txt
-  # removes the text sda1 after the uuid in txt file
+  # this will look up uuid of sdb1
 
-  sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
-  # adds a necessary line with the path and other options after the uuid in txt file
-
-  sed -i 's/^/UUID=/' ~/uuid.txt
-  # adds UUID= prefix to the front of the line
-
-  cat ~/uuid.txt | sudo tee -a /etc/fstab > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
-
-  rm ~/uuid.txt
-  # delete txt file
+  if ! grep '${uuid}' /etc/fstab; then
+    sudo bash -c 'cat <<EOF >>/etc/fstab
+UUID=${uuid} /mnt/usb ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
+EOF'
+  fi
+  # adds a necessary line in /etc/fstab
+  # noauto and x-systemd.automount options are important so external drive is found properly by docker
+  # otherwise docker may cause problems by writing to SD card instead
 
   echo -e "${RED}"
   echo "***"
@@ -527,7 +523,7 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo "***"
   echo -e "${NC}"
   sleep 2s
-  lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+  lsblk -o NAME,SIZE,LABEL /dev/sda1
   sleep 2s
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
@@ -536,22 +532,12 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo "Check output above for /dev/sda1 and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h
+  df -h /dev/sda1
   sleep 4s
   # checks disk info
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating swapfile..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo fallocate -l 2G /mnt/usb/swapfile
-  sudo chmod 600 /mnt/usb/swapfile
-  sudo mkswap /mnt/usb/swapfile
-  sudo swapon /mnt/usb/swapfile
-  sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-  # created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+  sudo create_swap --file /mnt/usb/swapfile --size 2G
+  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
   echo "***"
@@ -662,23 +648,25 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo -e "${NC}"
   sleep 2s
 
-  lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
-  # this will look up uuid of sda1 and makes txt file with that value
+  # /etc/fstab changes
+  uuid=$(lsblk -no UUID /dev/sda1)
+  fstype=$(check_fstype /dev/sda1)
 
-  sed -i 's/ └─sda1//g' ~/uuid.txt
-  # removes the text sda1 after the uuid in txt file
-
-  sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
-  # adds a necessary line with the path and other options after the uuid in txt file
-
-  sed -i 's/^/UUID=/' ~/uuid.txt
-  # adds UUID= prefix to the front of the line
-
-  cat ~/uuid.txt | sudo tee -a /etc/fstab > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
-
-  rm ~/uuid.txt
-  # delete txt file
+  # adds a necessary line in /etc/fstab
+  # noauto and x-systemd.automount options are important so external drive is found properly by docker
+  # otherwise docker may cause problems by writing to SD card instead
+  if ! grep "${uuid}" /etc/fstab; then
+      cat <<EOF
+$(echo -e ${(tput setaf 1)})
+***
+Editing /etc/fstab to input UUID for /dev/sda1 and adjust settings...
+***
+$(echo -e $(tput sgr0))
+EOF
+      sudo bash -c 'cat <<EOF >>/etc/fstab
+UUID=${uuid} /mnt/usb ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
+EOF'
+  fi
 
   echo -e "${RED}"
   echo "***"
@@ -704,7 +692,7 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo "***"
   echo -e "${NC}"
   sleep 2s
-  lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+  lsblk -o NAME,SIZE,LABEL /dev/sda1
   sleep 2s
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
@@ -713,22 +701,12 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo "Check output for /dev/sda1 and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h
+  df -h /dev/sda1
   sleep 4s
   # checks disk info
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating swapfile..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo fallocate -l 1G /mnt/usb/swapfile
-  sudo chmod 600 /mnt/usb/swapfile
-  sudo mkswap /mnt/usb/swapfile
-  sudo swapon /mnt/usb/swapfile
-  sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-  # created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+  sudo create_swap --file /mnt/usb/swapfile --size 2G
+  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
   echo "***"
@@ -836,68 +814,15 @@ EOF
 # Note that a blank line (commented as "defualt" will send a empty
 # line terminated with a newline to take the fdisk default.
 
-echo -e "${RED}"
-echo "***"
-echo "Using ext4 format for /dev/sda1 partition..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-# format partition1 to ext4
-# https://linux.die.net/man/8/mkfs.ext4:
-# -F: Force mke2fs to create a filesystem, even if the specified
-# device is not a partition on a block special device.
-sudo mkfs.ext4 -F /dev/sda1
-
-echo -e "${RED}"
-echo "***"
-echo "Editing /etc/fstab to input UUID for sda1 and adjust settings..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-
-lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
-# this will look up uuid of sda1 and makes txt file with that value
-
-sed -i 's/ └─sda1//g' ~/uuid.txt
-# removes the text sda1 after the uuid in txt file
-
-sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
-# adds a necessary line with the path and other options after the uuid in txt file
-
-sed -i 's/^/UUID=/' ~/uuid.txt
-# adds UUID= prefix to the front of the line
-
-cat ~/uuid.txt | sudo tee -a /etc/fstab > /dev/null
-# even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
-
-rm ~/uuid.txt
-# delete txt file
-
-echo -e "${RED}"
-echo "***"
-echo "Creating /mnt/usb directory..."
-echo "***"
-echo -e "${NC}"
-sudo mkdir /mnt/usb
-sleep 2s
-
-echo -e "${RED}"
-echo "***"
-echo "Mounting drive..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-sudo mount /dev/sda1 /mnt/usb
-sleep 1s
-# mount main storage drive to /mnt/usb directory
+sudo create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"
+# format partition
 
 echo -e "${RED}"
 echo "***"
 echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
-lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+lsblk -o NAME,SIZE,LABEL /dev/sda1
 sleep 2s
 # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
@@ -906,31 +831,12 @@ echo "***"
 echo "Check output for /dev/sda1 and make sure everything looks ok."
 echo "***"
 echo -e "${NC}"
-df -h
+df -h /dev/sda1
 sleep 2s
 # checks disk info
 
-if grep 'Swap' /proc/meminfo > /dev/null ; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Swapfile already created..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating swapfile..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo fallocate -l 1G /mnt/usb/swapfile
-  sudo chmod 600 /mnt/usb/swapfile
-  sudo mkswap /mnt/usb/swapfile
-  sudo swapon /mnt/usb/swapfile
-  sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-fi
-# created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+sudo create_swap --file /mnt/usb/swapfile --size 2G
+# created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 echo -e "${RED}"
 echo "***"
