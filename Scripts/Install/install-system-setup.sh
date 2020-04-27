@@ -77,7 +77,7 @@ fi
 sudo chmod +x ~/RoninDojo/Scripts/Install/*
 sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
-if pacman -Q jdk11-openjdk &>/dev/null ; then
+if find_pkg jdk11-openjdk; then
   echo -e "${RED}"
   echo "***"
   echo "Java already installed..."
@@ -97,7 +97,7 @@ fi
 # in had to use '' and "" for the check to work correctly
 # single quotes won't interpolate anything, but double quotes will
 
-if pacman -Q tor > /dev/null ; then
+if find_pkg tor; then
     echo -e "${RED}"
     echo "***"
     echo "Tor already installed..."
@@ -122,7 +122,7 @@ else
 fi
 # check if tor is installed, if not install and modify torrc
 
-if pacman -Q python3 > /dev/null ; then
+if find_pkg python; then
   echo -e "${RED}"
   echo "***"
   echo "Python3 already installed..."
@@ -142,7 +142,7 @@ fi
 # in had to use '' and "" for the check to work correctly
 # single quotes won't interpolate anything, but double quotes will
 
-if pacman -Q fail2ban > /dev/null ; then
+if find_pkg fail2ban; then
   echo -e "${RED}"
   echo "***"
   echo "Fail2ban already installed..."
@@ -160,7 +160,8 @@ else
 fi
 # check for / install fail2ban
 
-if pacman -Q htop > /dev/null ; then
+check6=htop
+if find_pkg htop; then
   echo -e "${RED}"
   echo "***"
   echo "Htop already installed..."
@@ -178,7 +179,7 @@ else
 fi
 # check for / install htop
 
-if pacman -Q vim > /dev/null ; then
+if find_pkg vim; then
   echo -e "${RED}"
   echo "***"
   echo "Vim already installed..."
@@ -196,7 +197,7 @@ else
 fi
 # check for / install vim
 
-if pacman -Q unzip > /dev/null ; then
+if find_pkg unzip; then
   echo -e "${RED}"
   echo "***"
   echo "Unzip already installed..."
@@ -214,7 +215,7 @@ else
 fi
 # check for / install unzip
 
-if pacman -Q net-tools > /dev/null ; then
+if find_pkg net-tools; then
   echo -e "${RED}"
   echo "***"
   echo "Net-tools already installed..."
@@ -232,7 +233,7 @@ else
 fi
 # check for / install net tools
 
-if sudo pacman -Q which > /dev/null ; then
+if find_pkg which; then
   echo -e "${RED}"
   echo "***"
   echo "Which already installed..."
@@ -250,7 +251,7 @@ else
 fi
 # check for / install which
 
-if pacman -Q wget > /dev/null ; then
+if find_pkg wget; then
   echo -e "${RED}"
   echo "***"
   echo "Wget already installed..."
@@ -268,7 +269,7 @@ else
 fi
 # check for / install wget
 
-if pacman -Q docker > /dev/null ; then
+if find_pkg docker; then
   echo -e "${RED}"
   echo "***"
   echo "Docker already installed..."
@@ -286,7 +287,7 @@ else
 fi
 # check for / install docker
 
-if pacman -Q docker-compose > /dev/null ; then
+if find_pkg docker-compose; then
   echo -e "${RED}"
   echo "***"
   echo "Docker-compose already installed..."
@@ -308,7 +309,7 @@ sudo systemctl enable docker
 # enables docker to run at startup
 # system setup ends
 
-if pacman -Q ufw > /dev/null ; then
+if find_pkg ufw; then
   echo -e "${RED}"
   echo "***"
   echo "Ufw already installed..."
