@@ -8,7 +8,7 @@ echo "Checking if Whirlpool is already installed..."
 echo "***"
 echo -e "${NC}"
 
-if ls ~/whirlpool | grep whirlpool.jar  > /dev/null ; then
+if [ -f ~/whirlpool/whirlpool.jar ]; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool is installed!"
@@ -32,8 +32,7 @@ echo "Checking if Tor is installed..."
 echo "***"
 echo -e "${NC}"
 
-torcheck=/usr/bin/tor
-if pacman -Ql | grep $torcheck  > /dev/null ; then
+if find_pkg tor; then
     echo -e "${RED}"
     echo "***"
     echo "The package $package is installed."
@@ -165,7 +164,7 @@ echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
 sleep 1s
-wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
+wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
 # pull Whirlpool run times
 
 # whirlpool service. Check if present else create it
@@ -175,7 +174,7 @@ echo "Checking if Whirlpool.service is already exists..."
 echo "***"
 echo -e "${NC}"
 
-if ls /etc/systemd/system | grep whirlpool.service  > /dev/null ; then
+if [ -f /etc/systemd/system/whirlpool.service ]; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool Service already is installed!"

@@ -32,26 +32,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
-git clone ${SAMOURAI_REPO} # CHANGE TO MASTER AFTER MERGE
-
-echo -e "${RED}"
-echo "***"
-echo "Making ~/dojo and copying data."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-mkdir ~/dojo
-cp -r samourai-dojo/* ~/dojo
-sleep 2s
-
-echo -e "${RED}"
-echo "***"
-echo "Removing all the files no longer needed."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-rm -rf samourai-dojo/
-sleep 1s
+git clone https://code.samourai.io/Ronin/samourai-dojo.git dojo # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
@@ -316,7 +297,7 @@ cd ~/dojo/docker/my-dojo
 sudo ./dojo.sh install
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
-if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
+if [ -d /mnt/usb/uninstall-salvage ]; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -356,7 +337,7 @@ else
 fi
 # check for uninstall-salvage, if not found continue
 
-if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
+if [ -d /mnt/usb/system-setup-salvage ]; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."

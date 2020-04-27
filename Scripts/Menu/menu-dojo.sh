@@ -110,6 +110,7 @@ case $CHOICE in
             echo -e "${NC}"
 
             V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
+            NODE_API_KEY=$(grep NODE_API_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -c 14-)
             NODE_ADMIN_KEY=$(grep NODE_ADMIN_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -c 16-)
             # Maintenance Tool Onion and Password
 
@@ -117,6 +118,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
+            echo "Dojo API key = $NODE_API_KEY"
             echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
             echo -e "${RED}"
             echo "***"
