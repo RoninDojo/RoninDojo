@@ -69,7 +69,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            if pacman -Q jq > /dev/null ; then
+            if find_pkg jq; then
                 echo -e "${RED}"
                 echo "***"
                 echo "jq already installed..."
