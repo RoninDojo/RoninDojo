@@ -32,7 +32,7 @@ echo "Checking if Tor is installed..."
 echo "***"
 echo -e "${NC}"
 
-if pacman -Q tor > /dev/null ; then
+if find_pkg tor; then
     echo -e "${RED}"
     echo "***"
     echo "The package $package is installed."
