@@ -188,15 +188,32 @@ create_swap() {
     done
 
     if check_swap; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Creating swapfile...
+***
+$(echo -e $(tput sgr0))
+EOF
+        sleep 2s
         sudo fallocate -l ${size} ${path}/${file}
         sudo chmod 600 ${path}/${file}
-        sudo mkswap ${path}/${file}
+        sudo mkswap -p 0 ${path}/${file}
         sudo swapon ${path}/${file}
+    else
+        cat <<EOF
+$(echo -e $(tput sgr0))
+***
+Swapfile already created...
+***"
+$(echo -e $(tput sgr0))
+EOF
     fi
 
+    # Include fstab value
     if ! grep '${path}/${file}' /etc/fstab; then
         sudo bash -c 'cat <<OEF >>/etc/fstab
-${path}/${file} none swap defaults 0 0
+${path}/${file} swap swap defaults,pri=0 0 0
 EOF'
     fi
 }

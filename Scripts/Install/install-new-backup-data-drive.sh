@@ -103,6 +103,9 @@ df -h /dev/sdb1
 sleep 2s
 # checks disk info
 
+sudo create_swap --file /mnt/usb1/swapfile --size 2G
+# created a 2GB swapfile on the external backup drive
+
 echo -e "${RED}"
 echo "***"
 echo "Changing ownership of /mnt/usb1 to $USER:$USER..."
