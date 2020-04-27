@@ -7,7 +7,7 @@ OPTIONS=(1 "Bitcoind Logs"
          3 "Tor Logs"
          4 "API Logs"
          5 "Tracker Logs"
-         6 "Alls Container Logs"
+         6 "All Container Logs"
          7 "Go Back")
 
 CHOICE=$(dialog --clear \
