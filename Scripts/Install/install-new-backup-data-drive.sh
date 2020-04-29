@@ -83,7 +83,7 @@ EOF
 # Note that a blank line (commented as "defualt" will send a empty
 # line terminated with a newline to take the fdisk default.
 
-sudo create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"
+create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"
 # format partition
 
 echo -e "${RED}"
@@ -104,7 +104,7 @@ df -h /dev/sdb1
 sleep 2s
 # checks disk info
 
-sudo create_swap --file /mnt/usb1/swapfile --size 2G
+create_swap --file /mnt/usb1/swapfile --size 2G
 # created a 2GB swapfile on the external backup drive
 
 echo -e "${RED}"

@@ -537,7 +537,7 @@ EOF'
   sleep 4s
   # checks disk info
 
-  sudo create_swap --file /mnt/usb/swapfile --size 2G
+  create_swap --file /mnt/usb/swapfile --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
@@ -706,7 +706,7 @@ EOF'
   sleep 4s
   # checks disk info
 
-  sudo create_swap --file /mnt/usb/swapfile --size 2G
+  create_swap --file /mnt/usb/swapfile --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
@@ -815,7 +815,7 @@ EOF
 # Note that a blank line (commented as "defualt" will send a empty
 # line terminated with a newline to take the fdisk default.
 
-sudo create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"
+create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"
 # format partition
 
 echo -e "${RED}"
@@ -836,7 +836,7 @@ df -h /dev/sda1
 sleep 2s
 # checks disk info
 
-sudo create_swap --file /mnt/usb/swapfile --size 2G
+create_swap --file /mnt/usb/swapfile --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 echo -e "${RED}"
