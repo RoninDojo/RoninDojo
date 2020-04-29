@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
 if [ -d ~/dojo ]; then
   echo -e "${RED}"
