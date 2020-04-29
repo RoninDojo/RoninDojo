@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
 if [ -d ~/dojo ]; then
   echo -e "${RED}"
@@ -358,7 +359,7 @@ else
   ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
   # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-  while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done <~/ip_tmp.txt 
+  while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 19 in /etc/ufw/user.rules
 

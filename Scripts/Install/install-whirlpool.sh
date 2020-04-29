@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
 echo -e "${RED}"
 echo "***"

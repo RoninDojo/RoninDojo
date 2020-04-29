@@ -32,7 +32,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd ~
-git clone https://code.samourai.io/Ronin/samourai-dojo.git dojo # CHANGE TO MASTER AFTER MERGE
+git clone $SAMOURAI_REPO dojo # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
@@ -133,7 +133,7 @@ BITCOIND_ZMQ_RAWTXS=9501
 # Type: integer
 BITCOIND_ZMQ_BLK_HASH=9502
 EOF
-# Create new docker bitcoind conf file 
+# Create new docker bitcoind conf file
 
 # configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
@@ -203,7 +203,7 @@ NODE_ACTIVE_INDEXER=local_bitcoind
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
 EOF
-# Create new docker node conf file 
+# Create new docker node conf file
 
 cat << EOF > ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
 #########################################
@@ -293,11 +293,10 @@ echo "Installing Dojo..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh install
+cd $DOJO_PATH && sudo ./dojo.sh install
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
-if [ -d /mnt/usb/uninstall-salvage ]; then
+if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -312,8 +311,7 @@ if [ -d /mnt/usb/uninstall-salvage ]; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
+  cd $DOJO_PATH && sudo ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo mv -v /mnt/usb/uninstall-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -331,13 +329,13 @@ if [ -d /mnt/usb/uninstall-salvage ]; then
   sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo rm -rf /mnt/usb/uninstall-salvage/
   sudo rm -rf /mnt/usb/system-setup-salvage/
-  sudo ./dojo.sh start
+  cd $DOJO_PATH && sudo ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
 # check for uninstall-salvage, if not found continue
 
-if [ -d /mnt/usb/system-setup-salvage ]; then
+if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -351,8 +349,7 @@ if [ -d /mnt/usb/system-setup-salvage ]; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  cd ~/dojo/docker/my-dojo
-  sudo ./dojo.sh stop
+  cd $DOJO_PATH && sudo ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo mv -v /mnt/usb/system-setup-salvage/chainstate /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
@@ -370,7 +367,7 @@ if [ -d /mnt/usb/system-setup-salvage ]; then
   sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
   sudo rm -rf /mnt/usb/system-setup-salvage/
   sudo rm -rf /mnt/usb/uninstall-salvage/
-  sudo ./dojo.sh start
+  cd $DOJO_PATH && sudo ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 2..."
 fi
