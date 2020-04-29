@@ -83,7 +83,10 @@ EOF
 # Note that a blank line (commented as "defualt" will send a empty
 # line terminated with a newline to take the fdisk default.
 
-create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"
+if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"; then
+  echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+  exit
+fi
 # format partition
 
 echo -e "${RED}"
