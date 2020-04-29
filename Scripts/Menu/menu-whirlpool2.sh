@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Re-initiate Whirlpool"
          2 "Upgrade Whirlpool"
@@ -22,7 +23,7 @@ case $CHOICE in
             echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
             echo "***"
             echo -e "${NC}"
-            
+
             read -p "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
             case $yn in
                 [Y/y]* ) echo -e "${RED}"
@@ -34,21 +35,21 @@ case $CHOICE in
                          cd ~/whirlpool
                          rm -rf *.json whirlpool-cli-config.properties
                          sleep 1s
-                         
+
                          echo -e "${RED}"
                          echo "***"
                          echo "Re-pair with Whirlpool GUI"
                          echo "***"
                          echo -e "${NC}"
                          sudo systemctl start whirlpool
-			             
+
                          echo -e "${RED}"
                          echo "***"
                          echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
                          echo "***"
                          echo -e "${NC}"
                          sleep 5s;;
-                         
+
                 [N/n]* ) echo -e "${RED}"
                          echo "***"
                          echo "Returning to menu..."
@@ -62,7 +63,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # re-initate whirlpool, return to menu
             ;;
-        2)  
+        2)
             echo -e "${RED}"
             echo "***"
             echo "Checking for latest Whirlpool release..."
@@ -103,7 +104,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Do you want to uninstall Whirlpool?"
@@ -122,7 +123,7 @@ case $CHOICE in
                             sudo rm -rf /etc/systemd/system/whirlpool.service
                             sudo rm -rf ~/whirlpool
                             sudo systemctl daemon-reload
-                            
+
                             echo -e "${RED}"
                             echo "***"
                             echo "Whirlpool is uninstalled... returning to menu"
@@ -130,7 +131,7 @@ case $CHOICE in
                             echo -e "${NC}"
                             sleep 2s
                             break;;
-                            
+
                     [Nn]* ) echo -e "${RED}"
                             echo "***"
                             echo "Returning to menu..."
@@ -141,11 +142,11 @@ case $CHOICE in
                     * ) echo "Please answer yes or no.";;
                 esac
             done
-            
+
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool2.sh
             # uninstall whirlpool after confirmation else return to menu
             ;;
-        
+
         4)
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
 	    # return to menu
