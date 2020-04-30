@@ -90,13 +90,13 @@ Creating ${mountpoint} directory...
 $(echo -e $(tput sgr0))
 EOF
         sleep 2s
-        sudo mkdir -p ${2} || return 1
+        sudo mkdir -p ${mountpoint} || return 1
     fi
 
     cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-Using ${2} filesystem format for /dev/${device} partition...
+Using ${2} filesystem format for ${device} partition...
 ***
 $(echo -e $(tput sgr0))
 EOF
