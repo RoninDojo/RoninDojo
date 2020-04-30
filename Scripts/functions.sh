@@ -203,7 +203,7 @@ EOF
 
     # Include fstab value
     if ! grep '${file}' /etc/fstab; then
-        sudo bash -c 'cat <<OEF >>/etc/fstab
+        sudo bash -c 'cat <<EOF >>/etc/fstab
 ${file} swap swap defaults,pri=0 0 0
 EOF'
     fi
