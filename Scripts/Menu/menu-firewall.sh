@@ -5,11 +5,12 @@
 OPTIONS=(1 "Enable Firewall"
          2 "Disable Firewall"
          3 "Firewall Status"
-         4 "Add New IP Range for SSH"
-         5 "Add Specific IP for SSH"
-         6 "Delete Rule"
-         7 "Reload Firewall"
-         8 "Go Back")
+         4 "Delete Rule"
+         5 "Reload Firewall"
+         6 "Add New IP Range for SSH"
+         7 "Add Specific IP for SSH"
+         8 "Next Page"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -64,6 +65,65 @@ case $CHOICE in
             # press any key to return to menu
             ;;
         4)
+	    echo -e "${RED}"
+            echo "***"
+            echo "Find the rule you want to delete, and type its row number to delete it."
+            echo "***"
+            echo -e "${NC}"
+            sleep 2s
+            sudo ufw status
+            # show firewall status
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Example: If you want to delete the 3rd rule listed, press the number 3, and press Enter."
+            echo "***"
+            echo -e "${NC}"
+            sleep 2s
+
+            read -p "Please type the rule number to delete now: " ufw_rule_number
+            sudo ufw delete $ufw_rule_number
+            # use user input to delete a certain number ufw rule
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Reloading..."
+            echo "***"
+            sleep 2s
+            echo -e "${NC}"
+            sudo ufw reload
+            # reload the firewall
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing status..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 2s
+            sudo ufw status
+            # show firewall status
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            # press any letter to return to menu
+            ;;
+        5)
+            echo -e "${RED}"
+            echo "***"
+            echo "Reloading Firewall..."
+            echo "***"
+            echo -e "${NC}"
+            sleep 2s
+            sudo ufw reload
+            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            # reload and return to menu
+            ;;
+        6)
             echo -e "${RED}"
             echo "***"
             echo "Obtain the IP address you wish to give access to SSH."
@@ -121,7 +181,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
-        5)
+        7)
             echo -e "${RED}"
             echo "***"
             echo "Obtain the IP address you wish to give access to SSH."
@@ -179,67 +239,11 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
-
-        6)
-            echo -e "${RED}"
-            echo "***"
-            echo "Find the rule you want to delete, and type its row number to delete it."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            sudo ufw status
-            # show firewall status
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Example: If you want to delete the 3rd rule listed, press the number 3, and press Enter."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-
-            read -p "Please type the rule number to delete now: " ufw_rule_number
-            sudo ufw delete $ufw_rule_number
-            # use user input to delete a certain number ufw rule
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Reloading..."
-            echo "***"
-            sleep 2s
-            echo -e "${NC}"
-            sudo ufw reload
-            # reload the firewall
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing status..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            sudo ufw status
-            # show firewall status
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
-            read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
-            # press any letter to return to menu
-            ;;
-        7)
-            echo -e "${RED}"
-            echo "***"
-            echo "Reloading Firewall..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            sudo ufw reload
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
-            # reload and return to menu
-            ;;
         8)
+	    bash ~/RoninDojo/Scripts/Menu/menu-firewall2.sh
+            # go to next menu page
+            ;;
+        9)
             bash ~/RoninDojo/ronin
             # return to main menu
             ;;
