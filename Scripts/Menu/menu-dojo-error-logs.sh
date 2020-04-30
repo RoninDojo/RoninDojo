@@ -39,7 +39,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            ccd $DOJO_PATH && sudo ./dojo.sh logs bitcoind -d error -n 500
+            cd $DOJO_PATH && sudo ./dojo.sh logs bitcoind -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo bitcoind error logs
             ;;
@@ -62,7 +62,7 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-	          sleep 2s
+            sleep 2s
             cd $DOJO_PATH && sudo ./dojo.sh logs db -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo db error logs

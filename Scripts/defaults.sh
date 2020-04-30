@@ -46,13 +46,13 @@ EXPLORER_KEY_TOR=$(grep EXPLORER_KEY ~/dojo/docker/my-dojo/conf/docker-explorer.
 DOJO_PATH=$(~/dojo/docker/my-dojo/)
 
 #Tor Hiddenservice
-V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
+V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname)
 NODE_API_KEY_TOR=$(grep NODE_API_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -d '=' -f2)
 NODE_ADMIN_KEY_TOR=$(grep NODE_ADMIN_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -d '=' -f2)
-V3_ADDR_WHIRLPOOL=$( sudo docker exec -it tor cat /var/lib/tor/hsv3whirlpool/hostname )
-WHIRLPOOL_API_KEY=$( sudo docker exec -it whirlpool cat /home/whirlpool/.whirlpool-cli/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
-V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
-V3_ADDR_ELECTRS=$( sudo docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
+V3_ADDR_WHIRLPOOL=$(sudo docker exec -it tor cat /var/lib/tor/hsv3whirlpool/hostname)
+WHIRLPOOL_API_KEY=$(sudo docker exec -it whirlpool cat /home/whirlpool/.whirlpool-cli/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
+V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname)
+V3_ADDR_ELECTRS=$(sudo docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname)
 
 
 # Ronin menu paths
