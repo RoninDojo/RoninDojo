@@ -795,8 +795,12 @@ sleep 2s
 
 if [ -b /dev/sda1 ]
 then
-  echo "Found sda1, using wipefs."
-  sudo wipefs --all --force /dev/sda1
+  echo -e "${RED}"
+  echo "***"
+  echo "Wiping /dev/sda drive clean"
+  echo "***"
+  echo -e "${NC}"
+  sudo wipefs --all --force /dev/sda1 && sudo sfdisk --delete /dev/sda
 fi
 # if sda1 exists, use wipefs to erase possible sig
 
