@@ -89,7 +89,7 @@ Creating ${mountpoint} directory...
 $(echo -e $(tput sgr0))
 EOF
         sleep 2s
-        sudo mkdir -p ${2}
+        sudo mkdir -p ${2} || return 1
     fi
 
     cat <<EOF
@@ -120,11 +120,9 @@ EOF'
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
-        sudo mkfs.${fstype} -F -L ${label} ${device}
-        return 0
+        sudo mkfs.${fstype} -F -L ${label} ${device} || return 1
     elif [[ $fstype =~ 'xfs' ]]; then
-        sudo mkfs.${fstype} -L ${label} ${device}
-        return 0
+        sudo mkfs.${fstype} -L ${label} ${device} || return 1
     fi
 
     # Mount filesystem
@@ -137,8 +135,9 @@ $(echo -e $(tput sgr0))
 EOF
 
     sleep 2s
-    sudo mount ${device} ${mountpoint}
+    sudo mount ${device} ${mountpoint} || return 1
     # mount drive to ${mountpoint} directory
+    return 0
 }
 
 #

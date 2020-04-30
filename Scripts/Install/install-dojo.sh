@@ -296,7 +296,7 @@ sleep 2s
 cd $DOJO_PATH && sudo ./dojo.sh install
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
-if ls /mnt/usb | grep uninstall-salvage > /dev/null ; then
+if [ -d /mnt/usb/uninstall-salvage ]; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -335,7 +335,7 @@ else
 fi
 # check for uninstall-salvage, if not found continue
 
-if ls /mnt/usb | grep system-setup-salvage > /dev/null ; then
+if [ -d /mnt/usb/system-setup-salvage ]; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
