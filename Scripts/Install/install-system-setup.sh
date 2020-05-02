@@ -75,9 +75,6 @@ fi
 # place main ronin menu script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
-sudo chmod +x ~/RoninDojo/Scripts/Install/*
-sudo chmod +x ~/RoninDojo/Scripts/Menu/*
-
 if find_pkg jdk11-openjdk; then
   echo -e "${RED}"
   echo "***"
