@@ -48,9 +48,7 @@ echo -e "${NC}"
 sleep 3s
 
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
-    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
-    sudo sed -i '16i EXPLORER_KEY='$EXPLORER_KEY'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-    sudo sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+    sudo sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY='$EXPLORER_KEY'/" ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 else
     echo -e "${RED}"
     echo "***"

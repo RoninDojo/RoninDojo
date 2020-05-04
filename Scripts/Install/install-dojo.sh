@@ -262,10 +262,9 @@ EOF
 
 read -p "Do you want to install an indexer? [y/n]" yn
 case $yn in
-    [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
-             sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
-             sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;
-             sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+    [Y/y]* )
+      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
+      sudo -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
     [N/n]* ) echo "Indexer will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac
