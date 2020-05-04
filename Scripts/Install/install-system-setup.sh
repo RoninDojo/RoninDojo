@@ -66,6 +66,9 @@ fi
 
 if [ ! -f /usr/local/bin/ronin ]; then
   sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
+fi
+
+if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
   cat << EOF >> ~/.bashrc
 ~/RoninDojo/Scripts/.logo
 
