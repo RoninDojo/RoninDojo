@@ -34,7 +34,7 @@ sudo sed -i '/docker-explorer.conf/i\      - ./conf/docker-indexer.conf' ~/dojo/
 
 ###### Modify dojo.sh for electrs ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '/\$EXPLORER/i\
+sudo sed -i '/onion() {/a\
 \  if [ "$INDEXER_INSTALL" == "on" ]; then\
 \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\
 \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"\
