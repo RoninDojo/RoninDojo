@@ -32,16 +32,16 @@ sudo sed -i '33i fi' ~/dojo/docker/my-dojo/tor/restart.sh
 
 ###### Add indexer to tor section of docker-compose.yaml ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '83i \      - ./conf/docker-indexer.conf' ~/dojo/docker/my-dojo/docker-compose.yaml
+sudo sed -i '95i \      - ./conf/docker-indexer.conf' ~/dojo/docker/my-dojo/docker-compose.yaml
 
 
 ###### Modify dojo.sh for electrs ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '344i \  if [ "$INDEXER_INSTALL" == "on" ]; then' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '345i \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '346i \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '347i \  fi' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '347G' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '346i \  if [ "$INDEXER_INSTALL" == "on" ]; then' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '347i \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '348i \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '349i \  fi' ~/dojo/docker/my-dojo/dojo.sh
+sudo sed -i '349G' ~/dojo/docker/my-dojo/dojo.sh
 
 
 ###### Modify indexer/restart.sh for Electrs ######
