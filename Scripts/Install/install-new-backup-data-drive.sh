@@ -87,7 +87,6 @@ if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"; t
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
-
 # format partition
 
 echo -e "${RED}"

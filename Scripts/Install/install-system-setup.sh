@@ -819,7 +819,6 @@ if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
-
 # format partition
 
 echo -e "${RED}"

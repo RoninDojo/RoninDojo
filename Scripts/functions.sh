@@ -137,6 +137,7 @@ EOF
     sleep 2s
     sudo mount ${device} ${mountpoint} || return 1
     # mount drive to ${mountpoint} directory
+
     return 0
 }
 
