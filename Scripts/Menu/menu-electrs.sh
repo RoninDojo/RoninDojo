@@ -35,8 +35,8 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
-            # check if electrs is already installed 
+            fi
+            # check if electrs is already installed
 
             echo -e "${RED}"
             echo "***"
@@ -49,7 +49,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo ~/dojo/docker/my-dojo/dojo.sh logs indexer
+            cd $DOJO_PATH && sudo ./dojo.sh indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -70,7 +70,7 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
 
             echo -e "${RED}"
@@ -100,9 +100,9 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Stopping Electrs..."
@@ -130,9 +130,9 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Restarting Electrs..."
@@ -160,15 +160,14 @@ case $CHOICE in
                 sleep 1s
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
             echo "***"
             echo -e "${NC}"
-            V3_ADDR_ELECTRS=$( sudo docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
             echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
             sleep 1s
             # displaying electrs tor address to connect to electrum

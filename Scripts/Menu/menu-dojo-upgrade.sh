@@ -16,13 +16,13 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh stop
+#cd ~/dojo/docker/my-dojo
+cd $DOJO_PATH && sudo ./dojo.sh stop
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
 sudo rm -rf samourai-dojo > /dev/null 2>&1
-git clone https://code.samourai.io/Ronin/samourai-dojo.git
+git clone $SAMOURAI_REPO #temporary
 cp -rv samourai-dojo/* ~/dojo
 # stop dojo and prepare for upgrade
 
@@ -112,9 +112,23 @@ else
 fi
 # install electrs
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh upgrade
+if [ -f /etc/systemd/system/whirlpool.service ] ; then
+   sudo systemctl stop whirlpool
+   echo -e "${RED}"
+   echo "***"
+   echo "Whirlpool will be installed via Dojo docker"
+   echo "You will need to re-pair with GUI"
+   echo "See wiki for more information"
+   echo sleep 5s
+else
+   echo "Whirlpool will be installed via Dojo Docker"
+   echo "For pairing information see the wiki"
+fi
+# stop whirlpool for existing whirlpool users
+
+#cd ~/dojo/docker/my-dojo
+cd $DOJO_PATH && sudo ./dojo.sh upgrade
 # run upgrade
 
-bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+bash $RONIN_DOJO_MENU
 # return to menu

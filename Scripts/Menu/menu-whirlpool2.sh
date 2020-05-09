@@ -4,9 +4,7 @@
 . ~/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Re-initiate Whirlpool"
-         2 "Upgrade Whirlpool"
-         3 "Uninstall Whirlpool"
-         4 "Go Back")
+         2 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -31,18 +29,8 @@ case $CHOICE in
                          echo "Re-initiating Whirlpool..."
                          echo "***"
                          echo -e "${NC}"
-                         sudo systemctl stop whirlpool
-                         cd ~/whirlpool
-                         rm -rf *.json whirlpool-cli-config.properties
+                         cd $DOJO_PATH && sudo ./dojo.sh whirlpool reset
                          sleep 1s
-
-                         echo -e "${RED}"
-                         echo "***"
-                         echo "Re-pair with Whirlpool GUI"
-                         echo "***"
-                         echo -e "${NC}"
-                         sudo systemctl start whirlpool
-
                          echo -e "${RED}"
                          echo "***"
                          echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
@@ -60,95 +48,12 @@ case $CHOICE in
                 * ) echo "Please answer yes or no.";;
             esac
             sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash $RONIN_WHIRLPOOL_MENU
             # re-initate whirlpool, return to menu
             ;;
+
         2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Checking for latest Whirlpool release..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 1s
-            if find_pkg jq; then
-                echo -e "${RED}"
-                echo "***"
-                echo "jq already installed..."
-                echo "***"
-                echo -e "${NC}"
-            else
-                echo -e "${RED}"
-                echo "***"
-                echo "Installing jq..."
-                echo "***"
-                echo -e "${NC}"
-                sleep 1s
-                sudo pacman -S --noconfirm jq
-            fi
-
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-upgrade.sh
-            echo -e "${RED}"
-            echo "***"
-            echo "You are on current Whirlpool release... head to GUI to unlock mixing."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # upgrade whirlpool
-            ;;
-
-        3)
-            echo -e "${RED}"
-            echo "***"
-            echo "Uninstalling Whirlpool..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Do you want to uninstall Whirlpool?"
-            echo "***"
-            echo -e "${NC}"
-            while true; do
-                read -p "Y/N?: " yn
-                case $yn in
-                    [Yy]* ) echo -e "${RED}"
-                            echo "***"
-                            echo "Uninstalling Whirlpool..."
-                            echo "***"
-                            echo -e "${NC}"
-                            sleep 2s
-                            sudo systemctl stop whirlpool 
-                            sudo rm -rf /etc/systemd/system/whirlpool.service
-                            sudo rm -rf ~/whirlpool
-                            sudo systemctl daemon-reload
-
-                            echo -e "${RED}"
-                            echo "***"
-                            echo "Whirlpool is uninstalled... returning to menu"
-                            echo "***"
-                            echo -e "${NC}"
-                            sleep 2s
-                            break;;
-
-                    [Nn]* ) echo -e "${RED}"
-                            echo "***"
-                            echo "Returning to menu..."
-                            echo "***"
-                            echo -e "${NC}"
-                            sleep 2s
-                            break;;
-                    * ) echo "Please answer yes or no.";;
-                esac
-            done
-
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool2.sh
-            # uninstall whirlpool after confirmation else return to menu
-            ;;
-
-        4)
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-	    # return to menu
+            bash $RONIN_WHIRLPOOL_MENU
+	          # return to menu
 	    ;;
 esac

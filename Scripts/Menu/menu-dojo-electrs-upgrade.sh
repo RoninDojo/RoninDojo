@@ -1,7 +1,5 @@
 #!/bin/bash
-
-RPC_USER=$(sudo grep BITCOIND_RPC_USER= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
-RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
+. ~/RoninDojo/Scripts/defaults.sh
 
 ###### Modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer ######
 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
@@ -11,7 +9,7 @@ sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' 
 # use EOF to put lines one after another
 
 cat > ~/dojo/docker/my-dojo/indexer/electrs.toml <<EOF
-cookie = "$RPC_USER:$RPC_PASS"
+cookie = "$RPC_USER_CONF:$RPC_PASS_CONF"
 server_banner = "Welcome to your RoninDojo Electrs Server!"
 EOF
 chmod 600 ~/dojo/docker/my-dojo/indexer/electrs.toml || exit 1

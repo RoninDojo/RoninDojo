@@ -39,8 +39,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs bitcoind -d error -n 500
+            cd $DOJO_PATH && sudo ./dojo.sh logs bitcoind -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo bitcoind error logs
             ;;
@@ -63,9 +62,8 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-	    sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs db -d error -n 500
+            sleep 2s
+            cd $DOJO_PATH && sudo ./dojo.sh logs db -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo db error logs
             ;;
@@ -89,8 +87,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs tor -d error -n 500
+            cd $DOJO_PATH && sudo ./dojo.sh logs tor -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo tor error logs
             ;;
@@ -114,8 +111,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs api -d error -n 500
+            cd $DOJO_PATH && sudo ./dojo.sh logs api -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo api error logs
             ;;
@@ -139,8 +135,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs tracker -d error -n 500
+            cd $DOJO_PATH && sudo ./dojo.sh logs tracker -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo tracker error logs
             ;;
@@ -171,13 +166,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs -d error -n 500
+            cd $DOJO_PATH && sudo ./dojo.sh logs -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows all docker container error logs
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+            bash $RONIN_DOJO_MENU
             # goes back to ronin dojo menu
             ;;
 esac

@@ -8,7 +8,6 @@ find_pkg() {
 
     return 1
 }
-
 #
 # Check fs type
 # Shows the filesystem type of a giving partition

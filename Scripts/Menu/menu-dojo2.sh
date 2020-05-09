@@ -31,7 +31,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 5s
 
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Users with a fully sync'd Blockchain should answer yes to salvage!"
             echo "***"
@@ -57,13 +57,12 @@ case $CHOICE in
                             echo "***"
                             echo -e "${NC}"
                             sleep 2s
-			    cd ~/dojo/docker/my-dojo/
-			    sudo ./dojo.sh stop
+                            cd $DOJO_PATH && sudo ./dojo.sh stop
                             sudo mkdir /uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/
                             # stops dojo, copies blockchain data to uninstall-salvage to be used by the dojo install script
-			    break;;
+                            break;;
                     [Nn]* ) break;;
                     * ) echo "Please answer yes or no.";;
                 esac
@@ -74,12 +73,11 @@ case $CHOICE in
             echo "Uninstalling Dojo..."
             echo "***"
             echo -e "${NC}"
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh uninstall
-	    sudo rm -rf ~/dojo
+            cd $DOJO_PATH && sudo ./dojo.sh uninstall
+            sudo rm -rf ~/dojo
             # uninstall dojo
 
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Complete!"
             echo "***"

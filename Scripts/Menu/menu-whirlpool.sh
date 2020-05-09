@@ -3,8 +3,8 @@
 . ~/RoninDojo/Scripts/defaults.sh
 
 OPTIONS=(1 "View API key"
-         2 "View Logs"
-         3 "View Status"
+         2 "View Hiddenservice"
+         3 "View Logs"
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
          6 "Restart Whirlpool"
@@ -34,15 +34,15 @@ case $CHOICE in
             echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
-            grep cli.apiKey= ~/whirlpool/whirlpool-cli-config.properties | cut -c 12-
+            echo "$WHIRLPOOL_API_KEY"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash $RONIN_WHIRLPOOL_MENU
             # press any key to return to menu
             ;;
         2)
             echo -e "${RED}"
             echo "***"
-            echo "Viewing Whirlpool CLI Logs..."
+            echo "Viewing Whirlpool CLI Hidden Service Address..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -52,15 +52,13 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            sudo journalctl -r -u whirlpool.service
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # view whirlpool cli logs via journalctl, return to menu
-            # note that it's in order of newest to oldest, and blob means that it's repeat information
+            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
+            bash $RONIN_WHIRLPOOL_MENU
             ;;
         3)
             echo -e "${RED}"
             echo "***"
-            echo "Viewing Whirlpool Status..."
+            echo "Viewing Whirlpool Logs..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -70,8 +68,8 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            sudo watch -n 0.2 systemctl status whirlpool --lines=10
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            cd $DOJO_PATH && sudo ./dojo.sh logs whirlpool
+            bash $RONIN_WHIRLPOOL_MENU
             # view status, return to menu
             ;;
         4)
@@ -81,7 +79,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl start whirlpool
+            sudo docker start whirlpool
 
             echo -e "${RED}"
             echo "***"
@@ -89,7 +87,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash $RONIN_WHIRLPOOL_MENU
             # start whirlpool, return to menu
             ;;
         5)
@@ -99,8 +97,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl stop whirlpool
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            sudo docker stop whirlpool
+            bash $RONIN_WHIRLPOOL_MENU
             # stop whirlpool, return to menu
             ;;
         6)
@@ -110,8 +108,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo systemctl restart whirlpool
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            sudo docker stop whirlpool
+            sleep 5s
+            sudo docker start whirlpool
+            sleep 2s
+            bash $RONIN_WHIRLPOOL_MENU
             # enable whirlpool at startup, return to menu
             ;;
         7)
@@ -125,7 +126,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
             sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash $RONIN_WHIRLPOOL_MENU
             # check for wst install and/or launch wst, return to menu
             ;;
         8)
