@@ -66,6 +66,9 @@ fi
 
 if [ ! -f /usr/local/bin/ronin ]; then
   sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
+fi
+
+if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
   cat << EOF >> ~/.bashrc
 ~/RoninDojo/Scripts/.logo
 
@@ -74,9 +77,6 @@ EOF
 fi
 # place main ronin menu script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
-
-sudo chmod +x ~/RoninDojo/Scripts/Install/*
-sudo chmod +x ~/RoninDojo/Scripts/Menu/*
 
 if find_pkg jdk11-openjdk; then
   echo -e "${RED}"
@@ -113,13 +113,10 @@ else
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
     sleep 1s
-    sudo sed -i '52d' /etc/tor/torrc
-    sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
-    sudo sed -i '56d' /etc/tor/torrc
-    sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
-    sudo sed -i '60d' /etc/tor/torrc
-    sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
-    sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
+    sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
+    -e 's/^ControlPort .*$/ControlPort 9051' \
+    -e 's/^#CookieAuthentication/CookieAuthentication/' \
+    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
 # check if tor is installed, if not install and modify torrc
 
@@ -582,7 +579,7 @@ EOF'
   sleep 5s
   sudo systemctl start docker
   sleep 10s
-  sudo systemctl enable docker
+
   # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
   # see systemctl status docker.service and journalctl -xe for details on error
 
@@ -795,8 +792,12 @@ sleep 2s
 
 if [ -b /dev/sda1 ]
 then
-  echo "Found sda1, using wipefs."
-  sudo wipefs --all --force /dev/sda1
+  echo -e "${RED}"
+  echo "***"
+  echo "Wiping /dev/sda drive clean"
+  echo "***"
+  echo -e "${NC}"
+  sudo wipefs --all --force /dev/sda1 && sudo sfdisk --delete /dev/sda
 fi
 # if sda1 exists, use wipefs to erase possible sig
 
