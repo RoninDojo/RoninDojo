@@ -48,12 +48,12 @@ case $CHOICE in
                 * ) echo "Please answer yes or no.";;
             esac
             sleep 1s
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # re-initate whirlpool, return to menu
             ;;
 
         2)
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
 	          # return to menu
 	    ;;
 esac

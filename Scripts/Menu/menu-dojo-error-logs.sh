@@ -171,7 +171,7 @@ case $CHOICE in
             # shows all docker container error logs
             ;;
         8)
-            bash $RONIN_DOJO_MENU
+            bash -c $RONIN_DOJO_MENU
             # goes back to ronin dojo menu
             ;;
 esac
