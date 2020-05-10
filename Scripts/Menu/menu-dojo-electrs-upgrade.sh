@@ -3,7 +3,7 @@
 
 ###### Modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer ######
 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
-sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf
+sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
 
 ###### Create electrs.toml for Electrs Dockerfile ######
 # use EOF to put lines one after another
@@ -17,7 +17,7 @@ chmod 600 ~/dojo/docker/my-dojo/indexer/electrs.toml || exit 1
 ###### Modify tor/restart.sh for Electrs HiddenService ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 # we append everything above the EXPLORER if statement
-sudo sed -i '/\$EXPLORER/i\
+sudo sed -i '/\if \[ "\$EXPLORER_INSTALL\" \=\= \"on\" \]\; then/i\
 if [ "$INDEXER_INSTALL" == "on" ]; then\
 \  tor_options+=(--HiddenServiceDir /var/lib/tor/hsv3electrs)\
 \  tor_options+=(--HiddenServiceVersion 3)\
@@ -32,7 +32,7 @@ sudo sed -i '/docker-explorer.conf/i\      - ./conf/docker-indexer.conf' ~/dojo/
 
 ###### Modify dojo.sh for electrs ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '/\$EXPLORER/i\
+sudo sed -i '/onion() {/a\
 \  if [ "$INDEXER_INSTALL" == "on" ]; then\
 \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\
 \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"\

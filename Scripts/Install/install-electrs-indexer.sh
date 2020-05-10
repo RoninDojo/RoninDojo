@@ -19,7 +19,7 @@ chmod 600 ~/dojo/docker/my-dojo/indexer/electrs.toml || exit 1
 ###### Modify tor/restart.sh for Electrs HiddenService ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 # we append everything above the EXPLORER if statement
-sudo sed -i '/\$EXPLORER/i\
+sudo sed -i '/\if \[ "\$EXPLORER_INSTALL\" \=\= \"on\" \]\; then/i\
 if [ "$INDEXER_INSTALL" == "on" ]; then\
 \  tor_options+=(--HiddenServiceDir /var/lib/tor/hsv3electrs)\
 \  tor_options+=(--HiddenServiceVersion 3)\

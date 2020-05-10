@@ -40,26 +40,22 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ] ; then
-    EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
-else
+if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ] ; then
     echo -e "${RED}"
     echo "***"
     echo "Explorer is already installed!"
     echo "***"
     echo -e "${NC}"
+else
+    sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 fi
-
-sed -i '16i EXPLORER_KEY='$EXPLORER_KEY'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
     read -p "Do you want to install an Indexer? [y/n]" yn
     case $yn in
-        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
-                 sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
-                 sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;
-                 sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+        [Y/y]* )
+                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
+                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
         [N/n]* ) echo -e "${RED}"
                  echo "***"
                  echo "Indexer will not be installed!"
@@ -70,10 +66,9 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
 elif grep "INDEXER_INSTALL=off" ~/dojo/docker/my-dojo/conf/docker-indexer.conf > /dev/null ; then
         read -p "Do you want to install an Indexer? [y/n]" yn
         case $yn in
-            [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
-                     sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
-                     sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf;
-                     sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf;;
+            [Y/y]* )
+                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf
+                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf
             [N/n]* ) echo -e "${RED}"
                      echo "***"
                      echo "Indexer will not be installed!"
