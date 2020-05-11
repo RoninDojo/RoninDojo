@@ -94,7 +94,7 @@ case $CHOICE in
             # copy block data to backup drive
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+            bash -c $RONIN_DOJO_MENU
             # return to main menu
             ;;
 esac

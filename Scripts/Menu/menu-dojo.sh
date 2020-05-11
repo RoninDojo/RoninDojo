@@ -30,7 +30,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               sleep 5s
-              bash $RONIN_DOJO_MENU
+              bash -c $RONIN_DOJO_MENU
               exit
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
@@ -49,7 +49,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash $RONIN_DOJO_MENU
+            bash -c $RONIN_DOJO_MENU
             # start dojo, press any letter to return to menu
             ;;
         2)
@@ -61,7 +61,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               sleep 5s
-              bash $RONIN_DOJO_MENU
+              bash -c $RONIN_DOJO_MENU
               exit
             fi
             # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
@@ -80,7 +80,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash $RONIN_DOJO_MENU
+            bash -c $RONIN_DOJO_MENU
             # stop dojo, press any letter to return to menu
             ;;
         3)
@@ -96,7 +96,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               sleep 5s
-              bash $RONIN_DOJO_MENU
+              bash -c $RONIN_DOJO_MENU
               exit
             fi
             # checks if dojo is not running (check the db container), if not running, tells user to start dojo first
@@ -122,7 +122,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash $RONIN_DOJO_MENU
+            bash -c $RONIN_DOJO_MENU
             # press any key to return to menu
             # shows .onion and returns to menu
             ;;
@@ -145,7 +145,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash $RONIN_DOJO_MENU
+            bash -c $RONIN_DOJO_MENU
             # display dojo version info
             # press any letter to return
             ;;
@@ -165,7 +165,7 @@ case $CHOICE in
             sleep 14s
             cd $DOJO_PATH && sudo ./dojo.sh clean
             sleep 2s
-            bash $RONIN_DOJO_MENU
+            bash -c $RONIN_DOJO_MENU
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         8)

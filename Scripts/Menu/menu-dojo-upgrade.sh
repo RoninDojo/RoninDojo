@@ -125,5 +125,5 @@ fi
 cd $DOJO_PATH && sudo ./dojo.sh upgrade
 # run upgrade
 
-bash $RONIN_DOJO_MENU
+bash -c $RONIN_DOJO_MENU
 # return to menu
