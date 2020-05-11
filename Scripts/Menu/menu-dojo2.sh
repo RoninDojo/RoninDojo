@@ -57,7 +57,7 @@ case $CHOICE in
                             echo "***"
                             echo -e "${NC}"
                             sleep 2s
-                            cd $DOJO_PATH && sudo ./dojo.sh stop
+                            cd ~/dojo/docker/my-dojo && ./dojo.sh stop
                             sudo mkdir /uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/
@@ -73,7 +73,7 @@ case $CHOICE in
             echo "Uninstalling Dojo..."
             echo "***"
             echo -e "${NC}"
-            cd $DOJO_PATH && sudo ./dojo.sh uninstall
+            cd ~/dojo/docker/my-dojo && ./dojo.sh uninstall
             sudo rm -rf ~/dojo
             # uninstall dojo
 

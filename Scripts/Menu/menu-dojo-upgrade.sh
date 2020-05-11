@@ -16,8 +16,7 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-#cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH && sudo ./dojo.sh stop
+cd ~/dojo/docker/my-dojo && ./dojo.sh stop
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
@@ -121,8 +120,7 @@ else
 fi
 # stop whirlpool for existing whirlpool users
 
-#cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH && sudo ./dojo.sh upgrade
+cd ~/dojo/docker/my-dojo && ./dojo.sh upgrade
 # run upgrade
 
 bash -c $RONIN_DOJO_MENU

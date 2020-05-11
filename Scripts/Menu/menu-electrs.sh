@@ -49,7 +49,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && sudo ./dojo.sh indexer
+            cd ~/dojo/docker/my-dojo && ./dojo.sh logs indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -79,7 +79,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker start indexer
+            docker start indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -109,7 +109,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker stop indexer
+            docker stop indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # stop electrs, return to menu
             ;;
@@ -139,7 +139,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker restart indexer
+            docker restart indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # restart electrs, return to menu
             ;;

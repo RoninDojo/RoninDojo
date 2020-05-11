@@ -64,14 +64,13 @@ case $CHOICE in
             echo "echo "Upgrade Complete!"" >> ~/ronin-update.sh
             echo "echo '***'" >> ~/ronin-update.sh
             echo "echo -e '${NC}'" >> ~/ronin-update.sh
-	    # notifies upgrade is complete
-
-	    echo "sleep 2s" >> ~/ronin-update.sh
+            # notifies upgrade is complete
+            echo "sleep 2s" >> ~/ronin-update.sh
             echo "bash ~/RoninDojo/Scripts/Menu/menu-system2.sh" >> ~/ronin-update.sh
             sudo chmod +x ~/ronin-update.sh
             bash ~/ronin-update.sh
             # makes script executable and runs
-	    # end of script returns to menu
+            # end of script returns to menu
             # script is deleted during next run of update
             ;;
         4)
