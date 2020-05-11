@@ -18,6 +18,8 @@ CHOICE_HEIGHT=16
 TITLE="RoninDojo"
 MENU="Choose one of the following options:"
 
+DOJO_PATH=~/dojo/docker/my-dojo
+
 #
 # Dojo Docker settings
 #
@@ -43,13 +45,13 @@ EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
 EXPLORER_KEY_TOR=$(grep EXPLORER_KEY ~/dojo/docker/my-dojo/conf/docker-explorer.conf | cut -d '=' -f2)
 
 #Tor Hiddenservice
-V3_ADDR_API=$(docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname)
+V3_ADDR_API=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo/hostname)
 NODE_API_KEY_TOR=$(grep NODE_API_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -d '=' -f2)
 NODE_ADMIN_KEY_TOR=$(grep NODE_ADMIN_KEY ~/dojo/docker/my-dojo/conf/docker-node.conf | cut -d '=' -f2)
-V3_ADDR_WHIRLPOOL=$(docker exec -it tor cat /var/lib/tor/hsv3whirlpool/hostname)
-WHIRLPOOL_API_KEY=$(docker exec -it whirlpool cat /home/whirlpool/.whirlpool-cli/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
-V3_ADDR_EXPLORER=$(docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname)
-V3_ADDR_ELECTRS=$(docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname)
+V3_ADDR_WHIRLPOOL=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool/hostname)
+WHIRLPOOL_API_KEY=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-whirlpool/_data/.whirlpool-cli/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-)
+V3_ADDR_EXPLORER=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer/hostname)
+V3_ADDR_ELECTRS=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs/hostname)
 
 # Ronin menu paths
 RONIN_DOJO_MENU='~/RoninDojo/Scripts/Menu/menu-dojo.sh'
