@@ -25,8 +25,8 @@ MENU="Choose one of the following options:"
 # bitcoind
 RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 RPC_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
-RPC_PASS_CONF=(grep BITCOIND_RPC_PASSWORD ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf | cut -d '=' -f2)
-RPC_USER_CONF=(grep BITCOIND_RPC_USER ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf | cut -d '=' -f2)
+RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf | cut -d '=' -f2)
+RPC_USER_CONF=$(grep BITCOIND_RPC_USER ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf | cut -d '=' -f2)
 
 # node
 NODE_API_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
