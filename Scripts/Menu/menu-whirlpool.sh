@@ -36,7 +36,7 @@ case $CHOICE in
             echo -e "${NC}"
             echo "$WHIRLPOOL_API_KEY"
             read -n 1 -r -s
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # press any key to return to menu
             ;;
         2)
@@ -53,7 +53,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             ;;
         3)
             echo -e "${RED}"
@@ -69,7 +69,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             cd $DOJO_PATH && sudo ./dojo.sh logs whirlpool
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # view status, return to menu
             ;;
         4)
@@ -87,7 +87,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # start whirlpool, return to menu
             ;;
         5)
@@ -98,7 +98,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 2s
             sudo docker stop whirlpool
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # stop whirlpool, return to menu
             ;;
         6)
@@ -112,7 +112,7 @@ case $CHOICE in
             sleep 5s
             sudo docker start whirlpool
             sleep 2s
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # enable whirlpool at startup, return to menu
             ;;
         7)
@@ -126,7 +126,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
             sleep 1s
-            bash $RONIN_WHIRLPOOL_MENU
+            bash -c $RONIN_WHIRLPOOL_MENU
             # check for wst install and/or launch wst, return to menu
             ;;
         8)

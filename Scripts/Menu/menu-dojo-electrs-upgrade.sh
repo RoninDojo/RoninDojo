@@ -17,7 +17,7 @@ chmod 600 ~/dojo/docker/my-dojo/indexer/electrs.toml || exit 1
 ###### Modify tor/restart.sh for Electrs HiddenService ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 # we append everything above the EXPLORER if statement
-sudo sed -i '/\$EXPLORER/i\
+sudo sed -i '/\if \[ "\$EXPLORER_INSTALL\" \=\= \"on\" \]\; then/i\
 if [ "$INDEXER_INSTALL" == "on" ]; then\
 \  tor_options+=(--HiddenServiceDir /var/lib/tor/hsv3electrs)\
 \  tor_options+=(--HiddenServiceVersion 3)\
@@ -32,7 +32,7 @@ sudo sed -i '/docker-explorer.conf/i\      - ./conf/docker-indexer.conf' ~/dojo/
 
 ###### Modify dojo.sh for electrs ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '/\$EXPLORER/i\
+sudo sed -i '/onion() {/a\
 \  if [ "$INDEXER_INSTALL" == "on" ]; then\
 \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\
 \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"\

@@ -169,7 +169,7 @@ case $CHOICE in
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         8)
-            bash $RONIN_DOJO_MENU2
+            bash -c $RONIN_DOJO_MENU2
             # takes you to ronin dojo menu2
             ;;
         9)
