@@ -757,7 +757,7 @@ EOF'
   echo "Check that docker is using the external drive."
   echo "***"
   echo -e "${NC}"
-  sudo docker info | grep "Docker Root Dir:"
+  docker info | grep "Docker Root Dir:"
   sleep 3s
   # if not showing SSD path check above
   # docker setup ends
