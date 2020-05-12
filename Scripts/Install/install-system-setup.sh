@@ -470,11 +470,10 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sudo rm -rf /mnt/salvage/{swapfile,docker}
-  sudo umount -l /dev/sda1
-  sleep 5s
-  sudo rm -rf /mnt/salvage
-  # if uninstall-salvage directory is found, delete older docker directory and swapfile, then unmount sda1
+  sudo rm -rf /mnt/salvage/{swapfile,docker,tor}
+  sudo umount /mnt/salvage
+  sudo rmdir /mnt/salvage
+  # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
   echo -e "${RED}"
   echo "***"
@@ -551,7 +550,7 @@ EOF'
   echo "Creating /etc/docker directory..."
   echo "***"
   echo -e "${NC}"
-  sudo mkdir /etc/docker
+  test ! -d /etc/docker && sudo mkdir /etc/docker
   # makes docker directory
 
 sudo bash -c 'cat << EOF > /etc/docker/daemon.json
@@ -624,7 +623,7 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo "***"
   echo -e "${NC}"
   sleep 2s
-  sudo mkdir /mnt/salvage/system-setup-salvage/
+  sudo mkdir /mnt/salvage/system-setup-salvage
   sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
   echo -e "${RED}"
   echo "***"
@@ -632,11 +631,9 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo "***"
   echo -e "${NC}"
   sleep 2s
-  sudo rm -rf /mnt/salvage/docker
-  sudo rm -f /mnt/salvage/swapfile
-  sudo umount -l /mnt/salvage
-  sleep 3s
-  sudo rm -rf /mnt/salvage
+  sudo rm -rf /mnt/salvage/{docker,tor,swapfile}
+  sudo umount /mnt/salvage
+  sudo rmdir /mnt/salvage
   # copies blockchain salvage data to /mnt/salvage if found
 
   echo -e "${RED}"
@@ -777,9 +774,8 @@ else
   echo -e "${NC}"
   sleep 3s
 
-  sudo umount -l /dev/sda1
-  sleep 5s
-  sudo rm -rf /mnt/salvage
+  sudo umount /mnt/salvage
+  sudo rmdir /mnt/salvage
 fi
 # checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to format drive
 

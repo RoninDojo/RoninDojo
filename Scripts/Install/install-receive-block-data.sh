@@ -48,8 +48,7 @@ echo "Removing old Data..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/
-sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/
+sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
 
 echo -e "${RED}"
 echo "***"
@@ -58,8 +57,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-sudo cp -rv /mnt/usb1/system-setup-salvage/chainstate/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/
-sudo cp -rv /mnt/usb1/system-setup-salvage/blocks/ /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/
+sudo mv -v /mnt/usb1/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"
@@ -70,13 +68,6 @@ echo -e "${NC}"
 read -n 1 -r -s
 # press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
 
-sudo chown -R 1105:1108 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
-# change ownership of blockchain data
-
-sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate
-sudo chmod 700 /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks
-# chmod so only root has rwx access
-
 echo -e "${RED}"
 echo "***"
 echo "Unmounting..."
@@ -84,9 +75,9 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-sudo umount -l /dev/sdb1
+sudo umount /mnt/usb1
 sleep 5s
-rm -rf /mnt/usb1
+rmdir /mnt/usb1
 
 echo -e "${RED}"
 echo "***"
