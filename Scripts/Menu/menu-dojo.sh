@@ -22,7 +22,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "true" ]; then
               echo -e "${RED}"
               echo "***"
@@ -41,7 +41,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && sudo ./dojo.sh start
+            cd ~/dojo/docker/my-dojo && ./dojo.sh start
 
             echo -e "${RED}"
             echo "***"
@@ -53,7 +53,7 @@ case $CHOICE in
             # start dojo, press any letter to return to menu
             ;;
         2)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -72,7 +72,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && sudo ./dojo.sh stop
+            cd ~/dojo/docker/my-dojo && ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"
@@ -88,7 +88,7 @@ case $CHOICE in
             # go to dojo logs menu
             ;;
         4)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -137,7 +137,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && sudo ./dojo.sh version
+            cd ~/dojo/docker/my-dojo && ./dojo.sh version
 
             echo -e "${RED}"
             echo "***"
@@ -163,7 +163,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 14s
-            cd $DOJO_PATH && sudo ./dojo.sh clean
+            cd ~/dojo/docker/my-dojo && ./dojo.sh clean
             sleep 2s
             bash -c $RONIN_DOJO_MENU
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu

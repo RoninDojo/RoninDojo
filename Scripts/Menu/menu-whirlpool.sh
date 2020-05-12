@@ -68,7 +68,7 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            cd $DOJO_PATH && sudo ./dojo.sh logs whirlpool
+            cd ~/dojo/docker/my-dojo && ./dojo.sh logs whirlpool
             bash -c $RONIN_WHIRLPOOL_MENU
             # view status, return to menu
             ;;
@@ -79,7 +79,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker start whirlpool
+            docker start whirlpool
 
             echo -e "${RED}"
             echo "***"
@@ -97,7 +97,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker stop whirlpool
+            docker stop whirlpool
             bash -c $RONIN_WHIRLPOOL_MENU
             # stop whirlpool, return to menu
             ;;
@@ -108,9 +108,9 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            sudo docker stop whirlpool
+            docker stop whirlpool
             sleep 5s
-            sudo docker start whirlpool
+            docker start whirlpool
             sleep 2s
             bash -c $RONIN_WHIRLPOOL_MENU
             # enable whirlpool at startup, return to menu

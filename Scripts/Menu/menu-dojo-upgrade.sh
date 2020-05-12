@@ -16,8 +16,7 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-#cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH && sudo ./dojo.sh stop
+cd ~/dojo/docker/my-dojo && ./dojo.sh stop
 sudo chown -R $USER:$USER ~/dojo/*
 mkdir ~/.dojo > /dev/null 2>&1
 cd ~/.dojo
@@ -55,8 +54,8 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
     case $yn in
         [Y/y]* )
                  sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
-                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
-        [N/n]* ) echo -e "${RED}"
+                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+        [N/n]* )  echo -e "${RED}"
                  echo "***"
                  echo "Indexer will not be installed!"
                  echo "***"
@@ -67,8 +66,8 @@ elif grep "INDEXER_INSTALL=off" ~/dojo/docker/my-dojo/conf/docker-indexer.conf >
         read -p "Do you want to install an Indexer? [y/n]" yn
         case $yn in
             [Y/y]* )
-                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf
-                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf
+                     sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf
+                     sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf;;
             [N/n]* ) echo -e "${RED}"
                      echo "***"
                      echo "Indexer will not be installed!"
@@ -76,12 +75,12 @@ elif grep "INDEXER_INSTALL=off" ~/dojo/docker/my-dojo/conf/docker-indexer.conf >
                      echo -e "${NC}";;
             * ) echo "Please answer Yes or No.";;
         esac
-    else
-        echo -e "${RED}"
-        echo "***"
-        echo "Indexer is already installed! If you were running Electrs, press y at next prompt..."
-        echo "***"
-        echo -e "${NC}"
+else
+    echo -e "${RED}"
+    echo "***"
+    echo "Indexer is already installed! If you were running Electrs, press y at next prompt..."
+    echo "***"
+    echo -e "${NC}"
 fi
 # install indexer
 
@@ -120,9 +119,8 @@ else
    echo "For pairing information see the wiki"
 fi
 # stop whirlpool for existing whirlpool users
-
-#cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH && sudo ./dojo.sh upgrade
+echo -e "${NC}"
+cd ~/dojo/docker/my-dojo && ./dojo.sh upgrade
 # run upgrade
 
 bash -c $RONIN_DOJO_MENU
