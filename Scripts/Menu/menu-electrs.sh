@@ -49,7 +49,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo && ./dojo.sh logs indexer
+            cd $DOJO_PATH && ./dojo.sh indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;

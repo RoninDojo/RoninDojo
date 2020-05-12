@@ -29,7 +29,7 @@ case $CHOICE in
                          echo "Re-initiating Whirlpool..."
                          echo "***"
                          echo -e "${NC}"
-                         cd ~/dojo/docker/my-dojo && ./dojo.sh whirlpool reset
+                         cd $DOJO_PATH && ./dojo.sh whirlpool reset
                          sleep 1s
                          echo -e "${RED}"
                          echo "***"

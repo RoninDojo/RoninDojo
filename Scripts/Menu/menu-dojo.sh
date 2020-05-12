@@ -41,7 +41,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo && ./dojo.sh start
+            cd $DOJO_PATH && ./dojo.sh start
 
             echo -e "${RED}"
             echo "***"
@@ -72,7 +72,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo && ./dojo.sh stop
+            cd $DOJO_PATH && ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"
@@ -137,7 +137,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo && ./dojo.sh version
+            cd $DOJO_PATH && ./dojo.sh version
 
             echo -e "${RED}"
             echo "***"
@@ -163,7 +163,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 14s
-            cd ~/dojo/docker/my-dojo && ./dojo.sh clean
+            cd $DOJO_PATH && ./dojo.sh clean
             sleep 2s
             bash -c $RONIN_DOJO_MENU
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu

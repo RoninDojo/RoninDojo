@@ -119,7 +119,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh stop
+            ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"
@@ -137,7 +137,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh stop
+            ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"

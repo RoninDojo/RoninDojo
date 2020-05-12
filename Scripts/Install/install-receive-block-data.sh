@@ -40,7 +40,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 cd ~/dojo/docker/my-dojo/
-sudo ./dojo.sh stop
+./dojo.sh stop
 
 echo -e "${RED}"
 echo "***"
