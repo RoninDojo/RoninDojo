@@ -2,6 +2,19 @@
 
 . ~/RoninDojo/Scripts/defaults.sh
 
+DIR="~/RoninDojo"
+WORK_DIR=$(mktemp -d -p "$DIR")
+
+# Check if tmp dir was created
+if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
+    echo -e "${RED}"
+    echo "****"
+    echo "Could not create temp dir, upgrade failed!"
+    echo "***"
+    echo -e "${NOC}"
+    exit 1
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Upgrading Dojo in 30s..."
@@ -16,14 +29,28 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-cd ~/dojo/docker/my-dojo && ./dojo.sh stop
-sudo chown -R $USER:$USER ~/dojo/*
-mkdir ~/.dojo > /dev/null 2>&1
-cd ~/.dojo
-sudo rm -rf samourai-dojo > /dev/null 2>&1
-git clone $SAMOURAI_REPO #temporary
-cp -rv samourai-dojo/* ~/dojo
-# stop dojo and prepare for upgrade
+# cd ~/dojo/docker/my-dojo
+cd $DOJO_PATH
+
+# Check if any files are owned by root before upgrade
+if find ~/dojo -user root| grep -q '.'; then
+    sudo ./dojo.sh stop
+else
+    ./dojo.sh stop
+fi
+
+cd ${WORK_DIR}
+git clone $SAMOURAI_REPO # temporary
+
+# Copy only when the SOURCE file is newer than the
+# destination file or when the destination file is missing
+# and keep all permissions
+cp -ua samourai-dojo/* ${DOJO_PATH}/
+
+# Remove $WORK_DIR
+rm -rf ${WORK_DIR}
+
+# Stop dojo and prepare for upgrade
 
 echo -e "${RED}"
 echo "***"
@@ -119,8 +146,9 @@ else
    echo "For pairing information see the wiki"
 fi
 # stop whirlpool for existing whirlpool users
-echo -e "${NC}"
-cd ~/dojo/docker/my-dojo && ./dojo.sh upgrade
+
+#cd ~/dojo/docker/my-dojo
+cd $DOJO_PATH && ./dojo.sh upgrade
 # run upgrade
 
 bash -c $RONIN_DOJO_MENU

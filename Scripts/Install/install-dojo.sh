@@ -287,6 +287,12 @@ echo -e "${NC}"
 sleep 5s
 # end dojo setup
 
+# Adding user to docker group if needed
+if ! getent group docker| grep -q ${USER}; then
+  gpasswd -a ${USER} docker
+  newgrp docker
+}
+
 echo -e "${RED}"
 echo "***"
 echo "Installing Dojo..."
