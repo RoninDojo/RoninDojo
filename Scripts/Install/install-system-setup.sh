@@ -34,6 +34,15 @@ sleep 5s
 sudo rm /etc/motd
 # remove ssh banner for the script logo
 
+# Disable Bluetooth
+echo -e "${RED}"
+echo "***"
+echo "Disabling Bluetooth..."
+echo "***"
+echo -e "${NC}"
+
+_disable_bluetooth
+
 # Disable IPV6 if needed
 if _disable_ipv6; then
   echo -e "${RED}"
