@@ -31,38 +31,17 @@ sleep 5s
 ~/RoninDojo/Scripts/.logo
 
 # system setup starts
-sudo rm -rf /etc/motd
+sudo rm /etc/motd
 # remove ssh banner for the script logo
 
-if [ -f /boot/cmdline.txt ]; then
+# Disable IPV6 if needed
+if _disable_ipv6; then
   echo -e "${RED}"
   echo "***"
-  echo "Disabling Ipv6 for Raspberry Pi4..."
+  echo "Disabling Ipv6..."
   echo "***"
   echo -e "${NC}"
-  cat /boot/cmdline.txt > ~/cmdline.txt
-  sudo sed -i '/^root=/s/$/ ipv6.disable=1/' ~/cmdline.txt
-  sudo chown root:root ~/cmdline.txt
-  sudo chmod 755 ~/cmdline.txt
-  sudo mv ~/cmdline.txt /boot/cmdline.txt
-  sleep 2s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Disabling Ipv6 for Odroid N2..."
-  echo "***"
-  echo -e "${NC}"
-  cat /boot/boot.ini > ~/boot.ini
-  sudo sed -i '/^setenv bootargs/s/$/ ipv6.disable=1/' ~/boot.ini
-  sudo chown root:root ~/boot.ini
-  sudo chmod 755 ~/boot.ini
-  sudo mv ~/boot.ini /boot/boot.ini
-  sleep 2s
 fi
-# disable ipv6
-# chmod and chown to avoid errors when moving from ~ to ~/boot
-# /boot/cmdline.txt file will only be there if it's a Raspberry Pi
-# /boot/boot.ini is for Odroid N2
 
 if [ ! -f /usr/local/bin/ronin ]; then
   sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
