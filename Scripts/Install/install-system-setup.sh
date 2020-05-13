@@ -797,20 +797,8 @@ then
 fi
 # if sda1 exists, use wipefs to erase possible sig
 
-sudo sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
-  n # new partition
-  p # primary partition
-  1 # partition number 1
-    # default - start at beginning of disk
-    # default, extend partition to end of disk
-  w # write the partition table
-EOF
-# to create the partitions programatically (rather than manually)
-# we're going to simulate the manual input to fdisk
-# The sed script strips off all the comments so that we can
-# document what we're doing in-line with the actual commands
-# Note that a blank line (commented as "defualt" will send a empty
-# line terminated with a newline to take the fdisk default.
+# Create a partition table with a single partition that takes the whole disk
+echo 'type=83' | sudo sfdisk /dev/sda
 
 if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
