@@ -35,6 +35,9 @@ cd $DOJO_PATH
 # Check if any files are owned by root before upgrade
 if find ~/dojo -user root| grep -q '.'; then
     sudo ./dojo.sh stop
+    # Change ownership before upgrade so that we don't
+    # need sudo ./dojo.sh ever again
+    sudo chown -R ${USER}:${USER} ${DOJO_PATH}
 else
     ./dojo.sh stop
 fi
