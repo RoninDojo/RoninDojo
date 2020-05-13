@@ -1,6 +1,30 @@
 #!/bin/bash
 
 #
+# Disable ipv6
+#
+_disable_ipv6() {
+    # Add sysctl setting to prevent any network devices
+    # from being assigned any IPV6 addresses
+    if [ ! -f /etc/sysctl.d/40-ipv6.conf ]; then
+        sudo bash -c 'cat <<EOF >/etc/sysctl.d/40-ipv6.conf
+# Disable IPV6
+net.ipv6.conf.all.disable_ipv6 = 1
+EOF'
+    else
+        return 1
+    fi
+
+    # Check to see if ipv6 stack available and if so
+    # restart sysctl service
+    if [ -d /proc/sys/net/ipv6 ]; then
+        sudo systemctl restart sysctl
+    fi
+
+    return 0
+}
+
+#
 # Check for installed package
 #
 find_pkg() {
