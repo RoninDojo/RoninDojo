@@ -58,9 +58,11 @@ case $CHOICE in
                             echo -e "${NC}"
                             sleep 2s
                             cd $DOJO_PATH && ./dojo.sh stop
-                            sudo mkdir /uninstall-salvage/
-                            sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
-                            sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/
+
+                            # Check if salvage directory exist
+                            test ! -d /mnt/usb/uninstall-salvage && sudo mkdir /mnt/usb/uninstall-salvage
+
+                            sudo mv -v /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb/uninstall-salvage/
                             # stops dojo, copies blockchain data to uninstall-salvage to be used by the dojo install script
                             break;;
                     [Nn]* ) break;;
