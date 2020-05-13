@@ -6,6 +6,7 @@ YELLOW=$(tput setaf 3)
 NC=$(tput sgr0)
 # No Color
 
+DOJO_PATH='~/dojo/docker/my-dojo'
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 USER=$(getent group 1000 | cut -d ':' -f1)
 

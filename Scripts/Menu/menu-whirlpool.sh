@@ -68,7 +68,7 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            cd ~/dojo/docker/my-dojo && ./dojo.sh logs whirlpool
+            cd $DOJO_PATH && ./dojo.sh logs whirlpool
             bash -c $RONIN_WHIRLPOOL_MENU
             # view status, return to menu
             ;;
