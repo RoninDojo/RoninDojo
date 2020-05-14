@@ -72,7 +72,7 @@ if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer ]; then
 fi
 
 # Electrum Server
-if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs [; then
+if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs ]; then
     V3_ADDR_ELECTRS=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs/hostname)
 fi
 
