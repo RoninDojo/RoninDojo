@@ -1,9 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. ~/RoninDojo/Scripts/defaults.sh
 
 echo -e "${RED}"
 echo "***"
@@ -43,7 +40,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 cd ~/dojo/docker/my-dojo/
-sudo ./dojo.sh stop
+./dojo.sh stop
 
 echo -e "${RED}"
 echo "***"

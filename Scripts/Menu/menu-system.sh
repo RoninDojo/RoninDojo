@@ -1,15 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
-
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
+. ~/RoninDojo/Scripts/defaults.sh
 
 OPTIONS=(1 "Task Manager"
          2 "Check Disk Space"
@@ -128,7 +119,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh stop
+            ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"
@@ -146,7 +137,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh stop
+            ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"

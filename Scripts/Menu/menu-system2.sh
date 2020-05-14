@@ -1,15 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
-
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
+. ~/RoninDojo/Scripts/defaults.sh
 
 OPTIONS=(1 "Lock Root User"
          2 "Unlock Root User"
@@ -73,14 +64,13 @@ case $CHOICE in
             echo "echo "Upgrade Complete!"" >> ~/ronin-update.sh
             echo "echo '***'" >> ~/ronin-update.sh
             echo "echo -e '${NC}'" >> ~/ronin-update.sh
-	    # notifies upgrade is complete
-
-	    echo "sleep 2s" >> ~/ronin-update.sh
+            # notifies upgrade is complete
+            echo "sleep 2s" >> ~/ronin-update.sh
             echo "bash ~/RoninDojo/Scripts/Menu/menu-system2.sh" >> ~/ronin-update.sh
             sudo chmod +x ~/ronin-update.sh
             bash ~/ronin-update.sh
             # makes script executable and runs
-	    # end of script returns to menu
+            # end of script returns to menu
             # script is deleted during next run of update
             ;;
         4)

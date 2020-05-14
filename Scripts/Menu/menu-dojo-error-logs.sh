@@ -1,15 +1,6 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
-
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
+. ~/RoninDojo/Scripts/defaults.sh
 
 OPTIONS=(1 "Bitcoind Logs"
          2 "Db Logs"
@@ -29,7 +20,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -48,13 +39,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs bitcoind -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs bitcoind -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo bitcoind error logs
             ;;
         2)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -72,14 +62,13 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-	    sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs db -d error -n 500
+            sleep 2s
+            cd $DOJO_PATH && ./dojo.sh logs db -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo db error logs
             ;;
         3)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -98,13 +87,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs tor -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs tor -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo tor error logs
             ;;
         4)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -123,13 +111,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs api -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs api -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo api error logs
             ;;
         5)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -148,13 +135,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs tracker -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs tracker -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo tracker error logs
             ;;
         6)
-            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -180,13 +166,12 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh logs -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows all docker container error logs
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+            bash -c $RONIN_DOJO_MENU
             # goes back to ronin dojo menu
             ;;
 esac

@@ -1,11 +1,9 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
-if ls ~ | grep dojo > /dev/null ; then
+if [ -d ~/dojo ]; then
   echo -e "${RED}"
   echo "***"
   echo "Dojo directory found, please uninstall Dojo first!"
@@ -30,30 +28,13 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-echo -e "${NC}"
-echo " _____________________________________________________|_._._._._._._._._, "
-echo " \____________________________________________________|_|_|_|_|_|_|_|_|_| "
-echo "                                                      !                   "
-echo -e "${RED}"
-echo " I dreamt of        ______            _          _   _ _                  "
-echo "   worldly success  | ___ \          (_)        | | | (_)                 "
-echo "               once.| |_/ /___  _ __  _ _ __    | | | |_|                 "
-echo "                    |    // _ \| '_ \| | '_ \   | | | | |                 "
-echo "                    | |\ \ (_) | | | | | | | |  | |_| | |                 "
-echo "                    \_| \_\___/|_| |_|_|_| |_|by\____/|_|                 "
-echo "                                              @GuerraMoneta               "
-echo -e "                                            & @BTCxZelko          ${NC}"
-echo " ,_._._._._._._._._|_____________________________________________________ "
-echo " |_|_|_|_|_|_|_|_|_|____________________________________________________/ "
-echo "                   !                                                      "
-echo -e "${NC}"
-sleep 5s
+~/RoninDojo/Scripts/.logo
 
 # system setup starts
 sudo rm -rf /etc/motd
 # remove ssh banner for the script logo
 
-if ls /boot | grep cmdline.txt > /dev/null ; then
+if [ -f /boot/cmdline.txt ]; then
   echo -e "${RED}"
   echo "***"
   echo "Disabling Ipv6 for Raspberry Pi4..."
@@ -83,24 +64,21 @@ fi
 # /boot/cmdline.txt file will only be there if it's a Raspberry Pi
 # /boot/boot.ini is for Odroid N2
 
-check1=ronin
-if ls /usr/local/bin | grep $check1 > /dev/null ; then
-  echo ""
-else
+if [ ! -f /usr/local/bin/ronin ]; then
   sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
-  echo "" >> ~/.bashrc
-  echo "~/RoninDojo/Scripts/.logo" >> ~/.bashrc
-  echo "" >> ~/.bashrc
-  echo "~/RoninDojo/ronin" >> ~/.bashrc
 fi
-# place main ronin menu  script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
+
+if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
+  cat << EOF >> ~/.bashrc
+~/RoninDojo/Scripts/.logo
+
+~/RoninDojo/ronin
+EOF
+fi
+# place main ronin menu script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
-sudo chmod +x ~/RoninDojo/Scripts/Install/*
-sudo chmod +x ~/RoninDojo/Scripts/Menu/*
-
-check2='jdk11-openjdk /usr/share/licenses/java11-openjdk/'
-if pacman -Ql | grep "$check2" > /dev/null ; then
+if find_pkg jdk11-openjdk; then
   echo -e "${RED}"
   echo "***"
   echo "Java already installed..."
@@ -120,8 +98,7 @@ fi
 # in had to use '' and "" for the check to work correctly
 # single quotes won't interpolate anything, but double quotes will
 
-check3=/usr/bin/tor
-if pacman -Ql | grep $check3  > /dev/null ; then
+if find_pkg tor; then
     echo -e "${RED}"
     echo "***"
     echo "Tor already installed..."
@@ -136,18 +113,14 @@ else
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
     sleep 1s
-    sudo sed -i '52d' /etc/tor/torrc
-    sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
-    sudo sed -i '56d' /etc/tor/torrc
-    sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
-    sudo sed -i '60d' /etc/tor/torrc
-    sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
-    sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
+    sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
+    -e 's/^ControlPort .*$/ControlPort 9051' \
+    -e 's/^#CookieAuthentication/CookieAuthentication/' \
+    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
 # check if tor is installed, if not install and modify torrc
 
-check4='python /usr/bin/python3'
-if pacman -Ql | grep "$check4" > /dev/null ; then
+if find_pkg python; then
   echo -e "${RED}"
   echo "***"
   echo "Python3 already installed..."
@@ -167,8 +140,7 @@ fi
 # in had to use '' and "" for the check to work correctly
 # single quotes won't interpolate anything, but double quotes will
 
-check5=fail2ban
-if pacman -Qs $check5 > /dev/null ; then
+if find_pkg fail2ban; then
   echo -e "${RED}"
   echo "***"
   echo "Fail2ban already installed..."
@@ -187,7 +159,7 @@ fi
 # check for / install fail2ban
 
 check6=htop
-if pacman -Qs $check6 > /dev/null ; then
+if find_pkg htop; then
   echo -e "${RED}"
   echo "***"
   echo "Htop already installed..."
@@ -205,8 +177,7 @@ else
 fi
 # check for / install htop
 
-check7=vim
-if pacman -Qs $check7 > /dev/null ; then
+if find_pkg vim; then
   echo -e "${RED}"
   echo "***"
   echo "Vim already installed..."
@@ -224,8 +195,7 @@ else
 fi
 # check for / install vim
 
-check8=unzip
-if pacman -Qs $check8 > /dev/null ; then
+if find_pkg unzip; then
   echo -e "${RED}"
   echo "***"
   echo "Unzip already installed..."
@@ -243,8 +213,7 @@ else
 fi
 # check for / install unzip
 
-check9=net-tools
-if pacman -Qs $check9 > /dev/null ; then
+if find_pkg net-tools; then
   echo -e "${RED}"
   echo "***"
   echo "Net-tools already installed..."
@@ -262,8 +231,7 @@ else
 fi
 # check for / install net tools
 
-check10=/usr/bin/which
-if sudo pacman -Ql | grep $check10 > /dev/null ; then
+if find_pkg which; then
   echo -e "${RED}"
   echo "***"
   echo "Which already installed..."
@@ -281,8 +249,7 @@ else
 fi
 # check for / install which
 
-check11=wget
-if pacman -Qs $check11 > /dev/null ; then
+if find_pkg wget; then
   echo -e "${RED}"
   echo "***"
   echo "Wget already installed..."
@@ -300,8 +267,7 @@ else
 fi
 # check for / install wget
 
-check12=docker
-if pacman -Qs $check12 > /dev/null ; then
+if find_pkg docker; then
   echo -e "${RED}"
   echo "***"
   echo "Docker already installed..."
@@ -319,8 +285,7 @@ else
 fi
 # check for / install docker
 
-check13=docker-compose
-if pacman -Qs $check13 > /dev/null ; then
+if find_pkg docker-compose; then
   echo -e "${RED}"
   echo "***"
   echo "Docker-compose already installed..."
@@ -342,8 +307,7 @@ sudo systemctl enable docker
 # enables docker to run at startup
 # system setup ends
 
-check14=ufw
-if pacman -Qs $check14 > /dev/null ; then
+if find_pkg ufw; then
   echo -e "${RED}"
   echo "***"
   echo "Ufw already installed..."
@@ -392,15 +356,15 @@ else
   ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
   # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-  cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done
+  while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 19 in /etc/ufw/user.rules
 
-  cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done
+  while read ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 20 /etc/ufw/user.rules
 
-  cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p udp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done
+  while read ip ; do echo "-A ufw-user-input -p udp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 21 /etc/ufw/user.rules
 
@@ -474,10 +438,7 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-ls /dev | grep sda > ~/sda_tmp.txt
-# temp file, looking for sda1
-
-if grep "sda1" ~/sda_tmp.txt > /dev/null ; then
+if [ -b /dev/sda1 ]; then
   echo -e "${RED}"
   echo "***"
   echo "Creating /mnt/salvage directory..."
@@ -503,21 +464,17 @@ else
 fi
 # mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
-rm -f ~/sda_tmp.txt
-# remove temp file, looking for sda1
-
-if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
+if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sudo rm -rf /mnt/salvage/docker
-  sudo rm -f /mnt/salvage/swapfile
+  sudo rm -rf /mnt/salvage/{swapfile,docker}
   sudo umount -l /dev/sda1
   sleep 5s
   sudo rm -rf /mnt/salvage
-  # if uninstall-salvage is found, delete older docker directory and swapfile, then unmount sda1
+  # if uninstall-salvage directory is found, delete older docker directory and swapfile, then unmount sda1
 
   echo -e "${RED}"
   echo "***"
@@ -526,23 +483,19 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo -e "${NC}"
   sleep 2s
 
-  lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
-  # this will look up uuid of sda1 and makes txt file with that value
+  uuid=$(lsblk -no UUID /dev/sda1)
+  fstype=$(check_fstype /dev/sda1)
 
-  sed -i 's/ └─sda1//g' ~/uuid.txt
-  # removes the text sda1 after the uuid in txt file
+  # this will look up uuid of sdb1
 
-  sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
-  # adds a necessary line with the path and other options after the uuid in txt file
-
-  sed -i 's/^/UUID=/' ~/uuid.txt
-  # adds UUID= prefix to the front of the line
-
-  cat ~/uuid.txt | sudo tee -a /etc/fstab > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
-
-  rm ~/uuid.txt
-  # delete txt file
+  if ! grep '${uuid}' /etc/fstab; then
+    sudo bash -c 'cat <<EOF >>/etc/fstab
+UUID=${uuid} /mnt/usb ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
+EOF'
+  fi
+  # adds a necessary line in /etc/fstab
+  # noauto and x-systemd.automount options are important so external drive is found properly by docker
+  # otherwise docker may cause problems by writing to SD card instead
 
   echo -e "${RED}"
   echo "***"
@@ -568,7 +521,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "***"
   echo -e "${NC}"
   sleep 2s
-  lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+  lsblk -o NAME,SIZE,LABEL /dev/sda1
   sleep 2s
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
@@ -577,22 +530,12 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   echo "Check output above for /dev/sda1 and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h
+  df -h /dev/sda1
   sleep 4s
   # checks disk info
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating swapfile..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo fallocate -l 2G /mnt/usb/swapfile
-  sudo chmod 600 /mnt/usb/swapfile
-  sudo mkswap /mnt/usb/swapfile
-  sudo swapon /mnt/usb/swapfile
-  sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-  # created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+  create_swap --file /mnt/usb/swapfile --size 2G
+  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
   echo "***"
@@ -611,16 +554,11 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   sudo mkdir /etc/docker
   # makes docker directory
 
-  sudo echo "{" > ~/daemon.json
-  sudo echo '                  "data-root": "/mnt/usb/docker"' >> ~/daemon.json
-  sudo echo "}" >> ~/daemon.json
-  # using echo > to create file with first line, then using echo >> to append following two lines
-
-  cat ~/daemon.json | sudo tee -a /etc/docker/daemon.json > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/docker, so using sudo tee -a
-
-  rm ~/daemon.json
-  # removes temp file
+sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{
+  "data-root": "/mnt/usb/docker"
+}
+EOF'
 
   echo -e "${RED}"
   echo "***"
@@ -641,7 +579,7 @@ if sudo ls /mnt/salvage | grep uninstall-salvage > /dev/null ; then
   sleep 5s
   sudo systemctl start docker
   sleep 10s
-  sudo systemctl enable docker
+
   # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
   # see systemctl status docker.service and journalctl -xe for details on error
 
@@ -672,7 +610,7 @@ else
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep blocks > /dev/null ; then
+if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -687,8 +625,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo -e "${NC}"
   sleep 2s
   sudo mkdir /mnt/salvage/system-setup-salvage/
-  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/salvage/system-setup-salvage/
-  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/salvage/system-setup-salvage/
+  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data prepared for salvage!"
@@ -697,7 +634,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   sleep 2s
   sudo rm -rf /mnt/salvage/docker
   sudo rm -f /mnt/salvage/swapfile
-  sudo umount -l /dev/sda1
+  sudo umount -l /mnt/salvage
   sleep 3s
   sudo rm -rf /mnt/salvage
   # copies blockchain salvage data to /mnt/salvage if found
@@ -709,23 +646,25 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo -e "${NC}"
   sleep 2s
 
-  lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
-  # this will look up uuid of sda1 and makes txt file with that value
+  # /etc/fstab changes
+  uuid=$(lsblk -no UUID /dev/sda1)
+  fstype=$(check_fstype /dev/sda1)
 
-  sed -i 's/ └─sda1//g' ~/uuid.txt
-  # removes the text sda1 after the uuid in txt file
-
-  sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
-  # adds a necessary line with the path and other options after the uuid in txt file
-
-  sed -i 's/^/UUID=/' ~/uuid.txt
-  # adds UUID= prefix to the front of the line
-
-  cat ~/uuid.txt | sudo tee -a /etc/fstab > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
-
-  rm ~/uuid.txt
-  # delete txt file
+  # adds a necessary line in /etc/fstab
+  # noauto and x-systemd.automount options are important so external drive is found properly by docker
+  # otherwise docker may cause problems by writing to SD card instead
+  if ! grep "${uuid}" /etc/fstab; then
+      cat <<EOF
+$(echo -e ${(tput setaf 1)})
+***
+Editing /etc/fstab to input UUID for /dev/sda1 and adjust settings...
+***
+$(echo -e $(tput sgr0))
+EOF
+      sudo bash -c 'cat <<EOF >>/etc/fstab
+UUID=${uuid} /mnt/usb ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
+EOF'
+  fi
 
   echo -e "${RED}"
   echo "***"
@@ -751,7 +690,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "***"
   echo -e "${NC}"
   sleep 2s
-  lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+  lsblk -o NAME,SIZE,LABEL /dev/sda1
   sleep 2s
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
@@ -760,22 +699,12 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "Check output for /dev/sda1 and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h
+  df -h /dev/sda1
   sleep 4s
   # checks disk info
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating swapfile..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo fallocate -l 1G /mnt/usb/swapfile
-  sudo chmod 600 /mnt/usb/swapfile
-  sudo mkswap /mnt/usb/swapfile
-  sudo swapon /mnt/usb/swapfile
-  sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-  # created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+  create_swap --file /mnt/usb/swapfile --size 2G
+  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   echo -e "${RED}"
   echo "***"
@@ -794,16 +723,11 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   sudo mkdir /etc/docker
   # makes docker directory
 
-  sudo echo "{" > ~/daemon.json
-  sudo echo '                  "data-root": "/mnt/usb/docker"' >> ~/daemon.json
-  sudo echo "}" >> ~/daemon.json
-  # using echo > to create file with first line, then using echo >> to append following two lines
-
-  cat ~/daemon.json | sudo tee -a /etc/docker/daemon.json > /dev/null
-  # even with sudo cant get permission to pipe cat output into /etc/docker, so using sudo tee -a
-
-  rm ~/daemon.json
-  # removes temp file
+sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{
+  "data-root": "/mnt/usb/docker"
+}
+EOF'
 
   echo -e "${RED}"
   echo "***"
@@ -833,7 +757,7 @@ if sudo ls /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/ | grep block
   echo "Check that docker is using the external drive."
   echo "***"
   echo -e "${NC}"
-  sudo docker info | grep "Docker Root Dir:"
+  docker info | grep "Docker Root Dir:"
   sleep 3s
   # if not showing SSD path check above
   # docker setup ends
@@ -866,22 +790,16 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-ls /dev | grep sda > ~/sda_tmp.txt
-# temp file looking for sda
-
-check15=$( grep -ic "sda1" ~/sda_tmp.txt )
-if [ $check15 -eq 1 ]
+if [ -b /dev/sda1 ]
 then
-  echo "Found sda1, using wipefs."
-  sudo wipefs --all --force /dev/sda1
+  echo -e "${RED}"
+  echo "***"
+  echo "Wiping /dev/sda drive clean"
+  echo "***"
+  echo -e "${NC}"
+  sudo wipefs --all --force /dev/sda1 && sudo sfdisk --delete /dev/sda
 fi
 # if sda1 exists, use wipefs to erase possible sig
-
-rm ~/sda_tmp.txt
-# remove temp file
-
-sudo dd if=/dev/zero of=/dev/sda bs=512 count=1 conv=notrunc
-# wipes partition table
 
 sudo sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << EOF | sudo fdisk /dev/sda
   n # new partition
@@ -898,68 +816,18 @@ EOF
 # Note that a blank line (commented as "defualt" will send a empty
 # line terminated with a newline to take the fdisk default.
 
-echo -e "${RED}"
-echo "***"
-echo "Using ext4 format for /dev/sda1 partition..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-# format partition1 to ext4
-# https://linux.die.net/man/8/mkfs.ext4:
-# -F: Force mke2fs to create a filesystem, even if the specified
-# device is not a partition on a block special device.
-sudo mkfs.ext4 -F /dev/sda1
-
-echo -e "${RED}"
-echo "***"
-echo "Editing /etc/fstab to input UUID for sda1 and adjust settings..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-
-lsblk -o UUID,NAME | grep sda1 >> ~/uuid.txt
-# this will look up uuid of sda1 and makes txt file with that value
-
-sed -i 's/ └─sda1//g' ~/uuid.txt
-# removes the text sda1 after the uuid in txt file
-
-sed -i 1's|$| /mnt/usb ext4 rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2 &|' ~/uuid.txt
-# adds a necessary line with the path and other options after the uuid in txt file
-
-sed -i 's/^/UUID=/' ~/uuid.txt
-# adds UUID= prefix to the front of the line
-
-cat ~/uuid.txt | sudo tee -a /etc/fstab > /dev/null
-# even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
-
-rm ~/uuid.txt
-# delete txt file
-
-echo -e "${RED}"
-echo "***"
-echo "Creating /mnt/usb directory..."
-echo "***"
-echo -e "${NC}"
-sudo mkdir /mnt/usb
-sleep 2s
-
-echo -e "${RED}"
-echo "***"
-echo "Mounting drive..."
-echo "***"
-echo -e "${NC}"
-sleep 2s
-sudo mount /dev/sda1 /mnt/usb
-sleep 1s
-# mount main storage drive to /mnt/usb directory
+if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
+  echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+  exit
+fi
+# format partition
 
 echo -e "${RED}"
 echo "***"
 echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
-lsblk -o UUID,NAME,FSTYPE,SIZE,LABEL,MODEL
+lsblk -o NAME,SIZE,LABEL /dev/sda1
 sleep 2s
 # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
@@ -968,32 +836,12 @@ echo "***"
 echo "Check output for /dev/sda1 and make sure everything looks ok."
 echo "***"
 echo -e "${NC}"
-df -h
+df -h /dev/sda1
 sleep 2s
 # checks disk info
 
-check16=swapfile
-if ls /mnt/usb | grep $check16 > /dev/null ; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Swapfile already created..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating swapfile..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo fallocate -l 1G /mnt/usb/swapfile
-  sudo chmod 600 /mnt/usb/swapfile
-  sudo mkswap /mnt/usb/swapfile
-  sudo swapon /mnt/usb/swapfile
-  sudo sed -i '20i /swapfile none swap defaults 0 0' /etc/fstab
-fi
-# created a 1GB swapfile on the external drive instead of sd card to preserve sd card life
+create_swap --file /mnt/usb/swapfile --size 2G
+# created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 echo -e "${RED}"
 echo "***"
@@ -1013,7 +861,7 @@ sleep 3s
 sudo mkdir /mnt/usb/docker
 # makes directroy to store docker/dojo data
 
-if ls /etc | grep docker  > /dev/null ; then
+if [ -d /etc/docker ]; then
   echo -e "${RED}"
   echo "***"
   echo "The /etc/docker directory already exists..."

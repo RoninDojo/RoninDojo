@@ -1,13 +1,19 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-YELLOW='\033[1;33m'
-# used for color with ${YELLOW}
-NC='\033[0m'
-# No Color
+. ~/RoninDojo/Scripts/defaults.sh
 
-USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
+DIR="~/RoninDojo"
+WORK_DIR=$(mktemp -d -p "$DIR")
+
+# Check if tmp dir was created
+if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
+    echo -e "${RED}"
+    echo "****"
+    echo "Could not create temp dir, upgrade failed!"
+    echo "***"
+    echo -e "${NOC}"
+    exit 1
+fi
 
 echo -e "${RED}"
 echo "***"
@@ -23,15 +29,31 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh stop
-sudo chown -R $USER:$USER ~/dojo/*
-mkdir ~/.dojo > /dev/null 2>&1
-cd ~/.dojo
-sudo rm -rf samourai-dojo > /dev/null 2>&1
-git clone https://code.samourai.io/Ronin/samourai-dojo.git
-cp -rv samourai-dojo/* ~/dojo
-# stop dojo and prepare for upgrade
+# cd ~/dojo/docker/my-dojo
+cd $DOJO_PATH
+
+# Check if any files are owned by root before upgrade
+if find ~/dojo -user root| grep -q '.'; then
+    sudo ./dojo.sh stop
+    # Change ownership before upgrade so that we don't
+    # need sudo ./dojo.sh ever again
+    sudo chown -R ${USER}:${USER} ${DOJO_PATH}
+else
+    ./dojo.sh stop
+fi
+
+cd ${WORK_DIR}
+git clone $SAMOURAI_REPO # temporary
+
+# Copy only when the SOURCE file is newer than the
+# destination file or when the destination file is missing
+# and keep all permissions
+cp -ua samourai-dojo/* ${DOJO_PATH}/
+
+# Remove $WORK_DIR
+rm -rf ${WORK_DIR}
+
+# Stop dojo and prepare for upgrade
 
 echo -e "${RED}"
 echo "***"
@@ -47,40 +69,35 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-if [ ! -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ] ; then
-    EXPLORER_KEY=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 16 | head -n 1)
-else
+if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ] ; then
     echo -e "${RED}"
     echo "***"
     echo "Explorer is already installed!"
     echo "***"
     echo -e "${NC}"
+else
+    sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 fi
-
-sed -i '16i EXPLORER_KEY='$EXPLORER_KEY'' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
-sed -i '17d' ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
 
 if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
     read -p "Do you want to install an Indexer? [y/n]" yn
     case $yn in
-        [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
-                 sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl;
-                 sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;
-                 sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
-        [N/n]* ) echo -e "${RED}"
+        [Y/y]* )
+                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
+                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+        [N/n]* )  echo -e "${RED}"
                  echo "***"
                  echo "Indexer will not be installed!"
                  echo "***"
                  echo -e "${NC}";;
         * ) echo "Please answer Yes or No.";;
     esac
-elif cat ~/dojo/docker/my-dojo/conf/docker-indexer.conf | grep "INDEXER_INSTALL=off" > /dev/null ; then
+elif grep "INDEXER_INSTALL=off" ~/dojo/docker/my-dojo/conf/docker-indexer.conf > /dev/null ; then
         read -p "Do you want to install an Indexer? [y/n]" yn
         case $yn in
-            [Y/y]* ) sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
-                     sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf;
-                     sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf;
-                     sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf;;
+            [Y/y]* )
+                     sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf
+                     sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf;;
             [N/n]* ) echo -e "${RED}"
                      echo "***"
                      echo "Indexer will not be installed!"
@@ -88,12 +105,12 @@ elif cat ~/dojo/docker/my-dojo/conf/docker-indexer.conf | grep "INDEXER_INSTALL=
                      echo -e "${NC}";;
             * ) echo "Please answer Yes or No.";;
         esac
-    else
-        echo -e "${RED}"
-        echo "***"
-        echo "Indexer is already installed! If you were running Electrs, press y at next prompt..."
-        echo "***"
-        echo -e "${NC}"
+else
+    echo -e "${RED}"
+    echo "***"
+    echo "Indexer is already installed! If you were running Electrs, press y at next prompt..."
+    echo "***"
+    echo -e "${NC}"
 fi
 # install indexer
 
@@ -119,9 +136,23 @@ else
 fi
 # install electrs
 
-cd ~/dojo/docker/my-dojo
-sudo ./dojo.sh upgrade
+if [ -f /etc/systemd/system/whirlpool.service ] ; then
+   sudo systemctl stop whirlpool
+   echo -e "${RED}"
+   echo "***"
+   echo "Whirlpool will be installed via Dojo docker"
+   echo "You will need to re-pair with GUI"
+   echo "See wiki for more information"
+   echo sleep 5s
+else
+   echo "Whirlpool will be installed via Dojo Docker"
+   echo "For pairing information see the wiki"
+fi
+# stop whirlpool for existing whirlpool users
+
+#cd ~/dojo/docker/my-dojo
+cd $DOJO_PATH && ./dojo.sh upgrade
 # run upgrade
 
-bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+bash -c $RONIN_DOJO_MENU
 # return to menu
