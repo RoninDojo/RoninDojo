@@ -1,6 +1,15 @@
 #!/bin/bash
 
-. ~/RoninDojo/Scripts/defaults.sh
+RED='\033[0;31m'
+# used for color with ${RED}
+NC='\033[0m'
+# No Color
+
+HEIGHT=22
+WIDTH=76
+CHOICE_HEIGHT=16
+TITLE="RoninDojo"
+MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Start Dojo"
          2 "Stop Dojo"
@@ -22,7 +31,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "true" ]; then
               echo -e "${RED}"
               echo "***"
@@ -30,7 +39,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               sleep 5s
-              bash -c $RONIN_DOJO_MENU
+              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
               exit
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
@@ -41,7 +50,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh start
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh start
 
             echo -e "${RED}"
             echo "***"
@@ -49,11 +59,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c $RONIN_DOJO_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # start dojo, press any letter to return to menu
             ;;
         2)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -61,7 +71,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               sleep 5s
-              bash -c $RONIN_DOJO_MENU
+              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
               exit
             fi
             # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
@@ -72,7 +82,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh stop
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh stop
 
             echo -e "${RED}"
             echo "***"
@@ -80,7 +91,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c $RONIN_DOJO_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # stop dojo, press any letter to return to menu
             ;;
         3)
@@ -88,7 +99,7 @@ case $CHOICE in
             # go to dojo logs menu
             ;;
         4)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            isRunning=$(sudo docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
               echo "***"
@@ -96,7 +107,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               sleep 5s
-              bash -c $RONIN_DOJO_MENU
+              bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
               exit
             fi
             # checks if dojo is not running (check the db container), if not running, tells user to start dojo first
@@ -104,25 +115,44 @@ case $CHOICE in
             echo -e "${RED}"
             echo "***"
             echo "Displaying your Tor Onion addresses..."
+            echo "***"
+            echo -e "${NC}"
+
+            V3_ADDR_API=$(sudo docker exec -it tor cat /var/lib/tor/hsv3dojo/hostname )
+            NODE_ADMIN_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-node.conf | grep NODE_ADMIN_KEY | cut -c 16-)
+            # Maintenance Tool Onion and Password
+
             echo -e "${RED}"
             echo "***"
             echo -e "${NC}"
             echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
-            echo "Dojo API key = $NODE_API_KEY_TOR"
             echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
-            echo ""
-            echo "Whirlpool Hidden Service Address = $V3_ADDR_WHIRLPOOL"
-            echo "Whirlpool API key = $WHIRLPOOL_API_KEY"
-            echo ""
-            echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
-            echo "No username required. Explorer Password = $EXPLORER_KEY_TOR"
+            echo -e "${RED}"
+            echo "***"
+            echo -e "${NC}"
+
+	        if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ]; then
+    	        V3_ADDR_EXPLORER=$(sudo docker exec -it tor cat /var/lib/tor/hsv3explorer/hostname )
+                EXPLORER_KEY=$(cat ~/dojo/docker/my-dojo/conf/docker-explorer.conf | grep EXPLORER_KEY | cut -c 14-)
+                # if Explorer is installed then display Onion and Password
+
+                echo -e "${RED}"
+                echo "***"
+                echo -e "${NC}"
+                echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
+                echo "No username required. Explorer Password = $EXPLORER_KEY"
+                echo -e "${RED}"
+                echo "***"
+                echo -e "${NC}"
+	        fi
+
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c $RONIN_DOJO_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # press any key to return to menu
             # shows .onion and returns to menu
             ;;
@@ -137,7 +167,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh version
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh version
 
             echo -e "${RED}"
             echo "***"
@@ -145,7 +176,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c $RONIN_DOJO_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # display dojo version info
             # press any letter to return
             ;;
@@ -163,13 +194,14 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 14s
-            cd $DOJO_PATH && ./dojo.sh clean
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh clean
             sleep 2s
-            bash -c $RONIN_DOJO_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         8)
-            bash -c $RONIN_DOJO_MENU2
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # takes you to ronin dojo menu2
             ;;
         9)
