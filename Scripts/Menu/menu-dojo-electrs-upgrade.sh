@@ -28,7 +28,7 @@ fi\
 
 ###### Add indexer to tor section of docker-compose.yaml ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '95i \      - ./conf/docker-indexer.conf' ~/dojo/docker/my-dojo/docker-compose.yaml
+sed -i '/docker-tor.conf/i\      - ./conf/docker-indexer.conf' docker/my-dojo/docker-compose.yaml
 
 ###### Modify dojo.sh for electrs ######
 # using the backslash \ along with sed insert command so that the spaces are not ignored
