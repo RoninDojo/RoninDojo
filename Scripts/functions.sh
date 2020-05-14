@@ -1,6 +1,25 @@
 #!/bin/bash
 
 #
+# Check dojo directory and file permissions
+# to make sure that there are no root owned files
+# from legacy use of `sudo ./dojo.sh`
+#
+_check_dojo_perms() {
+    local DOJO_PATH="${1}"
+
+    if find ~/dojo -user root | grep -q '.'; then
+        sudo ./dojo.sh stop
+        # Change ownership so that we don't
+        # need to use sudo ./dojo.sh
+        sudo chown -R ${USER}:${USER} ${DOJO_PATH}
+    else
+        ./dojo.sh stop
+    fi
+
+    return 0
+}
+
 # Disable ipv6
 #
 _disable_ipv6() {
