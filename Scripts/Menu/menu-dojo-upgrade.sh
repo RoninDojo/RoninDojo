@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
 DIR="~/RoninDojo"
 WORK_DIR=$(mktemp -d -p "$DIR")
@@ -29,18 +30,8 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-# cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH
-
-# Check if any files are owned by root before upgrade
-if find ~/dojo -user root| grep -q '.'; then
-    sudo ./dojo.sh stop
-    # Change ownership before upgrade so that we don't
-    # need sudo ./dojo.sh ever again
-    sudo chown -R ${USER}:${USER} ${DOJO_PATH}
-else
-    ./dojo.sh stop
-fi
+# cd ~/dojo/docker/my-dojo then make sure permissions are properly set
+cd $DOJO_PATH && _check_dojo_perms ${DOJO_PATH}
 
 cd ${WORK_DIR}
 git clone $SAMOURAI_REPO # temporary
