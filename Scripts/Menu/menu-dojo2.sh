@@ -1,6 +1,15 @@
 #!/bin/bash
 
-. ~/RoninDojo/Scripts/defaults.sh
+RED='\033[0;31m'
+# used for color with ${RED}
+NC='\033[0m'
+# No Color
+
+HEIGHT=22
+WIDTH=76
+CHOICE_HEIGHT=16
+TITLE="RoninDojo"
+MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Uninstall Dojo"
          2 "Receive Block Data from Backup"
@@ -31,7 +40,7 @@ case $CHOICE in
             echo -e "${NC}"
             sleep 5s
 
-            echo -e "${RED}"
+	    echo -e "${RED}"
             echo "***"
             echo "Users with a fully sync'd Blockchain should answer yes to salvage!"
             echo "***"
@@ -57,12 +66,13 @@ case $CHOICE in
                             echo "***"
                             echo -e "${NC}"
                             sleep 2s
-                            cd $DOJO_PATH && ./dojo.sh stop
+			    cd ~/dojo/docker/my-dojo/
+			    sudo ./dojo.sh stop
                             sudo mkdir /uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
                             sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/
                             # stops dojo, copies blockchain data to uninstall-salvage to be used by the dojo install script
-                            break;;
+			    break;;
                     [Nn]* ) break;;
                     * ) echo "Please answer yes or no.";;
                 esac
@@ -73,11 +83,12 @@ case $CHOICE in
             echo "Uninstalling Dojo..."
             echo "***"
             echo -e "${NC}"
-            cd $DOJO_PATH && ./dojo.sh uninstall
-            sudo rm -rf ~/dojo
+            cd ~/dojo/docker/my-dojo/
+            sudo ./dojo.sh uninstall
+	    sudo rm -rf ~/dojo
             # uninstall dojo
 
-            echo -e "${RED}"
+	    echo -e "${RED}"
             echo "***"
             echo "Complete!"
             echo "***"
@@ -94,7 +105,7 @@ case $CHOICE in
             # copy block data to backup drive
             ;;
         4)
-            bash -c $RONIN_DOJO_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
             # return to main menu
             ;;
 esac

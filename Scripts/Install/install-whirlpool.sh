@@ -1,7 +1,9 @@
 #!/bin/bash
 
-. ~/RoninDojo/Scripts/defaults.sh
-. ~/RoninDojo/Scripts/functions.sh
+RED='\033[0;31m'
+# used for color with ${RED}
+NC='\033[0m'
+# No Color
 
 echo -e "${RED}"
 echo "***"
@@ -9,7 +11,7 @@ echo "Checking if Whirlpool is already installed..."
 echo "***"
 echo -e "${NC}"
 
-if [ -f ~/whirlpool/whirlpool.jar ]; then
+if ls ~/whirlpool | grep whirlpool.jar  > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool is installed!"
@@ -33,7 +35,8 @@ echo "Checking if Tor is installed..."
 echo "***"
 echo -e "${NC}"
 
-if find_pkg tor; then
+torcheck=/usr/bin/tor
+if pacman -Ql | grep $torcheck  > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "The package $package is installed."
@@ -47,14 +50,15 @@ else
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
     sleep 1s
-    sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
-    -e 's/^ControlPort .*$/ControlPort 9051' \
-    -e 's/^#CookieAuthentication/CookieAuthentication/' \
-    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
-    if ! -d /mnt/usb/tor; then
-        sudo mkdir /mnt/usb/tor
-        sudo chown -R tor:tor /mnt/usb/tor
-    fi
+    sudo sed -i '52d' /etc/tor/torrc
+    sudo sed -i '52i DataDirectory /mnt/usb/tor' /etc/tor/torrc
+    sudo sed -i '56d' /etc/tor/torrc
+    sudo sed -i '56i ControlPort 9051' /etc/tor/torrc
+    sudo sed -i '60d' /etc/tor/torrc
+    sudo sed -i '60i CookieAuthentication 1' /etc/tor/torrc
+    sudo sed -i '61i CookieAuthFileGroupReadable 1' /etc/tor/torrc
+    sudo mkdir /mnt/usb/tor/
+    sudo chown -R tor:tor /mnt/usb/tor/
 fi
 # check if tor is installed, if not install and modify torrc
 
@@ -94,15 +98,15 @@ else
     # delete lines 2-12 (in the systemsetup script it is 2,10d
     # had to be modified for whirlpool setup as an extra value gets added to ~/ip_tmp.txt)
 
-    while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    cat ~/ip_tmp.txt | while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 19 in /etc/ufw/user.rules
 
-    while read ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 20 /etc/ufw/user.rules
 
-    while read ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    cat ~/ip_tmp.txt | while read ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 21 /etc/ufw/user.rules
 
@@ -164,8 +168,10 @@ echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
 sleep 1s
-wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
+wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.4/whirlpool-client-cli-0.10.4-run.jar
 # pull Whirlpool run times
+
+USER=$(sudo cat /etc/passwd | grep 1000 | awk -F: '{ print $1}' | cut -c 1-)
 
 # whirlpool service. Check if present else create it
 echo -e "${RED}"
@@ -174,7 +180,7 @@ echo "Checking if Whirlpool.service is already exists..."
 echo "***"
 echo -e "${NC}"
 
-if [ -f /etc/systemd/system/whirlpool.service ]; then
+if ls /etc/systemd/system | grep whirlpool.service  > /dev/null ; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool Service already is installed!"
@@ -189,25 +195,25 @@ else
     echo -e "${NC}"
     sleep 1s
 
-sudo bash -c 'cat << EOF > /etc/systemd/system/whirlpool.service
-[Unit]
-Description=Whirlpool
-After=tor.service
+    echo "
+    [Unit]
+    Description=Whirlpool
+    After=tor.service
 
-[Service]
-WorkingDirectory=/home/$USER/whirlpool
-ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
-User=$USER
-Group=$USER
-Type=simple
-KillMode=process
-TimeoutSec=60
-Restart=always
-RestartSec=60
+    [Service]
+    WorkingDirectory=/home/$USER/whirlpool
+    ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
+    User=$USER
+    Group=$USER
+    Type=simple
+    KillMode=process
+    TimeoutSec=60
+    Restart=always
+    RestartSec=60
 
-[Install]
-WantedBy=multi-user.target
-EOF'
+    [Install]
+    WantedBy=multi-user.target
+    " | sudo tee -a /etc/systemd/system/whirlpool.service
 fi
 # checks for whirlpool.service and if found skips, if not found sets up whirlpool.service
 

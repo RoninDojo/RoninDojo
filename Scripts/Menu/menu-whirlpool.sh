@@ -1,10 +1,19 @@
 #!/bin/bash
 
-. ~/RoninDojo/Scripts/defaults.sh
+RED='\033[0;31m'
+# used for color with ${RED}
+NC='\033[0m'
+# No Color
+
+HEIGHT=22
+WIDTH=76
+CHOICE_HEIGHT=16
+TITLE="RoninDojo"
+MENU="Choose one of the following options:"
 
 OPTIONS=(1 "View API key"
-         2 "View Hiddenservice"
-         3 "View Logs"
+         2 "View Logs"
+         3 "View Status"
          4 "Start Whirlpool"
          5 "Stop Whirlpool"
          6 "Restart Whirlpool"
@@ -34,15 +43,15 @@ case $CHOICE in
             echo "Press any letter to return..."
             echo "***"
             echo -e "${NC}"
-            echo "$WHIRLPOOL_API_KEY"
+            cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
             read -n 1 -r -s
-            bash -c $RONIN_WHIRLPOOL_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # press any key to return to menu
             ;;
         2)
             echo -e "${RED}"
             echo "***"
-            echo "Viewing Whirlpool CLI Hidden Service Address..."
+            echo "Viewing Whirlpool CLI Logs..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -52,13 +61,15 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
-            bash -c $RONIN_WHIRLPOOL_MENU
+            sudo journalctl -r -u whirlpool.service
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            # view whirlpool cli logs via journalctl, return to menu
+            # note that it's in order of newest to oldest, and blob means that it's repeat information
             ;;
         3)
             echo -e "${RED}"
             echo "***"
-            echo "Viewing Whirlpool Logs..."
+            echo "Viewing Whirlpool Status..."
             echo "***"
             echo -e "${NC}"
             sleep 2s
@@ -68,8 +79,8 @@ case $CHOICE in
             echo "Press Ctrl + C or q to exit at anytime..."
             echo "***"
             echo -e "${NC}"
-            cd $DOJO_PATH && ./dojo.sh logs whirlpool
-            bash -c $RONIN_WHIRLPOOL_MENU
+            sudo watch -n 0.2 systemctl status whirlpool --lines=10
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # view status, return to menu
             ;;
         4)
@@ -79,7 +90,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            docker start whirlpool
+            sudo systemctl start whirlpool
 
             echo -e "${RED}"
             echo "***"
@@ -87,7 +98,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 5s
-            bash -c $RONIN_WHIRLPOOL_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # start whirlpool, return to menu
             ;;
         5)
@@ -97,8 +108,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            docker stop whirlpool
-            bash -c $RONIN_WHIRLPOOL_MENU
+            sudo systemctl stop whirlpool
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # stop whirlpool, return to menu
             ;;
         6)
@@ -108,11 +119,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            docker stop whirlpool
-            sleep 5s
-            docker start whirlpool
-            sleep 2s
-            bash -c $RONIN_WHIRLPOOL_MENU
+            sudo systemctl restart whirlpool
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # enable whirlpool at startup, return to menu
             ;;
         7)
@@ -126,7 +134,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
             sleep 1s
-            bash -c $RONIN_WHIRLPOOL_MENU
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # check for wst install and/or launch wst, return to menu
             ;;
         8)
