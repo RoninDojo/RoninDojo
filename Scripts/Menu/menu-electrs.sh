@@ -19,7 +19,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
 	1)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
@@ -54,7 +54,7 @@ case $CHOICE in
             # start electrs, return to menu
             ;;
 	2)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
@@ -84,7 +84,7 @@ case $CHOICE in
             # start electrs, return to menu
             ;;
         3)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
@@ -114,7 +114,7 @@ case $CHOICE in
             # stop electrs, return to menu
             ;;
         4)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
@@ -144,7 +144,7 @@ case $CHOICE in
             # restart electrs, return to menu
             ;;
         5)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
