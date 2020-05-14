@@ -291,7 +291,7 @@ sleep 5s
 if ! getent group docker| grep -q ${USER}; then
   gpasswd -a ${USER} docker
   newgrp docker
-}
+fi
 
 echo -e "${RED}"
 echo "***"
