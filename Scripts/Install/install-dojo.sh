@@ -100,7 +100,7 @@ BITCOIND_EPHEMERAL_HS=on
 # Warning: Do not expose your RPC API to internet!
 # See BITCOIND_RPC_EXTERNAL_IP
 # Value: on | off
-BITCOIND_RPC_EXTERNAL=off
+BITCOIND_RPC_EXTERNAL=on
 # IP address used to expose the RPC API to external apps
 # This parameter is inactive if BITCOIND_RPC_EXTERNAL isn't set to 'on'
 # Warning: Do not expose your RPC API to internet!
