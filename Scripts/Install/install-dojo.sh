@@ -45,7 +45,7 @@ echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
 echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory"
-echo "located at ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl"
+echo "located at ${DOJO_PATH}/docker/my-dojo/conf/docker-bitcoind.conf.tpl"
 echo "***"
 echo -e "${NC}"
 sleep 3s
@@ -135,7 +135,7 @@ BITCOIND_ZMQ_BLK_HASH=9502
 EOF
 # Create new docker bitcoind conf file
 
-# configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+# configuring ${DOJO_PATH}/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
 echo "****"
 echo "Setting the Node API Key and JWT Secret..."

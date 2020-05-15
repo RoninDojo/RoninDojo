@@ -3,6 +3,7 @@
 . ~/RoninDojo/Scripts/defaults.sh
 . ~/RoninDojo/Scripts/functions.sh
 
+# Temporaly directory location
 DIR="~/RoninDojo"
 WORK_DIR=$(mktemp -d -p "$DIR")
 
@@ -30,8 +31,8 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-# cd ~/dojo/docker/my-dojo then make sure permissions are properly set
-cd $DOJO_PATH && _check_dojo_perms ${DOJO_PATH}
+# Make sure permissions are properly set for ${DOJO_PATH}
+cd ${DOJO_PATH} && _check_dojo_perms ${DOJO_PATH}
 
 cd ${WORK_DIR}
 git clone $SAMOURAI_REPO # temporary
@@ -141,8 +142,7 @@ else
 fi
 # stop whirlpool for existing whirlpool users
 
-#cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH && ./dojo.sh upgrade
+cd ${DOJO_PATH} && ./dojo.sh upgrade
 # run upgrade
 
 bash -c $RONIN_DOJO_MENU
