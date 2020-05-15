@@ -45,7 +45,7 @@ echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
 echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory"
-echo "located at ${DOJO_PATH}/docker/my-dojo/conf/docker-bitcoind.conf.tpl"
+echo "located at ${DOJO_PATH}/conf/docker-bitcoind.conf.tpl"
 echo "***"
 echo -e "${NC}"
 sleep 3s
