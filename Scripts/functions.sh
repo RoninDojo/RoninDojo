@@ -42,6 +42,7 @@ EOF'
     fi
 
     return 0
+}
 
 #
 # Disable Bluetooth
