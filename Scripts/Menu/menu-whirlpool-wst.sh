@@ -33,12 +33,6 @@ echo "Whirlpool Stat Tool INSTRUCTIONS:"
 echo -e "${NC}"
 sleep 2s
 
-echo -e "${NC}"
-echo "Set Socks5 proxy before downloading data from OXT:"
-echo -e "${NC}"
-echo "socks5 127.0.0.1:9050"
-sleep 2s
-
 echo -e "${RED}"
 echo "Download in the working directory a snaphot for the 0.01BTC pools:"
 echo -e "${NC}"
@@ -70,10 +64,14 @@ sleep 2s
 
 echo -e "${RED}"
 echo "***"
+echo "Type: 'quit' at anytime to exit WST."
+echo "***"
+echo ""
+echo "***"
 echo "Press any letter to continue..."
 echo "***"
 echo -e "${NC}"
 
 read -n 1 -r -s
 
-python3 wst.py
+python3 wst.py -w=/tmp -s=127.0.0.1:9050
