@@ -109,7 +109,7 @@ case $CHOICE in
             echo -e "${NC}"
             echo "Dojo Maintenance Tool hidden service address (v3) = $V3_ADDR_API"
             echo "Dojo API key = $NODE_API_KEY_TOR"
-            echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY"
+            echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY_TOR"
             echo ""
             echo "Whirlpool Hidden Service Address = $V3_ADDR_WHIRLPOOL"
             echo "Whirlpool API key = $WHIRLPOOL_API_KEY"

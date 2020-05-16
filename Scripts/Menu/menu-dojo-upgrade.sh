@@ -37,7 +37,7 @@ cd ${DOJO_PATH} && _check_dojo_perms ${DOJO_PATH}
 # Enable BITCOIND_RPC_EXTERNAL
 if grep BITCOIND_RPC_EXTERNAL=off ${DOJO_PATH}/conf/docker-bitcoind.conf 1>/dev/null; then
     sed -i 's/BITCOIND_RPC_EXTERNAL=off/BITCOIND_RPC_EXTERNAL=on/' ${DOJO_PATH}/conf/docker-bitcoind.conf
-}
+fi
 
 cd ${WORK_DIR}
 git clone $SAMOURAI_REPO # temporary
