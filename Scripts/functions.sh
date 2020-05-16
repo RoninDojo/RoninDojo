@@ -50,9 +50,10 @@ _disable_bluetooth() {
     if sudo systemctl is-active --quiet bluetooth; then
         sudo systemctl disable bluetooth 2>/dev/null
         sudo systemctl stop bluetooth
+        return 0
     fi
 
-    return 0
+    return 1
 }
 
 #
