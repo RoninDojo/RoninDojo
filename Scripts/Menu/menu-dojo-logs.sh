@@ -7,7 +7,7 @@ OPTIONS=(1 "Bitcoind Logs"
          3 "Tor Logs"
          4 "API Logs"
          5 "Tracker Logs"
-         6 "Whirlpool Logs"
+         6 "Indexer Logs"
          7 "All Container Logs"
          8 "Troubleshooting Logs"
          9 "Go Back")
@@ -168,9 +168,9 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            cd $DOJO_PATH && ./dojo.sh logs whirlpool
+            cd $DOJO_PATH && ./dojo.sh logs indexer
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for whirlpool
+            # shows logs for indexer
             ;;
         7)
           isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
