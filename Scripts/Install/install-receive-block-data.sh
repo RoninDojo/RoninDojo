@@ -39,7 +39,7 @@ echo "Making sure Dojo is stopped..."
 echo "***"
 echo -e "${NC}"
 sleep 2s
-cd ~/dojo/docker/my-dojo/
+cd ${DOJO_PATH}
 ./dojo.sh stop
 
 echo -e "${RED}"

@@ -3,6 +3,7 @@
 . ~/RoninDojo/Scripts/defaults.sh
 . ~/RoninDojo/Scripts/functions.sh
 
+# Temporaly directory location
 DIR="~/RoninDojo"
 WORK_DIR=$(mktemp -d -p "$DIR")
 
@@ -30,8 +31,8 @@ echo "***"
 echo -e "${NC}"
 sleep 27s
 
-# cd ~/dojo/docker/my-dojo then make sure permissions are properly set
-cd $DOJO_PATH && _check_dojo_perms ${DOJO_PATH}
+# Make sure permissions are properly set for ${DOJO_PATH}
+cd ${DOJO_PATH} && _check_dojo_perms ${DOJO_PATH}
 
 # Enable BITCOIND_RPC_EXTERNAL
 if grep BITCOIND_RPC_EXTERNAL=off ${DOJO_PATH}/conf/docker-bitcoind.conf 1>/dev/null; then
@@ -65,22 +66,22 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
-if [ -f ~/dojo/docker/my-dojo/conf/docker-explorer.conf ] ; then
+if [ -f ${DOJO_PATH}/conf/docker-explorer.conf ] ; then
     echo -e "${RED}"
     echo "***"
     echo "Explorer is already installed!"
     echo "***"
     echo -e "${NC}"
 else
-    sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+    sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" ${DOJO_PATH}/conf/docker-explorer.conf.tpl
 fi
 
-if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
+if [ ! -f ${DOJO_PATH}/conf/docker-indexer.conf ] ; then
     read -p "Do you want to install an Indexer? [y/n]" yn
     case $yn in
         [Y/y]* )
-                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
-                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl;;
+                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ${DOJO_PATH}/conf/docker-indexer.conf.tpl
+                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ${DOJO_PATH}/conf/docker-node.conf.tpl;;
         [N/n]* )  echo -e "${RED}"
                  echo "***"
                  echo "Indexer will not be installed!"
@@ -88,12 +89,12 @@ if [ ! -f ~/dojo/docker/my-dojo/conf/docker-indexer.conf ] ; then
                  echo -e "${NC}";;
         * ) echo "Please answer Yes or No.";;
     esac
-elif grep "INDEXER_INSTALL=off" ~/dojo/docker/my-dojo/conf/docker-indexer.conf > /dev/null ; then
+elif grep "INDEXER_INSTALL=off" ${DOJO_PATH}/conf/docker-indexer.conf > /dev/null ; then
         read -p "Do you want to install an Indexer? [y/n]" yn
         case $yn in
             [Y/y]* )
-                     sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf
-                     sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf;;
+                     sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ${DOJO_PATH}/conf/docker-indexer.conf
+                     sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ${DOJO_PATH}/conf/docker-node.conf;;
             [N/n]* ) echo -e "${RED}"
                      echo "***"
                      echo "Indexer will not be installed!"
@@ -110,7 +111,7 @@ else
 fi
 # install indexer
 
-if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ] ; then
+if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ] ; then
    read -p "Do you want to install Electrs? [y/n]" yn
    case $yn in
        [Y/y]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
@@ -146,8 +147,7 @@ else
 fi
 # stop whirlpool for existing whirlpool users
 
-#cd ~/dojo/docker/my-dojo
-cd $DOJO_PATH && ./dojo.sh upgrade
+cd ${DOJO_PATH} && ./dojo.sh upgrade
 # run upgrade
 
 bash -c $RONIN_DOJO_MENU

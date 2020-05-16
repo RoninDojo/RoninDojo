@@ -118,7 +118,7 @@ case $CHOICE in
             echo "Shutting down Dojo if running..."
             echo "***"
             echo -e "${NC}"
-            cd ~/dojo/docker/my-dojo/
+            cd ${DOJO_PATH}
             ./dojo.sh stop
 
             echo -e "${RED}"
@@ -136,7 +136,7 @@ case $CHOICE in
             echo "Shutting down Dojo if running..."
             echo "***"
             echo -e "${NC}"
-            cd ~/dojo/docker/my-dojo/
+            cd ${DOJO_PATH}
             ./dojo.sh stop
 
             echo -e "${RED}"

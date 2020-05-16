@@ -41,7 +41,6 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            #cd ~/dojo/docker/my-dojo/
             cd $DOJO_PATH && ./dojo.sh logs bitcoind
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo bitcoind logs
@@ -66,7 +65,6 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            #cd ~/dojo/docker/my-dojo/
             cd $DOJO_PATH && ./dojo.sh logs db
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo db logs
@@ -91,7 +89,6 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            #cd ~/dojo/docker/my-dojo/
             cd $DOJO_PATH && ./dojo.sh logs tor
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo tor logs
@@ -116,7 +113,6 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            #cd ~/dojo/docker/my-dojo/
             cd $DOJO_PATH && ./dojo.sh logs api
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo api logs
@@ -141,7 +137,6 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            #cd ~/dojo/docker/my-dojo/
             cd $DOJO_PATH && ./dojo.sh logs tracker
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo tracker logs
@@ -173,7 +168,6 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            #cd ~/dojo/docker/my-dojo/
             cd $DOJO_PATH && ./dojo.sh logs whirlpool
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for whirlpool
@@ -205,7 +199,6 @@ case $CHOICE in
           echo "***"
           echo -e "${NC}"
           sleep 1s
-          #cd ~/dojo/docker/my-dojo/
           cd $DOJO_PATH && ./dojo.sh logs
           bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
           # shows logs for all containers

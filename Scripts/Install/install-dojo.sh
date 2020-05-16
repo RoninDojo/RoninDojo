@@ -45,14 +45,14 @@ echo -e "${RED}"
 echo "***"
 echo "NOTICE:"
 echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory"
-echo "located at ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl"
+echo "located at ${DOJO_PATH}/conf/docker-bitcoind.conf.tpl"
 echo "***"
 echo -e "${NC}"
 sleep 3s
 
 # Create new docker bitcoind conf file
 
-cat << EOF > ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf.tpl
+cat << EOF > ${DOJO_PATH}/conf/docker-bitcoind.conf.tpl
 #########################################
 # CONFIGURATION OF BITCOIND CONTAINER
 #########################################
@@ -135,7 +135,7 @@ BITCOIND_ZMQ_BLK_HASH=9502
 EOF
 # Create new docker bitcoind conf file
 
-# configuring ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+# configuring ${DOJO_PATH}/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
 echo "****"
 echo "Setting the Node API Key and JWT Secret..."
@@ -173,7 +173,7 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-cat << EOF > ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+cat << EOF > ${DOJO_PATH}/conf/docker-node.conf.tpl
 #########################################
 # CONFIGURATION OF NODE JS CONTAINER
 #########################################
@@ -205,7 +205,7 @@ NODE_FEE_TYPE=ECONOMICAL
 EOF
 # Create new docker node conf file
 
-cat << EOF > ~/dojo/docker/my-dojo/conf/docker-mysql.conf.tpl
+cat << EOF > ${DOJO_PATH}/conf/docker-mysql.conf.tpl
 #########################################
 # CONFIGURATION OF MYSQL CONTAINER
 #########################################
@@ -244,7 +244,7 @@ echo "***"
 echo -e "${NC}"
 sleep 5s
 
-cat << EOF > ~/dojo/docker/my-dojo/conf/docker-explorer.conf.tpl
+cat << EOF > ${DOJO_PATH}/conf/docker-explorer.conf.tpl
 #########################################
 # CONFIGURATION OF EXPLORER CONTAINER
 #########################################
@@ -263,8 +263,8 @@ EOF
 read -p "Do you want to install an indexer? [y/n]" yn
 case $yn in
     [Y/y]* )
-      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
-      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ~/dojo/docker/my-dojo/conf/docker-node.conf.tpl
+      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ${DOJO_PATH}/conf/docker-indexer.conf.tpl
+      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ${DOJO_PATH}/conf/docker-node.conf.tpl
       ;;
     [N/n]* ) echo "Indexer will not be installed!";;
     * ) echo "Please answer Yes or No.";;
