@@ -20,6 +20,7 @@ _check_dojo_perms() {
     return 0
 }
 
+#
 # Disable ipv6
 #
 _disable_ipv6() {
@@ -41,6 +42,18 @@ EOF'
     fi
 
     return 0
+
+#
+# Disable Bluetooth
+#
+_disable_bluetooth() {
+    if sudo systemctl is-active --quiet bluetooth; then
+        sudo systemctl disable bluetooth 2>/dev/null
+        sudo systemctl stop bluetooth
+        return 0
+    fi
+
+    return 1
 }
 
 #
