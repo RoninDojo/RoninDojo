@@ -4,7 +4,7 @@
 . ~/RoninDojo/Scripts/functions.sh
 
 # Temporaly directory location
-DIR="~/RoninDojo"
+DIR=~/RoninDojo
 WORK_DIR=$(mktemp -d -p "$DIR")
 
 # Check if tmp dir was created
