@@ -289,7 +289,7 @@ sleep 5s
 
 # Adding user to docker group if needed
 if ! getent group docker| grep -q ${USER}; then
-  gpasswd -a ${USER} docker
+  sudo gpasswd -a ${USER} docker
   newgrp docker
 fi
 
