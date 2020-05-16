@@ -60,23 +60,23 @@ fi
 #
 
 # Dojo Maintanance Tool
-if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo ]; then
+if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo; then
     V3_ADDR_API=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo/hostname)
 fi
 
 # Whirlpool
-if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool ]; then
+if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool; then
     V3_ADDR_WHIRLPOOL=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool/hostname)
     WHIRLPOOL_API_KEY=$(sudo grep cli.apiKey /mnt/usb/docker/volumes/my-dojo_data-whirlpool/_data/.whirlpool-cli/whirlpool-cli-config.properties | cut -d '=' -f2)
 fi
 
 # Explorer
-if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer ]; then
+if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer; then
     V3_ADDR_EXPLORER=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer/hostname)
 fi
 
 # Electrum Server
-if [ -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs ]; then
+if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs; then
     V3_ADDR_ELECTRS=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs/hostname)
 fi
 
