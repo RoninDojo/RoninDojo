@@ -365,11 +365,3 @@ else
   echo "No Blockchain data found for salvage check 2..."
 fi
 # check for system-setup-salvage, if not found continue
-
-echo -e "${RED}"
-echo "***"
-echo "Whirlpool is ready to be installed!"
-echo "***"
-echo -e "${NC}"
-sleep 3s
-# will continue to whirlpool install, if it was selected from the install menu
