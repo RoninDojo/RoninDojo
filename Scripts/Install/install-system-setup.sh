@@ -87,24 +87,24 @@ fi
 # single quotes won't interpolate anything, but double quotes will
 
 if find_pkg tor; then
-    echo -e "${RED}"
-    echo "***"
-    echo "Tor already installed..."
-    echo "***"
-    echo -e "${NC}"
-    sleep 1s
+  echo -e "${RED}"
+  echo "***"
+  echo "Tor already installed..."
+  echo "***"
+  echo -e "${NC}"
+  sleep 1s
 else
-    echo -e "${RED}"
-    echo "***"
-    echo "Installing Tor..."
-    echo "***"
-    echo -e "${NC}"
-    sudo pacman -S --noconfirm tor
-    sleep 1s
-    sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
-    -e 's/^ControlPort .*$/ControlPort 9051' \
-    -e 's/^#CookieAuthentication/CookieAuthentication/' \
-    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+  echo -e "${RED}"
+  echo "***"
+  echo "Installing Tor..."
+  echo "***"
+  echo -e "${NC}"
+  sudo pacman -S --noconfirm tor
+  sleep 1s
+  sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
+  -e 's/^ControlPort .*$/ControlPort 9051' \
+  -e 's/^#CookieAuthentication/CookieAuthentication/' \
+  -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
 # check if tor is installed, if not install and modify torrc
 
@@ -472,7 +472,6 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
 
   uuid=$(lsblk -no UUID /dev/sda1)
   fstype=$(check_fstype /dev/sda1)
-
   # this will look up uuid of sdb1
 
   if ! grep '${uuid}' /etc/fstab; then
@@ -541,11 +540,11 @@ EOF'
   test ! -d /etc/docker && sudo mkdir /etc/docker
   # makes docker directory
 
-sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-{
-  "data-root": "/mnt/usb/docker"
-}
-EOF'
+  sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+  {
+    "data-root": "/mnt/usb/docker"
+  }
+  EOF'
 
   echo -e "${RED}"
   echo "***"
@@ -613,6 +612,7 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   sleep 2s
   sudo mkdir /mnt/salvage/system-setup-salvage
   sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
+
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data prepared for salvage!"
@@ -640,7 +640,7 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   # otherwise docker may cause problems by writing to SD card instead
   if ! grep "${uuid}" /etc/fstab; then
       cat <<EOF
-$(echo -e ${(tput setaf 1)})
+$(echo -e $(tput sgr0))
 ***
 Editing /etc/fstab to input UUID for /dev/sda1 and adjust settings...
 ***
@@ -708,11 +708,11 @@ EOF'
   sudo mkdir /etc/docker
   # makes docker directory
 
-sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-{
-  "data-root": "/mnt/usb/docker"
-}
-EOF'
+  sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+  {
+    "data-root": "/mnt/usb/docker"
+  }
+  EOF'
 
   echo -e "${RED}"
   echo "***"
@@ -761,7 +761,6 @@ else
   echo "***"
   echo -e "${NC}"
   sleep 3s
-
   sudo umount /mnt/salvage
   sudo rmdir /mnt/salvage
 fi

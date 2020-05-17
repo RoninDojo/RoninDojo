@@ -137,7 +137,7 @@ EOF
 
 # configuring ${DOJO_PATH}/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
-echo "****"
+echo "***"
 echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
@@ -152,7 +152,7 @@ sleep 2s
 echo -e "${NC}"
 
 echo -e "${RED}"
-echo "****"
+echo "***"
 echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"

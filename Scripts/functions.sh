@@ -186,7 +186,7 @@ EOF'
     cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-echo "Mounting ${device} to ${mountpoint}...
+Mounting ${device} to ${mountpoint}...
 ***
 $(echo -e $(tput sgr0))
 EOF
