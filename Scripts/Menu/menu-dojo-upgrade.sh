@@ -50,6 +50,9 @@ cp -ua samourai-dojo/* ${DOJO_PATH}/
 # Remove $WORK_DIR
 rm -rf ${WORK_DIR}
 
+# Return to previous working path
+cd -
+
 # Stop dojo and prepare for upgrade
 
 echo -e "${RED}"
