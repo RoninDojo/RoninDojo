@@ -44,7 +44,19 @@ git clone $SAMOURAI_REPO # temporary
 
 # Copy only when the SOURCE file is newer than the
 # destination file or when the destination file is missing
-# and keep all permissions
+# and keep all permissionsReferences
+
+
+Berg Insight. (2020, April 30). IoT News - Shipments of NFC-ready POS terminals reached 47.8 million in 2019. Retrieved from https://iotbusinessnews.com/2020/04/30/91541-shipments-of-nfc-ready-pos-terminals-reached-47-8-million-in-2019/
+
+
+Cash App. (n.d.). Cash Support. Retrieved May 16, 2020, from https://cash.app/help/search#android pay&1
+
+
+Glum, J. (2018, September 4). Should You Use Venmo, Zelle or Cash App? Everything You Need to Know About the Hottest Mobile Payment Apps. Retrieved from https://money.com/venmo-cash-app-zelle-better/
+
+
+Schrotenboer, B. (2020, May 13). US is `printing' money to help save the economy from the COVID-19 crisis, but some wonder how far it can go. Retrieved from https://www.usatoday.com/in-depth/money/2020/05/12/coronavirushow-u-s-printing-dollars-save-economy-during-crisis-fed/3038117001/
 cp -ua samourai-dojo/* ${DOJO_PATH}/
 
 # Remove $WORK_DIR
@@ -149,7 +161,7 @@ else
    echo "For pairing information see the wiki"
 fi
 # stop whirlpool for existing whirlpool users
-
+echo -e "${NC}"
 cd ${DOJO_PATH} && ./dojo.sh upgrade
 # run upgrade
 
