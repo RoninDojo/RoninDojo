@@ -465,26 +465,6 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
 
   echo -e "${RED}"
   echo "***"
-  echo "Editing /etc/fstab to input UUID for sda1 and adjust settings..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-
-  uuid=$(lsblk -no UUID /dev/sda1)
-  fstype=$(check_fstype /dev/sda1)
-  # this will look up uuid of sdb1
-
-  if ! grep '${uuid}' /etc/fstab; then
-    sudo bash -c 'cat <<EOF >>/etc/fstab
-UUID=${uuid} /mnt/usb ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
-EOF'
-  fi
-  # adds a necessary line in /etc/fstab
-  # noauto and x-systemd.automount options are important so external drive is found properly by docker
-  # otherwise docker may cause problems by writing to SD card instead
-
-  echo -e "${RED}"
-  echo "***"
   echo "Creating /mnt/usb directory..."
   echo "***"
   echo -e "${NC}"
@@ -623,41 +603,6 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   sudo umount /mnt/salvage
   sudo rmdir /mnt/salvage
   # copies blockchain salvage data to /mnt/salvage if found
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Editing /etc/fstab to input UUID for sda1 and adjust settings..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-
-  # /etc/fstab changes
-  uuid=$(lsblk -no UUID /dev/sda1)
-  fstype=$(check_fstype /dev/sda1)
-
-  # adds a necessary line in /etc/fstab
-  # noauto and x-systemd.automount options are important so external drive is found properly by docker
-  # otherwise docker may cause problems by writing to SD card instead
-  if ! grep "${uuid}" /etc/fstab; then
-      cat <<EOF
-$(echo -e $(tput sgr0))
-***
-Editing /etc/fstab to input UUID for /dev/sda1 and adjust settings...
-***
-$(echo -e $(tput sgr0))
-EOF
-      sudo bash -c 'cat <<EOF >>/etc/fstab
-UUID=${uuid} /mnt/usb ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
-EOF'
-  fi
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating /mnt/usb directory..."
-  echo "***"
-  echo -e "${NC}"
-  sudo mkdir /mnt/usb
-  sleep 2s
 
   echo -e "${RED}"
   echo "***"
@@ -848,49 +793,48 @@ else
   # makes docker directory
 fi
 
-sudo echo "{" > ~/daemon.json
-sudo echo '                  "data-root": "/mnt/usb/docker"' >> ~/daemon.json
-sudo echo "}" >> ~/daemon.json
-# using echo > to create file with first line, then using echo >> to append following two lines
+# We can skip this if daemon.json was previous created
+# i.e during salvage drive section
+if [ ! -f /etc/docker/daemon.json ]; then
+  sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{
+  "data-root": "/mnt/usb/docker"
+}
+EOF'
 
-cat ~/daemon.json | sudo tee -a /etc/docker/daemon.json > /dev/null
-# even with sudo cant get permission to pipe cat output into /etc/fstab, so using sudo tee -a
+  echo -e "${RED}"
+  echo "***"
+  echo "Checking docker version..."
+  echo "***"
+  echo -e "${NC}"
+  docker -v
+  sleep 3s
 
-rm ~/daemon.json
-# removes temp file
+  echo -e "${RED}"
+  echo "***"
+  echo "Restarting docker..."
+  echo "***"
+  echo -e "${NC}"
+  sudo systemctl stop docker
+  sleep 15s
+  sudo systemctl daemon-reload
+  sleep 5s
+  sudo systemctl start docker
+  sleep 10s
+  sudo systemctl enable docker
+  # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
+  # see systemctl status docker.service and journalctl -xe for details on error
 
-echo -e "${RED}"
-echo "***"
-echo "Checking docker version..."
-echo "***"
-echo -e "${NC}"
-docker -v
-sleep 3s
-
-echo -e "${RED}"
-echo "***"
-echo "Restarting docker..."
-echo "***"
-echo -e "${NC}"
-sudo systemctl stop docker
-sleep 15s
-sudo systemctl daemon-reload
-sleep 5s
-sudo systemctl start docker
-sleep 10s
-sudo systemctl enable docker
-# sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
-# see systemctl status docker.service and journalctl -xe for details on error
-
-echo -e "${RED}"
-echo "***"
-echo "Check that docker is using the external drive."
-echo "***"
-echo -e "${NC}"
-sudo docker info | grep "Docker Root Dir:"
-sleep 3s
-# if not showing SSD path check above
-# docker setup ends
+  echo -e "${RED}"
+  echo "***"
+  echo "Check that docker is using the external drive."
+  echo "***"
+  echo -e "${NC}"
+  sudo docker info | grep "Docker Root Dir:"
+  sleep 3s
+  # if not showing SSD path check above
+  # docker setup ends
+fi
 
 echo -e "${RED}"
 echo "***"

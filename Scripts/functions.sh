@@ -38,7 +38,7 @@ EOF'
     # Check to see if ipv6 stack available and if so
     # restart sysctl service
     if [ -d /proc/sys/net/ipv6 ]; then
-        sudo systemctl restart sysctl
+        sudo systemctl restart systemd-sysctl
     fi
 
     return 0
@@ -159,11 +159,12 @@ EOF
     sleep 2s
 
     # /etc/fstab changes
-    if ! grep "${uuid}" /etc/fstab; then
+    if ! grep "${uuid}" /etc/fstab 1>/dev/null; then
         cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-Editing /etc/fstab to input UUID for ${device} and adjust settings...
+Editing /etc/fstab to input UUID ${uuid} for device ${device}
+and adjust settings.
 ***
 $(echo -e $(tput sgr0))
 EOF
