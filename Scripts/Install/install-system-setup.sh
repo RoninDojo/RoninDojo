@@ -766,8 +766,8 @@ echo "Creating Tor directory on the external SSD..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
-sudo mkdir /mnt/usb/tor/
-sudo chown -R tor:tor /mnt/usb/tor/
+test -d /mnt/usb/tor || sudo mkdir /mnt/usb/tor
+sudo chown -R tor:tor /mnt/usb/tor
 
 echo -e "${RED}"
 echo "***"
@@ -775,8 +775,6 @@ echo "Now configuring docker to use the external SSD..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
-sudo mkdir /mnt/usb/docker
-# makes directroy to store docker/dojo data
 
 if [ -d /etc/docker ]; then
   echo -e "${RED}"
