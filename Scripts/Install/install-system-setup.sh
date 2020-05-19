@@ -31,7 +31,8 @@ sleep 5s
 ~/RoninDojo/Scripts/.logo
 
 # system setup starts
-sudo rm /etc/motd
+
+test -f /etc/motd && sudo rm /etc/motd
 # remove ssh banner for the script logo
 
 # Disable Bluetooth
