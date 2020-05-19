@@ -190,8 +190,6 @@ Options=defaults
 [Install]
 WantedBy=multi-user.target
 EOF"
-    fi
-
     # Mount filesystem
     cat <<EOF
 $(echo -e $(tput setaf 1))
@@ -203,6 +201,7 @@ EOF
     sudo systemctl start ${systemd_mountpoint}.mount || return 1
     sudo systemctl enable ${systemd_mountpoint}.mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
+    fi
 
     return 0
 }
