@@ -151,7 +151,7 @@ EOF
     cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-Using ${2} filesystem format for ${device} partition...
+Using ${fstype} filesystem format for ${device} partition...
 ***
 $(echo -e $(tput sgr0))
 EOF
