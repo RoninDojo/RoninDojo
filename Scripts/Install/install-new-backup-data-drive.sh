@@ -64,12 +64,12 @@ sleep 2s
 
 if [ -b /dev/sdb ]; then
   echo "Found sdb, using wipefs."
-  sudo wipefs --all --force /dev/sdb && sudo sfdisk --delete /dev/sdb
+  sudo wipefs --all --force /dev/sdb && sudo sfdisk --delete /dev/sdb &>/dev/null
 fi
 # if sdb exists, use wipefs to erase wipes partition table
 
 # Create a partition table with a single partition that takes the whole disk
-echo 'type=83' | sudo sfdisk /dev/sdb
+echo 'type=83' | sudo sfdisk /dev/sdb &>/dev/null
 
 if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
