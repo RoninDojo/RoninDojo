@@ -119,7 +119,6 @@ $(echo -e $(tput sgr0))
 EOF
                     return 1
                 else
-                    sleep 2s
                     local device="$2"
                     shift 2
                 fi
@@ -144,7 +143,6 @@ Creating ${mountpoint} directory...
 ***
 $(echo -e $(tput sgr0))
 EOF
-        sleep 2s
         sudo mkdir -p ${mountpoint} || return 1
     fi
 
@@ -155,18 +153,20 @@ Using ${fstype} filesystem format for ${device} partition...
 ***
 $(echo -e $(tput sgr0))
 EOF
-    sleep 2s
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
-        sudo mkfs.${fstype} -F -L ${label} ${device} || return 1
+        sudo mkfs.${fstype} -F -L ${label} ${device} &>/dev/null || return 1
     elif [[ $fstype =~ 'xfs' ]]; then
-        sudo mkfs.${fstype} -L ${label} ${device} || return 1
+        sudo mkfs.${fstype} -L ${label} ${device} &>/dev/null || return 1
     fi
+
+    # Sleep here ONLY, don't ask me why ask likewhoa!
+    sleep 2
 
     # /etc/fstab changes
     local uuid=$(lsblk -no UUID ${device})
-    if ! grep "${uuid}" /etc/fstab 1>/dev/null; then
+    if ! grep '${uuid}' /etc/fstab 1>/dev/null; then
         cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
@@ -191,8 +191,6 @@ Mounting ${device} to ${mountpoint}...
 ***
 $(echo -e $(tput sgr0))
 EOF
-
-    sleep 2s
     sudo mount ${device} ${mountpoint} || return 1
     # mount drive to ${mountpoint} directory
 
@@ -243,7 +241,6 @@ Creating swapfile...
 ***
 $(echo -e $(tput sgr0))
 EOF
-        sleep 2s
         sudo fallocate -l ${size} ${file}
         sudo chmod 600 ${file}
         sudo mkswap -p 0 ${file}
