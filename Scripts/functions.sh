@@ -38,7 +38,7 @@ EOF'
     # Check to see if ipv6 stack available and if so
     # restart sysctl service
     if [ -d /proc/sys/net/ipv6 ]; then
-        sudo systemctl restart sysctl
+        sudo systemctl restart systemd-sysctl
     fi
 
     return 0
@@ -119,9 +119,7 @@ $(echo -e $(tput sgr0))
 EOF
                     return 1
                 else
-                    sleep 2s
                     local device="$2"
-                    local uuid=$(lsblk -no UUID ${device})
                     shift 2
                 fi
                 ;;
@@ -145,41 +143,44 @@ Creating ${mountpoint} directory...
 ***
 $(echo -e $(tput sgr0))
 EOF
-        sleep 2s
         sudo mkdir -p ${mountpoint} || return 1
     fi
 
     cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-Using ${2} filesystem format for ${device} partition...
+Using ${fstype} filesystem format for ${device} partition...
 ***
 $(echo -e $(tput sgr0))
 EOF
-    sleep 2s
-
-    # /etc/fstab changes
-    if ! grep "${uuid}" /etc/fstab; then
-        cat <<EOF
-$(echo -e $(tput setaf 1))
-***
-Editing /etc/fstab to input UUID for ${device} and adjust settings...
-***
-$(echo -e $(tput sgr0))
-EOF
-        sudo bash -c 'cat <<EOF >>/etc/fstab
-UUID=${uuid} ${mountpoint} ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
-EOF'
-        # adds a necessary line in /etc/fstab
-        # noauto and x-systemd.automount options are important so external drive is found properly by docker
-        # otherwise docker may cause problems by writing to SD card instead
-    fi
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
-        sudo mkfs.${fstype} -F -L ${label} ${device} || return 1
+        sudo mkfs.${fstype} -F -L ${label} ${device} &>/dev/null || return 1
     elif [[ $fstype =~ 'xfs' ]]; then
-        sudo mkfs.${fstype} -L ${label} ${device} || return 1
+        sudo mkfs.${fstype} -L ${label} ${device} &>/dev/null || return 1
+    fi
+
+    # Sleep here ONLY, don't ask me why ask likewhoa!
+    sleep 2
+
+    # /etc/fstab changes
+    local uuid=$(lsblk -no UUID ${device})
+    if ! grep '${uuid}' /etc/fstab 1>/dev/null; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Editing /etc/fstab to input UUID ${uuid} for device ${device}
+and adjust settings.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo bash -c "cat <<EOF >>/etc/fstab
+UUID=${uuid} ${mountpoint} ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
+EOF"
+        # adds a necessary line in /etc/fstab
+        # noauto and x-systemd.automount options are important so external drive is found properly by docker
+        # otherwise docker may cause problems by writing to SD card instead
     fi
 
     # Mount filesystem
@@ -190,8 +191,6 @@ Mounting ${device} to ${mountpoint}...
 ***
 $(echo -e $(tput sgr0))
 EOF
-
-    sleep 2s
     sudo mount ${device} ${mountpoint} || return 1
     # mount drive to ${mountpoint} directory
 
@@ -242,7 +241,6 @@ Creating swapfile...
 ***
 $(echo -e $(tput sgr0))
 EOF
-        sleep 2s
         sudo fallocate -l ${size} ${file}
         sudo chmod 600 ${file}
         sudo mkswap -p 0 ${file}
@@ -259,8 +257,15 @@ EOF
 
     # Include fstab value
     if ! grep '${file}' /etc/fstab; then
-        sudo bash -c 'cat <<EOF >>/etc/fstab
+        cat <<EOF
+$(echo -e $(tput sgr0))
+***
+Creating swapfile entry in /etc/fstab
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo bash -c "cat <<EOF >>/etc/fstab
 ${file} swap swap defaults,pri=0 0 0
-EOF'
+EOF"
     fi
 }
