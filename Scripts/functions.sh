@@ -164,35 +164,44 @@ EOF
     # Sleep here ONLY, don't ask me why ask likewhoa!
     sleep 2
 
-    # /etc/fstab changes
-    local uuid=$(lsblk -no UUID ${device})
-    if ! grep '${uuid}' /etc/fstab 1>/dev/null; then
+    # systemd.mount unit file creation
+    local uuid=$(lsblk -no UUID ${device})  # UUID of device
+    local tmp=${mountpoint:1}               # Remove leading '/'
+    local systemd_mountpoint=${tmp////-}    # Replace / with -
+
+    if [ ! -f /etc/systemd/system/${systemd_mountpoint}.mount ]; then
         cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-Editing /etc/fstab to input UUID ${uuid} for device ${device}
-and adjust settings.
+Adding device ${device} to systemd.mount unit file
 ***
 $(echo -e $(tput sgr0))
 EOF
-        sudo bash -c "cat <<EOF >>/etc/fstab
-UUID=${uuid} ${mountpoint} ${fstype} rw,nosuid,dev,noexec,noatime,nodiratime,noauto,x-systemd.automount,nouser,async,nofail 0 2
-EOF"
-        # adds a necessary line in /etc/fstab
-        # noauto and x-systemd.automount options are important so external drive is found properly by docker
-        # otherwise docker may cause problems by writing to SD card instead
-    fi
+        sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
+[Unit]
+Description=Mount External SSD Drive ${device}
 
+[Mount]
+What=/dev/disk/by-uuid/$(lsblk -no UUID ${device})
+Where=${mountpoint}
+Type=ext4
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target
+EOF"
     # Mount filesystem
     cat <<EOF
 $(echo -e $(tput setaf 1))
 ***
-Mounting ${device} to ${mountpoint}...
+Mounting ${device} to ${mountpoint}
 ***
 $(echo -e $(tput sgr0))
 EOF
-    sudo mount ${device} ${mountpoint} || return 1
-    # mount drive to ${mountpoint} directory
+    sudo systemctl start ${systemd_mountpoint}.mount || return 1
+    sudo systemctl enable ${systemd_mountpoint}.mount || return 1
+    # mount drive to ${mountpoint} using systemd.mount
+    fi
 
     return 0
 }
