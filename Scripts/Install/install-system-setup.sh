@@ -775,6 +775,8 @@ echo "Now configuring docker to use the external SSD..."
 echo "***"
 echo -e "${NC}"
 sleep 3s
+test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
+# makes directroy to store docker/dojo data
 
 if [ -d /etc/docker ]; then
   echo -e "${RED}"
