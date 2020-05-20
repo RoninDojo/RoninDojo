@@ -1,6 +1,59 @@
 #!/bin/bash
 
 #
+# Docker Data Directory
+#
+_docker_datadir_setup() {
+    cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Now configuring docker to use the external SSD...
+***
+$(echo -e $(tput sgr0))
+EOF
+    sleep 3
+    test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
+    # makes directory to store docker/dojo data
+
+    if [ -d /etc/docker ]; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+The /etc/docker directory already exists.
+***
+$(echo -e $(tput sgr0))
+EOF
+    else
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Creating /etc/docker directory.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo mkdir /etc/docker
+        # makes docker directory
+    fi
+
+    # We can skip this if daemon.json was previous created
+    if [ ! -f /etc/docker/daemon.json ]; then
+        sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{ "data-root": "/mnt/usb/docker" }
+EOF'
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Starting docker daemon.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo systemctl start docker || return 1
+    fi
+
+    return 0
+}
+
+#
 # Check dojo directory and file permissions
 # to make sure that there are no root owned files
 # from legacy use of `sudo ./dojo.sh`
