@@ -44,7 +44,7 @@ git clone $SAMOURAI_REPO # temporary
 
 # Copy only when the SOURCE file is newer than the
 # destination file or when the destination file is missing
-# and keep all permissionsReferences
+# and keep all permissions
 
 cp -ua samourai-dojo/* ${DOJO_PATH}/
 
