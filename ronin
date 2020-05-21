@@ -1,8 +1,11 @@
 #!/bin/bash
 
+# Run system checks
+_main
+
 . ~/RoninDojo/Scripts/defaults.sh
 
-cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
+test -f ~/.dialogrc || cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
 
 OPTIONS=(1 "Dojo Menu"
