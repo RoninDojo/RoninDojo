@@ -49,7 +49,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 sudo mkdir /mnt/usb1/system-setup-salvage
-sudo cp -a /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+sudo cp -av /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
 echo -e "${RED}"
