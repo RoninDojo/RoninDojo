@@ -1,6 +1,38 @@
 #!/bin/bash
 
 #
+# Main function runs at beginning of script execution
+#
+_main() {
+    # Adding user to docker group if needed
+    if ! getent group docker| grep -q ${USER}; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Looks like you don't belong in the docker group
+so we will add you then reload the RoninDojo GUI.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo gpasswd -a ${USER} docker
+        _sleep 5 "Reloading RoninDojo in" && newgrp docker
+    fi
+}
+
+#
+# Countdown timer
+# Usage: _sleep <seconds> <msg>
+#
+_sleep() {
+    secs=$((${1})) msg="${2:-Sleeping for}"
+    while [ $secs -gt 0 ]; do
+        echo -ne "${msg} $secs\033[0K seconds...\r"
+        sleep 1
+        : $((secs--))
+    done
+}
+
+#
 # Docker Data Directory
 #
 _docker_datadir_setup() {
@@ -11,7 +43,7 @@ Now configuring docker to use the external SSD...
 ***
 $(echo -e $(tput sgr0))
 EOF
-    sleep 3
+    _sleep 3
     test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
     # makes directory to store docker/dojo data
 

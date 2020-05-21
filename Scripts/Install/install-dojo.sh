@@ -287,12 +287,6 @@ echo -e "${NC}"
 sleep 5s
 # end dojo setup
 
-# Adding user to docker group if needed
-if ! getent group docker| grep -q ${USER}; then
-  sudo gpasswd -a ${USER} docker
-  newgrp docker
-fi
-
 echo -e "${RED}"
 echo "***"
 echo "Installing Dojo..."
@@ -317,7 +311,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
-  cd $DOJO_PATH && sudo ./dojo.sh stop
+  cd $DOJO_PATH && ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
   sudo mv -v /mnt/usb/uninstall-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
 
@@ -329,7 +323,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   sleep 3s
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
 
-  cd $DOJO_PATH && sudo ./dojo.sh start
+  cd $DOJO_PATH && ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
@@ -349,7 +343,7 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  cd $DOJO_PATH && sudo ./dojo.sh stop
+  cd $DOJO_PATH && ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
   sudo mv -v /mnt/usb/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
 
@@ -360,7 +354,7 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo -e "${NC}"
   sleep 3s
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
-  cd $DOJO_PATH && sudo ./dojo.sh start
+  cd $DOJO_PATH && ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 2..."
 fi
