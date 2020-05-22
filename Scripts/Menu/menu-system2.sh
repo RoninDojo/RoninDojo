@@ -1,10 +1,11 @@
 #!/bin/bash
 
 . ~/RoninDojo/Scripts/defaults.sh
+. ~/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Lock Root User"
          2 "Unlock Root User"
-         3 "Upgrade Ronin"
+         3 "Upgrade Ronin Dojo"
          4 "Mount Existing Backup Drive"
          5 "Format & Mount New Backup Drive"
          6 "Go Back")
@@ -24,7 +25,7 @@ case $CHOICE in
             echo "Locking Root User..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             sudo passwd -l root
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to lock root user, returns to menu
@@ -35,43 +36,25 @@ case $CHOICE in
             echo "Unlocking Root User..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             sudo passwd -u root
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to unlock root user, returns to menu
             ;;
         3)
             sudo rm -f ~/ronin-update.sh
-	    # using -f here to avoid error output if ~/ronin-update.sh does not exist
+	        # using -f here to avoid error output if ~/ronin-update.sh does not exist
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Upgrading Ronin..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
+            cat <<EOF
+${RED}
+***
+Upgrading RoninDojo...
+***
+${NC}
+EOF
+            _sleep 2
 
-            echo "sudo rm -rf ~/RoninDojo" > ~/ronin-update.sh
-            echo "sudo rm -rf /usr/local/bin/ronin" >> ~/ronin-update.sh
-            echo "cd ~" >> ~/ronin-update.sh
-            echo "git clone https://code.samourai.io/ronindojo/RoninDojo" >> ~/ronin-update.sh
-            echo "sudo cp -rv ~/RoninDojo/ronin /usr/local/bin" >> ~/ronin-update.sh
-            # removes RoninDojo directory and ronin main menu script
-	    # changes to home directory, clones RoninDojo master branch, and copies new ronin menu to /user/local/bin
-
-            echo "echo -e '${RED}'" >> ~/ronin-update.sh
-            echo "echo '***'" >> ~/ronin-update.sh
-            echo "echo "Upgrade Complete!"" >> ~/ronin-update.sh
-            echo "echo '***'" >> ~/ronin-update.sh
-            echo "echo -e '${NC}'" >> ~/ronin-update.sh
-            # notifies upgrade is complete
-            echo "sleep 2s" >> ~/ronin-update.sh
-            echo "bash ~/RoninDojo/Scripts/Menu/menu-system2.sh" >> ~/ronin-update.sh
-            sudo chmod +x ~/ronin-update.sh
-            bash ~/ronin-update.sh
-            # makes script executable and runs
-            # end of script returns to menu
-            # script is deleted during next run of update
+            _update_ronin
             ;;
         4)
             bash ~/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh

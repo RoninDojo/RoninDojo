@@ -4,6 +4,11 @@
 # Main function runs at beginning of script execution
 #
 _main() {
+    # Create symbolic link for main ronin script
+    if [ ! -h /usr/local/bin/ronin ]; then
+        sudo ln -s ~/RoninDojo/ronin /usr/local/bin/ronin
+    fi
+
     # Adding user to docker group if needed
     if ! getent group docker| grep -q ${USER}; then
         cat <<EOF
@@ -30,6 +35,50 @@ _sleep() {
         sleep 1
         : $((secs--))
     done
+}
+
+#
+# Update RoninDojo
+#
+_update_ronin() {
+    if [ -d ~/RoninDojo/.git ]; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+git repo found! Updating RoninDojo via git fetch
+***
+$(echo -e $(tput sgr0))
+EOF
+        cd ~/RoninDojo
+
+        # Checkout master branch
+        git checkout master
+
+        # Fetch remotes
+        git fetch --all
+
+        # Reset to origin master branch
+        git reset --hard origin/master
+    else
+        cat <<EOF > ~/ronin-update.sh
+#!/bin/bash
+sudo rm -rf ~/RoninDojo
+cd ~
+git clone https://code.samourai.io/ronindojo/RoninDojo
+${RED}
+***
+Upgrade Complete!
+***
+${NC}
+sleep 2
+bash -c ~/RoninDojo/Scripts/Menu/menu-system2.sh
+EOF
+        sudo chmod +x ~/ronin-update.sh
+        bash ~/ronin-update.sh
+        # makes script executable and runs
+        # end of script returns to menu
+        # script is deleted during next run of update
+    fi
 }
 
 #
