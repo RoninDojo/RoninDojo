@@ -53,10 +53,6 @@ if _disable_ipv6; then
   echo -e "${NC}"
 fi
 
-if [ ! -f /usr/local/bin/ronin ]; then
-  sudo cp ~/RoninDojo/ronin /usr/local/bin/ronin
-fi
-
 if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
   cat << EOF >> ~/.bashrc
 ~/RoninDojo/Scripts/.logo
@@ -64,7 +60,8 @@ if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
 ~/RoninDojo/ronin
 EOF
 fi
-# place main ronin menu script under /usr/local/bin folder, because most likely that will be path already added to your $PATH variable
+# place main ronin menu script symbolic link at /usr/local/bin folder
+# because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
 if find_pkg jdk11-openjdk; then
