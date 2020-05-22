@@ -75,9 +75,7 @@ echo "***"
 echo -e "${NC}"
 sleep 2s
 
-sudo umount /mnt/usb1
-sleep 5s
-rmdir /mnt/usb1
+sudo umount /mnt/usb1 && sudo rmdir /mnt/usb1
 
 echo -e "${RED}"
 echo "***"

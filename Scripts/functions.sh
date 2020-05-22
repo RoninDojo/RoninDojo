@@ -1,6 +1,91 @@
 #!/bin/bash
 
 #
+# Main function runs at beginning of script execution
+#
+_main() {
+    # Adding user to docker group if needed
+    if ! getent group docker| grep -q ${USER}; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Looks like you don't belong in the docker group
+so we will add you then reload the RoninDojo GUI.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo gpasswd -a ${USER} docker
+        _sleep 5 "Reloading RoninDojo in" && newgrp docker
+    fi
+}
+
+#
+# Countdown timer
+# Usage: _sleep <seconds> <msg>
+#
+_sleep() {
+    secs=$((${1})) msg="${2:-Sleeping for}"
+    while [ $secs -gt 0 ]; do
+        echo -ne "${msg} $secs\033[0K seconds...\r"
+        sleep 1
+        : $((secs--))
+    done
+}
+
+#
+# Docker Data Directory
+#
+_docker_datadir_setup() {
+    cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Now configuring docker to use the external SSD...
+***
+$(echo -e $(tput sgr0))
+EOF
+    _sleep 3
+    test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
+    # makes directory to store docker/dojo data
+
+    if [ -d /etc/docker ]; then
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+The /etc/docker directory already exists.
+***
+$(echo -e $(tput sgr0))
+EOF
+    else
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Creating /etc/docker directory.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo mkdir /etc/docker
+        # makes docker directory
+    fi
+
+    # We can skip this if daemon.json was previous created
+    if [ ! -f /etc/docker/daemon.json ]; then
+        sudo bash -c 'cat << EOF > /etc/docker/daemon.json
+{ "data-root": "/mnt/usb/docker" }
+EOF'
+        cat <<EOF
+$(echo -e $(tput setaf 1))
+***
+Starting docker daemon.
+***
+$(echo -e $(tput sgr0))
+EOF
+        sudo systemctl start docker || return 1
+    fi
+
+    return 0
+}
+
+#
 # Check dojo directory and file permissions
 # to make sure that there are no root owned files
 # from legacy use of `sudo ./dojo.sh`

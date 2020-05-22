@@ -453,7 +453,7 @@ else
 fi
 # mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
-if [ -d /mnt/salvage/uninstall-salvage ]; then
+if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -469,7 +469,7 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   echo "Creating /mnt/usb directory..."
   echo "***"
   echo -e "${NC}"
-  sudo mkdir /mnt/usb
+  test -d /mnt/usb || sudo mkdir /mnt/usb
   sleep 2s
 
   echo -e "${RED}"
@@ -504,61 +504,7 @@ if [ -d /mnt/salvage/uninstall-salvage ]; then
   create_swap --file /mnt/usb/swapfile --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Configuring docker to use the external drive..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 2s
-  sudo mkdir /mnt/usb/docker
-  # makes directroy to store docker/dojo data
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating /etc/docker directory..."
-  echo "***"
-  echo -e "${NC}"
-  test ! -d /etc/docker && sudo mkdir /etc/docker
-  # makes docker directory
-
-  sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-  {
-    "data-root": "/mnt/usb/docker"
-  }
-  EOF'
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Checking docker version..."
-  echo "***"
-  echo -e "${NC}"
-  docker -v
-  sleep 2s
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Restarting docker..."
-  echo "***"
-  echo -e "${NC}"
-  sudo systemctl stop docker
-  sleep 15s
-  sudo systemctl daemon-reload
-  sleep 5s
-  sudo systemctl start docker
-  sleep 10s
-
-  # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
-  # see systemctl status docker.service and journalctl -xe for details on error
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Check that docker is using the external drive."
-  echo "***"
-  echo -e "${NC}"
-  sudo docker info | grep "Docker Root Dir:"
-  sleep 3s
-  # if not showing SSD path check above
-  # docker setup ends
+  _docker_datadir_setup
 
   echo -e "${RED}"
   echo "***"
@@ -577,7 +523,7 @@ else
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
+if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -637,61 +583,7 @@ if [ -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks ]; then
   create_swap --file /mnt/usb/swapfile --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Now configuring docker to use the external drive..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 3s
-  sudo mkdir /mnt/usb/docker
-  # makes directroy to store docker/dojo data
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating /etc/docker directory..."
-  echo "***"
-  echo -e "${NC}"
-  sudo mkdir /etc/docker
-  # makes docker directory
-
-  sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-  {
-    "data-root": "/mnt/usb/docker"
-  }
-  EOF'
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Checking docker version..."
-  echo "***"
-  echo -e "${NC}"
-  docker -v
-  sleep 2s
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Restarting docker..."
-  echo "***"
-  echo -e "${NC}"
-  sudo systemctl stop docker
-  sleep 15s
-  sudo systemctl daemon-reload
-  sleep 5s
-  sudo systemctl start docker
-  sleep 10s
-  sudo systemctl enable docker
-  # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
-  # see systemctl status docker.service and journalctl -xe for details on error
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Check that docker is using the external drive."
-  echo "***"
-  echo -e "${NC}"
-  docker info | grep "Docker Root Dir:"
-  sleep 3s
-  # if not showing SSD path check above
-  # docker setup ends
+  _docker_datadir_setup
 
   echo -e "${RED}"
   echo "***"
@@ -769,73 +661,7 @@ sleep 3s
 test -d /mnt/usb/tor || sudo mkdir /mnt/usb/tor
 sudo chown -R tor:tor /mnt/usb/tor
 
-echo -e "${RED}"
-echo "***"
-echo "Now configuring docker to use the external SSD..."
-echo "***"
-echo -e "${NC}"
-sleep 3s
-test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
-# makes directroy to store docker/dojo data
-
-if [ -d /etc/docker ]; then
-  echo -e "${RED}"
-  echo "***"
-  echo "The /etc/docker directory already exists..."
-  echo "***"
-  echo -e "${NC}"
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating /etc/docker directory..."
-  echo "***"
-  echo -e "${NC}"
-  sudo mkdir /etc/docker
-  # makes docker directory
-fi
-
-# We can skip this if daemon.json was previous created
-# i.e during salvage drive section
-if [ ! -f /etc/docker/daemon.json ]; then
-  sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-{
-  "data-root": "/mnt/usb/docker"
-}
-EOF'
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Checking docker version..."
-  echo "***"
-  echo -e "${NC}"
-  docker -v
-  sleep 3s
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Restarting docker..."
-  echo "***"
-  echo -e "${NC}"
-  sudo systemctl stop docker
-  sleep 15s
-  sudo systemctl daemon-reload
-  sleep 5s
-  sudo systemctl start docker
-  sleep 10s
-  sudo systemctl enable docker
-  # sleep here to avoid error systemd[1]: Failed to start Docker Application Container Engine
-  # see systemctl status docker.service and journalctl -xe for details on error
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Check that docker is using the external drive."
-  echo "***"
-  echo -e "${NC}"
-  sudo docker info | grep "Docker Root Dir:"
-  sleep 3s
-  # if not showing SSD path check above
-  # docker setup ends
-fi
+_docker_datadir_setup
 
 echo -e "${RED}"
 echo "***"
