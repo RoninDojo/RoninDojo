@@ -112,7 +112,7 @@ case $CHOICE in
             echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY_TOR"
             echo ""
             echo "Whirlpool Hidden Service Address = $V3_ADDR_WHIRLPOOL"
-            echo "Whirlpool API key = $WHIRLPOOL_API_KEY"
+            echo "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}"
             echo ""
             echo "Explorer hidden service address (v3) = $V3_ADDR_EXPLORER"
             echo "No username required. Explorer Password = $EXPLORER_KEY_TOR"

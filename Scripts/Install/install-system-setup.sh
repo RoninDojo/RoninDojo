@@ -424,6 +424,17 @@ echo "***"
 echo -e "${NC}"
 sleep 3s
 
+cat <<EOF
+${RED}
+***
+Creating /mnt/usb directory...
+***
+${NC}
+EOF
+
+test -d /mnt/usb || sudo mkdir /mnt/usb
+sleep 2s
+
 if [ -b /dev/sda1 ]; then
   echo -e "${RED}"
   echo "***"
@@ -460,14 +471,6 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   sudo umount /mnt/salvage
   sudo rmdir /mnt/salvage
   # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Creating /mnt/usb directory..."
-  echo "***"
-  echo -e "${NC}"
-  test -d /mnt/usb || sudo mkdir /mnt/usb
-  sleep 2s
 
   echo -e "${RED}"
   echo "***"

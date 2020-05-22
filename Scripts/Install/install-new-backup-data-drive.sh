@@ -100,14 +100,6 @@ create_swap --file /mnt/usb1/swapfile --size 2G
 
 echo -e "${RED}"
 echo "***"
-echo "Changing ownership of /mnt/usb1 to $USER:$USER..."
-echo "***"
-echo -e "${NC}"
-sudo chown -R $USER:$USER /mnt/usb1
-# use chown to change ownership to $USER [current user]
-
-echo -e "${RED}"
-echo "***"
 echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
