@@ -39,7 +39,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs bitcoind -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs bitcoind -n 200
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo bitcoind error logs
             ;;
@@ -63,7 +63,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs db -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs db -n 500 | grep error
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo db error logs
             ;;
@@ -87,7 +87,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs tor -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs tor -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo tor error logs
             ;;
@@ -111,7 +111,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs api -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs node -n 500 | grep HttpServer
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo api error logs
             ;;
@@ -135,7 +135,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs tracker -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs node -n 500 | grep Tracker
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # shows dojo tracker error logs
             ;;
@@ -166,9 +166,9 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            cd $DOJO_PATH && ./dojo.sh logs -d error -n 500
+            cd $DOJO_PATH && ./dojo.sh logs whirlpool -n 500 | grep Error
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-            # shows all docker container error logs
+            # shows whirlpool docker container error logs
             ;;
         8)
             bash -c $RONIN_DOJO_MENU

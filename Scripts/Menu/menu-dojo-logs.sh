@@ -5,8 +5,8 @@
 OPTIONS=(1 "Bitcoind Logs"
          2 "Db Logs"
          3 "Tor Logs"
-         4 "API Logs"
-         5 "Tracker Logs"
+         4 "API/Tracker Logs"
+         5 "Whirlpool Logs"
          6 "Indexer Logs"
          7 "All Container Logs"
          8 "Troubleshooting Logs"
@@ -113,7 +113,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs api
+            cd $DOJO_PATH && ./dojo.sh logs node
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo api logs
             ;;
@@ -137,7 +137,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs tracker
+            cd $DOJO_PATH && ./dojo.sh logs whirlpool
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo tracker logs
             ;;
