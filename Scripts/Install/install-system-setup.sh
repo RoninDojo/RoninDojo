@@ -140,16 +140,16 @@ else
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 21 /etc/ufw/user.rules
 
-  sudo awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+  awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
   # copying from line 1 in rule_tmp.txt to line 19 in /etc/ufw/user.rules
   # using awk to get /lib/ufw/user.rules output, including newly added values, then makes a tmp file
   # after temp file is made it is mv to /lib/ufw/user.rules
   # awk does not have -i to write changes like sed does, that's why I took this approach
 
-  sudo awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+  awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
   # copying from line 2 in rule_tmp.txt to line 20 in /etc/ufw/user.rules
 
-  sudo awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+  awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
   # copying from line 3 in rule_tmp.txt to line 21 in /etc/ufw/user.rules
 
   sudo sed -i "18G" /etc/ufw/user.rules
