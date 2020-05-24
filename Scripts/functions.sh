@@ -40,6 +40,7 @@ _sleep() {
         sleep 1
         : $((secs--))
     done
+    echo -e "\n" # Add new line
 }
 
 #
