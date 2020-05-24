@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# shellcheck disable=SC2154
+# shellcheck source=/dev/null
 . ~/RoninDojo/Scripts/defaults.sh
 . ~/RoninDojo/Scripts/functions.sh
 
@@ -64,257 +65,42 @@ fi
 # because most likely that will be path already added to your $PATH variable
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
-if find_pkg jdk11-openjdk; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Java already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Java..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm jdk11-openjdk
-fi
-# installs java jdk11-openjdk
-# in had to use '' and "" for the check to work correctly
-# single quotes won't interpolate anything, but double quotes will
+# Install system dependencies
+for pkg in "${package_depedencies[@]}"; do
+  if find_pkg "${pkg}"; then
+    cat <<EOF
+${RED}
+***
+${pkg} already installed...
+***
+${NC}
+EOF
+    _sleep 1
+  else
+    cat <<EOF
+${RED}
+***
+Installing ${pkg}...
+***
+${NC}
+EOF
+    _sleep 1
+    sudo pacman -S --noconfirm "${pkg}"
+  fi
+done
 
-if find_pkg tor; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Tor already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Tor..."
-  echo "***"
-  echo -e "${NC}"
-  sudo pacman -S --noconfirm tor
-  sleep 1s
+# Check if torrc was modified
+if ! grep /mnt/usb/tor /etc/torrc 1>/dev/null; then
   sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
-  -e 's/^ControlPort .*$/ControlPort 9051' \
-  -e 's/^#CookieAuthentication/CookieAuthentication/' \
-  -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+    -e 's/^ControlPort .*$/ControlPort 9051' \
+    -e 's/^#CookieAuthentication/CookieAuthentication/' \
+    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
-# check if tor is installed, if not install and modify torrc
-
-if find_pkg python; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Python3 already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Python3..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm python3
-fi
-# checks for python, if python not found then it is installed
-# in had to use '' and "" for the check to work correctly
-# single quotes won't interpolate anything, but double quotes will
-
-if find_pkg fail2ban; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Fail2ban already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Fail2ban..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm fail2ban
-fi
-# check for / install fail2ban
-
-check6=htop
-if find_pkg htop; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Htop already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Htop..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm htop
-fi
-# check for / install htop
-
-if find_pkg vim; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Vim already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Vim..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm vim
-fi
-# check for / install vim
-
-if find_pkg unzip; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Unzip already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Unzip..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm unzip
-fi
-# check for / install unzip
-
-if find_pkg net-tools; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Net-tools already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Net-tools..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm net-tools
-fi
-# check for / install net tools
-
-if find_pkg which; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Which already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Which..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm which
-fi
-# check for / install which
-
-if find_pkg wget; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Wget already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Wget..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm wget
-fi
-# check for / install wget
-
-if find_pkg docker; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Docker already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Docker..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm docker
-fi
-# check for / install docker
-
-if find_pkg docker-compose; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Docker-compose already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Docker-compose..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm docker-compose
-fi
-# check for / install docker
-
-sudo systemctl enable docker
-# enables docker to run at startup
-# system setup ends
-
-if find_pkg ufw; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Ufw already installed..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing Ufw..."
-  echo "***"
-  echo -e "${NC}"
-  sleep 1s
-  sudo pacman -S --noconfirm ufw
-fi
-# check for / install ufw
 
 if sudo ufw status | grep 22 > /dev/null ; then
   echo -e "${RED}"
   echo "***"
-  echo "Ssh firewall rule already setup..."
+  echo "SSH firewall rule already setup..."
   echo "***"
   echo -e "${NC}"
   sleep 1s
@@ -342,15 +128,15 @@ else
   ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
   # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-  while read ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any ""$ip" > ~/rule_tmp.txt; done <~/ip_tmp.txt
+  while read -r ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any $ip" > ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 19 in /etc/ufw/user.rules
 
-  while read ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
+  while read -r ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s $ip -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 20 /etc/ufw/user.rules
 
-  while read ip ; do echo "-A ufw-user-input -p udp --dport 22 -s "$ip" -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
+  while read -r ip ; do echo "-A ufw-user-input -p udp --dport 22 -s $ip -j ACCEPT" >> ~/rule_tmp.txt; done <~/ip_tmp.txt
   # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
   # for line 21 /etc/ufw/user.rules
 

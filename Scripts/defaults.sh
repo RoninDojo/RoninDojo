@@ -1,3 +1,25 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+
+#
+# Package dependencies
+#
+package_dependencies=(
+    jdk11-openjdk
+    tor
+    python3
+    fail2ban
+    htop
+    vim
+    unzip
+    net-tools
+    which
+    wget
+    docker
+    docker-compose
+    ufw
+)
+
 #
 # Terminal Colors
 #
@@ -86,6 +108,6 @@ if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs; then
 fi
 
 # Ronin menu paths
-RONIN_DOJO_MENU='~/RoninDojo/Scripts/Menu/menu-dojo.sh'
-RONIN_DOJO_MENU2='~/RoninDojo/Scripts/Menu/menu-dojo2.sh'
-RONIN_WHIRLPOOL_MENU='~/RoninDojo/Scripts/Menu/menu-whirlpool.sh'
+RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
+RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
+RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"

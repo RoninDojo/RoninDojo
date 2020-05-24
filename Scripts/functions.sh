@@ -1,4 +1,9 @@
 #!/bin/bash
+# shellcheck disable=SC2221,SC2222
+
+RED=$(tput setaf 1)
+NC=$(tput sgr0)
+# No Color
 
 #
 # Main function runs at beginning of script execution
@@ -10,16 +15,16 @@ _main() {
     fi
 
     # Adding user to docker group if needed
-    if ! getent group docker| grep -q ${USER}; then
+    if ! getent group docker| grep -q "${USER}"; then
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Looks like you don't belong in the docker group
 so we will add you then reload the RoninDojo GUI.
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
-        sudo gpasswd -a ${USER} docker
+        sudo gpasswd -a "${USER}" docker
         _sleep 5 "Reloading RoninDojo in" && newgrp docker
     fi
 }
@@ -43,13 +48,13 @@ _sleep() {
 _update_ronin() {
     if [ -d ~/RoninDojo/.git ]; then
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 git repo found! Updating RoninDojo via git fetch
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
-        cd ~/RoninDojo
+        cd "$HOME/RoninDojo" || exit
 
         # Checkout master branch
         git checkout master
@@ -86,11 +91,11 @@ EOF
 #
 _docker_datadir_setup() {
     cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Now configuring docker to use the external SSD...
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
     _sleep 3
     test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
@@ -98,19 +103,19 @@ EOF
 
     if [ -d /etc/docker ]; then
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 The /etc/docker directory already exists.
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
     else
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Creating /etc/docker directory.
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
         sudo mkdir /etc/docker
         # makes docker directory
@@ -122,13 +127,18 @@ EOF
 { "data-root": "/mnt/usb/docker" }
 EOF'
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Starting docker daemon.
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
         sudo systemctl start docker || return 1
+    fi
+
+    # Enable service on startup
+    if ! sudo systemctl is-enabled docker; then
+        sudo systemctl enable docker
     fi
 
     return 0
@@ -146,7 +156,7 @@ _check_dojo_perms() {
         sudo ./dojo.sh stop
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
-        sudo chown -R ${USER}:${USER} ${DOJO_PATH}
+        sudo chown -R "${USER}:${USER}" "${DOJO_PATH}"
     else
         ./dojo.sh stop
     fi
@@ -195,7 +205,7 @@ _disable_bluetooth() {
 # Check for installed package
 #
 find_pkg() {
-    pacman -Q $1 >/dev/null && return 0
+    hash "$1" >/dev/null && return 0
 
     return 1
 }
@@ -204,11 +214,11 @@ find_pkg() {
 # Shows the filesystem type of a giving partition
 #
 check_fstype() {
-    local device="${1}"
+    local type device="${1}"
 
-    local type="$(lsblk -f ${device} | tail -1 | awk '{print$2}')"
+    type="$(lsblk -f "${device}" | tail -1 | awk '{print$2}')"
 
-    echo ${type}
+    echo "${type}"
 }
 
 #
@@ -216,21 +226,21 @@ check_fstype() {
 # TODO add btrfs support
 #
 create_fs() {
-    local supported_filesystems=("ext2", "ext3", "ext4", "xfs") fstype="ext4"
+    local supported_filesystems=("ext2" "ext3" "ext4" "xfs") fstype="ext4"
 
     # Parse Arguments
     while [ $# -gt 0 ]; do
         case "$1" in
             --fstype|fs)
-                if [[ ! "${supported_filesystems[@]}" =~ "${2}" ]]; then
+                if [[ ! "${supported_filesystems[*]}" =~ ${2} ]]; then
                     cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Error: unsupported filesystem type ${2}
 Available options are: ${supported_filesystems[@]}
 Exiting!
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
                     return 1
                 else
@@ -243,13 +253,13 @@ EOF
                 shift 2
                 ;;
             --device|-d)
-                if [ ! -b ${2} ]; then
+                if [ ! -b "${2}" ]; then
                     cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Error: ${2} not a block device! Exiting!
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
                     return 1
                 else
@@ -269,54 +279,55 @@ EOF
     done
 
     # Create mount point directory if not available
-    if [ ! -d ${mountpoint} ]; then
+    if [ ! -d "${mountpoint}" ]; then
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Creating ${mountpoint} directory...
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
-        sudo mkdir -p ${mountpoint} || return 1
+        sudo mkdir -p "${mountpoint}" || return 1
     fi
 
     cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Using ${fstype} filesystem format for ${device} partition...
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
-        sudo mkfs.${fstype} -F -L ${label} ${device} &>/dev/null || return 1
+        sudo mkfs."${fstype}" -F -L "${label}" "${device}" &>/dev/null || return 1
     elif [[ $fstype =~ 'xfs' ]]; then
-        sudo mkfs.${fstype} -L ${label} ${device} &>/dev/null || return 1
+        sudo mkfs."${fstype}" -L "${label}" "${device}" &>/dev/null || return 1
     fi
 
     # Sleep here ONLY, don't ask me why ask likewhoa!
     sleep 2
 
     # systemd.mount unit file creation
-    local uuid=$(lsblk -no UUID ${device})  # UUID of device
+    local uuid
+    uuid=$(lsblk -no UUID "${device}")      # UUID of device
     local tmp=${mountpoint:1}               # Remove leading '/'
     local systemd_mountpoint=${tmp////-}    # Replace / with -
 
-    if [ ! -f /etc/systemd/system/${systemd_mountpoint}.mount ]; then
+    if [ ! -f /etc/systemd/system/"${systemd_mountpoint}".mount ]; then
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Adding device ${device} to systemd.mount unit file
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
 Description=Mount External SSD Drive ${device}
 
 [Mount]
-What=/dev/disk/by-uuid/$(lsblk -no UUID ${device})
+What=/dev/disk/by-uuid/${uuid}
 Where=${mountpoint}
 Type=ext4
 Options=defaults
@@ -326,14 +337,14 @@ WantedBy=multi-user.target
 EOF"
     # Mount filesystem
     cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Mounting ${device} to ${mountpoint}
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
-    sudo systemctl start ${systemd_mountpoint}.mount || return 1
-    sudo systemctl enable ${systemd_mountpoint}.mount || return 1
+    sudo systemctl start "${systemd_mountpoint}".mount || return 1
+    sudo systemctl enable "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
     fi
 
@@ -344,7 +355,7 @@ EOF
 # Makes sure we don't already have swap enabled
 #
 check_swap() {
-    if [ $(swapon -s|wc -l) = 0 ]; then # no swap currently
+    if [ "$(swapon -s|wc -l)" = 0 ]; then # no swap currently
         return 0
     fi
 
@@ -378,34 +389,34 @@ create_swap() {
 
     if check_swap; then
         cat <<EOF
-$(echo -e $(tput setaf 1))
+${RED}
 ***
 Creating swapfile...
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
-        sudo fallocate -l ${size} ${file}
-        sudo chmod 600 ${file}
-        sudo mkswap -p 0 ${file}
-        sudo swapon ${file}
+        sudo fallocate -l "${size}" "${file}"
+        sudo chmod 600 "${file}"
+        sudo mkswap -p 0 "${file}"
+        sudo swapon "${file}"
     else
         cat <<EOF
-$(echo -e $(tput sgr0))
+${NC}
 ***
 Swapfile already created...
 ***"
-$(echo -e $(tput sgr0))
+${NC}
 EOF
     fi
 
     # Include fstab value
-    if ! grep '${file}' /etc/fstab; then
+    if ! grep "${file}" /etc/fstab; then
         cat <<EOF
-$(echo -e $(tput sgr0))
+${NC}
 ***
 Creating swapfile entry in /etc/fstab
 ***
-$(echo -e $(tput sgr0))
+${NC}
 EOF
         sudo bash -c "cat <<EOF >>/etc/fstab
 ${file} swap swap defaults,pri=0 0 0
