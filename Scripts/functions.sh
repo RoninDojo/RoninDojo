@@ -11,7 +11,7 @@ NC=$(tput sgr0)
 _main() {
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
-        sudo ln -s ~/RoninDojo/ronin /usr/local/bin/ronin
+        sudo ln -sf "$HOME"/RoninDojo/ronin /usr/local/bin/ronin
     fi
 
     # Adding user to docker group if needed
