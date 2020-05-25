@@ -66,7 +66,7 @@ fi
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
 # Install system dependencies
-for pkg in "${package_depedencies[@]}"; do
+for pkg in "${package_dependencies[@]}"; do
   if find_pkg "${pkg}"; then
     cat <<EOF
 ${RED}
@@ -92,9 +92,9 @@ done
 # Check if torrc was modified
 if ! grep /mnt/usb/tor /etc/torrc 1>/dev/null; then
   sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
-    -e 's/^ControlPort .*$/ControlPort 9051' \
-    -e 's/^#CookieAuthentication/CookieAuthentication/' \
-    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+-e 's/^ControlPort .*$/ControlPort 9051' \
+-e 's/^#CookieAuthentication/CookieAuthentication/' \
+-e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
 
 if sudo ufw status | grep 22 > /dev/null ; then
