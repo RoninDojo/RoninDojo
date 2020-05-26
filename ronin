@@ -1,6 +1,7 @@
 #!/bin/bash
 
-. ~/RoninDojo/Scripts/functions.sh
+# shellcheck source=/dev/null
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 # Run system checks
 _main
@@ -21,7 +22,7 @@ OPTIONS=(1 "Dojo Menu"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
