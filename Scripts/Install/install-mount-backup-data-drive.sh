@@ -1,7 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
-. ~/RoninDojo/Scripts/functions.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 if [ -b /dev/sdb1 ]; then
   echo -e "${RED}"
@@ -34,13 +35,13 @@ echo "***"
 echo "Preparing to Mount /dev/sdb1 to /mnt/usb1..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 
 echo -e "${RED}"
 echo "Are you ready to mount?"
 echo -e "${NC}"
 while true; do
-    read -p "Y/N?: " yn
+    read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) bash ~/RoninDojo/Scripts/Menu/system-menu2.sh;exit;;
@@ -56,7 +57,7 @@ echo "***"
 echo "Mounting /dev/sdb1 to /mnt/usb1..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 sudo mount /dev/sdb1 /mnt/usb1
 # mount backup drive to /mnt/usb1 directory
 

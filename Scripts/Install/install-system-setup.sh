@@ -1,6 +1,7 @@
 #!/bin/bash
 # shellcheck disable=SC2154
 # shellcheck source=/dev/null
+
 . ~/RoninDojo/Scripts/defaults.sh
 . ~/RoninDojo/Scripts/functions.sh
 
@@ -27,7 +28,7 @@ echo "***"
 echo "If you have already setup your system, use Ctrl+C to exit now!"
 echo "***"
 echo -e "${NC}"
-sleep 5s
+_sleep 5
 
 ~/RoninDojo/Scripts/.logo
 
@@ -208,7 +209,7 @@ echo "***"
 echo "All Dojo dependencies installed..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 
 cat <<EOF
 ${RED}
@@ -219,7 +220,7 @@ ${NC}
 EOF
 
 test -d /mnt/usb || sudo mkdir /mnt/usb
-sleep 2s
+_sleep 2
 
 if [ -b /dev/sda1 ]; then
   echo -e "${RED}"
@@ -395,7 +396,7 @@ echo "***"
 echo "Formatting the SSD..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 if [ -b /dev/sda1 ]
 then
@@ -423,7 +424,7 @@ echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
 lsblk -o NAME,SIZE,LABEL /dev/sda1
-sleep 2s
+_sleep 2
 # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
 echo -e "${RED}"
@@ -432,7 +433,7 @@ echo "Check output for /dev/sda1 and make sure everything looks ok."
 echo "***"
 echo -e "${NC}"
 df -h /dev/sda1
-sleep 2s
+_sleep 2
 # checks disk info
 
 create_swap --file /mnt/usb/swapfile --size 2G
@@ -443,7 +444,7 @@ echo "***"
 echo "Creating Tor directory on the external SSD..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 test -d /mnt/usb/tor || sudo mkdir /mnt/usb/tor
 sudo chown -R tor:tor /mnt/usb/tor
 
@@ -454,5 +455,5 @@ echo "***"
 echo "Dojo is ready to be installed!"
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 # will continue to dojo install if it was selected on the install menu

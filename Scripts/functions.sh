@@ -24,6 +24,11 @@ so we will add you then reload the RoninDojo GUI.
 ***
 ${NC}
 EOF
+        # Create the docker group if not available
+        if ! getent group docker 1>/dev/null; then
+            sudo groupadd docker
+        fi
+
         sudo gpasswd -a "${USER}" docker
         _sleep 5 "Reloading RoninDojo in" && newgrp docker
     fi
@@ -31,12 +36,31 @@ EOF
 
 #
 # Countdown timer
-# Usage: _sleep <seconds> <msg>
+# Usage: _sleep <seconds> --msg "your message"
 #
 _sleep() {
-    secs=$((${1})) msg="${2:-Sleeping for}"
-    while [ $secs -gt 0 ]; do
-        echo -ne "${msg} $secs\033[0K seconds...\r"
+    local secs msg verbose
+    secs=1 verbose=false
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            (*[0-9]*)
+                secs="$1"
+                shift
+                ;;
+            --msg)
+                msg="$2"
+                verbose=true
+                shift 2
+                ;;
+        esac
+    done
+
+    while [ "$secs" -gt 0 ]; do
+        if $verbose; then
+            echo -ne "${msg} $secs\033[0K seconds...\r"
+        fi
         sleep 1
         : $((secs--))
     done
@@ -56,10 +80,8 @@ git repo found! Updating RoninDojo via git fetch
 ${NC}
 EOF
         cd "$HOME/RoninDojo" || exit
-
         # Checkout master branch
         git checkout master
-
         # Fetch remotes
         git fetch --all
 

@@ -1,13 +1,15 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 echo -e "${RED}"
 echo "***"
 echo "Checking for Whirlpool Stat Tool..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
     bash ~/RoninDojo/Scripts/Install/install-wst.sh
@@ -25,31 +27,31 @@ else
     echo "***"
     echo -e "${NC}"
     sleep 2s
-    cd ~/wst/whirlpool_stats/whirlpool_stats
+    cd "$HOME"/wst/whirlpool_stats/whirlpool_stats || exit
 fi
 
 echo -e "${RED}"
 echo "Whirlpool Stat Tool INSTRUCTIONS:"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Download in the working directory a snaphot for the 0.01BTC pools:"
 echo -e "${NC}"
 echo "download 001"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Load and compute the statistcs for the snaphot:"
 echo -e "${NC}"
 echo "load 001"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Display the metrics computed for a transaction stored in the active snapshot:"
 echo -e "${NC}"
 echo "score <ENTER TXID OF DESIRED 0.01 BTC transaction>"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Sample output..."
@@ -60,7 +62,7 @@ echo   "spread = 89%"
 echo "Forward-looking metrics for the outputs of Tx0s having this transaction as their first mix:"
 echo   "anonset = 127"
 echo   "spread = 76%"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "***"

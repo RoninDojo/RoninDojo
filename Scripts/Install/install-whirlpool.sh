@@ -1,7 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
-. ~/RoninDojo/Scripts/functions.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 echo -e "${RED}"
 echo "***"
@@ -33,16 +34,16 @@ echo "Checking if Tor is installed..."
 echo "***"
 echo -e "${NC}"
 
-if find_pkg tor; then
+if hash tor; then
     echo -e "${RED}"
     echo "***"
-    echo "The package $package is installed."
+    echo "The tor package is installed."
     echo "***"
     echo -e "${NC}"
 else
     echo -e "${RED}"
     echo "***"
-    echo "The package $package will be installed now."
+    echo "The tor package will be installed now."
     echo "***"
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
@@ -51,7 +52,8 @@ else
     -e 's/^ControlPort .*$/ControlPort 9051' \
     -e 's/^#CookieAuthentication/CookieAuthentication/' \
     -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
-    if ! -d /mnt/usb/tor; then
+
+    if [ ! -d /mnt/usb/tor ]; then
         sudo mkdir /mnt/usb/tor
         sudo chown -R tor:tor /mnt/usb/tor
     fi
@@ -63,21 +65,21 @@ echo "***"
 echo "Installing Whirlpool..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 
 echo -e "${RED}"
 echo "***"
 echo "A UFW rule will be made for Whirlpool..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
 echo "Whirlpool GUI will be able to access Whirlpool CLI from any machine on your RoninDojo's local network."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+_sleep 5
 
 if sudo ufw status | grep 8899 > /dev/null ; then
     echo -e "${RED}"
@@ -94,28 +96,28 @@ else
     # delete lines 2-12 (in the systemsetup script it is 2,10d
     # had to be modified for whirlpool setup as an extra value gets added to ~/ip_tmp.txt)
 
-    while read ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    while read -r ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 19 in /etc/ufw/user.rules
 
-    while read ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    while read -r ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s $ip -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 20 /etc/ufw/user.rules
 
-    while read ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s "$ip" -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    while read -r ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s $ip -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 21 /etc/ufw/user.rules
 
-     sudo awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+    awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 1 in whirlpool_rule_tmp.txt to line 19 in /etc/ufw/user.rules
     # using awk to get /lib/ufw/user.rules output, including newly added values, then makes a tmp file
     # after temp file is made it is mv to /lib/ufw/user.rules
     # awk does not have -i to write changes like sed does, that's why I took this approach
 
-     sudo awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+    awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 2 in whirlpool_rule_tmp.txt to line 20 in /etc/ufw/user.rules
 
-     sudo awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+    awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 3 in whirlpool_rule_tmp.txt to line 21 in /etc/ufw/user.rules
 
      sudo sed -i "18G" /etc/ufw/user.rules
@@ -144,7 +146,7 @@ echo "***"
 echo "Checking UFW status..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 sudo ufw status
 
 echo -e "${RED}"
@@ -152,10 +154,11 @@ echo "***"
 echo "Created a Whirlpool directory."
 echo "***"
 echo -e "${NC}"
-sleep 1s
-cd $HOME
+_sleep
+
+cd "$HOME" || exit
 mkdir whirlpool
-cd whirlpool
+cd whirlpool || exit
 # create whirlpool directory
 
 echo -e "${RED}"
@@ -163,7 +166,7 @@ echo "***"
 echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+_sleep
 wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
 # pull Whirlpool run times
 
@@ -212,32 +215,32 @@ fi
 # checks for whirlpool.service and if found skips, if not found sets up whirlpool.service
 
 sudo systemctl daemon-reload
-sleep 3s
+_sleep 3
 
 echo -e "${RED}"
 echo "***"
 echo "Starting Whirlpool in the background..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+_sleep
 
 sudo systemctl start whirlpool
 sudo systemctl enable whirlpool
-sleep 3s
+_sleep 3
 
 echo -e "${RED}"
 echo "***"
 echo "Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixing..."
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 
 echo -e "${RED}"
 echo "***"
 echo "For pairing with GUI head to full guide at: https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
 echo "***"
 echo -e "${NC}"
-sleep 3s
+_sleep 3
 
 echo -e "${RED}"
 echo "***"
