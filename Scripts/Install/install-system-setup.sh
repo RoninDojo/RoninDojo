@@ -2,8 +2,8 @@
 # shellcheck disable=SC2154
 # shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
-. ~/RoninDojo/Scripts/functions.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 if [ -d ~/dojo ]; then
   echo -e "${RED}"
