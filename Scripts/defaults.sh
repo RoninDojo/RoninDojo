@@ -5,7 +5,7 @@
 # Package dependencies
 #
 package_dependencies=(
-    jdk11-openjdk
+    java
     tor
     python3
     fail2ban

@@ -76,7 +76,7 @@ ${pkg} already installed...
 ***
 ${NC}
 EOF
-    _sleep 1
+    _sleep
   else
     cat <<EOF
 ${RED}
@@ -85,8 +85,12 @@ Installing ${pkg}...
 ***
 ${NC}
 EOF
-    _sleep 1
-    sudo pacman -S --noconfirm "${pkg}"
+    _sleep
+    if [ "${pkg}" = "java" ]; then
+      sudo pacman -S --noconfirm jdk11-openjdk
+    else
+      sudo pacman -S --noconfirm "${pkg}"
+    fi
   fi
 done
 
