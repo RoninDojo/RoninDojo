@@ -1,0 +1,4 @@
+post_install(){
+  echo "Running System Setup Script..."
+  bash $HOME/RoninDojo/Scripts/Install/install-system.sh
+}
