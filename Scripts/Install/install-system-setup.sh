@@ -68,7 +68,7 @@ fi
 
 # Install system dependencies
 for pkg in "${package_dependencies[@]}"; do
-  if find_pkg "${pkg}"; then
+  if hash "${pkg}" 2>/dev/null; then
     cat <<EOF
 ${RED}
 ***
@@ -90,7 +90,7 @@ EOF
   fi
 done
 
-# Check if torrc was modified
+# Check if /etc/tor/torrc was configured
 if ! grep /mnt/usb/tor /etc/tor/torrc 1>/dev/null; then
   sudo sed -i -e 's:^DataDirectory .*$:DataDirectory /mnt/usb/tor:' \
     -e 's/^ControlPort .*$/ControlPort 9051/' \

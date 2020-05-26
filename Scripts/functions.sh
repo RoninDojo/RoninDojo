@@ -225,14 +225,6 @@ _disable_bluetooth() {
 }
 
 #
-# Check for installed package
-#
-find_pkg() {
-    hash "$1" >/dev/null && return 0
-
-    return 1
-}
-#
 # Check fs type
 # Shows the filesystem type of a giving partition
 #
