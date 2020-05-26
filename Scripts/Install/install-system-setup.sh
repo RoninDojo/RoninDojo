@@ -91,11 +91,11 @@ EOF
 done
 
 # Check if torrc was modified
-if ! grep /mnt/usb/tor /etc/torrc 1>/dev/null; then
-  sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
--e 's/^ControlPort .*$/ControlPort 9051' \
--e 's/^#CookieAuthentication/CookieAuthentication/' \
--e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+if ! grep /mnt/usb/tor /etc/tor/torrc 1>/dev/null; then
+  sudo sed -i -e 's:^DataDirectory .*$:DataDirectory /mnt/usb/tor:' \
+    -e 's/^ControlPort .*$/ControlPort 9051/' \
+    -e 's/^#CookieAuthentication/CookieAuthentication/' \
+    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
 
 if sudo ufw status | grep 22 > /dev/null ; then
