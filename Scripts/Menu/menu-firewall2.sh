@@ -1,6 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Add New IP Range for Whirlpool GUI"
          2 "Add Specific IP for Whirlpool GUI"
@@ -9,7 +11,7 @@ OPTIONS=(1 "Add New IP Range for Whirlpool GUI"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -21,7 +23,7 @@ case $CHOICE in
             echo "Obtain the IP address you wish to give access to your Whirlpool CLI."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             echo -e "${RED}"
             echo "***"
@@ -29,7 +31,7 @@ case $CHOICE in
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             echo -e "${RED}"
             echo "***"
@@ -37,14 +39,14 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
 
-            read -p 'Local IP Address: ' ip_address
-            sudo ufw allow from $ip_address/24 to any port 8899 comment 'Whirlpool CLI access restricted to local LAN only'
+            read -rp 'Local IP Address: ' ip_address
+            sudo ufw allow from "$ip_address"/24 to any port 8899 comment 'Whirlpool CLI access restricted to local LAN only'
 
             echo -e "${RED}"
             echo "***"
             echo "Reloading..."
             echo "***"
-            sleep 2s
+            _sleep 2
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -54,7 +56,7 @@ case $CHOICE in
             echo "Showing status..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             sudo ufw status
             # show firewall status
 
@@ -79,7 +81,7 @@ case $CHOICE in
             echo "Obtain the IP address you wish to give access to SSH."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             echo -e "${RED}"
             echo "***"
@@ -87,7 +89,7 @@ case $CHOICE in
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             echo -e "${RED}"
             echo "***"
@@ -95,14 +97,14 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
 
-            read -p 'Local IP Address: ' ip_address
-            sudo ufw allow from $ip_address to any port 8899 comment 'Whirlpool CLI access restricted to local LAN only'
+            read -rp 'Local IP Address: ' ip_address
+            sudo ufw allow from "$ip_address" to any port 8899 comment 'Whirlpool CLI access restricted to local LAN only'
 
             echo -e "${RED}"
             echo "***"
             echo "Reloading..."
             echo "***"
-            sleep 2s
+            _sleep 2
             echo -e "${NC}"
             sudo ufw reload
             # reload the firewall
@@ -112,7 +114,7 @@ case $CHOICE in
             echo "Showing status..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             sudo ufw status
             # show firewall status
 

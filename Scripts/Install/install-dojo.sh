@@ -307,7 +307,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
 
   echo -e "${RED}"
   echo "***"
@@ -342,7 +342,7 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
 
   echo -e "${RED}"
   echo "***"

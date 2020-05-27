@@ -1,6 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Task Manager"
          2 "Check Disk Space"
@@ -15,7 +17,7 @@ OPTIONS=(1 "Task Manager"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -38,14 +40,14 @@ case $CHOICE in
             echo "Showing Disk Space Info..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
             sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")
-            echo "Internal: "${sd} "remaining"
+            echo "Internal: ${sd} remaining"
             hdd_free_ratio=$(printf "%s" "$(df  | grep "/mnt/usb" | awk '{ print $4/$2*100 }')") 2>/dev/null
             hdd=$(printf "%s (%s%%)" "$(df -h | grep "/mnt/usb" | awk '{ print $4 }')" "${hdd_free_ratio}")
-            echo "External: " ${hdd} "remaining"
+            echo "External: ${hdd} remaining"
             # disk space info
 
             echo -e "${RED}"
@@ -118,7 +120,7 @@ case $CHOICE in
             echo "Shutting down Dojo if running..."
             echo "***"
             echo -e "${NC}"
-            cd ${DOJO_PATH}
+            cd "${DOJO_PATH}" || exit
             ./dojo.sh stop
 
             echo -e "${RED}"
@@ -136,7 +138,7 @@ case $CHOICE in
             echo "Shutting down Dojo if running..."
             echo "***"
             echo -e "${NC}"
-            cd ${DOJO_PATH}
+            cd "${DOJO_PATH}" || exit
             ./dojo.sh stop
 
             echo -e "${RED}"

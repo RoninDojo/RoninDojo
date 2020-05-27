@@ -1,6 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Bitcoind Logs"
          2 "Db Logs"
@@ -15,7 +17,7 @@ OPTIONS=(1 "Bitcoind Logs"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -40,8 +42,9 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs bitcoind
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs bitcoind
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo bitcoind logs
             ;;
@@ -64,8 +67,9 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs db
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs db
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo db logs
             ;;
@@ -88,8 +92,9 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs tor
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs tor
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo tor logs
             ;;
@@ -112,8 +117,9 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs api
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs api
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo api logs
             ;;
@@ -136,8 +142,9 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs tracker
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs tracker
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows dojo tracker logs
             ;;
@@ -160,7 +167,7 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             echo -e "${RED}"
             echo "***"
@@ -168,7 +175,8 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             sleep 1s
-            cd $DOJO_PATH && ./dojo.sh logs indexer
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs indexer
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for indexer
             ;;
@@ -191,7 +199,7 @@ case $CHOICE in
           echo "Press Ctrl + C to exit at any time."
           echo "***"
           echo -e "${NC}"
-          sleep 2s
+          _sleep 2
 
           echo -e "${RED}"
           echo "***"
@@ -199,7 +207,8 @@ case $CHOICE in
           echo "***"
           echo -e "${NC}"
           sleep 1s
-          cd $DOJO_PATH && ./dojo.sh logs
+          cd "$DOJO_PATH" || exit
+          ./dojo.sh logs
           bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
           # shows logs for all containers
           ;;
@@ -209,7 +218,7 @@ case $CHOICE in
             # goes to troubleshoot logs menu
             ;;
         9)
-            bash -c $RONIN_DOJO_MENU
+            bash -c "$RONIN_DOJO_MENU"
             # goes back to ronin dojo menu
             ;;
 esac

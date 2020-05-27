@@ -1,6 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2154
-# shellcheck source=/dev/null
+# shellcheck disable=SC2154 source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -116,7 +115,7 @@ else
   echo "Setting up UFW..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo ufw default deny incoming
   sudo ufw default allow outgoing
 
@@ -125,7 +124,7 @@ else
   echo "Enabling UFW..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo ufw --force enable
   sudo systemctl enable ufw
   # enabling ufw so /etc/ufw/user.rules file configures properly, then edit using awk and sed below
@@ -173,7 +172,7 @@ else
   echo "Reloading UFW..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo ufw reload
 
   echo -e "${RED}"
@@ -181,7 +180,7 @@ else
   echo "Checking UFW status..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo ufw status
   sleep 4s
 
@@ -233,14 +232,14 @@ if [ -b /dev/sda1 ]; then
   echo "***"
   echo -e "${NC}"
   sudo mkdir /mnt/salvage
-  sleep 2s
+  _sleep 2
 
   echo -e "${RED}"
   echo "***"
   echo "Attempting to mount drive for Blockchain data salvage..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo mount /dev/sda1 /mnt/salvage
 else
   echo -e "${RED}"
@@ -248,7 +247,7 @@ else
   echo "Did not find /dev/sda1 for Blockchain data salvage."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
 fi
 # mount main storage drive to /mnt/salvage directory if found in prep for data salvage
 
@@ -268,7 +267,7 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo mount /dev/sda1 /mnt/usb
   sleep 1s
   # mount main storage drive to /mnt/usb directory
@@ -278,9 +277,9 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   lsblk -o NAME,SIZE,LABEL /dev/sda1
-  sleep 2s
+  _sleep 2
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
   echo -e "${RED}"
@@ -320,14 +319,14 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
 
   echo -e "${RED}"
   echo "***"
   echo "Moving to temporary directory..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo mkdir /mnt/salvage/system-setup-salvage
   sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
 
@@ -336,7 +335,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "Blockchain data prepared for salvage!"
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo rm -rf /mnt/salvage/{docker,tor,swapfile}
   sudo umount /mnt/salvage
   sudo rmdir /mnt/salvage
@@ -347,7 +346,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   sudo mount /dev/sda1 /mnt/usb
   sleep 1s
   # mount main storage drive to /mnt/usb directory
@@ -357,9 +356,9 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   lsblk -o NAME,SIZE,LABEL /dev/sda1
-  sleep 2s
+  _sleep 2
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
   echo -e "${RED}"

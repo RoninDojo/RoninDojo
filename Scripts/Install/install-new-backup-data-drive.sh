@@ -10,7 +10,7 @@ if [ -b /dev/sdb ]; then
   echo "Your new backup drive has been detected..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   # checks for /dev/sdb
 else
   echo -e "${RED}"

@@ -10,7 +10,7 @@ if [ -b /dev/sdb1 ]; then
   echo "Your backup drive partition 1 has been detected..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   # checks for /dev/sdb1
 else
   echo -e "${RED}"

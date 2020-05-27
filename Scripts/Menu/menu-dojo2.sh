@@ -1,6 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Uninstall Dojo"
          2 "Receive Block Data from Backup"
@@ -10,7 +12,7 @@ OPTIONS=(1 "Uninstall Dojo"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -49,15 +51,16 @@ case $CHOICE in
             echo "Do you want to salvage your Blockchain data?"
             echo -e "${NC}"
             while true; do
-                read -p "Y/N?: " yn
+                read -rp "Y/N?: " yn
                 case $yn in
                     [Yy]* ) echo -e "${RED}"
                             echo "***"
                             echo "Copying block data to temporary directory..."
                             echo "***"
                             echo -e "${NC}"
-                            sleep 2s
-                            cd $DOJO_PATH && ./dojo.sh stop
+                            _sleep 2
+                            cd "$DOJO_PATH" || exit
+                            ./dojo.sh stop
 
                             # Check if salvage directory exist
                             test ! -d /mnt/usb/uninstall-salvage && sudo mkdir /mnt/usb/uninstall-salvage
@@ -75,7 +78,8 @@ case $CHOICE in
             echo "Uninstalling Dojo..."
             echo "***"
             echo -e "${NC}"
-            cd $DOJO_PATH && ./dojo.sh uninstall
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh uninstall
             sudo rm -rf ~/dojo
             # uninstall dojo
 
@@ -96,7 +100,7 @@ case $CHOICE in
             # copy block data to backup drive
             ;;
         4)
-            bash -c $RONIN_DOJO_MENU
+            bash -c "$RONIN_DOJO_MENU"
             # return to main menu
             ;;
 esac

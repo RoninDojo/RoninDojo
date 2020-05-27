@@ -19,14 +19,14 @@ else
     echo "Whirlpool Stat Tool Already Installed!";
     echo "***"
     echo -e "${NC}"
-    sleep 2s
+    _sleep 2
 
     echo -e "${RED}"
     echo "***"
     echo "Launching Whirlpool Stat Tool..."
     echo "***"
     echo -e "${NC}"
-    sleep 2s
+    _sleep 2
     cd "$HOME"/wst/whirlpool_stats/whirlpool_stats || exit
 fi
 

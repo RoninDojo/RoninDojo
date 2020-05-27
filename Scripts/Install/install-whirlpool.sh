@@ -16,13 +16,13 @@ if [ -f ~/whirlpool/whirlpool.jar ]; then
     echo "Whirlpool is installed!"
     echo "***"
     echo -e "${NC}"
-    sleep 2s
+    _sleep 2
 
     echo "***"
     echo "Returning to Menu..."
     echo "***"
     echo -e "${NC}"
-    sleep 2s
+    _sleep 2
     bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
     exit
 fi
