@@ -4,20 +4,20 @@
 #
 # Package dependencies
 #
-package_dependencies=(
-    java
-    tor
-    python3
-    fail2ban
-    htop
-    vim
-    unzip
-    net-tools
-    which
-    wget
-    docker
-    docker-compose
-    ufw
+declare -A package_dependencies=(
+    [java]=jdk11-openjdk
+    [tor]=tor
+    [python3]=python3
+    [fail2ban-python]=fail2ban
+    [ifconfig]=net-tools
+    [htop]=htop
+    [vim]=vim
+    [unzip]=unzip
+    [which]=which
+    [wget]=wget
+    [docker]=docker
+    [docker-compose]=docker-compose
+    [ufw]=ufw
 )
 
 #

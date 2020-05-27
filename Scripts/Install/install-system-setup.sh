@@ -66,12 +66,12 @@ fi
 # place logo and ronin main menu script ~/.bashrc to run at each login
 
 # Install system dependencies
-for pkg in "${package_dependencies[@]}"; do
+for pkg in "${!package_dependencies[@]}"; do
   if hash "${pkg}" 2>/dev/null; then
     cat <<EOF
 ${RED}
 ***
-${pkg} already installed...
+${package_dependencies[$pkg]} already installed...
 ***
 ${NC}
 EOF
@@ -80,16 +80,12 @@ EOF
     cat <<EOF
 ${RED}
 ***
-Installing ${pkg}...
+Installing ${package_dependencies[$pkg]}...
 ***
 ${NC}
 EOF
     _sleep
-    if [ "${pkg}" = "java" ]; then
-      sudo pacman -S --noconfirm jdk11-openjdk
-    else
-      sudo pacman -S --noconfirm "${pkg}"
-    fi
+    sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
   fi
 done
 
