@@ -54,8 +54,7 @@ case $CHOICE in
             ;;
     	255)
             clear
-	        echo -e "${RED}RoninDojo Exiting...${NC}" >&2
-	        sleep 2
+	        _sleep 5 --msg "RoninDojo Exiting in"
 	        exit 1
         # exits Ronin
 	        ;;
