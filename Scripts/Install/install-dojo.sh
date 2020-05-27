@@ -327,7 +327,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
 
   cd "$DOJO_PATH" && ./dojo.sh start
@@ -361,7 +361,7 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
   cd "$DOJO_PATH" || exit
 

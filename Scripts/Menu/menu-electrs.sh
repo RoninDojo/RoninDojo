@@ -34,7 +34,7 @@ case $CHOICE in
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -44,7 +44,7 @@ case $CHOICE in
             echo "***"
             echo "Showing Electrs Logs..."
             echo "***"
-            sleep 1s
+            _sleep
 
             echo "***"
             echo "Press Ctrl + C to exit at any time."
@@ -70,7 +70,7 @@ case $CHOICE in
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -100,7 +100,7 @@ case $CHOICE in
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -130,7 +130,7 @@ case $CHOICE in
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -160,7 +160,7 @@ case $CHOICE in
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -172,7 +172,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
-            sleep 1s
+            _sleep
             # displaying electrs tor address to connect to electrum
 
             echo -e "${RED}"
@@ -180,7 +180,7 @@ case $CHOICE in
             echo "Check the RoninDojo Wiki for pairing information."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
 
             echo -e "${RED}"
             echo "***"

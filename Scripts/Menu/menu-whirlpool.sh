@@ -76,7 +76,7 @@ case $CHOICE in
             echo "Don't forget to login to GUI to unlock mixing!"
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # start whirlpool, return to menu
             ;;
@@ -99,7 +99,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             docker stop whirlpool
-            sleep 5s
+            _sleep 5
             docker start whirlpool
             _sleep 2
             bash -c "$RONIN_WHIRLPOOL_MENU"
@@ -112,10 +112,10 @@ case $CHOICE in
             echo "Press Ctrl+C to exit"
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
-            sleep 1s
+            _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # check for wst install and/or launch wst, return to menu
             ;;
@@ -135,13 +135,14 @@ case $CHOICE in
                          echo -e "${NC}"
                          cd "$DOJO_PATH" || exit
                          ./dojo.sh whirlpool reset
-                         sleep 1s
+                         _sleep
                          echo -e "${RED}"
                          echo "***"
                          echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
                          echo "***"
                          echo -e "${NC}"
-                         sleep 5s;;
+                         _sleep 5
+                         ;;
 
                 [N/n]* ) echo -e "${RED}"
                          echo "***"
@@ -152,7 +153,7 @@ case $CHOICE in
                          ;;
                 * ) echo "Please answer yes or no.";;
             esac
-            sleep 1s
+            _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # re-initate whirlpool, return to menu
             ;;

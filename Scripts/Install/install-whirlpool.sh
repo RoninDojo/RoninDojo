@@ -47,7 +47,7 @@ else
     echo "***"
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
-    sleep 1s
+    _sleep
     sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
     -e 's/^ControlPort .*$/ControlPort 9051' \
     -e 's/^#CookieAuthentication/CookieAuthentication/' \
@@ -87,7 +87,7 @@ if sudo ufw status | grep 8899 > /dev/null ; then
     echo "Whirlpool firewall rule already setup..."
     echo "***"
     echo -e "${NC}"
-    sleep 1s
+    _sleep
 else
     ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
     # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
@@ -136,7 +136,7 @@ else
     echo "Reloading UFW..."
     echo "***"
     echo -e "${NC}"
-    sleep 1s
+    _sleep
     sudo ufw reload
 fi
 # checks for port 8899 ufw rule and skips if found, if not found it is set up
@@ -182,7 +182,7 @@ if [ -f /etc/systemd/system/whirlpool.service ]; then
     echo "***"
     echo "Whirlpool Service already is installed!"
     echo "***"
-    sleep 1s
+    _sleep
     sudo systemctl stop whirlpool
 else
     echo -e "${RED}"
@@ -190,7 +190,7 @@ else
     echo "Setting Whirlpool Service..."
     echo "***"
     echo -e "${NC}"
-    sleep 1s
+    _sleep
 
 sudo bash -c 'cat << EOF > /etc/systemd/system/whirlpool.service
 [Unit]

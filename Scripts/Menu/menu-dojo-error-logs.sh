@@ -29,7 +29,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -54,7 +54,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -79,7 +79,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -104,7 +104,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -129,7 +129,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -154,7 +154,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -172,7 +172,7 @@ case $CHOICE in
             echo "This command may take some time."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs -d error -n 500
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh

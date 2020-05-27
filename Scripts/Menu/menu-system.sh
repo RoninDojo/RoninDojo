@@ -29,7 +29,7 @@ case $CHOICE in
             echo "Use Ctrl+C at any time to exit Task Manager."
             echo "***"
             echo -e "${NC}"
-            sleep 3s
+            _sleep 3
             htop
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # returns to main menu
@@ -65,7 +65,7 @@ case $CHOICE in
             echo "Checking for system updates..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
             sudo pacman -Syu
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # check for system updates, then return to menu
@@ -76,7 +76,7 @@ case $CHOICE in
             echo "Showing CPU temp..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
             cpu=$(cat /sys/class/thermal/thermal_zone0/temp)
             tempC=$((cpu/1000))
             echo $tempC $'\xc2\xb0'C
@@ -97,7 +97,7 @@ case $CHOICE in
             echo "Showing network stats..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
             ifconfig eth0 | grep 'inet'
             network_rx=$(ifconfig eth0 | grep 'RX packets' | awk '{ print $6$7 }' | sed 's/[()]//g')
             network_tx=$(ifconfig eth0 | grep 'TX packets' | awk '{ print $6$7 }' | sed 's/[()]//g')
@@ -128,7 +128,7 @@ case $CHOICE in
             echo "Restarting in 10s, or press Ctrl + C to cancel now..."
             echo "***"
             echo -e "${NC}"
-            sleep 10s
+            _sleep 10
             sudo shutdown -r now
             # stop dojo and restart machine
             ;;
@@ -146,7 +146,7 @@ case $CHOICE in
             echo "Powering off in 10s, press Ctrl + C to cancel..."
             echo "***"
             echo -e "${NC}"
-            sleep 10s
+            _sleep 10
             sudo shutdown now
             # stop dojo and shut down machine
             ;;

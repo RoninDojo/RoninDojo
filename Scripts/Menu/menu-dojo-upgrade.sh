@@ -133,7 +133,7 @@ else
    echo "Electrs is already installed!"
    echo "***"
    echo -e "${NC}"
-   sleep 3s
+   _sleep 3
    bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
 fi
 # install electrs
@@ -145,7 +145,7 @@ if [ -f /etc/systemd/system/whirlpool.service ] ; then
    echo "Whirlpool will be installed via Dojo docker"
    echo "You will need to re-pair with GUI"
    echo "See wiki for more information"
-   echo sleep 5s
+   _sleep 5
 else
    echo "Whirlpool will be installed via Dojo Docker"
    echo "For pairing information see the wiki"

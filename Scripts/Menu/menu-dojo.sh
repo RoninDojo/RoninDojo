@@ -30,7 +30,7 @@ case $CHOICE in
               echo "Dojo is already started!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash -c "$RONIN_DOJO_MENU"
               exit
             fi
@@ -62,7 +62,7 @@ case $CHOICE in
               echo "Dojo is already stopped!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash -c "$RONIN_DOJO_MENU"
               exit
             fi
@@ -98,7 +98,7 @@ case $CHOICE in
               echo "Please start Dojo first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash -c "$RONIN_DOJO_MENU"
               exit
             fi
@@ -159,14 +159,14 @@ case $CHOICE in
             echo "Deleting docker dangling images and images of previous versions in 15s..."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
 
             echo -e "${RED}"
             echo "***"
             echo "Use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            sleep 14s
+            _sleep 14
             cd "$DOJO_PATH" || exit
             ./dojo.sh clean
             _sleep 2

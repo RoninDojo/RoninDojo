@@ -321,7 +321,7 @@ EOF
     fi
 
     # Sleep here ONLY, don't ask me why ask likewhoa!
-    sleep 2
+    _sleep 2
 
     # systemd.mount unit file creation
     local uuid

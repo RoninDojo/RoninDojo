@@ -18,7 +18,7 @@ else
   echo "No backup drive detected! Please make sure it is plugged in and has power if needed."
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
 
   echo -e "${RED}"
   echo "***"

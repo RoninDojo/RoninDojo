@@ -10,7 +10,7 @@ if [ -d ~/dojo ]; then
   echo "Dojo directory found, please uninstall Dojo first!"
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
   bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
 else
   echo -e "${RED}"
@@ -18,7 +18,7 @@ else
   echo "Setting up system and installing Dependencies in 15s..."
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
 fi
 # checks for ~/dojo directory, if found kicks back to menu
 
@@ -103,7 +103,7 @@ if sudo ufw status | grep 22 > /dev/null ; then
   echo "SSH firewall rule already setup..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  _sleep
 else
   # ufw setup starts
   echo -e "${RED}"
@@ -178,28 +178,28 @@ else
   echo -e "${NC}"
   _sleep 2
   sudo ufw status
-  sleep 4s
+  _sleep 4
 
   echo -e "${RED}"
   echo "***"
   echo "Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access."
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
 
   echo -e "${RED}"
   echo "***"
   echo "Leaving this setting default is NOT RECOMMENDED for users who are conncting to something like University, Public Internet, Etc."
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
 
   echo -e "${RED}"
   echo "***"
   echo "Firewall rules can be adjusted using the RoninDojo Firewall Menu."
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
   # ufw setup ends
 fi
 
@@ -265,7 +265,7 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo -e "${NC}"
   _sleep 2
   sudo mount /dev/sda1 /mnt/usb
-  sleep 1s
+  _sleep
   # mount main storage drive to /mnt/usb directory
 
   echo -e "${RED}"
@@ -284,7 +284,7 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo "***"
   echo -e "${NC}"
   df -h /dev/sda1
-  sleep 4s
+  _sleep 4
   # checks disk info
 
   create_swap --file /mnt/usb/swapfile --size 2G
@@ -297,7 +297,7 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo "Dojo is ready to be installed!"
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   exit
 else
   echo -e "${RED}"
@@ -305,7 +305,7 @@ else
   echo "No Blockchain data found for salvage check 1..."
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
@@ -344,7 +344,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo -e "${NC}"
   _sleep 2
   sudo mount /dev/sda1 /mnt/usb
-  sleep 1s
+  _sleep
   # mount main storage drive to /mnt/usb directory
 
   echo -e "${RED}"
@@ -363,7 +363,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "***"
   echo -e "${NC}"
   df -h /dev/sda1
-  sleep 4s
+  _sleep 4
   # checks disk info
 
   create_swap --file /mnt/usb/swapfile --size 2G
@@ -376,7 +376,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "Dojo is ready to be installed!"
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   exit
 else
   echo -e "${RED}"
@@ -384,7 +384,7 @@ else
   echo "No Blockchain data found for salvage check 2..."
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   sudo umount /mnt/salvage
   sudo rmdir /mnt/salvage
 fi

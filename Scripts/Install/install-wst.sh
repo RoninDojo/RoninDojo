@@ -21,14 +21,14 @@ if find_pkg python-pip; then
   echo "python-pip already installed..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  _sleep
 else
   echo -e "${RED}"
   echo "***"
   echo "Installing python-pip..."
   echo "***"
   echo -e "${NC}"
-  sleep 1s
+  _sleep
   sudo pacman -S --noconfirm python-pip
 fi
 # check for / python-pip

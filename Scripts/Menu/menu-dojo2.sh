@@ -24,28 +24,28 @@ case $CHOICE in
             echo "Uninstalling Dojo in 30s..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
 
             echo -e "${RED}"
             echo "***"
             echo "You will be asked if you wish to salvage any data..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
 
             echo -e "${RED}"
             echo "***"
             echo "Users with a fully sync'd Blockchain should answer yes to salvage!"
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
 
             echo -e "${RED}"
             echo "***"
             echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            sleep 15s
+            _sleep 15
 
             echo -e "${RED}"
             echo "Do you want to salvage your Blockchain data?"

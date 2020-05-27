@@ -31,7 +31,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo ufw enable
-            sleep 1s
+            _sleep
             bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # enables firewall
             ;;
@@ -43,7 +43,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo ufw disable
-            sleep 1s
+            _sleep
             bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # disables firewall
             ;;
