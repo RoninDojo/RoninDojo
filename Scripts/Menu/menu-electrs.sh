@@ -1,6 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "View Logs"
          2 "Start Electrs"
@@ -12,27 +14,27 @@ OPTIONS=(1 "View Logs"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
 clear
 case $CHOICE in
 	1)
-            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -42,32 +44,33 @@ case $CHOICE in
             echo "***"
             echo "Showing Electrs Logs..."
             echo "***"
-            sleep 1s
+            _sleep
 
             echo "***"
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            cd $DOJO_PATH && ./dojo.sh logs indexer
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
 	2)
-            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -78,26 +81,26 @@ case $CHOICE in
             echo "Starting Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             docker start indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
         3)
-            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -108,26 +111,26 @@ case $CHOICE in
             echo "Stopping Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             docker stop indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # stop electrs, return to menu
             ;;
         4)
-            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -138,26 +141,26 @@ case $CHOICE in
             echo "Restarting Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
             docker restart indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # restart electrs, return to menu
             ;;
         5)
-            if [ ! -f ${DOJO_PATH}/indexer/electrs.toml ]; then
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
@@ -169,7 +172,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
-            sleep 1s
+            _sleep
             # displaying electrs tor address to connect to electrum
 
             echo -e "${RED}"
@@ -177,7 +180,7 @@ case $CHOICE in
             echo "Check the RoninDojo Wiki for pairing information."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
 
             echo -e "${RED}"
             echo "***"

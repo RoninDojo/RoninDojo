@@ -1,7 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
-. ~/RoninDojo/Scripts/functions.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 if [ -b /dev/sdb ]; then
   echo -e "${RED}"
@@ -9,7 +10,7 @@ if [ -b /dev/sdb ]; then
   echo "Your new backup drive has been detected..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
   # checks for /dev/sdb
 else
   echo -e "${RED}"
@@ -17,7 +18,7 @@ else
   echo "No backup drive detected! Please make sure it is plugged in and has power if needed."
   echo "***"
   echo -e "${NC}"
-  sleep 5s
+  _sleep 5
 
   echo -e "${RED}"
   echo "***"
@@ -34,20 +35,20 @@ echo "***"
 echo "Preparing to Format and Mount /dev/sdb1 to /mnt/usb1..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
 echo "WARNING: Any pre-existing data on this backup drive will be lost!!!"
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Are you sure?"
 echo -e "${NC}"
 while true; do
-    read -p "Y/N?: " yn
+    read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-system2.sh;exit;;
@@ -60,7 +61,7 @@ echo "***"
 echo "Formatting the Backup Data Drive..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 if [ -b /dev/sdb ]; then
   echo "Found sdb, using wipefs."
@@ -83,7 +84,7 @@ echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
 lsblk -o NAME,SIZE,LABEL /dev/sdb1
-sleep 2s
+_sleep 2
 # double-check that /dev/sdb1 exists, and that its storage capacity is what you expected
 
 echo -e "${RED}"
@@ -92,7 +93,7 @@ echo "Check output for /dev/sdb1 and make sure everything looks ok."
 echo "***"
 echo -e "${NC}"
 df -h /dev/sdb1
-sleep 2s
+_sleep 2
 # checks disk info
 
 create_swap --file /mnt/usb1/swapfile --size 2G
