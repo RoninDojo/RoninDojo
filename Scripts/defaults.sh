@@ -18,6 +18,7 @@ declare -A package_dependencies=(
     [docker]=docker
     [docker-compose]=docker-compose
     [ufw]=ufw
+    [rsync]=rsync
 )
 
 #
