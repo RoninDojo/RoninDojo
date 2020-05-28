@@ -1,58 +1,61 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
-# start of warning
 echo -e "${RED}"
 echo "***"
 echo "Running Dojo install in 15s..."
 echo "***"
 echo -e "${NC}"
-sleep 5s
+_sleep 5
 
 echo -e "${RED}"
 echo "***"
-echo "If you have already installed Dojo on your system, use Ctrl+C to exit now!"
+echo "Use Ctrl+C to exit now if needed!"
 echo "***"
 echo -e "${NC}"
-sleep 5s
+_sleep 10
 
-echo -e "${RED}"
-echo "***"
-echo "If you are a new user sit back, relax, and enjoy."
-echo "***"
-echo -e "${NC}"
-sleep 5s
-# end of warning
-
-# start dojo setup
 echo -e "${RED}"
 echo "***"
 echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
-cd ~
-git clone $SAMOURAI_REPO dojo # CHANGE TO MASTER AFTER MERGE
+cd "$HOME" || exit
+git clone "$SAMOURAI_REPO" dojo # CHANGE TO MASTER AFTER MERGE
+
+echo -e "${RED}"
+echo "***"
+echo "Values necessary for usernames, passwords, etc. will randomly generated now..."
+echo "***"
+echo -e "${NC}"
+_sleep 5
+
+echo -e "${RED}"
+echo "***"
+echo "These values are found in RoninDojo menus or in the ${DOJO_PATH}/conf directory."
+echo "***"
+echo -e "${NC}"
+_sleep 5
+
+echo -e "${RED}"
+echo "***"
+echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
+echo "***".
+echo -e "${NC}"
+_sleep 8
+
 
 echo -e "${RED}"
 echo "***"
 echo "Setting the RPC User and Password..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory"
-echo "located at ${DOJO_PATH}/conf/docker-bitcoind.conf.tpl"
-echo "***"
-echo -e "${NC}"
-sleep 3s
-
-# Create new docker bitcoind conf file
-
-cat << EOF > ${DOJO_PATH}/conf/docker-bitcoind.conf.tpl
+cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
 # CONFIGURATION OF BITCOIND CONTAINER
 #########################################
@@ -141,39 +144,16 @@ echo "***"
 echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
-
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Randomly generated 64 character value is used, and can be found in Dojo conf directory."
-echo "***"
-sleep 2s
-echo -e "${NC}"
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
 echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
-echo -e "${RED}"
-echo "****"
-echo "The Node Admin Key is password used to enter the Dojo Maintenance Tool."
-echo "***"
-sleep 3s
-echo -e "${NC}"
-
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "See randomly generated 32 character password in Dojo Menu by using Tor Hidden Service Address option."
-echo "***"
-echo -e "${NC}"
-sleep 5s
-
-cat << EOF > ${DOJO_PATH}/conf/docker-node.conf.tpl
+cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
 #########################################
 # CONFIGURATION OF NODE JS CONTAINER
 #########################################
@@ -205,7 +185,7 @@ NODE_FEE_TYPE=ECONOMICAL
 EOF
 # Create new docker node conf file
 
-cat << EOF > ${DOJO_PATH}/conf/docker-mysql.conf.tpl
+cat << EOF > "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
 #########################################
 # CONFIGURATION OF MYSQL CONTAINER
 #########################################
@@ -227,24 +207,9 @@ echo "***"
 echo "Installing your Dojo-backed Bitcoin Explorer..."
 echo "***"
 echo -e "${NC}"
-sleep 1s
+_sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "This is a fully functioning Bitcoin Blockchain Explorer in a Web Browser."
-echo "***"
-echo -e "${NC}"
-sleep 3s
-
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "See randomly generated 16 character password in Dojo Menu by using Tor Hidden Service Address option."
-echo "***"
-echo -e "${NC}"
-sleep 5s
-
-cat << EOF > ${DOJO_PATH}/conf/docker-explorer.conf.tpl
+cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 #########################################
 # CONFIGURATION OF EXPLORER CONTAINER
 #########################################
@@ -260,18 +225,18 @@ EXPLORER_KEY=$EXPLORER_KEY
 EOF
 # create new block explorer conf file
 
-read -p "Do you want to install an indexer? [y/n]" yn
+read -rp "Do you want to install an indexer? [y/n]" yn
 case $yn in
     [Y/y]* )
-      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' ${DOJO_PATH}/conf/docker-indexer.conf.tpl
-      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' ${DOJO_PATH}/conf/docker-node.conf.tpl
+      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
+      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
       ;;
     [N/n]* ) echo "Indexer will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac
 # install indexer
 
-read -p "Do you want to install Electrs? [y/n]" yn
+read -rp "Do you want to install Electrs? [y/n]" yn
 case $yn in
     [Y/y]* ) bash ~/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
     [N/n]* ) echo "Electrs will not be installed!";;
@@ -281,19 +246,28 @@ esac
 
 echo -e "${RED}"
 echo "***"
-echo "See documentation at https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "Please see Wiki for FAQ, help, and so much more..."
 echo "***"
 echo -e "${NC}"
-sleep 5s
-# end dojo setup
+_sleep 3
+
+echo -e "${RED}"
+echo "***"
+echo "https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "***"
+echo -e "${NC}"
+_sleep 5
 
 echo -e "${RED}"
 echo "***"
 echo "Installing Dojo..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
-cd $DOJO_PATH && ./dojo.sh install
+_sleep 2
+
+cd "$DOJO_PATH" || exit
+
+./dojo.sh install
 # once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
 
 if sudo test -d /mnt/usb/uninstall-salvage; then
@@ -302,7 +276,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
 
   echo -e "${RED}"
   echo "***"
@@ -311,7 +285,9 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo -e "${NC}"
   read -n 1 -r -s
   # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
-  cd $DOJO_PATH && ./dojo.sh stop
+  cd "$DOJO_PATH" || exit
+
+  ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
   sudo mv -v /mnt/usb/uninstall-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
 
@@ -320,10 +296,10 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
 
-  cd $DOJO_PATH && ./dojo.sh start
+  cd "$DOJO_PATH" && ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
@@ -335,7 +311,7 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
-  sleep 2s
+  _sleep 2
 
   echo -e "${RED}"
   echo "***"
@@ -343,7 +319,9 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  cd $DOJO_PATH && ./dojo.sh stop
+  cd "$DOJO_PATH" || exit
+
+  ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
   sudo mv -v /mnt/usb/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
 
@@ -352,9 +330,11 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
-  sleep 3s
+  _sleep 3
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
-  cd $DOJO_PATH && ./dojo.sh start
+  cd "$DOJO_PATH" || exit
+
+  ./dojo.sh start
 else
   echo "No Blockchain data found for salvage check 2..."
 fi

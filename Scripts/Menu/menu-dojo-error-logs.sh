@@ -1,6 +1,8 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Bitcoind Logs"
          2 "Db Logs"
@@ -13,7 +15,7 @@ OPTIONS=(1 "Bitcoind Logs"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -27,7 +29,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -51,7 +53,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -75,7 +77,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -99,7 +101,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -123,7 +125,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -147,7 +149,7 @@ case $CHOICE in
               echo "Dojo needs to be started first!"
               echo "***"
               echo -e "${NC}"
-              sleep 5s
+              _sleep 5
               bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
@@ -158,7 +160,7 @@ case $CHOICE in
             echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
+            _sleep 2
 
             echo -e "${RED}"
             echo "***"
@@ -171,7 +173,7 @@ case $CHOICE in
             # shows whirlpool docker container error logs
             ;;
         8)
-            bash -c $RONIN_DOJO_MENU
+            bash -c "$RONIN_DOJO_MENU"
             # goes back to ronin dojo menu
             ;;
 esac

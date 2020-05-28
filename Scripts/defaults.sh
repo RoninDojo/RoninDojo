@@ -1,3 +1,25 @@
+#!/bin/bash
+# shellcheck disable=SC2034
+
+#
+# Package dependencies
+#
+declare -A package_dependencies=(
+    [java]=jdk11-openjdk
+    [tor]=tor
+    [python3]=python3
+    [fail2ban-python]=fail2ban
+    [ifconfig]=net-tools
+    [htop]=htop
+    [vim]=vim
+    [unzip]=unzip
+    [which]=which
+    [wget]=wget
+    [docker]=docker
+    [docker-compose]=docker-compose
+    [ufw]=ufw
+)
+
 #
 # Terminal Colors
 #
@@ -6,7 +28,7 @@ YELLOW=$(tput setaf 3)
 NC=$(tput sgr0)
 # No Color
 
-DOJO_PATH=~/dojo/docker/my-dojo
+DOJO_PATH="$HOME/dojo/docker/my-dojo"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 USER=$(getent group 1000 | cut -d ':' -f1)
 
@@ -22,9 +44,9 @@ MENU="Choose one of the following options:"
 #
 # Dojo Existing Configuration Values
 #
-if [ -f ${DOJO_PATH}/conf/docker-node.conf ]; then
-    NODE_API_KEY_TOR=$(grep NODE_API_KEY ${DOJO_PATH}/conf/docker-node.conf | cut -d '=' -f2)
-    NODE_ADMIN_KEY_TOR=$(grep NODE_ADMIN_KEY ${DOJO_PATH}/conf/docker-node.conf | cut -d '=' -f2)
+if [ -f "${DOJO_PATH}"/conf/docker-node.conf ]; then
+    NODE_API_KEY_TOR=$(grep NODE_API_KEY "${DOJO_PATH}"/conf/docker-node.conf | cut -d '=' -f2)
+    NODE_ADMIN_KEY_TOR=$(grep NODE_ADMIN_KEY "${DOJO_PATH}"/conf/docker-node.conf | cut -d '=' -f2)
 fi
 
 #
@@ -35,9 +57,9 @@ fi
 RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 RPC_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 
-if [ -f ${DOJO_PATH}/conf/docker-bitcoind.conf ]; then
-    RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD ${DOJO_PATH}/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_USER_CONF=$(grep BITCOIND_RPC_USER ${DOJO_PATH}/conf/docker-bitcoind.conf | cut -d '=' -f2)
+if [ -f "${DOJO_PATH}"/conf/docker-bitcoind.conf ]; then
+    RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    RPC_USER_CONF=$(grep BITCOIND_RPC_USER "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
 fi
 
 # node
@@ -52,8 +74,8 @@ MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 
 # explorer
 EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
-if [ -f ${DOJO_PATH}/conf/docker-explorer.conf ]; then
-    EXPLORER_KEY_TOR=$(grep EXPLORER_KEY ${DOJO_PATH}/conf/docker-explorer.conf | cut -d '=' -f2)
+if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ]; then
+    EXPLORER_KEY_TOR=$(grep EXPLORER_KEY "${DOJO_PATH}"/conf/docker-explorer.conf | cut -d '=' -f2)
 fi
 
 # whirlpool
@@ -86,6 +108,6 @@ if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs; then
 fi
 
 # Ronin menu paths
-RONIN_DOJO_MENU='~/RoninDojo/Scripts/Menu/menu-dojo.sh'
-RONIN_DOJO_MENU2='~/RoninDojo/Scripts/Menu/menu-dojo2.sh'
-RONIN_WHIRLPOOL_MENU='~/RoninDojo/Scripts/Menu/menu-whirlpool.sh'
+RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
+RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
+RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"

@@ -1,11 +1,12 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-. ~/RoninDojo/Scripts/defaults.sh
-. ~/RoninDojo/Scripts/functions.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Lock Root User"
          2 "Unlock Root User"
-         3 "Upgrade Ronin Dojo"
+         3 "Upgrade RoninDojo"
          4 "Mount Existing Backup Drive"
          5 "Format & Mount New Backup Drive"
          6 "Go Back")
@@ -13,7 +14,7 @@ OPTIONS=(1 "Lock Root User"
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
