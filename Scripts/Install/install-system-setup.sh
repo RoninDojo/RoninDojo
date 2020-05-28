@@ -24,10 +24,10 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "If you have already setup your system, use Ctrl+C to exit now!"
+echo "Use Ctrl+C to exit now if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 5
+_sleep 10s
 
 ~/RoninDojo/Scripts/.logo
 
@@ -401,7 +401,7 @@ if [ -b /dev/sda1 ]
 then
   echo -e "${RED}"
   echo "***"
-  echo "Wiping /dev/sda drive clean"
+  echo "Wiping /dev/sda drive clean..."
   echo "***"
   echo -e "${NC}"
   sudo wipefs --all --force /dev/sda1 && sudo sfdisk --delete /dev/sda &>/dev/null
@@ -428,11 +428,11 @@ _sleep 2
 
 echo -e "${RED}"
 echo "***"
-echo "Check output for /dev/sda1 and make sure everything looks ok."
+echo "Check output for /dev/sda1 and make sure everything looks ok..."
 echo "***"
 echo -e "${NC}"
 df -h /dev/sda1
-_sleep 2
+_sleep 5
 # checks disk info
 
 create_swap --file /mnt/usb/swapfile --size 2G

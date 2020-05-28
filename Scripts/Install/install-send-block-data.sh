@@ -6,7 +6,7 @@
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to copy data from your Backup Data Drive now..."
+echo "Preparing to copy data to your Backup Data Drive now..."
 echo "***"
 echo -e "${NC}"
 _sleep 3

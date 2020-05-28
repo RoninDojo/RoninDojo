@@ -115,41 +115,61 @@ case $CHOICE in
             # press any key to return to menu
             ;;
         6)
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
-            cd "${DOJO_PATH}" || exit
-            ./dojo.sh stop
+            if [ -d ~/dojo ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Shutting down Dojo if running..."
+              echo "***"
+              echo -e "${NC}"
+              cd "${DOJO_PATH}"
+              ./dojo.sh stop
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Restarting in 10s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 10
-            sudo shutdown -r now
-            # stop dojo and restart machine
-            ;;
+              echo -e "${RED}"
+              echo "***"
+              echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              sudo shutdown -r now
+              # stop dojo and restart machine
+	    else
+              echo -e "${RED}"
+              echo "***"
+              echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              sudo shutdown -r now
+              # stop dojo and restart machine
+            fi
         7)
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
-            cd "${DOJO_PATH}" || exit
-            ./dojo.sh stop
+            if [ -d ~/dojo ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Shutting down Dojo if running..."
+              echo "***"
+              echo -e "${NC}"
+              cd "${DOJO_PATH}"
+              ./dojo.sh stop
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 10s, press Ctrl + C to cancel..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 10
-            sudo shutdown now
-            # stop dojo and shut down machine
-            ;;
+              echo -e "${RED}"
+              echo "***"
+              echo "Powering off in 5s, or press Ctrl + C to cancel now..."
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              sudo shutdown now
+              # stop dojo and power off machine
+	    else
+              echo -e "${RED}"
+              echo "***"
+              echo "Powering off in 5s, or press Ctrl + C to cancel now..."
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              sudo shutdown now
+              # stop dojo and power off machine
+            fi
         8)
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # goes to next page

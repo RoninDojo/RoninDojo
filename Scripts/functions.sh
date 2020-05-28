@@ -416,7 +416,7 @@ EOF
         sudo swapon "${file}"
     else
         cat <<EOF
-${NC}
+${RED}
 ***
 Swapfile already created...
 ***"
@@ -427,7 +427,7 @@ EOF
     # Include fstab value
     if ! grep "${file}" /etc/fstab; then
         cat <<EOF
-${NC}
+${RED}
 ***
 Creating swapfile entry in /etc/fstab
 ***

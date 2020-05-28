@@ -4,7 +4,6 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-# start of warning
 echo -e "${RED}"
 echo "***"
 echo "Running Dojo install in 15s..."
@@ -14,20 +13,11 @@ _sleep 5
 
 echo -e "${RED}"
 echo "***"
-echo "If you have already installed Dojo on your system, use Ctrl+C to exit now!"
+echo "Use Ctrl+C to exit now if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 5
+_sleep 10
 
-echo -e "${RED}"
-echo "***"
-echo "If you are a new user sit back, relax, and enjoy."
-echo "***"
-echo -e "${NC}"
-_sleep 5
-# end of warning
-
-# start dojo setup
 echo -e "${RED}"
 echo "***"
 echo "Downloading and extracting latest RoninDojo release..."
@@ -38,21 +28,32 @@ git clone "$SAMOURAI_REPO" dojo # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
+echo "Values necessary for usernames, passwords, etc. will randomly generated now..."
+echo "***"
+echo -e "${NC}"
+_sleep 5
+
+echo -e "${RED}"
+echo "***"
+echo "These values are found in RoninDojo menus or in the ${DOJO_PATH}/conf directory."
+echo "***"
+echo -e "${NC}"
+_sleep 5
+
+echo -e "${RED}"
+echo "***"
+echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
+echo "***".
+echo -e "${NC}"
+_sleep 8
+
+
+echo -e "${RED}"
+echo "***"
 echo "Setting the RPC User and Password..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "Randomly generated 32 character value is used, and can be found in Dojo conf directory"
-echo "located at ${DOJO_PATH}/conf/docker-bitcoind.conf.tpl"
-echo "***"
-echo -e "${NC}"
-_sleep 3
-
-# Create new docker bitcoind conf file
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
@@ -147,33 +148,10 @@ _sleep 2
 
 echo -e "${RED}"
 echo "***"
-echo "NOTICE:"
-echo "Randomly generated 64 character value is used, and can be found in Dojo conf directory."
-echo "***"
-_sleep 2
-echo -e "${NC}"
-
-echo -e "${RED}"
-echo "***"
 echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-
-echo -e "${RED}"
-echo "****"
-echo "The Node Admin Key is password used to enter the Dojo Maintenance Tool."
-echo "***"
-_sleep 3
-echo -e "${NC}"
-
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "See randomly generated 32 character password in Dojo Menu by using Tor Hidden Service Address option."
-echo "***"
-echo -e "${NC}"
-_sleep 5
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
 #########################################
@@ -229,22 +207,7 @@ echo "***"
 echo "Installing your Dojo-backed Bitcoin Explorer..."
 echo "***"
 echo -e "${NC}"
-_sleep
-
-echo -e "${RED}"
-echo "***"
-echo "This is a fully functioning Bitcoin Blockchain Explorer in a Web Browser."
-echo "***"
-echo -e "${NC}"
-_sleep 3
-
-echo -e "${RED}"
-echo "***"
-echo "NOTICE:"
-echo "See randomly generated 16 character password in Dojo Menu by using Tor Hidden Service Address option."
-echo "***"
-echo -e "${NC}"
-_sleep 5
+_sleep 2
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 #########################################
@@ -283,11 +246,17 @@ esac
 
 echo -e "${RED}"
 echo "***"
-echo "See documentation at https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "Please see Wiki for FAQ, help, and so much more..."
+echo "***"
+echo -e "${NC}"
+_sleep 3
+
+echo -e "${RED}"
+echo "***"
+echo "https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
 echo "***"
 echo -e "${NC}"
 _sleep 5
-# end dojo setup
 
 echo -e "${RED}"
 echo "***"
