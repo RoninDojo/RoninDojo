@@ -28,13 +28,11 @@ case $CHOICE in
             echo "Showing API pairing key for Whirlpool GUI..."
             echo "***"
             echo -e "${NC}"
-            _sleep 2
 
             echo -e "${RED}"
             echo "***"
             echo -e "${NC}"
-            echo "Whirlpool API key = $WHIRLPOOL_API_KEY"
-            echo ""
+            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
             echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
             echo -e "${RED}"
             echo "***"

@@ -2,6 +2,7 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Start Dojo"
          2 "Stop Dojo"
