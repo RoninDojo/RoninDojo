@@ -100,7 +100,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-	    bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         4)
@@ -208,11 +208,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-	    bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         8)
-            bash -c "$RONIN_DOJO_MENU"
-            # goes back to ronin dojo menu
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            # goes back to logs menu
             ;;
 esac
