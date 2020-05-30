@@ -143,7 +143,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs nodejs
+            ./dojo.sh logs node
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for nodejs
             ;;
