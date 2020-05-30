@@ -64,7 +64,7 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs db -n 500 | grep error            
+            ./dojo.sh logs db -n 500 | egrep "ERROR|error"            
             # shows db error logs
 	    
 	    echo -e "${RED}"
@@ -91,7 +91,7 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs indexer -n 500
+            ./dojo.sh logs indexer -n 500 | egrep "ERROR|error"
             # shows tor error logs
 
             echo -e "${RED}"
@@ -118,7 +118,7 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs nginx -n 500 | grep HttpServer
+            ./dojo.sh logs nginx -n 500 | egrep "ERROR|error"
             # shows nginx error logs
 
             echo -e "${RED}"
@@ -145,7 +145,7 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs node -n 500 | grep Tracker
+            ./dojo.sh logs node -n 500 | egrep "ERROR|error"
             # shows nodejs error logs
 
             echo -e "${RED}"
@@ -172,7 +172,7 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs tor -n 500
+            ./dojo.sh logs tor -n 500 | egrep "ERROR|error"
             # shows tor error logs
 
             echo -e "${RED}"
@@ -199,7 +199,7 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs explorer -n 500
+            ./dojo.sh logs explorer -n 500 | egrep "ERROR|error"
             # shows explorer error logs
 
             echo -e "${RED}"
