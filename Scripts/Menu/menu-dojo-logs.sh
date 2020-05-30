@@ -11,7 +11,8 @@ OPTIONS=(1 "Bitcoind Logs"
          5 "Nodejs Logs"
          6 "Tor Logs"
          7 "Explorer Logs"
-         8 "Go Back")
+         8 "Error Logs"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -200,6 +201,10 @@ case $CHOICE in
             # shows logs for explorer
             ;;
         8)
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            # goes to error logs menu
+            ;;
+        9)
             bash -c "$RONIN_DOJO_MENU"
             # goes back to ronin dojo menu
             ;;
