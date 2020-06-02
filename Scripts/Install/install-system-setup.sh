@@ -56,9 +56,10 @@ fi
 
 if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
   cat << EOF >> ~/.bashrc
-~/RoninDojo/Scripts/.logo
-
-~/RoninDojo/ronin
+if [ -d $HOME/RoninDojo ]; then
+  $HOME/RoninDojo/Scripts/.logo
+  ronin
+fi
 EOF
 fi
 # place main ronin menu script symbolic link at /usr/local/bin folder
