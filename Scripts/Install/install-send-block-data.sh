@@ -4,6 +4,18 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+if ! sudo test -d /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data; then
+    cat <<EOF
+${RED}
+***
+IBD not found! Did you forget to install dojo?
+***
+${NC}
+EOF
+    _sleep 5 --msg "Returning to menu in"
+    bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Preparing to copy data from your Backup Data Drive now..."
