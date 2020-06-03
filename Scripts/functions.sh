@@ -303,6 +303,8 @@ Creating ${mountpoint} directory...
 ${NC}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
+    elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
+        sudo umount -l "${mountpoint}"
     fi
 
     cat <<EOF
@@ -321,7 +323,7 @@ EOF
     fi
 
     # Sleep here ONLY, don't ask me why ask likewhoa!
-    _sleep 2
+    _sleep 5
 
     # systemd.mount unit file creation
     local uuid
@@ -329,7 +331,7 @@ EOF
     local tmp=${mountpoint:1}               # Remove leading '/'
     local systemd_mountpoint=${tmp////-}    # Replace / with -
 
-    if [ ! -f /etc/systemd/system/"${systemd_mountpoint}".mount ]; then
+    if ! grep "${uuid}" /etc/systemd/system/"${systemd_mountpoint}".mount 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
