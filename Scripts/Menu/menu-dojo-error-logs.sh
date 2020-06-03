@@ -10,8 +10,7 @@ OPTIONS=(1 "Bitcoind Logs"
          4 "Nginx Logs"
          5 "Nodejs Logs"
          6 "Tor Logs"
-         7 "Explorer Logs"
-         8 "Go Back")
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -185,33 +184,6 @@ case $CHOICE in
             # press any key to return to menu
             ;;
         7)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
-            fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs explorer -n 500 | egrep "ERROR|error"
-            # shows explorer error logs
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
-            read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-            # press any key to return to menu
-            ;;
-        8)
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # goes back to logs menu
             ;;
