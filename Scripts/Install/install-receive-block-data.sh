@@ -72,7 +72,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo rsync -va --progress --delete-after /mnt/usb1/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+sudo rsync -vahW --no-compress --progress /mnt/usb1/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"
