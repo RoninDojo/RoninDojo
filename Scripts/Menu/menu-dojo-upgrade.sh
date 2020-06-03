@@ -5,7 +5,7 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 # Temporaly directory location
-WORK_DIR=$(mktemp)
+WORK_DIR=$(mktemp -d)
 
 # Check if tmp dir was created
 if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
@@ -47,7 +47,7 @@ git clone "$SAMOURAI_REPO" # temporary
 # destination file or when the destination file is missing
 # and keep all permissions
 
-cp -ua samourai-dojo/* "${DOJO_PATH}"/
+cp -ua samourai-dojo/* "$HOME"/dojo/
 
 # Remove $WORK_DIR
 rm -rf "${WORK_DIR}"
