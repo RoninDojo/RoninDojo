@@ -28,7 +28,7 @@ git clone "$SAMOURAI_REPO" dojo # CHANGE TO MASTER AFTER MERGE
 
 echo -e "${RED}"
 echo "***"
-echo "Values necessary for usernames, passwords, etc. will randomly generated now..."
+echo "Values necessary for usernames, passwords, etc. will randomly be generated now..."
 echo "***"
 echo -e "${NC}"
 _sleep 5
