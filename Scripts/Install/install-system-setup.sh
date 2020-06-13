@@ -386,8 +386,11 @@ else
   echo "***"
   echo -e "${NC}"
   _sleep 3
-  sudo umount /mnt/salvage
-  sudo rmdir /mnt/salvage
+
+  if findmnt "/mnt/salvage" 1>/dev/null; then
+    sudo umount /mnt/salvage
+    sudo rmdir /mnt/salvage
+  fi
 fi
 # checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to format drive
 
