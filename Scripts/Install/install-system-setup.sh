@@ -190,7 +190,7 @@ else
 
   echo -e "${RED}"
   echo "***"
-  echo "Leaving this setting default is NOT RECOMMENDED for users who are conncting to something like University, Public Internet, Etc."
+  echo "Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc."
   echo "***"
   echo -e "${NC}"
   _sleep 5
