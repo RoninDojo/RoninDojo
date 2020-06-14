@@ -369,11 +369,11 @@ EOF
 
     if $systemd_mount; then
         sudo systemctl daemon-reload
-    else
-        sudo systemctl start "${systemd_mountpoint}".mount || return 1
-        sudo systemctl enable "${systemd_mountpoint}".mount || return 1
-        # mount drive to ${mountpoint} using systemd.mount
     fi
+
+    sudo systemctl start "${systemd_mountpoint}".mount || return 1
+    sudo systemctl enable "${systemd_mountpoint}".mount || return 1
+    # mount drive to ${mountpoint} using systemd.mount
 
     return 0
 }
