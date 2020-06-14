@@ -4,6 +4,18 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+if ! sudo test -d /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data; then
+    cat <<EOF
+${RED}
+***
+IBD not found! Did you forget to install dojo?
+***
+${NC}
+EOF
+    _sleep 5 --msg "Returning to menu in"
+    bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Preparing to copy data to your Backup Data Drive now..."
@@ -51,8 +63,15 @@ echo "Copying..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo mkdir /mnt/usb1/system-setup-salvage
-sudo cp -av /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+sudo test -d /mnt/usb1/system-setup-salvage || sudo mkdir /mnt/usb1/system-setup-salvage
+
+if sudo test -d /mnt/usb1/system-setup-salvage/blocks; then
+    # Use rsync when existing IBD is found
+    sudo rsync -vahW --no-compress --progress --delete-after /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+else
+    # Use cp for initial fresh IBD copy
+    sudo cp -av /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
 echo -e "${RED}"
