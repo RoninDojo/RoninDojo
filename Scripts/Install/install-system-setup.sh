@@ -190,7 +190,7 @@ else
 
   echo -e "${RED}"
   echo "***"
-  echo "Leaving this setting default is NOT RECOMMENDED for users who are conncting to something like University, Public Internet, Etc."
+  echo "Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc."
   echo "***"
   echo -e "${NC}"
   _sleep 5
@@ -386,8 +386,11 @@ else
   echo "***"
   echo -e "${NC}"
   _sleep 3
-  sudo umount /mnt/salvage
-  sudo rmdir /mnt/salvage
+
+  if findmnt "/mnt/salvage" 1>/dev/null; then
+    sudo umount /mnt/salvage
+    sudo rmdir /mnt/salvage
+  fi
 fi
 # checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to format drive
 
