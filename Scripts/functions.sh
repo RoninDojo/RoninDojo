@@ -369,10 +369,13 @@ EOF
 }
 
 #
-# Makes sure we don't already have swap enabled
+# Makes sure we don't already have swapfile enabled
 #
 check_swap() {
-    if [ "$(swapon -s|wc -l)" = 0 ]; then # no swap currently
+    local swapfile
+    swapfile="$1"
+
+    if ! grep "$swapfile" /proc/swaps 1>/dev/null; then # no swap currently
         return 0
     fi
 
@@ -404,7 +407,7 @@ create_swap() {
         esac
     done
 
-    if check_swap; then
+    if check_swap "${file}"; then
         cat <<EOF
 ${RED}
 ***
