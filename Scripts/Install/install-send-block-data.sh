@@ -67,6 +67,18 @@ sudo test -d /mnt/usb1/system-setup-salvage || sudo mkdir /mnt/usb1/system-setup
 
 if sudo test -d /mnt/usb1/system-setup-salvage/blocks; then
     # Use rsync when existing IBD is found
+    if ! hash rsync 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+rsync package missing...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Installing in"
+        sudo pacman -S --no-confirm rsync
+    fi
+
     sudo rsync -vahW --no-compress --progress --delete-after /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
 else
     # Use cp for initial fresh IBD copy
