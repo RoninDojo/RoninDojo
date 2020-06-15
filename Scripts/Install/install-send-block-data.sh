@@ -76,7 +76,7 @@ rsync package missing...
 ${NC}
 EOF
         _sleep 5 --msg "Installing in"
-        sudo pacman -S --noconfirm rsync
+        sudo pacman -S --noconfirm rsync &>/dev/null
     fi
 
     sudo rsync -vahW --no-compress --progress --delete-after /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
