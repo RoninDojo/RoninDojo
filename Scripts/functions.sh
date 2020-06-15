@@ -372,8 +372,8 @@ EOF
 # Makes sure we don't already have swapfile enabled
 #
 check_swap() {
-    swapfile="$1"
     local swapfile
+    swapfile="$1"
 
     if ! grep "$swapfile" /proc/swaps 1>/dev/null; then # no swap currently
         return 0
