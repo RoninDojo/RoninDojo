@@ -326,12 +326,17 @@ EOF
     _sleep 5
 
     # systemd.mount unit file creation
-    local uuid
+    local uuid systemd_mount
     uuid=$(lsblk -no UUID "${device}")      # UUID of device
     local tmp=${mountpoint:1}               # Remove leading '/'
     local systemd_mountpoint=${tmp////-}    # Replace / with -
 
-    if ! grep "${uuid}" /etc/systemd/system/"${systemd_mountpoint}".mount 1>/dev/null; then
+    # Check if drive unit file was previously created
+    if [ -f /etc/systemd/system/"${systemd_mountpoint}".mount ]; then
+        systemd_mount=true
+    fi
+
+    if ! grep "${uuid}" /etc/systemd/system/"${systemd_mountpoint}".mount &>/dev/null; then
         cat <<EOF
 ${RED}
 ***
@@ -352,18 +357,23 @@ Options=defaults
 [Install]
 WantedBy=multi-user.target
 EOF"
-    # Mount filesystem
-    cat <<EOF
+        # Mount filesystem
+        cat <<EOF
 ${RED}
 ***
 Mounting ${device} to ${mountpoint}
 ***
 ${NC}
 EOF
+    fi
+
+    if $systemd_mount; then
+        sudo systemctl daemon-reload
+    fi
+
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
     sudo systemctl enable "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
-    fi
 
     return 0
 }
