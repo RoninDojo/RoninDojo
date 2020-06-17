@@ -415,7 +415,7 @@ Creating swapfile...
 ***
 ${NC}
 EOF
-        sudo fallocate -l "${size}" "${file}"
+        sudo dd if=/dev/zero of="${file}" bs="${size}" count=1
         sudo chmod 600 "${file}"
         sudo mkswap -p 0 "${file}"
         sudo swapon "${file}"
