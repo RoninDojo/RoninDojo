@@ -312,7 +312,9 @@ EOF
         fi
 
         # Stop swap on mount point
-        test ! check_swap "${mountpoint}"/swapfile && sudo swapoff "${mountpoint}"/swapfile
+        if ! check_swap "${mountpoint}"/swapfile; then
+            sudo swapoff "${mountpoint}"/swapfile
+        fi
 
         sudo umount -l "${mountpoint}"
     fi
