@@ -450,9 +450,9 @@ Creating swapfile...
 ***
 ${NC}
 EOF
-        sudo dd if=/dev/zero of="${file}" bs="${size}" count=1
+        sudo dd if=/dev/zero of="${file}" bs="${size}" count=1 2>/dev/null
         sudo chmod 600 "${file}"
-        sudo mkswap -p 0 "${file}"
+        sudo mkswap -p 0 "${file}" 1>/dev/null
         sudo swapon "${file}"
     else
         cat <<EOF
