@@ -312,7 +312,7 @@ EOF
         fi
 
         # Stop swap on mount point
-        sudo swapoff "${mountpoint}"/swapfile
+        test ! check_swap "${mountpoint}"/swapfile && sudo swapoff "${mountpoint}"/swapfile
 
         sudo umount -l "${mountpoint}"
     fi
@@ -422,8 +422,6 @@ check_swap() {
 # TODO enable multiple swapfiles/partitions
 #
 create_swap() {
-    test ! check_swap && return 1 # exit if swap available
-
     # Parse Arguments
     while [ $# -gt 0 ]; do
         case "$1" in
