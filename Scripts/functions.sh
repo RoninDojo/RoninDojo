@@ -329,7 +329,7 @@ ${NC}
         # if device exists, use sfdisk to erase filesystem and partition table
 
         # Create a partition table with a single partition that takes the whole disk
-        echo 'type=83' | sudo sfdisk -q 2>/dev/null
+        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
     fi
 
     cat <<EOF
