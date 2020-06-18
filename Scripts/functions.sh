@@ -325,7 +325,7 @@ Found ${device%?}, wiping data clean.
 ***
 ${NC}
         "
-        sudo sfdisk --quiet --delete /dev/sdb &>/dev/null
+        sudo sfdisk --quiet --wipe always --delete "${device%?}" &>/dev/null
         # if device exists, use sfdisk to erase filesystem and partition table
 
         # Create a partition table with a single partition that takes the whole disk
