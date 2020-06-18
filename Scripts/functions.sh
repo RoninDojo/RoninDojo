@@ -305,14 +305,14 @@ EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
         # Make sure to stop tor and docker when mount point is /mnt/usb
-        if "${mountpoint}" = "/mnt/usb"; then
+        if [ "${mountpoint}" = "/mnt/usb" ]; then
             for x in tor docker; do
                 sudo systemctl stop "${x}"
             done
         fi
 
         # Stop swap on mount point
-        swapoff "${mountpoint}"/swapfile
+        sudo swapoff "${mountpoint}"/swapfile
 
         sudo umount -l "${mountpoint}"
     fi
