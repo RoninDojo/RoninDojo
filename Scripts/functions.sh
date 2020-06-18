@@ -304,7 +304,32 @@ ${NC}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
+        # Make sure to stop tor and docker when mount point is /mnt/usb
+        if "${mountpoint}" = "/mnt/usb"; then
+            for x in tor docker; do
+                sudo systemctl stop "${x}"
+            done
+        fi
+
+        # Stop swap on mount point
+        swapoff "${mountpoint}"/swapfile
+
         sudo umount -l "${mountpoint}"
+    fi
+
+    if [ -b "${device%?}" ]; then
+        echo -e "
+${RED}
+***
+Found ${device%?}, wiping data clean.
+***
+${NC}
+        "
+        sudo sfdisk --quiet --delete /dev/sdb &>/dev/null
+        # if device exists, use sfdisk to erase filesystem and partition table
+
+        # Create a partition table with a single partition that takes the whole disk
+        echo 'type=83' | sudo sfdisk -q 2>/dev/null
     fi
 
     cat <<EOF
@@ -317,9 +342,9 @@ EOF
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
-        sudo mkfs."${fstype}" -F -L "${label}" "${device}" &>/dev/null || return 1
+        sudo mkfs."${fstype}" -q -F -L "${label}" "${device}" 1>/dev/null || return 1
     elif [[ $fstype =~ 'xfs' ]]; then
-        sudo mkfs."${fstype}" -L "${label}" "${device}" &>/dev/null || return 1
+        sudo mkfs."${fstype}" -L "${label}" "${device}" 1>/dev/null || return 1
     fi
 
     # Sleep here ONLY, don't ask me why ask likewhoa!

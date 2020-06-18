@@ -401,20 +401,6 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if [ -b /dev/sda1 ]
-then
-  echo -e "${RED}"
-  echo "***"
-  echo "Wiping /dev/sda drive clean..."
-  echo "***"
-  echo -e "${NC}"
-  sudo wipefs --all --force /dev/sda1 && sudo sfdisk --delete /dev/sda &>/dev/null
-fi
-# if sda1 exists, use wipefs to erase possible sig
-
-# Create a partition table with a single partition that takes the whole disk
-echo 'type=83' | sudo sfdisk /dev/sda &>/dev/null
-
 if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
