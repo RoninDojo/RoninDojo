@@ -160,7 +160,7 @@ EOF
     fi
 
     # Enable service on startup
-    if ! sudo systemctl is-enabled docker 2>/dev/null; then
+    if ! sudo systemctl is-enabled docker 1>/dev/null; then
         sudo systemctl enable docker
     fi
 
