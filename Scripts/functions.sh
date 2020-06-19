@@ -160,7 +160,7 @@ EOF
     fi
 
     # Enable service on startup
-    if ! sudo systemctl is-enabled docker; then
+    if ! sudo systemctl is-enabled docker 2>/dev/null; then
         sudo systemctl enable docker
     fi
 
@@ -465,7 +465,7 @@ EOF
     fi
 
     # Include fstab value
-    if ! grep "${file}" /etc/fstab; then
+    if ! grep "${file}" /etc/fstab 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
