@@ -157,6 +157,8 @@ Starting docker daemon.
 ${NC}
 EOF
         sudo systemctl start docker || return 1
+    elif ! systemctl is-active docker 1>/dev/null; then # is docker started?
+        sudo systemctl start docker || return 1
     fi
 
     # Enable service on startup
