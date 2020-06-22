@@ -270,19 +270,8 @@ EOF
                 shift 2
                 ;;
             --device|-d)
-                if [ ! -b "${2}" ]; then
-                    cat <<EOF
-${RED}
-***
-Error: ${2} not a block device! Exiting!
-***
-${NC}
-EOF
-                    return 1
-                else
-                    local device="$2"
-                    shift 2
-                fi
+                local device="$2"
+                shift 2
                 ;;
             --mountpoint)
                 local mountpoint="$2"
@@ -321,20 +310,13 @@ EOF
         sudo umount -l "${mountpoint}"
     fi
 
-    if [ -b "${device%?}" ]; then
-        echo -e "
-${RED}
-***
-Found ${device%?}, wiping data clean.
-***
-${NC}
-        "
+    if [ -b "${device}" ]; then
         sudo sfdisk --quiet --wipe always --delete "${device%?}" &>/dev/null
         # if device exists, use sfdisk to erase filesystem and partition table
+    else
+        # Create a partition table with a single partition that takes the whole disk
+        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
     fi
-
-    # Create a partition table with a single partition that takes the whole disk
-    echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
 
     cat <<EOF
 ${RED}
