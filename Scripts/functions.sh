@@ -310,12 +310,14 @@ EOF
         sudo umount -l "${mountpoint}"
     fi
 
-    if [ -b "${device}" ]; then
+    if [ ! -b "${device}" ]; then
+        echo 'type=83' | sudo sfdisk -q "${device}" 2>/dev/null
+    else
         sudo sfdisk --quiet --wipe always --delete "${device%?}" &>/dev/null
         # if device exists, use sfdisk to erase filesystem and partition table
-    else
+
         # Create a partition table with a single partition that takes the whole disk
-        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
+        echo 'type=83' | sudo sfdisk -q "${device}" 2>/dev/null
     fi
 
     cat <<EOF
