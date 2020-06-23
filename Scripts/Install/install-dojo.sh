@@ -24,7 +24,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd "$HOME" || exit
-git clone "$SAMOURAI_REPO" dojo # CHANGE TO MASTER AFTER MERGE
+git clone -b master "$SAMOURAI_REPO" dojo
 
 echo -e "${RED}"
 echo "***"
