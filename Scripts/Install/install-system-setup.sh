@@ -54,18 +54,6 @@ if _disable_ipv6; then
   echo -e "${NC}"
 fi
 
-if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
-  cat << EOF >> ~/.bashrc
-if [ -d $HOME/RoninDojo ]; then
-  $HOME/RoninDojo/Scripts/.logo
-  ronin
-fi
-EOF
-fi
-# place main ronin menu script symbolic link at /usr/local/bin folder
-# because most likely that will be path already added to your $PATH variable
-# place logo and ronin main menu script ~/.bashrc to run at each login
-
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
   if hash "${pkg}" 2>/dev/null; then
