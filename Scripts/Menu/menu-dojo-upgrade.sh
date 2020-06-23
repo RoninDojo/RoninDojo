@@ -41,7 +41,7 @@ if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/de
 fi
 
 cd "${WORK_DIR}" || exit
-git clone "$SAMOURAI_REPO" # temporary
+git clone -b master "$SAMOURAI_REPO" # temporary
 
 # Copy only when the SOURCE file is newer than the
 # destination file or when the destination file is missing
