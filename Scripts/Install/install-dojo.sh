@@ -24,7 +24,8 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd "$HOME" || exit
-git clone "$SAMOURAI_REPO" dojo # CHANGE TO MASTER AFTER MERGE
+git clone "$SAMOURAI_REPO" dojo
+# clones latest dojo repo, see defaults.sh
 
 echo -e "${RED}"
 echo "***"
@@ -39,6 +40,7 @@ echo "These values are found in RoninDojo menus or in the ${DOJO_PATH}/conf dire
 echo "***"
 echo -e "${NC}"
 _sleep 5
+# see defaults.sh for dojo path
 
 echo -e "${RED}"
 echo "***"
@@ -46,7 +48,6 @@ echo "Be aware you will use these values to login to Dojo Maintenance Tool, Bloc
 echo "***".
 echo -e "${NC}"
 _sleep 8
-
 
 echo -e "${RED}"
 echo "***"
@@ -136,9 +137,9 @@ BITCOIND_ZMQ_RAWTXS=9501
 # Type: integer
 BITCOIND_ZMQ_BLK_HASH=9502
 EOF
-# Create new docker bitcoind conf file
+# create new docker bitcoind conf file
+# websearch "bash heredoc" for info on redirection
 
-# configuring ${DOJO_PATH}/docker/my-dojo/conf/docker-node.conf.tpl
 echo -e "${RED}"
 echo "***"
 echo "Setting the Node API Key and JWT Secret..."
@@ -183,7 +184,8 @@ NODE_ACTIVE_INDEXER=local_bitcoind
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
 EOF
-# Create new docker node conf file
+# create new docker node conf file
+# websearch "bash heredoc" for info on redirection
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
 #########################################
@@ -199,7 +201,8 @@ MYSQL_USER=$MYSQL_USER
 # Type: alphanumeric
 MYSQL_PASSWORD=$MYSQL_PASSWORD
 EOF
-# Create new mysql conf file
+# create new mysql conf file
+# websearch "bash heredoc" for info on redirection
 
 # BTC-EXPLORER PASSWORD
 echo -e "${RED}"
@@ -224,6 +227,7 @@ EXPLORER_INSTALL=on
 EXPLORER_KEY=$EXPLORER_KEY
 EOF
 # create new block explorer conf file
+# websearch "bash heredoc" for info on redirection
 
 read -rp "Do you want to install an indexer? [y/n]" yn
 case $yn in
@@ -234,7 +238,7 @@ case $yn in
     [N/n]* ) echo "Indexer will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac
-# install indexer
+# install indexer prompt
 
 read -rp "Do you want to install Electrs? [y/n]" yn
 case $yn in
@@ -242,7 +246,7 @@ case $yn in
     [N/n]* ) echo "Electrs will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac
-# install electrs
+# install electrs prompt
 
 echo -e "${RED}"
 echo "***"
@@ -268,7 +272,8 @@ _sleep 2
 cd "$DOJO_PATH" || exit
 
 ./dojo.sh install
-# once dojo install reaches bitcoind logs / begins syncing then use Ctrl + C to exit and trigger the salvage attempt below
+# wait for dojo install to reach bitcoind sync
+# use Ctrl + C to exit and trigger the salvage attempt below
 
 if sudo test -d /mnt/usb/uninstall-salvage; then
   echo -e "${RED}"
@@ -284,12 +289,17 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps, if user is AFK there may be timeout
-  cd "$DOJO_PATH" || exit
+  # press to continue is needed because sudo password can be requested for next steps
+  # if the user is AFK there may be timeout
 
+  cd "$DOJO_PATH" || exit
   ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
   sudo mv -v /mnt/usb/uninstall-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  # changes to dojo path, otherwise exit
+  # websearch "bash Logical OR (||)" for info
+  # stops dojo and removes new data directories
+  # then moves salvaged block data
 
   echo -e "${RED}"
   echo "***"
@@ -298,8 +308,11 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo -e "${NC}"
   _sleep 3
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
+  # remove old salvage directories
 
-  cd "$DOJO_PATH" && ./dojo.sh start
+  cd "$DOJO_PATH" || exit
+  ./dojo.sh start
+  # start dojo
 else
   echo "No Blockchain data found for salvage check 1..."
 fi
@@ -319,11 +332,17 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  cd "$DOJO_PATH" || exit
+  # press to continue is needed because sudo password can be requested for next steps
+  # if the user is AFK there may be timeout
 
+  cd "$DOJO_PATH" || exit
   ./dojo.sh stop
   sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
   sudo mv -v /mnt/usb/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  # changes to dojo path, otherwise exit
+  # websearch "bash Logical OR (||)" for info
+  # stops dojo and removes new data directories
+  # then moves salvaged block data
 
   echo -e "${RED}"
   echo "***"
@@ -332,9 +351,11 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo -e "${NC}"
   _sleep 3
   sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
-  cd "$DOJO_PATH" || exit
+  # remove old salvage directories
 
+  cd "$DOJO_PATH" || exit
   ./dojo.sh start
+  # start dojo
 else
   echo "No Blockchain data found for salvage check 2..."
 fi

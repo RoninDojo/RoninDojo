@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 #
-# Package dependencies
+# Package dependencies associative array
 #
 declare -A package_dependencies=(
     [java]=jdk11-openjdk
