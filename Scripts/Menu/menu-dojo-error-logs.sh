@@ -91,7 +91,7 @@ case $CHOICE in
 
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs indexer -n 500 | egrep "ERROR|error"
-            # shows tor error logs
+            # shows indexer error logs
 
             echo -e "${RED}"
             echo "***"

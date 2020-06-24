@@ -124,6 +124,7 @@ case $CHOICE in
               echo -e "${NC}"
               cd "${DOJO_PATH}" || exit
               ./dojo.sh stop
+              # stop dojo
 
               echo -e "${RED}"
               echo "***"
@@ -132,7 +133,7 @@ case $CHOICE in
               echo -e "${NC}"
               _sleep 5
               sudo systemctl reboot
-              # stop dojo and restart machine
+              # restart machine
 	        else
               echo -e "${RED}"
               echo "***"
@@ -141,7 +142,7 @@ case $CHOICE in
               echo -e "${NC}"
               _sleep 5
               sudo systemctl reboot
-              # stop dojo and restart machine
+              # restart machine
             fi
             ;;
         7)
@@ -153,6 +154,7 @@ case $CHOICE in
               echo -e "${NC}"
               cd "${DOJO_PATH}" || exit
               ./dojo.sh stop
+              # stop dojo
 
               echo -e "${RED}"
               echo "***"
@@ -161,7 +163,7 @@ case $CHOICE in
               echo -e "${NC}"
               _sleep 5
               sudo systemctl poweroff
-              # stop dojo and power off machine
+              # power off machine
 	        else
               echo -e "${RED}"
               echo "***"
@@ -170,7 +172,7 @@ case $CHOICE in
               echo -e "${NC}"
               _sleep 5
               sudo systemctl poweroff
-              # stop dojo and power off machine
+              # power off machine
             fi
             ;;
         8)

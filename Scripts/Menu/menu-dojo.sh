@@ -45,6 +45,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh start
+            # start dojo
 
             echo -e "${RED}"
             echo "***"
@@ -53,7 +54,7 @@ case $CHOICE in
             echo -e "${NC}"
             read -n 1 -r -s
             bash -c "$RONIN_DOJO_MENU"
-            # start dojo, press any letter to return to menu
+            # press any letter to return to menu
             ;;
         2)
             isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
@@ -77,6 +78,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh stop
+            # stop dojo
 
             echo -e "${RED}"
             echo "***"
@@ -85,7 +87,7 @@ case $CHOICE in
             echo -e "${NC}"
             read -n 1 -r -s
             bash -c "$RONIN_DOJO_MENU"
-            # stop dojo, press any letter to return to menu
+            # press any letter to return to menu
             ;;
         3)
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
@@ -143,6 +145,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh version
+            # display dojo version info
 
             echo -e "${RED}"
             echo "***"
@@ -151,7 +154,6 @@ case $CHOICE in
             echo -e "${NC}"
             read -n 1 -r -s
             bash -c "$RONIN_DOJO_MENU"
-            # display dojo version info
             # press any letter to return
             ;;
         7)

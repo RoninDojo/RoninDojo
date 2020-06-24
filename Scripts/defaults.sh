@@ -29,12 +29,15 @@ YELLOW=$(tput setaf 3)
 NC=$(tput sgr0)
 # No Color
 
+#
+# Install Defaults
+#
 DOJO_PATH="$HOME/dojo/docker/my-dojo"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 USER=$(getent group 1000 | cut -d ':' -f1)
 
 #
-# Dialog variables
+# Dialog Variables
 #
 HEIGHT=22
 WIDTH=76
@@ -51,9 +54,8 @@ if [ -f "${DOJO_PATH}"/conf/docker-node.conf ]; then
 fi
 
 #
-# Dojo Docker settings
+# Dojo Docker Settings
 #
-
 # bitcoind
 RPC_PASS=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 RPC_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
@@ -87,28 +89,27 @@ fi
 #
 # Tor Hidden Service Addresses
 #
-
-# Dojo Maintanance Tool
+# dojo maintanance tool
 if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo; then
     V3_ADDR_API=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo/hostname)
 fi
 
-# Whirlpool
+# whirlpool
 if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool; then
     V3_ADDR_WHIRLPOOL=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool/hostname)
 fi
 
-# Explorer
+# explorer
 if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer; then
     V3_ADDR_EXPLORER=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer/hostname)
 fi
 
-# Electrum Server
+# electrum server
 if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs; then
     V3_ADDR_ELECTRS=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs/hostname)
 fi
 
-# Ronin menu paths
+# ronindojo menu paths
 RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
 RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
 RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"

@@ -29,11 +29,14 @@ else
     _sleep 2
     cd "$HOME"/wst/whirlpool_stats/whirlpool_stats || exit
 fi
+# if wst.py is not found then run install script
+# else inform user and launch
 
 echo -e "${RED}"
 echo "Whirlpool Stat Tool INSTRUCTIONS:"
 echo -e "${NC}"
 _sleep 2
+# instructions are given to user
 
 echo -e "${RED}"
 echo "Download in the working directory a snaphot for the 0.01BTC pools:"
@@ -73,7 +76,8 @@ echo "***"
 echo "Press any letter to continue..."
 echo "***"
 echo -e "${NC}"
-
 read -n 1 -r -s
+# press any letter to return
 
 python3 wst.py -w=/tmp -s=127.0.0.1:9050
+# run wst.py using python3
