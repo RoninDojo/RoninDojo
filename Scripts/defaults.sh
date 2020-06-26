@@ -31,7 +31,13 @@ NC=$(tput sgr0)
 
 DOJO_PATH="$HOME/dojo/docker/my-dojo"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
-USER=$(getent group 1000 | cut -d ':' -f1)
+
+# Workaround when on x86 systems and autologin is enabled for the user account
+if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then
+    USER=$(getent group 1000 | cut -d ':' -f4)
+else
+    USER=$(getent group 1000 | cut -d ':' -f1)
+fi
 
 #
 # Dialog variables

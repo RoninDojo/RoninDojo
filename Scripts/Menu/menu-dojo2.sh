@@ -81,6 +81,7 @@ case $CHOICE in
             cd "$DOJO_PATH" || exit
             ./dojo.sh uninstall
             sudo rm -rf ~/dojo
+            cd - || exit
             # uninstall dojo
 
             echo -e "${RED}"
