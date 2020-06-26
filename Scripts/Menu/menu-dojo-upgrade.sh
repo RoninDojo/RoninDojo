@@ -32,7 +32,7 @@ echo -e "${NC}"
 _sleep 27
 
 # Make sure permissions are properly set for ${DOJO_PATH}
-_check_dojo_perms "${HOME}"/dojo
+_check_dojo_perms "${DOJO_PATH}"
 
 cd "${DOJO_PATH}" || exit
 
