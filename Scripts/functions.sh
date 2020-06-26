@@ -195,7 +195,7 @@ _check_dojo_perms() {
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
-        sudo chown -R "${USER}:${USER}" "${DOJO_PATH}"
+        sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
     else
         ./dojo.sh stop
     fi
