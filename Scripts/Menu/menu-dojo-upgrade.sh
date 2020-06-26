@@ -32,9 +32,9 @@ echo -e "${NC}"
 _sleep 27
 
 # Make sure permissions are properly set for ${DOJO_PATH}
-cd "${DOJO_PATH}" || exit
-
 _check_dojo_perms "${HOME}"/dojo
+
+cd "${DOJO_PATH}" || exit
 
 # Enable BITCOIND_RPC_EXTERNAL
 if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
