@@ -24,8 +24,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd "$HOME" || exit
-git clone "$SAMOURAI_REPO" dojo
-# clones latest dojo repo, see defaults.sh
+git clone -b master "$SAMOURAI_REPO" dojo
 
 echo -e "${RED}"
 echo "***"

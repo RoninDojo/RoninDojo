@@ -71,8 +71,20 @@ sudo test -d /mnt/usb1/system-setup-salvage || sudo mkdir /mnt/usb1/system-setup
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
 if sudo test -d /mnt/usb1/system-setup-salvage/blocks; then
-  # use rsync when existing IBD is found
-  sudo rsync -vahW --no-compress --progress --delete-after /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+    # Use rsync when existing IBD is found
+    if ! hash rsync 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+rsync package missing...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Installing in"
+        sudo pacman -S --noconfirm rsync &>/dev/null
+    fi
+
+    sudo rsync -vahW --no-compress --progress --delete-after /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
 else
   sudo cp -av /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
   # use cp for initial fresh IBD copy

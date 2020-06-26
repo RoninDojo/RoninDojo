@@ -14,6 +14,18 @@ _main() {
         sudo ln -sf "$HOME"/RoninDojo/ronin /usr/local/bin/ronin
     fi
 
+    if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
+        cat << EOF >> ~/.bashrc
+if [ -d $HOME/RoninDojo ]; then
+$HOME/RoninDojo/Scripts/.logo
+ronin
+fi
+EOF
+    fi
+    # place main ronin menu script symbolic link at /usr/local/bin folder
+    # because most likely that will be path already added to your $PATH variable
+    # place logo and ronin main menu script ~/.bashrc to run at each login
+
     # Adding user to docker group if needed
     if ! getent group docker| grep -q "${USER}"; then
         cat <<EOF
@@ -157,10 +169,12 @@ Starting docker daemon.
 ${NC}
 EOF
         sudo systemctl start docker || return 1
+    elif ! systemctl is-active docker 1>/dev/null; then # is docker started?
+        sudo systemctl start docker || return 1
     fi
 
     # Enable service on startup
-    if ! sudo systemctl is-enabled docker; then
+    if ! sudo systemctl is-enabled docker 1>/dev/null; then
         sudo systemctl enable docker
     fi
 
@@ -175,11 +189,13 @@ EOF
 _check_dojo_perms() {
     local DOJO_PATH="${1}"
 
-    if find ~/dojo -user root | grep -q '.'; then
+    if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
+        cd "${DOJO_PATH}" || exit
         sudo ./dojo.sh stop
+
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
-        sudo chown -R "${USER}:${USER}" "${DOJO_PATH}"
+        sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
     else
         ./dojo.sh stop
     fi
@@ -268,19 +284,8 @@ EOF
                 shift 2
                 ;;
             --device|-d)
-                if [ ! -b "${2}" ]; then
-                    cat <<EOF
-${RED}
-***
-Error: ${2} not a block device! Exiting!
-***
-${NC}
-EOF
-                    return 1
-                else
-                    local device="$2"
-                    shift 2
-                fi
+                local device="$2"
+                shift 2
                 ;;
             --mountpoint)
                 local mountpoint="$2"
@@ -304,7 +309,32 @@ ${NC}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
+        # Make sure to stop tor and docker when mount point is /mnt/usb
+        if [ "${mountpoint}" = "/mnt/usb" ]; then
+            for x in tor docker; do
+                sudo systemctl stop "${x}"
+            done
+        fi
+
+        # Stop swap on mount point
+        if ! check_swap "${mountpoint}"/swapfile; then
+            sudo swapoff "${mountpoint}"/swapfile
+        fi
+
         sudo umount -l "${mountpoint}"
+    fi
+
+    if [ ! -b "${device}" ]; then
+        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
+    else
+        sudo sfdisk --quiet --wipe always --delete "${device%?}" &>/dev/null
+        # if device exists, use sfdisk to erase filesystem and partition table
+
+        # reload partition table
+        partprobe
+
+        # Create a partition table with a single partition that takes the whole disk
+        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
     fi
 
     cat <<EOF
@@ -317,9 +347,9 @@ EOF
 
     # Create filesystem
     if [[ $fstype =~ 'ext' ]]; then
-        sudo mkfs."${fstype}" -F -L "${label}" "${device}" &>/dev/null || return 1
+        sudo mkfs."${fstype}" -q -F -L "${label}" "${device}" 1>/dev/null || return 1
     elif [[ $fstype =~ 'xfs' ]]; then
-        sudo mkfs."${fstype}" -L "${label}" "${device}" &>/dev/null || return 1
+        sudo mkfs."${fstype}" -L "${label}" "${device}" 1>/dev/null || return 1
     fi
 
     # Sleep here ONLY, don't ask me why ask likewhoa!
@@ -397,8 +427,6 @@ check_swap() {
 # TODO enable multiple swapfiles/partitions
 #
 create_swap() {
-    test ! check_swap && return 1 # exit if swap available
-
     # Parse Arguments
     while [ $# -gt 0 ]; do
         case "$1" in
@@ -425,9 +453,9 @@ Creating swapfile...
 ***
 ${NC}
 EOF
-        sudo dd if=/dev/zero of="${file}" bs="${size}" count=1
+        sudo dd if=/dev/zero of="${file}" bs="${size}" count=1 2>/dev/null
         sudo chmod 600 "${file}"
-        sudo mkswap -p 0 "${file}"
+        sudo mkswap -p 0 "${file}" 1>/dev/null
         sudo swapon "${file}"
     else
         cat <<EOF
@@ -440,7 +468,7 @@ EOF
     fi
 
     # Include fstab value
-    if ! grep "${file}" /etc/fstab; then
+    if ! grep "${file}" /etc/fstab 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
