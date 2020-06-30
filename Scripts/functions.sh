@@ -80,6 +80,39 @@ _sleep() {
 }
 
 #
+# Remove old fstab entries in favor of systemd.mount
+#
+_remove_fstab() {
+    if grep -E 'UUID=* /mnt/usb ext4 ' /etc/fstab; then
+        sudo sed -i '/\/mnt\/usb ext4/d' /etc/fstab
+        return 1
+    fi
+
+    return 0
+}
+
+#
+# Remove ipv6 from kernel line in favor of sysctl
+#
+_remove_ipv6() {
+    if [ -f /boot/cmdline.txt ]; then
+        if grep ipv6.disable /boot/cmdline.txt 1>/dev/null; then
+            sudo -i 's/ipv6.disable=1//' /boot/cmdline.txt
+            return 1
+        fi
+        # for RPI hardware
+    elif [ -f /boot/boot.ini ]; then
+        if grep ipv6.disable /boot/boot.ini 1>/dev/null; then
+            sudo -i 's/ipv6.disable=1//' /boot/boot.ini
+            return 1
+        fi
+        # for Odroid or RockPro64 hardware
+    fi
+
+    return 0
+}
+
+#
 # Update RoninDojo
 #
 _update_ronin() {
@@ -222,6 +255,18 @@ EOF'
     # restart sysctl service
     if [ -d /proc/sys/net/ipv6 ]; then
         sudo systemctl restart systemd-sysctl
+    fi
+
+    # Remove any legacy ipv6.disable entries from kernel line
+    if ! _remove_ipv6; then
+        cat <<EOF
+${RED}
+***
+Removing ipv6 disable setting in kernel line favor of
+sysctl...
+***
+${NC}
+EOF
     fi
 
     return 0
@@ -404,6 +449,18 @@ EOF
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
     sudo systemctl enable "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
+
+    # Remove any old legacy fstab entries
+    if ! _remove_fstab; then
+        cat <<EOF
+${RED}
+***
+Removing legacy fstab entries in favor of the
+systemd mount service...
+***
+${NC}
+EOF
+    fi
 
     return 0
 }
