@@ -121,13 +121,13 @@ _remove_fstab() {
 _remove_ipv6() {
     if [ -f /boot/cmdline.txt ]; then
         if grep ipv6.disable /boot/cmdline.txt 1>/dev/null; then
-            sudo -i 's/ipv6.disable=1//' /boot/cmdline.txt
+            sudo sed -i 's/ipv6.disable=1//' /boot/cmdline.txt
             return 1
         fi
         # for RPI hardware
     elif [ -f /boot/boot.ini ]; then
         if grep ipv6.disable /boot/boot.ini 1>/dev/null; then
-            sudo -i 's/ipv6.disable=1//' /boot/boot.ini
+            sudo sed -i 's/ipv6.disable=1//' /boot/boot.ini
             return 1
         fi
         # for Odroid or RockPro64 hardware
