@@ -46,7 +46,7 @@ EOF
     fi
 
     # Remove any old legacy fstab entries
-    if ! _remove_fstab; then
+    if ! _remove_fstab && sudo systemctl is-active --quiet mnt-usb.mount; then
         cat <<EOF
 ${RED}
 ***
@@ -461,6 +461,7 @@ EOF
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
     sudo systemctl enable "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
+
 
     return 0
 }
