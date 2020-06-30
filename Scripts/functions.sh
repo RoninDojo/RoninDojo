@@ -44,6 +44,30 @@ EOF
         sudo gpasswd -a "${USER}" docker
         _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker
     fi
+
+    # Remove any old legacy fstab entries
+    if ! _remove_fstab; then
+        cat <<EOF
+${RED}
+***
+Removing legacy fstab entries in favor of the
+systemd mount service...
+***
+${NC}
+EOF
+    fi
+
+    # Remove any legacy ipv6.disable entries from kernel line
+    if ! _remove_ipv6; then
+        cat <<EOF
+${RED}
+***
+Removing ipv6 disable setting in kernel line favor of
+sysctl...
+***
+${NC}
+EOF
+    fi
 }
 
 #
@@ -257,18 +281,6 @@ EOF'
         sudo systemctl restart systemd-sysctl
     fi
 
-    # Remove any legacy ipv6.disable entries from kernel line
-    if ! _remove_ipv6; then
-        cat <<EOF
-${RED}
-***
-Removing ipv6 disable setting in kernel line favor of
-sysctl...
-***
-${NC}
-EOF
-    fi
-
     return 0
 }
 
@@ -449,18 +461,6 @@ EOF
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
     sudo systemctl enable "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
-
-    # Remove any old legacy fstab entries
-    if ! _remove_fstab; then
-        cat <<EOF
-${RED}
-***
-Removing legacy fstab entries in favor of the
-systemd mount service...
-***
-${NC}
-EOF
-    fi
 
     return 0
 }
