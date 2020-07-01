@@ -45,9 +45,10 @@ EOF
         _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker
     fi
 
-    # Remove any old legacy fstab entries
-    if ! _remove_fstab && sudo systemctl is-active --quiet mnt-usb.mount; then
-        cat <<EOF
+    # Remove any old legacy fstab entries when systemd.mount is active
+    if systemctl is-active --quiet mnt-usb.mount; then
+        if ! _remove_fstab; then
+            cat <<EOF
 ${RED}
 ***
 Removing legacy fstab entries in favor of the
@@ -55,7 +56,8 @@ systemd mount service...
 ***
 ${NC}
 EOF
-        _sleep 4 --msg "Starting RoninDojo in"
+            _sleep 4 --msg "Starting RoninDojo in"
+        fi
     fi
 
     # Remove any legacy ipv6.disable entries from kernel line
