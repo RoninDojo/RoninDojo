@@ -149,8 +149,10 @@ git repo found! Updating RoninDojo via git fetch
 ${NC}
 EOF
         cd "$HOME/RoninDojo" || exit
+
         # Checkout master branch
         git checkout master
+
         # Fetch remotes
         git fetch --all
 
@@ -159,8 +161,8 @@ EOF
     else
         cat <<EOF > ~/ronin-update.sh
 #!/bin/bash
-sudo rm -rf ~/RoninDojo
-cd ~
+sudo rm -rf "$HOME/RoninDojo"
+cd "$HOME"
 git clone https://code.samourai.io/ronindojo/RoninDojo
 ${RED}
 ***
@@ -168,7 +170,7 @@ Upgrade Complete!
 ***
 ${NC}
 sleep 2
-bash -c ~/RoninDojo/Scripts/Menu/menu-system2.sh
+bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 EOF
         sudo chmod +x ~/ronin-update.sh
         bash ~/ronin-update.sh
@@ -246,8 +248,9 @@ EOF
 _check_dojo_perms() {
     local DOJO_PATH="${1}"
 
+    cd "${DOJO_PATH}" || exit
+
     if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
-        cd "${DOJO_PATH}" || exit
         sudo ./dojo.sh stop
 
         # Change ownership so that we don't
