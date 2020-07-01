@@ -55,6 +55,7 @@ systemd mount service...
 ***
 ${NC}
 EOF
+        _sleep 4 --msg "Starting RoninDojo in"
     fi
 
     # Remove any legacy ipv6.disable entries from kernel line
