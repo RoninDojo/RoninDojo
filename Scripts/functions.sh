@@ -107,7 +107,7 @@ _sleep() {
 # Remove old fstab entries in favor of systemd.mount
 #
 _remove_fstab() {
-    if grep -E 'UUID=* /mnt/usb ext4 ' /etc/fstab; then
+    if grep -E '^UUID=.* \/mnt\/usb ext4' /etc/fstab; then
         sudo sed -i '/\/mnt\/usb ext4/d' /etc/fstab
         return 1
     fi
