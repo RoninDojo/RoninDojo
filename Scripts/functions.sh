@@ -45,8 +45,8 @@ EOF
         _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker
     fi
 
-    # Remove any old legacy fstab entries when systemd.mount is active
-    if systemctl is-active --quiet mnt-usb.mount; then
+    # Remove any old legacy fstab entries when systemd.mount is enabled
+    if systemctl is-enabled --quiet mnt-usb.mount; then
         if ! _remove_fstab; then
             cat <<EOF
 ${RED}
