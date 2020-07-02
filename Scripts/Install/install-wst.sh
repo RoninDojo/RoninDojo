@@ -12,8 +12,10 @@ echo -e "${NC}"
 
 mkdir ~/wst
 cd ~/wst || exit
+# make wst directory and change to it, otherwise exit
 
 git clone https://github.com/Samourai-Wallet/whirlpool_stats.git;
+# download whirlpool stat tool
 
 if find_pkg python-pip; then
   echo -e "${RED}"
@@ -31,9 +33,12 @@ else
   _sleep
   sudo pacman -S --noconfirm python-pip
 fi
-# check for / python-pip
+# check for python-pip and install if not found
 
 cd whirlpool_stats || exit
 sudo pip3 install -r ./requirements.txt
+# change to whirlpool stats directory, otherwise exit
+# install whirlpool stat tool
 
 bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+# return to menu

@@ -56,6 +56,7 @@ EOF
             _sleep 2
 
             _update_ronin
+            # see functions.sh
             ;;
         4)
             bash ~/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh

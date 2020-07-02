@@ -55,6 +55,7 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
+# ask user to proceed
 
 echo -e "${RED}"
 echo "***"
@@ -67,7 +68,7 @@ if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"; t
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
-# format partition
+# format partition, see create_fs in functions.sh
 
 echo -e "${RED}"
 echo "***"
@@ -89,6 +90,7 @@ _sleep 2
 
 create_swap --file /mnt/usb1/swapfile --size 2G
 # created a 2GB swapfile on the external backup drive
+# see create_swap in functions.sh
 
 echo -e "${RED}"
 echo "***"

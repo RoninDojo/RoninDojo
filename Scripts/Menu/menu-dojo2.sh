@@ -61,12 +61,13 @@ case $CHOICE in
                             _sleep 2
                             cd "$DOJO_PATH" || exit
                             ./dojo.sh stop
+                            # stop dojo
 
-                            # Check if salvage directory exist
                             test ! -d /mnt/usb/uninstall-salvage && sudo mkdir /mnt/usb/uninstall-salvage
+                            # check if salvage directory exist
 
                             sudo mv -v /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb/uninstall-salvage/
-                            # stops dojo, copies blockchain data to uninstall-salvage to be used by the dojo install script
+                            # copies blockchain data to uninstall-salvage to be used by the dojo install script
                             break;;
                     [Nn]* ) break;;
                     * ) echo "Please answer yes or no.";;

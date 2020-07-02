@@ -4,10 +4,9 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-# Temporaly directory location
 WORK_DIR=$(mktemp -d)
+# temporaly directory location
 
-# Check if tmp dir was created
 if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
     echo -e "${RED}"
     echo "****"
@@ -16,6 +15,7 @@ if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
     echo -e "${NOC}"
     exit 1
 fi
+# check if tmp dir was created
 
 echo -e "${RED}"
 echo "***"
@@ -33,16 +33,19 @@ _sleep 27
 
 # Make sure permissions are properly set for ${DOJO_PATH}
 _check_dojo_perms "${DOJO_PATH}"
+# make sure permissions are properly set for ${DOJO_PATH}
 
 # Enable BITCOIND_RPC_EXTERNAL
 if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
     sed -i 's/BITCOIND_RPC_EXTERNAL=off/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
 fi
+# enable BITCOIND_RPC_EXTERNAL
 
 cd "${WORK_DIR}" || exit
 git clone -b master "$SAMOURAI_REPO" # temporary
 
-# Copy only when the SOURCE file is newer than the
+cp -ua samourai-dojo/* "$HOME"/dojo/
+# copy only when the SOURCE file is newer than the
 # destination file or when the destination file is missing
 # and keep all permissions
 
@@ -50,6 +53,7 @@ cp -ua samourai-dojo/* "${DOJO_PATH%/docker/my-dojo}"/
 
 # Remove $WORK_DIR
 rm -rf "${WORK_DIR}"
+# remove $WORK_DIR
 
 # Return to previous working path
 cd "${HOME}" || exit
@@ -79,6 +83,8 @@ if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
 else
     sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 fi
+# checks for docker-explorer.conf, if found informs user
+# else uses sed to modify
 
 if [ ! -f "${DOJO_PATH}"/conf/docker-indexer.conf ] ; then
     read -rp "Do you want to install an Indexer? [y/n]" yn
@@ -113,7 +119,9 @@ else
     echo "***"
     echo -e "${NC}"
 fi
-# install indexer
+# if docker-indexer.conf is not found prompt user to select
+# for elif, if grep search INDEXER_INSTALL=off works, prompt user
+# else informs user indexer is already installed
 
 if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
    read -rp "Do you want to install Electrs? [y/n]" yn
@@ -135,7 +143,8 @@ else
    _sleep 3
    bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
 fi
-# install electrs
+# if electrs.toml is not found the user is prompted to select y/n
+# else informs user indexer is already installed
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
@@ -144,13 +153,17 @@ if [ -f /etc/systemd/system/whirlpool.service ] ; then
    echo "Whirlpool will be installed via Dojo docker"
    echo "You will need to re-pair with GUI"
    echo "See wiki for more information"
-   _sleep 5
+   echo "***"
+   echo -e "${NC}"
+   _sleep 10
 else
+   echo -e "${RED}"
    echo "Whirlpool will be installed via Dojo Docker"
    echo "For pairing information see the wiki"
+   echo -e "${NC}"
 fi
 # stop whirlpool for existing whirlpool users
-echo -e "${NC}"
+
 cd "${DOJO_PATH}" || exit
 ./dojo.sh upgrade
 # run upgrade

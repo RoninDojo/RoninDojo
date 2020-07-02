@@ -30,13 +30,11 @@ echo -e "${NC}"
 _sleep 10
 
 ~/RoninDojo/Scripts/.logo
-
-# system setup starts
+# display ronindojo logo
 
 test -f /etc/motd && sudo rm /etc/motd
 # remove ssh banner for the script logo
 
-# Disable Bluetooth
 if _disable_bluetooth; then
   echo -e "${RED}"
   echo "***"
@@ -44,8 +42,8 @@ if _disable_bluetooth; then
   echo "***"
   echo -e "${NC}"
 fi
+# disable bluetooth, see functions.sh
 
-# Disable IPV6 if needed
 if _disable_ipv6; then
   echo -e "${RED}"
   echo "***"
@@ -53,6 +51,7 @@ if _disable_ipv6; then
   echo "***"
   echo -e "${NC}"
 fi
+# disable ipv6, see functions.sh
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
@@ -77,14 +76,16 @@ EOF
     sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
   fi
 done
+# install system dependencies, see defaults.sh
+# websearch "bash associative array" for info
 
-# Check if /etc/tor/torrc was configured
 if ! grep /mnt/usb/tor /etc/tor/torrc 1>/dev/null; then
   sudo sed -i -e 's:^DataDirectory .*$:DataDirectory /mnt/usb/tor:' \
     -e 's/^ControlPort .*$/ControlPort 9051/' \
     -e 's/^#CookieAuthentication/CookieAuthentication/' \
     -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 fi
+# check if /etc/tor/torrc is configured
 
 if sudo ufw status | grep 22 > /dev/null ; then
   echo -e "${RED}"
@@ -94,7 +95,6 @@ if sudo ufw status | grep 22 > /dev/null ; then
   echo -e "${NC}"
   _sleep
 else
-  # ufw setup starts
   echo -e "${RED}"
   echo "***"
   echo "Setting up UFW..."
@@ -103,6 +103,7 @@ else
   _sleep 2
   sudo ufw default deny incoming
   sudo ufw default allow outgoing
+  # setting up uncomplicated firewall
 
   echo -e "${RED}"
   echo "***"
@@ -189,7 +190,6 @@ else
   echo "***"
   echo -e "${NC}"
   _sleep 5
-  # ufw setup ends
 fi
 
 echo -e "${RED}"
@@ -209,6 +209,8 @@ EOF
 
 test -d /mnt/usb || sudo mkdir /mnt/usb
 _sleep 2
+# test for /mnt/usb directory, otherwise creates using mkdir
+# websearch "bash Logical OR (||)" for info
 
 if [ -b /dev/sda1 ]; then
   echo -e "${RED}"
@@ -314,6 +316,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   _sleep 2
   sudo mkdir /mnt/salvage/system-setup-salvage
   sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
+  # moves blockchain salvage data to /mnt/salvage if found
 
   echo -e "${RED}"
   echo "***"
@@ -324,7 +327,8 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   sudo rm -rf /mnt/salvage/{docker,tor,swapfile}
   sudo umount /mnt/salvage
   sudo rmdir /mnt/salvage
-  # copies blockchain salvage data to /mnt/salvage if found
+  # remove docker, tor, swap file directories from /mnt/salvage
+  # then unmount and remove /mnt/salvage
 
   echo -e "${RED}"
   echo "***"
@@ -344,7 +348,8 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   _sleep 2
   lsblk -o NAME,SIZE,LABEL /dev/sda1
   _sleep 2
-  # double-check that /dev/sda exists, and that its storage capacity is what you expected
+  # lsblk lists disk by device
+  # double-check that /dev/sda1 exists, and its storage capacity is what you expected
 
   echo -e "${RED}"
   echo "***"
@@ -359,6 +364,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   _docker_datadir_setup
+  # docker data directory setup, see functions.sh
 
   echo -e "${RED}"
   echo "***"
@@ -380,7 +386,7 @@ else
     sudo rmdir /mnt/salvage
   fi
 fi
-# checks for blockchain data to salvage, if found continue to dojo install, and if not found continue to format drive
+# checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
 
 echo -e "${RED}"
 echo "***"
@@ -393,6 +399,7 @@ if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
+# create a partition table with a single partition that takes the whole disk
 # format partition
 
 echo -e "${RED}"
@@ -402,7 +409,7 @@ echo "***"
 echo -e "${NC}"
 lsblk -o NAME,SIZE,LABEL /dev/sda1
 _sleep 2
-# double-check that /dev/sda exists, and that its storage capacity is what you expected
+# double-check that /dev/sda1 exists, and its storage capacity is what you expected
 
 echo -e "${RED}"
 echo "***"
@@ -424,8 +431,11 @@ echo -e "${NC}"
 _sleep 3
 test -d /mnt/usb/tor || sudo mkdir /mnt/usb/tor
 sudo chown -R tor:tor /mnt/usb/tor
+# tests for /mnt/usb/tor directory, if not found it is created
+# then chown is used to change owner to tor user
 
 _docker_datadir_setup
+# docker data directory setup, see functions.sh
 
 echo -e "${RED}"
 echo "***"

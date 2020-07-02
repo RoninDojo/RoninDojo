@@ -41,6 +41,7 @@ case $CHOICE in
             read -n 1 -r -s
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # press any key to return to menu
+            # see defaults.sh
             ;;
         2)
             echo -e "${RED}"
@@ -58,7 +59,8 @@ case $CHOICE in
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs whirlpool
             bash -c "$RONIN_WHIRLPOOL_MENU"
-            # view status, return to menu
+            # view logs, return to menu
+            # see defaults.sh
             ;;
         3)
             echo -e "${RED}"
@@ -76,6 +78,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 5
             bash -c "$RONIN_WHIRLPOOL_MENU"
+            # see defaults.sh
             # start whirlpool, return to menu
             ;;
         4)
@@ -88,6 +91,7 @@ case $CHOICE in
             docker stop whirlpool
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # stop whirlpool, return to menu
+            # see defaults.sh
             ;;
         5)
             echo -e "${RED}"
@@ -102,7 +106,8 @@ case $CHOICE in
             _sleep 2
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, return to menu
-            ;;
+            # see defaults.sh
+	    ;;
         6)
             echo -e "${RED}"
             echo "***"
@@ -116,6 +121,7 @@ case $CHOICE in
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # check for wst install and/or launch wst, return to menu
+            # see defaults.sh
             ;;
         7)
            echo -e "${RED}"
@@ -154,6 +160,7 @@ case $CHOICE in
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # re-initate whirlpool, return to menu
+            # see defaults.sh
             ;;
         8)
             bash ~/RoninDojo/ronin

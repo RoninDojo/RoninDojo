@@ -48,9 +48,10 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
+# ask user to proceed
 
-# Create mount directory if not available
 test ! -d /mnt/usb1 && sudo mkdir /mnt/usb1
+# create mount directory if not available
 
 echo -e "${RED}"
 echo "***"

@@ -9,6 +9,7 @@ CLI_CHECKSUM="$(jq -r '.CLI_CHECKSUM' <<< "${CLI_OBJECT}")"
 CLI_FILENAME="/home/$USER/whirlpool/whirlpool.jar"
 
 sudo systemctl stop whirlpool > /dev/null 2>&1
+# stop whirlpool service
 
 if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
   echo "Corrupted/missing whirlpool binary, attempting to download..."
@@ -21,5 +22,9 @@ if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ];
     exit 1;
   fi;
 fi;
+# if the sha256 hash does not match then warn corrupted/missing
+# download whirlpool cli using wget
+# if sha256 hash does not match, warn it failed to correct
 
 sudo systemctl start whirlpool
+# start whirlpool

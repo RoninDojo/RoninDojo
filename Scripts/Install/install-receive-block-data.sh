@@ -15,6 +15,7 @@ EOF
     _sleep 5 --msg "Returning to menu in"
     bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
+# if data directory is not found then warn and return to menu
 
 echo -e "${RED}"
 echo "***"
@@ -34,6 +35,7 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
+# ask user to proceed
 
 echo -e "${RED}"
 echo "This will take some time, are you sure that you want to do this?"
@@ -46,6 +48,7 @@ while true; do
         * ) echo "Please answer yes or no.";;
     esac
 done
+# ask user to proceed
 
 echo -e "${RED}"
 echo "***"
@@ -56,6 +59,7 @@ _sleep 2
 
 cd "${DOJO_PATH}" || exit
 ./dojo.sh stop
+# stop dojo
 
 echo -e "${RED}"
 echo "***"
@@ -64,6 +68,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
+# remove block data
 
 echo -e "${RED}"
 echo "***"
@@ -91,6 +96,7 @@ echo -e "${NC}"
 _sleep 2
 
 sudo umount /mnt/usb1 && sudo rmdir /mnt/usb1
+# unmount backup drive and remove directory
 
 echo -e "${RED}"
 echo "***"
@@ -98,7 +104,6 @@ echo "You can now safely unplug your backup drive!"
 echo "***"
 echo -e "${NC}"
 _sleep 2
-
 
 echo -e "${RED}"
 echo "***"
@@ -114,3 +119,4 @@ echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
 bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+# return to menu
