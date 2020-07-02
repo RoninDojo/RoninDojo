@@ -35,8 +35,6 @@ _sleep 27
 _check_dojo_perms "${DOJO_PATH}"
 # make sure permissions are properly set for ${DOJO_PATH}
 
-cd "${DOJO_PATH}" || exit
-
 # Enable BITCOIND_RPC_EXTERNAL
 if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
     sed -i 's/BITCOIND_RPC_EXTERNAL=off/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
@@ -51,11 +49,16 @@ cp -ua samourai-dojo/* "$HOME"/dojo/
 # destination file or when the destination file is missing
 # and keep all permissions
 
+cp -ua samourai-dojo/* "${DOJO_PATH%/docker/my-dojo}"/
+
+# Remove $WORK_DIR
 rm -rf "${WORK_DIR}"
 # remove $WORK_DIR
 
-cd - || exit
-# return to previous working path
+# Return to previous working path
+cd "${HOME}" || exit
+
+# Stop dojo and prepare for upgrade
 
 echo -e "${RED}"
 echo "***"

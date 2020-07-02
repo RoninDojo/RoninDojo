@@ -44,6 +44,33 @@ EOF
         sudo gpasswd -a "${USER}" docker
         _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker
     fi
+
+    # Remove any old legacy fstab entries when systemd.mount is active
+    if systemctl is-active --quiet mnt-usb.mount; then
+        if ! _remove_fstab; then
+            cat <<EOF
+${RED}
+***
+Removing legacy fstab entries in favor of the
+systemd mount service...
+***
+${NC}
+EOF
+            _sleep 4 --msg "Starting RoninDojo in"
+        fi
+    fi
+
+    # Remove any legacy ipv6.disable entries from kernel line
+    if ! _remove_ipv6; then
+        cat <<EOF
+${RED}
+***
+Removing ipv6 disable setting in kernel line favor of
+sysctl...
+***
+${NC}
+EOF
+    fi
 }
 
 #
@@ -80,6 +107,39 @@ _sleep() {
 }
 
 #
+# Remove old fstab entries in favor of systemd.mount
+#
+_remove_fstab() {
+    if grep -E '^UUID=.* \/mnt\/usb ext4' /etc/fstab 1>/dev/null; then
+        sudo sed -i '/\/mnt\/usb ext4/d' /etc/fstab
+        return 1
+    fi
+
+    return 0
+}
+
+#
+# Remove ipv6 from kernel line in favor of sysctl
+#
+_remove_ipv6() {
+    if [ -f /boot/cmdline.txt ]; then
+        if grep ipv6.disable /boot/cmdline.txt 1>/dev/null; then
+            sudo sed -i 's/ipv6.disable=1//' /boot/cmdline.txt
+            return 1
+        fi
+        # for RPI hardware
+    elif [ -f /boot/boot.ini ]; then
+        if grep ipv6.disable /boot/boot.ini 1>/dev/null; then
+            sudo sed -i 's/ipv6.disable=1//' /boot/boot.ini
+            return 1
+        fi
+        # for Odroid or RockPro64 hardware
+    fi
+
+    return 0
+}
+
+#
 # Update RoninDojo
 #
 _update_ronin() {
@@ -92,8 +152,10 @@ git repo found! Updating RoninDojo via git fetch
 ${NC}
 EOF
         cd "$HOME/RoninDojo" || exit
+
         # Checkout master branch
         git checkout master
+
         # Fetch remotes
         git fetch --all
 
@@ -102,8 +164,8 @@ EOF
     else
         cat <<EOF > ~/ronin-update.sh
 #!/bin/bash
-sudo rm -rf ~/RoninDojo
-cd ~
+sudo rm -rf "$HOME/RoninDojo"
+cd "$HOME"
 git clone https://code.samourai.io/ronindojo/RoninDojo
 ${RED}
 ***
@@ -111,7 +173,7 @@ Upgrade Complete!
 ***
 ${NC}
 sleep 2
-bash -c ~/RoninDojo/Scripts/Menu/menu-system2.sh
+bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 EOF
         sudo chmod +x ~/ronin-update.sh
         bash ~/ronin-update.sh
@@ -189,8 +251,9 @@ EOF
 _check_dojo_perms() {
     local DOJO_PATH="${1}"
 
+    cd "${DOJO_PATH}" || exit
+
     if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
-        cd "${DOJO_PATH}" || exit
         sudo ./dojo.sh stop
 
         # Change ownership so that we don't
@@ -404,6 +467,7 @@ EOF
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
     sudo systemctl enable "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
+
 
     return 0
 }
