@@ -44,7 +44,7 @@ _sleep 5
 echo -e "${RED}"
 echo "***"
 echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
-echo "***".
+echo "***"
 echo -e "${NC}"
 _sleep 8
 
