@@ -46,7 +46,7 @@ EOF
     fi
 
     # Remove any old legacy fstab entries when systemd.mount is enabled
-    if systemctl is-enabled --quiet mnt-usb.mount; then
+    if [ "$(systemctl is-enabled mnt-usb.mount)" = "enabled" ]; then
         if ! _remove_fstab; then
             cat <<EOF
 ${RED}
