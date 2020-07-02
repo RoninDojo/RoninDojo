@@ -46,9 +46,10 @@ EOF
     fi
 
     # Remove any old legacy fstab entries when systemd.mount is enabled
-    if [ "$(systemctl is-enabled mnt-usb.mount)" = "enabled" ]; then
-        if ! _remove_fstab; then
-            cat <<EOF
+    if [ -f /etc/systemd/system/mnt-usb.mount ] || [ -f /etc/systemd/system/mnt-usb1.mount ]; then
+        if [ "$(systemctl is-enabled mnt-usb.mount 2>/dev/null)" = "enabled" ] || [ "$(systemctl is-enabled mnt-usb1.mount 2>/dev/null)" = "enabled" ]; then
+            if ! _remove_fstab; then
+                cat <<EOF
 ${RED}
 ***
 Removing legacy fstab entries in favor of the
@@ -56,7 +57,8 @@ systemd mount service...
 ***
 ${NC}
 EOF
-            _sleep 4 --msg "Starting RoninDojo in"
+                _sleep 4 --msg "Starting RoninDojo in"
+            fi
         fi
     fi
 
@@ -110,8 +112,8 @@ _sleep() {
 # Remove old fstab entries in favor of systemd.mount
 #
 _remove_fstab() {
-    if grep -E '^UUID=.* \/mnt\/usb ext4' /etc/fstab 1>/dev/null; then
-        sudo sed -i '/\/mnt\/usb ext4/d' /etc/fstab
+    if grep -E '^UUID=.* \/mnt\/usb1? ext4' /etc/fstab 1>/dev/null; then
+        sudo sed -i '/\/mnt\/usb1\? ext4/d' /etc/fstab
         return 1
     fi
 
