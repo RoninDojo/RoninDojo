@@ -1,14 +1,19 @@
 #!/bin/bash
-# shellcheck disable=SC2221,SC2222
+# shellcheck disable=SC2221,SC2222 source=/dev/null
 
 RED=$(tput setaf 1)
 NC=$(tput sgr0)
 # No Color
 
+# Update script
+. "$HOME"/RoninDojo/Scripts/update.sh
+
 #
 # Main function runs at beginning of script execution
 #
 _main() {
+    _update_01 # Check for bridge-utils version update
+
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
         sudo ln -sf "$HOME"/RoninDojo/ronin /usr/local/bin/ronin
@@ -73,6 +78,22 @@ sysctl...
 ${NC}
 EOF
     fi
+}
+
+#
+# Package version match
+#
+_check_pkgver() {
+    local pkgver pkg
+
+    pkgver="${2}"
+    pkg="${1}"
+
+    if pacman -Q "${pkg}" &>/dev/null && [[ $(pacman -Q "${pkg}" | awk '{print$2}') < "${pkgver}" ]]; then
+        return 1
+    fi
+
+    return 0
 }
 
 #
