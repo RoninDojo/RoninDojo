@@ -312,8 +312,6 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   cd "$DOJO_PATH" || exit
   ./dojo.sh start
   # start dojo
-else
-  echo "No Blockchain data found for salvage check 1..."
 fi
 # check for uninstall-salvage, if not found continue
 
@@ -355,7 +353,5 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   cd "$DOJO_PATH" || exit
   ./dojo.sh start
   # start dojo
-else
-  echo "No Blockchain data found for salvage check 2..."
 fi
 # check for system-setup-salvage, if not found continue
