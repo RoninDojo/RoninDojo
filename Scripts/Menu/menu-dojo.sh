@@ -6,9 +6,9 @@
 
 OPTIONS=(1 "Start Dojo"
          2 "Stop Dojo"
-         3 "View Logs"
-         4 "Tor Hidden Service Address"
-         5 "Upgrade Dojo"
+         3 "Restart Dojo"
+         4 "View Logs"
+         5 "Tor Hidden Service"
          6 "Version Info"
          7 "Clean Dojo"
          8 "Next Page"
@@ -90,10 +90,43 @@ case $CHOICE in
             # press any letter to return to menu
             ;;
         3)
+            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
+            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Dojo is already stopped!"
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              bash -c "$RONIN_DOJO_MENU"
+              exit
+            fi
+            # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Restarting Dojo..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh restart
+            # stop dojo
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash -c "$RONIN_DOJO_MENU"
+            # press any letter to return to menu
+            ;;
+        4)
             bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;
-        4)
+        5)
             isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
             if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
               echo -e "${RED}"
@@ -109,7 +142,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Displaying your Tor Onion addresses..."
+            echo "Displaying your Tor Hidden Service addresses..."
             echo -e "${RED}"
             echo "***"
             echo -e "${NC}"
@@ -131,10 +164,6 @@ case $CHOICE in
             bash -c "$RONIN_DOJO_MENU"
             # press any key to return to menu
             # shows .onion and returns to menu
-            ;;
-        5)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
-            # upgrades dojo and returns to menu
             ;;
         6)
             echo -e "${RED}"
