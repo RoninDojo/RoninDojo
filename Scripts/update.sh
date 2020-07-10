@@ -14,7 +14,7 @@ RoninDojo will upgade your package to latest version available
 ${NC}
 EOF
         _sleep 5 --msg "Starting bridge-utils upgrade in"
-        sudo pacman -Q -U --noconfirm http://mirror.archlinuxarm.org/aarch64/extra/bridge-utils-1.7-1-aarch64.pkg.tar.xz
+        sudo pacman -U --noconfirm http://mirror.archlinuxarm.org/aarch64/extra/bridge-utils-1.7-1-aarch64.pkg.tar.xz &>/dev/null
 
         # If existing dojo found, then reboot system to apply changes
         if [ -d "${HOME}/dojo" ]; then

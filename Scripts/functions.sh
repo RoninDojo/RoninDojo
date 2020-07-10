@@ -5,13 +5,13 @@ RED=$(tput setaf 1)
 NC=$(tput sgr0)
 # No Color
 
-# Update script
-. "$HOME"/RoninDojo/Scripts/update.sh
-
 #
 # Main function runs at beginning of script execution
 #
 _main() {
+    # Source update script
+    . "$HOME"/RoninDojo/Scripts/update.sh
+
     _update_01 # Check for bridge-utils version update
 
     # Create symbolic link for main ronin script
