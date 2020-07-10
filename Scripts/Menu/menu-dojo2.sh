@@ -4,10 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Uninstall Dojo"
-         2 "Receive Block Data from Backup"
-         3 "Send Block Data to Backup"
-         4 "Go Back")
+OPTIONS=(1 "Upgrade Dojo"
+         2 "Uninstall Dojo"
+         3 "Receive Block Data from Backup"
+         4 "Send Block Data to Backup"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -19,6 +20,10 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
+            # upgrades dojo and returns to menu
+            ;;
+        2)
             echo -e "${RED}"
             echo "***"
             echo "Uninstalling Dojo in 30s..."
@@ -93,15 +98,15 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # return to menu
             ;;
-        2)
+        3)
             bash ~/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
-        3)
+        4)
             bash ~/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;
-        4)
+        5)
             bash -c "$RONIN_DOJO_MENU"
             # return to main menu
             ;;

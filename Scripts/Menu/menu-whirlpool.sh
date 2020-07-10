@@ -4,13 +4,13 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "View API key and Hiddenservice"
-         2 "View Logs"
-         3 "Start Whirlpool"
-         4 "Stop Whirlpool"
-         5 "Restart Whirlpool"
-         6 "Whirlpool Stat Tool"
-         7 "Reset Whirlpool"
+OPTIONS=(1 "Start Whirlpool"
+         2 "Stop Whirlpool"
+         3 "Restart Whirlpool"
+         4 "View Logs"
+         5 "Tor Hidden Service"
+         6 "Reset Whirlpool"
+         7 "Whirlpool Stat Tool"
          8 "Go Back")
 
 CHOICE=$(dialog --clear \
@@ -23,46 +23,6 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing API pairing key for Whirlpool GUI..."
-            echo "***"
-            echo -e "${NC}"
-
-            echo -e "${RED}"
-            echo "***"
-            echo -e "${NC}"
-            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
-            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            read -n 1 -r -s
-            bash -c "$RONIN_WHIRLPOOL_MENU"
-            # press any key to return to menu
-            # see defaults.sh
-            ;;
-        2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Viewing Whirlpool Logs..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
-            echo "***"
-            echo -e "${NC}"
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs whirlpool
-            bash -c "$RONIN_WHIRLPOOL_MENU"
-            # view logs, return to menu
-            # see defaults.sh
-            ;;
-        3)
             echo -e "${RED}"
             echo "***"
             echo "Starting Whirlpool..."
@@ -81,7 +41,7 @@ case $CHOICE in
             # see defaults.sh
             # start whirlpool, return to menu
             ;;
-        4)
+        2)
             echo -e "${RED}"
             echo "***"
             echo "Stopping Whirlpool..."
@@ -93,7 +53,7 @@ case $CHOICE in
             # stop whirlpool, return to menu
             # see defaults.sh
             ;;
-        5)
+        3)
             echo -e "${RED}"
             echo "***"
             echo "Restarting Whirlpool..."
@@ -108,23 +68,48 @@ case $CHOICE in
             # enable whirlpool at startup, return to menu
             # see defaults.sh
 	    ;;
-        6)
+        4)
             echo -e "${RED}"
             echo "***"
-            echo "Starting Whirlpool Stat Tool..."
-            echo "Press Ctrl+C to exit"
+            echo "Viewing Whirlpool Logs..."
             echo "***"
             echo -e "${NC}"
-            _sleep
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "***"
             echo -e "${NC}"
-            _sleep
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs whirlpool
             bash -c "$RONIN_WHIRLPOOL_MENU"
-            # check for wst install and/or launch wst, return to menu
+            # view logs, return to menu
             # see defaults.sh
             ;;
-        7)
-           echo -e "${RED}"
+        5)
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing Whirlpool Hidden Service address and API key..."
+            echo "***"
+            echo -e "${NC}"
+
+            echo -e "${RED}"
+            echo "***"
+            echo -e "${NC}"
+            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
+            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            read -n 1 -r -s
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # press any key to return to menu
+            # see defaults.sh
+            ;;
+        6)
+            echo -e "${RED}"
             echo "***"
             echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
             echo "***"
@@ -160,6 +145,21 @@ case $CHOICE in
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # re-initate whirlpool, return to menu
+            # see defaults.sh
+            ;;
+        7)
+            echo -e "${RED}"
+            echo "***"
+            echo "Starting Whirlpool Stat Tool..."
+            echo "Press Ctrl+C to exit"
+            echo "***"
+            echo -e "${NC}"
+            _sleep
+            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+            echo -e "${NC}"
+            _sleep
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # check for wst install and/or launch wst, return to menu
             # see defaults.sh
             ;;
         8)
