@@ -1,30 +1,28 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+# shellcheck source=/dev/null
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
-cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
+# Run system checks
+_main
+
+. ~/RoninDojo/Scripts/defaults.sh
+
+test -f ~/.dialogrc || cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 # config file for dialog color
-
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
 
 OPTIONS=(1 "Dojo Menu"
          2 "Whirlpool Menu"
          3 "Electrs Menu"
          4 "Firewall Menu"
          5 "System Menu"
-         6 "System Setup & Installations")
+         6 "System Setup & Installations"
+         7 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -54,4 +52,10 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-install.sh
 	    # runs installs menu
             ;;
+    	255)
+            clear
+	        _sleep 5 --msg "RoninDojo Exiting in"
+	        exit 1
+        # exits Ronin
+	        ;;
 esac

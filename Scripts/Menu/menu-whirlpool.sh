@@ -1,30 +1,22 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
-
-OPTIONS=(1 "View API key"
-         2 "View Logs"
-         3 "View Status"
-         4 "Start Whirlpool"
-         5 "Stop Whirlpool"
-         6 "Restart Whirlpool"
+OPTIONS=(1 "Start Whirlpool"
+         2 "Stop Whirlpool"
+         3 "Restart Whirlpool"
+         4 "View Logs"
+         5 "Tor Hidden Service"
+         6 "Reset Whirlpool"
          7 "Whirlpool Stat Tool"
-         8 "Next Page"
-         9 "Go Back")
+         8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
@@ -33,95 +25,127 @@ case $CHOICE in
         1)
             echo -e "${RED}"
             echo "***"
-            echo "Showing API pairing key for Whirlpool GUI..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
-            cat ~/whirlpool/whirlpool-cli-config.properties | grep cli.apiKey= | cut -c 12-
-            read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # press any key to return to menu
-            ;;
-        2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Viewing Whirlpool CLI Logs..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
-            echo "***"
-            echo -e "${NC}"
-            sudo journalctl -r -u whirlpool.service
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # view whirlpool cli logs via journalctl, return to menu
-            # note that it's in order of newest to oldest, and blob means that it's repeat information
-            ;;
-        3)
-            echo -e "${RED}"
-            echo "***"
-            echo "Viewing Whirlpool Status..."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
-            echo "***"
-            echo -e "${NC}"
-            sudo watch -n 0.2 systemctl status whirlpool --lines=10
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # view status, return to menu
-            ;;
-        4)
-            echo -e "${RED}"
-            echo "***"
             echo "Starting Whirlpool..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            sudo systemctl start whirlpool
+            _sleep 2
+            docker start whirlpool
 
             echo -e "${RED}"
             echo "***"
             echo "Don't forget to login to GUI to unlock mixing!"
             echo "***"
             echo -e "${NC}"
-            sleep 5s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            _sleep 5
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # see defaults.sh
             # start whirlpool, return to menu
             ;;
-        5)
+        2)
             echo -e "${RED}"
             echo "***"
             echo "Stopping Whirlpool..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            sudo systemctl stop whirlpool
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            _sleep 2
+            docker stop whirlpool
+            bash -c "$RONIN_WHIRLPOOL_MENU"
             # stop whirlpool, return to menu
+            # see defaults.sh
             ;;
-        6)
+        3)
             echo -e "${RED}"
             echo "***"
             echo "Restarting Whirlpool..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            sudo systemctl restart whirlpool
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            _sleep 2
+            docker stop whirlpool
+            _sleep 5
+            docker start whirlpool
+            _sleep 2
+            bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, return to menu
+            # see defaults.sh
+	    ;;
+        4)
+            echo -e "${RED}"
+            echo "***"
+            echo "Viewing Whirlpool Logs..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "***"
+            echo -e "${NC}"
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs whirlpool
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # view logs, return to menu
+            # see defaults.sh
+            ;;
+        5)
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing Whirlpool Hidden Service address and API key..."
+            echo "***"
+            echo -e "${NC}"
+
+            echo -e "${RED}"
+            echo "***"
+            echo -e "${NC}"
+            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
+            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            read -n 1 -r -s
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # press any key to return to menu
+            # see defaults.sh
+            ;;
+        6)
+            echo -e "${RED}"
+            echo "***"
+            echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
+            echo "***"
+            echo -e "${NC}"
+
+            read -rp "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
+            case $yn in
+                [Y/y]* ) echo -e "${RED}"
+                         echo "***"
+                         echo "Re-initiating Whirlpool..."
+                         echo "***"
+                         echo -e "${NC}"
+                         cd "$DOJO_PATH" || exit
+                         ./dojo.sh whirlpool reset
+                         _sleep
+                         echo -e "${RED}"
+                         echo "***"
+                         echo "Re-initation complete...Leave APIkey blank when pairing to GUI"
+                         echo "***"
+                         echo -e "${NC}"
+                         _sleep 5
+                         ;;
+
+                [N/n]* ) echo -e "${RED}"
+                         echo "***"
+                         echo "Returning to menu..."
+                         echo "***"
+                         echo -e "${NC}"
+                         _sleep 2
+                         ;;
+                * ) echo "Please answer yes or no.";;
+            esac
+            _sleep
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # re-initate whirlpool, return to menu
+            # see defaults.sh
             ;;
         7)
             echo -e "${RED}"
@@ -130,18 +154,15 @@ case $CHOICE in
             echo "Press Ctrl+C to exit"
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
             bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
-            sleep 1s
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            _sleep
+            bash -c "$RONIN_WHIRLPOOL_MENU"
             # check for wst install and/or launch wst, return to menu
+            # see defaults.sh
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool2.sh
-            # Go to next page
-            ;;
-        9)
             bash ~/RoninDojo/ronin
             # return to menu
             ;;

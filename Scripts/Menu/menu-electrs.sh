@@ -1,85 +1,43 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
-
-OPTIONS=(1 "View Logs"
-         2 "Start Electrs"
-         3 "Stop Electrs"
-         4 "Restart Electrs"
-         5 "Show Tor Hiddenservice Address"
+OPTIONS=(1 "Start Electrs"
+         2 "Stop Electrs"
+         3 "Restart Electrs"
+         4 "View Logs"
+         5 "Tor Hidden Service"
          6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
 clear
 case $CHOICE in
 	1)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
-            # check if electrs is already installed 
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing Electrs Logs..."
-            echo "***"
-            sleep 1s
-
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            sleep 2s
-            sudo ~/dojo/docker/my-dojo/dojo.sh logs indexer
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
-            # start electrs, return to menu
-            ;;
-	2)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
-                echo -e "${RED}"
-                echo "***"
-                echo "Electrs is not installed!"
-                echo "***"
-                echo -e "${NC}"
-                sleep 2s
-
-                echo -e "${RED}"
-                echo "***"
-                echo "Returning to menu..."
-                echo "***"
-                echo -e "${NC}"
-                sleep 1s
-                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
-                exit
-            fi 
+            fi
             # check if electrs is already installed
 
             echo -e "${RED}"
@@ -87,99 +45,134 @@ case $CHOICE in
             echo "Starting Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            sudo docker start indexer
+            _sleep 2
+            docker start indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
-        3)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+        2)
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Stopping Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            sudo docker stop indexer
+            _sleep 2
+            docker stop indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # stop electrs, return to menu
             ;;
-        4)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+        3)
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
             echo "Restarting Electrs..."
             echo "***"
             echo -e "${NC}"
-            sleep 2s
-            sudo docker restart indexer
+            _sleep 2
+            docker restart indexer
             bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
             # restart electrs, return to menu
             ;;
-        5)
-            if [ ! -f ~/dojo/docker/my-dojo/indexer/electrs.toml ]; then
+        4)
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Electrs is not installed!"
                 echo "***"
                 echo -e "${NC}"
-                sleep 2s
+                _sleep 2
 
                 echo -e "${RED}"
                 echo "***"
                 echo "Returning to menu..."
                 echo "***"
                 echo -e "${NC}"
-                sleep 1s
+                _sleep
                 bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
-            fi 
+            fi
             # check if electrs is already installed
-            
+
             echo -e "${RED}"
             echo "***"
-            echo "Displaying Electrs Tor Hiddenservice Address to connect to Electrum..."
+            echo "Showing Electrs Logs..."
+            echo "***"
+            _sleep
+
+            echo "***"
+            echo "Press Ctrl + C to exit at any time."
             echo "***"
             echo -e "${NC}"
-            V3_ADDR_ELECTRS=$( sudo docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs indexer
+            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            # start electrs, return to menu
+            ;;
+        5)
+            if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
+                echo -e "${RED}"
+                echo "***"
+                echo "Electrs is not installed!"
+                echo "***"
+                echo -e "${NC}"
+                _sleep 2
+
+                echo -e "${RED}"
+                echo "***"
+                echo "Returning to menu..."
+                echo "***"
+                echo -e "${NC}"
+                _sleep
+                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+                exit
+            fi
+            # check if electrs is already installed
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Displaying Electrs Tor Hiddenservice address..."
+            echo "***"
+            echo -e "${NC}"
             echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
-            sleep 1s
+            _sleep
             # displaying electrs tor address to connect to electrum
 
             echo -e "${RED}"
@@ -187,7 +180,7 @@ case $CHOICE in
             echo "Check the RoninDojo Wiki for pairing information."
             echo "***"
             echo -e "${NC}"
-            sleep 1s
+            _sleep
 
             echo -e "${RED}"
             echo "***"

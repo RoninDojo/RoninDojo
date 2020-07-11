@@ -1,61 +1,52 @@
 #!/bin/bash
+# shellcheck source=/dev/null disable=1004
 
-RPC_USER=$(sudo cat ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf | grep BITCOIND_RPC_USER= | cut -c 19-)
-RPC_PASS=$(sudo cat ~/dojo/docker/my-dojo/conf/docker-bitcoind.conf | grep BITCOIND_RPC_PASSWORD= | cut -c 23-)
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 
-###### Modify docker-indexer.conf.tpl to turn ON indexer ######
-sudo sed -i '9d' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
-sudo sed -i '9i INDEXER_INSTALL=on' ~/dojo/docker/my-dojo/conf/docker-indexer.conf.tpl
+sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
+sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
+# modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer
 
-###### Modify docker-node.conf to select local_indexer ######
-sudo sed -i '25d' ~/dojo/docker/my-dojo/conf/docker-node.conf
-sudo sed -i '25i NODE_ACTIVE_INDEXER=local_indexer' ~/dojo/docker/my-dojo/conf/docker-node.conf
-
-###### Create electrs.toml for Electrs Dockerfile ######
-# use EOF to put lines one after another
-
-touch ~/dojo/docker/my-dojo/indexer/electrs.toml
-chmod 600 ~/dojo/docker/my-dojo/indexer/electrs.toml || exit 1 
-cat > ~/dojo/docker/my-dojo/indexer/electrs.toml <<EOF
-cookie = "$RPC_USER:$RPC_PASS"
+cat > "${DOJO_PATH}"/indexer/electrs.toml <<EOF
+cookie = "$RPC_USER_CONF:$RPC_PASS_CONF"
 server_banner = "Welcome to your RoninDojo Electrs Server!"
 EOF
+chmod 600 "${DOJO_PATH}"/indexer/electrs.toml || exit 1
+# create electrs.toml for electrs dockerfile
+# use EOF to put lines one after another
 
-###### Modify tor/restart.sh for Electrs HiddenService ######
+
+sudo sed -i '/\if \[ "\$EXPLORER_INSTALL\" \=\= \"on\" \]\; then/i\
+if [ "$INDEXER_INSTALL" == "on" ]; then\
+\  tor_options+=(--HiddenServiceDir /var/lib/tor/hsv3electrs)\
+\  tor_options+=(--HiddenServiceVersion 3)\
+\  tor_options+=(--HiddenServicePort "50001 172.28.1.6:50001")\
+\  tor_options+=(--HiddenServiceDirGroupReadable 1)\
+fi\
+' "${DOJO_PATH}"/tor/restart.sh
+# modify tor/restart.sh for electrs hidden service
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '27G' ~/dojo/docker/my-dojo/tor/restart.sh
-sudo sed -i '28i if [ "$INDEXER_INSTALL" == "on" ]; then' ~/dojo/docker/my-dojo/tor/restart.sh
-sudo sed -i '29i \  tor_options+=(--HiddenServiceDir /var/lib/tor/hsv3electrs)' ~/dojo/docker/my-dojo/tor/restart.sh
-sudo sed -i '30i \  tor_options+=(--HiddenServiceVersion 3)' ~/dojo/docker/my-dojo/tor/restart.sh
-sudo sed -i '31i \  tor_options+=(--HiddenServicePort "50001 172.28.1.6:50001")' ~/dojo/docker/my-dojo/tor/restart.sh
-sudo sed -i '32i \  tor_options+=(--HiddenServiceDirGroupReadable 1)' ~/dojo/docker/my-dojo/tor/restart.sh
-sudo sed -i '33i fi' ~/dojo/docker/my-dojo/tor/restart.sh
+# we append everything above the EXPLORER if statement
 
-
-###### Add indexer to tor section of docker-compose.yaml ######
+sed -i '/docker-tor.conf/i\      - ./conf/docker-indexer.conf' "${DOJO_PATH}"/docker-compose.yaml
+# add indexer to tor section of docker-compose.yaml
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '80i \      - ./conf/docker-indexer.conf' ~/dojo/docker/my-dojo/docker-compose.yaml
 
-
-###### Modify dojo.sh for electrs ######
+sudo sed -i '/onion() {/a\
+\  if [ "$INDEXER_INSTALL" == "on" ]; then\
+\    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\
+\    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"\
+\  fi\
+' "${DOJO_PATH}"/dojo.sh
+# modify dojo.sh for electrs
 # using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '273i \  if [ "$INDEXER_INSTALL" == "on" ]; then' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '274i \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '275i \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '276i \  fi' ~/dojo/docker/my-dojo/dojo.sh
-sudo sed -i '276G' ~/dojo/docker/my-dojo/dojo.sh
 
+sudo sed -i \
+-e 's/--indexer-rpc-addr=.*$/--electrum-rpc-addr="172.28.1.6:50001"/' \
+-e '/--cookie=.*$/d' \
+-e 's/^addrindexrs .*$/electrs "${indexer_options[@]}"/' "${DOJO_PATH}"/indexer/restart.sh
+# modify indexer/restart.sh for electrs
 
-###### Modify indexer/restart.sh for Electrs ######
-# using the backslash \ along with sed insert command so that the spaces are not ignored
-sudo sed -i '9d' ~/dojo/docker/my-dojo/indexer/restart.sh
-sudo sed -i '9i \  --electrum-rpc-addr="172.28.1.6:50001"' ~/dojo/docker/my-dojo/indexer/restart.sh
-sudo sed -i '11d' ~/dojo/docker/my-dojo/indexer/restart.sh
-sudo sed -i '21i electrs "${indexer_options[@]}"' ~/dojo/docker/my-dojo/indexer/restart.sh
-sudo sed -i '22d' ~/dojo/docker/my-dojo/indexer/restart.sh
+wget -O "${DOJO_PATH}"/indexer/Dockerfile https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
+# replace indexer dockerfile for electrs usage
 
-
-###### Modify Indexer Dockerfile to Electrs ######
-sudo rm -rf ~/dojo/docker/my-dojo/indexer/Dockerfile
-cd ~/dojo/docker/my-dojo/indexer
-wget https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile

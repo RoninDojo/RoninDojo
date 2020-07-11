@@ -1,16 +1,15 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
 echo -e "${RED}"
 echo "***"
 echo "Checking for Whirlpool Stat Tool..."
 echo "***"
 echo -e "${NC}"
-sleep 2s
+_sleep 2
 
 if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
     bash ~/RoninDojo/Scripts/Install/install-wst.sh
@@ -20,45 +19,42 @@ else
     echo "Whirlpool Stat Tool Already Installed!";
     echo "***"
     echo -e "${NC}"
-    sleep 2s
+    _sleep 2
 
     echo -e "${RED}"
     echo "***"
     echo "Launching Whirlpool Stat Tool..."
     echo "***"
     echo -e "${NC}"
-    sleep 2s
-    cd ~/wst/whirlpool_stats/whirlpool_stats
+    _sleep 2
+    cd "$HOME"/wst/whirlpool_stats/whirlpool_stats || exit
 fi
+# if wst.py is not found then run install script
+# else inform user and launch
 
 echo -e "${RED}"
 echo "Whirlpool Stat Tool INSTRUCTIONS:"
 echo -e "${NC}"
-sleep 2s
-
-echo -e "${NC}"
-echo "Set Socks5 proxy before downloading data from OXT:"
-echo -e "${NC}"
-echo "socks5 127.0.0.1:9050"
-sleep 2s
+_sleep 2
+# instructions are given to user
 
 echo -e "${RED}"
 echo "Download in the working directory a snaphot for the 0.01BTC pools:"
 echo -e "${NC}"
 echo "download 001"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Load and compute the statistcs for the snaphot:"
 echo -e "${NC}"
 echo "load 001"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Display the metrics computed for a transaction stored in the active snapshot:"
 echo -e "${NC}"
 echo "score <ENTER TXID OF DESIRED 0.01 BTC transaction>"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
 echo "Sample output..."
@@ -69,14 +65,19 @@ echo   "spread = 89%"
 echo "Forward-looking metrics for the outputs of Tx0s having this transaction as their first mix:"
 echo   "anonset = 127"
 echo   "spread = 76%"
-sleep 2s
+_sleep 2
 
 echo -e "${RED}"
+echo "***"
+echo "Type: 'quit' at anytime to exit WST."
+echo "***"
+echo ""
 echo "***"
 echo "Press any letter to continue..."
 echo "***"
 echo -e "${NC}"
-
 read -n 1 -r -s
+# press any letter to return
 
-python3 wst.py
+python3 wst.py -w=/tmp -s=127.0.0.1:9050
+# run wst.py using python3

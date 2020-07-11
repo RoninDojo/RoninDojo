@@ -1,15 +1,12 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
 options=(1 "Setup System & Install Dependencies" off    # any option can be set to default to "on"
          2 "Install Dojo" off
-         3 "Install Whirlpool" off
-         4 "Go Back" off)
+         3 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices
@@ -24,10 +21,6 @@ do
             # runs dojo install script
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Install/install-whirlpool.sh
-            # runs electrs setup script
-            ;;
-        4)
             bash ~/RoninDojo/ronin
             # return to main ronin menu
             ;;

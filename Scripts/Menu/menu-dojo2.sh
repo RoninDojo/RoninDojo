@@ -1,78 +1,79 @@
 #!/bin/bash
+# shellcheck source=/dev/null
 
-RED='\033[0;31m'
-# used for color with ${RED}
-NC='\033[0m'
-# No Color
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
 
-HEIGHT=22
-WIDTH=76
-CHOICE_HEIGHT=16
-TITLE="RoninDojo"
-MENU="Choose one of the following options:"
-
-OPTIONS=(1 "Uninstall Dojo"
-         2 "Receive Block Data from Backup"
-         3 "Send Block Data to Backup"
-         4 "Go Back")
+OPTIONS=(1 "Upgrade Dojo"
+         2 "Uninstall Dojo"
+         3 "Receive Block Data from Backup"
+         4 "Send Block Data to Backup"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
                 --menu "$MENU" \
-                $HEIGHT $WIDTH $CHOICE_HEIGHT \
+                "$HEIGHT" "$WIDTH" "$CHOICE_HEIGHT" \
                 "${OPTIONS[@]}" \
                 2>&1 >/dev/tty)
 
 clear
 case $CHOICE in
         1)
+            bash ~/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
+            # upgrades dojo and returns to menu
+            ;;
+        2)
             echo -e "${RED}"
             echo "***"
             echo "Uninstalling Dojo in 30s..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
 
             echo -e "${RED}"
             echo "***"
             echo "You will be asked if you wish to salvage any data..."
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
 
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Users with a fully sync'd Blockchain should answer yes to salvage!"
             echo "***"
             echo -e "${NC}"
-            sleep 5s
+            _sleep 5
 
             echo -e "${RED}"
             echo "***"
             echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            sleep 15s
+            _sleep 15
 
             echo -e "${RED}"
             echo "Do you want to salvage your Blockchain data?"
             echo -e "${NC}"
             while true; do
-                read -p "Y/N?: " yn
+                read -rp "Y/N?: " yn
                 case $yn in
                     [Yy]* ) echo -e "${RED}"
                             echo "***"
                             echo "Copying block data to temporary directory..."
                             echo "***"
                             echo -e "${NC}"
-                            sleep 2s
-			    cd ~/dojo/docker/my-dojo/
-			    sudo ./dojo.sh stop
-                            sudo mkdir /uninstall-salvage/
-                            sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/chainstate/ /mnt/usb/uninstall-salvage/
-                            sudo cp -rv /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/blocks/ /mnt/usb/uninstall-salvage/
-                            # stops dojo, copies blockchain data to uninstall-salvage to be used by the dojo install script
-			    break;;
+                            _sleep 2
+                            cd "$DOJO_PATH" || exit
+                            ./dojo.sh stop
+                            # stop dojo
+
+                            test ! -d /mnt/usb/uninstall-salvage && sudo mkdir /mnt/usb/uninstall-salvage
+                            # check if salvage directory exist
+
+                            sudo mv -v /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb/uninstall-salvage/
+                            # copies blockchain data to uninstall-salvage to be used by the dojo install script
+                            break;;
                     [Nn]* ) break;;
                     * ) echo "Please answer yes or no.";;
                 esac
@@ -83,12 +84,13 @@ case $CHOICE in
             echo "Uninstalling Dojo..."
             echo "***"
             echo -e "${NC}"
-            cd ~/dojo/docker/my-dojo/
-            sudo ./dojo.sh uninstall
-	    sudo rm -rf ~/dojo
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh uninstall
+            sudo rm -rf ~/dojo
+            cd "${HOME}" || exit
             # uninstall dojo
 
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Complete!"
             echo "***"
@@ -96,16 +98,16 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # return to menu
             ;;
-        2)
+        3)
             bash ~/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
-        3)
+        4)
             bash ~/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;
-        4)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+        5)
+            bash -c "$RONIN_DOJO_MENU"
             # return to main menu
             ;;
 esac
