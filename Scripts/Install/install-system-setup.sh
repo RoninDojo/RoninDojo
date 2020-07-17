@@ -197,14 +197,14 @@ _sleep 3
 cat <<EOF
 ${RED}
 ***
-Creating /mnt/usb directory...
+Creating "${INSTALL_DIR}" directory...
 ***
 ${NC}
 EOF
 
-test -d /mnt/usb || sudo mkdir /mnt/usb
+test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
 _sleep 2
-# test for /mnt/usb directory, otherwise creates using mkdir
+# test for ${INSTALL_DIR} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
 if [ -b /dev/sda1 ]; then
@@ -250,9 +250,9 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 /mnt/usb
+  sudo mount /dev/sda1 "${INSTALL_DIR}"
   _sleep
-  # mount main storage drive to /mnt/usb directory
+  # mount main storage drive to ${INSTALL_DIR} directory
 
   echo -e "${RED}"
   echo "***"
@@ -273,7 +273,7 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   _sleep 4
   # checks disk info
 
-  create_swap --file /mnt/usb/swapfile --size 2G
+  create_swap --file "${INSTALL_DIR}"/swapfile --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   _docker_datadir_setup
@@ -331,9 +331,9 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 /mnt/usb
+  sudo mount /dev/sda1 "${INSTALL_DIR}"
   _sleep
-  # mount main storage drive to /mnt/usb directory
+  # mount main storage drive to ${INSTALL_DIR} directory
 
   echo -e "${RED}"
   echo "***"
@@ -355,7 +355,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   _sleep 4
   # checks disk info
 
-  create_swap --file /mnt/usb/swapfile --size 2G
+  create_swap --file "${INSTALL_DIR}"/swapfile --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   _docker_datadir_setup
@@ -390,7 +390,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
+if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "${INSTALL_DIR}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
@@ -415,7 +415,7 @@ df -h /dev/sda1
 _sleep 5
 # checks disk info
 
-create_swap --file /mnt/usb/swapfile --size 2G
+create_swap --file "${INSTALL_DIR}"/swapfile --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 echo -e "${RED}"
@@ -424,9 +424,9 @@ echo "Creating Tor directory on the external SSD..."
 echo "***"
 echo -e "${NC}"
 _sleep 3
-test -d /mnt/usb/tor || sudo mkdir /mnt/usb/tor
-sudo chown -R tor:tor /mnt/usb/tor
-# tests for /mnt/usb/tor directory, if not found it is created
+test -d "${INSTALL_DIR_TOR}" || sudo mkdir "${INSTALL_DIR_TOR}"
+sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
+# tests for ${INSTALL_DIR_TOR} directory, if not found it is created
 # then chown is used to change owner to tor user
 
 _docker_datadir_setup

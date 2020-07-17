@@ -46,8 +46,8 @@ case $CHOICE in
             sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
             sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")
             echo "Internal: ${sd} remaining"
-            hdd_free_ratio=$(printf "%s" "$(df  | grep "/mnt/usb" | awk '{ print $4/$2*100 }')") 2>/dev/null
-            hdd=$(printf "%s (%s%%)" "$(df -h | grep "/mnt/usb" | awk '{ print $4 }')" "${hdd_free_ratio}")
+            hdd_free_ratio=$(printf "%s" "$(df  | grep "${INSTALL_DIR}" | awk '{ print $4/$2*100 }')") 2>/dev/null
+            hdd=$(printf "%s (%s%%)" "$(df -h | grep "${INSTALL_DIR}" | awk '{ print $4 }')" "${hdd_free_ratio}")
             echo "External: ${hdd} remaining"
             # disk space info
 

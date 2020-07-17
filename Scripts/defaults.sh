@@ -104,31 +104,31 @@ if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ]; then
 fi
 
 # whirlpool
-if sudo test -f /mnt/usb/docker/volumes/my-dojo_data-whirlpool/_data/.whirlpool-cli/whirlpool-cli-config.properties; then
-    WHIRLPOOL_API_KEY=$(sudo grep cli.apiKey /mnt/usb/docker/volumes/my-dojo_data-whirlpool/_data/.whirlpool-cli/whirlpool-cli-config.properties | cut -d '=' -f2)
+if sudo test -f "${DOCKER_VOLUME_WP}"/_data/.whirlpool-cli/whirlpool-cli-config.properties; then
+    WHIRLPOOL_API_KEY=$(sudo grep cli.apiKey "${DOCKER_VOLUME_WP}"/_data/.whirlpool-cli/whirlpool-cli-config.properties | cut -d '=' -f2)
 fi
 
 #
 # Tor Hidden Service Addresses
 #
 # dojo maintanance tool
-if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo; then
-    V3_ADDR_API=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3dojo/hostname)
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3dojo; then
+    V3_ADDR_API=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3dojo/hostname)
 fi
 
 # whirlpool
-if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool; then
-    V3_ADDR_WHIRLPOOL=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3whirlpool/hostname)
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3whirlpool; then
+    V3_ADDR_WHIRLPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3whirlpool/hostname)
 fi
 
 # explorer
-if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer; then
-    V3_ADDR_EXPLORER=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3explorer/hostname)
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer; then
+    V3_ADDR_EXPLORER=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer/hostname)
 fi
 
 # electrum server
-if sudo test -d /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs; then
-    V3_ADDR_ELECTRS=$(sudo cat /mnt/usb/docker/volumes/my-dojo_data-tor/_data/hsv3electrs/hostname)
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3electrs; then
+    V3_ADDR_ELECTRS=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3electrs/hostname)
 fi
 
 # ronindojo menu paths
