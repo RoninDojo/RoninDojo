@@ -39,6 +39,18 @@ DOJO_PATH="$HOME/dojo/docker/my-dojo"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 SAMOURAI_COMMITISH="v1.7.0" # empty defaults to master
 
+#
+# Filesystem Defaults
+#
+INSTALL_DIR="/mnt/usb"
+INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
+INSTALL_DIR_DOCKER="${INSTALL_DIR}/docker"
+DOCKER_VOLUMES="${INSTALL_DIR_DOCKER}/volumes"
+DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
+DOCKER_VOLUME_WP="${DOCKER_VOLUMES}/my-dojo_data-whirlpool"
+DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
+SALVAGE_MOUNT="/mnt/usb1"
+
 # Workaround when on x86 systems and autologin is enabled for the user account
 if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then
     USER=$(getent group 1000 | cut -d ':' -f4)
