@@ -294,7 +294,7 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   cd "$DOJO_PATH" || exit
   ./dojo.sh stop
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-  sudo mv -v "${INSTALL_DIR}"/uninstall-salvage/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+  sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
   # websearch "bash Logical OR (||)" for info
   # stops dojo and removes new data directories
@@ -315,7 +315,7 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
 fi
 # check for uninstall-salvage, if not found continue
 
-if sudo test -d "${INSTALL_DIR}"/system-setup-salvage; then
+if sudo test -d "${INSTALL_DIR_SYSTEM}"; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -335,7 +335,7 @@ if sudo test -d "${INSTALL_DIR}"/system-setup-salvage; then
   cd "$DOJO_PATH" || exit
   ./dojo.sh stop
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-  sudo mv -v "${INSTALL_DIR}"/system-setup-salvage/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+  sudo mv -v "${INSTALL_DIR_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
   # websearch "bash Logical OR (||)" for info
   # stops dojo and removes new data directories

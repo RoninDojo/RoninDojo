@@ -68,10 +68,10 @@ case $CHOICE in
                             ./dojo.sh stop
                             # stop dojo
 
-                            test ! -d "${INSTALL_DIR}"/uninstall-salvage && sudo mkdir "${INSTALL_DIR}"/uninstall-salvage
+                            test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
                             # check if salvage directory exist
 
-                            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR}"/uninstall-salvage/
+                            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"
                             # copies blockchain data to uninstall-salvage to be used by the dojo install script
                             break;;
                     [Nn]* ) break;;

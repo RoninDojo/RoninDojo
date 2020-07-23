@@ -77,7 +77,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo cp -av "${SALVAGE_MOUNT}"/system-setup-salvage/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+sudo cp -av "${SALVAGE_MOUNT_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"
