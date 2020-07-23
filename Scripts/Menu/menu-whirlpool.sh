@@ -98,7 +98,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
-            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
+            echo "Whirlpool API hidden service address = http://${V3_ADDR_WHIRLPOOL}"
             echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
