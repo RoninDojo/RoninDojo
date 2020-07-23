@@ -42,7 +42,7 @@ fi
 # enable BITCOIND_RPC_EXTERNAL
 
 cd "${WORK_DIR}" || exit
-git clone -b "${SAMOURAI_BRANCH:-master}" "$SAMOURAI_REPO" # temporary
+git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" # temporary
 
 cp -ua samourai-dojo/* "$HOME"/dojo/
 # copy only when the SOURCE file is newer than the
