@@ -48,10 +48,9 @@ else
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
     _sleep
-    sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
-    -e 's/^ControlPort .*$/ControlPort 9051' \
-    -e 's/^#CookieAuthentication/CookieAuthentication/' \
-    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+
+    # Torrc setup
+    _setup_tor
 
     if [ ! -d /mnt/usb/tor ]; then
         sudo mkdir /mnt/usb/tor

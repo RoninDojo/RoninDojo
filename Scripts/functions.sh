@@ -130,6 +130,24 @@ _sleep() {
 }
 
 #
+# Setup torrc
+#
+_setup_tor() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh # FIX ME!
+
+    if ! grep /mnt/usb/tor /etc/tor/torrc 1>/dev/null; then
+        sudo sed -i -e 's:^DataDirectory .*$:DataDirectory /mnt/usb/tor:' \
+            -e 's/^#ControlPort .*$/ControlPort 9051/' \
+            -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
+
+        if ! grep "CookieAuthFileGroupReadable" 1>/dev/null; then
+            sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+        fi
+    fi
+    # check if /etc/tor/torrc is configured
+}
+
+#
 # Remove old fstab entries in favor of systemd.mount
 #
 _remove_fstab() {
