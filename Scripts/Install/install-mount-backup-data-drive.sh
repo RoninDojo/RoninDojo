@@ -32,7 +32,7 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Mount /dev/sdb1 to /mnt/usb1..."
+echo "Preparing to Mount /dev/sdb1 to ${SALVAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 3
@@ -50,17 +50,17 @@ while true; do
 done
 # ask user to proceed
 
-test ! -d /mnt/usb1 && sudo mkdir /mnt/usb1
+test ! -d "${SALVAGE_MOUNT}" && sudo mkdir "${SALVAGE_MOUNT}"
 # create mount directory if not available
 
 echo -e "${RED}"
 echo "***"
-echo "Mounting /dev/sdb1 to /mnt/usb1..."
+echo "Mounting /dev/sdb1 to ${SALVAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo mount /dev/sdb1 /mnt/usb1
-# mount backup drive to /mnt/usb1 directory
+sudo mount /dev/sdb1 "${SALVAGE_MOUNT}"
+# mount backup drive to ${SALVAGE_MOUNT} directory
 
 echo -e "${RED}"
 echo "***"

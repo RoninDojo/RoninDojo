@@ -135,8 +135,8 @@ _sleep() {
 _setup_tor() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh # FIX ME!
 
-    if ! grep /mnt/usb/tor /etc/tor/torrc 1>/dev/null; then
-        sudo sed -i -e 's:^DataDirectory .*$:DataDirectory /mnt/usb/tor:' \
+    if ! grep "${INSTALL_DIR_TOR}" /etc/tor/torrc 1>/dev/null; then
+        sudo sed -i -e "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" \
             -e 's/^#ControlPort .*$/ControlPort 9051/' \
             -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
 
@@ -236,7 +236,7 @@ Now configuring docker to use the external SSD...
 ${NC}
 EOF
     _sleep 3
-    test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
+    test -d "${INSTALL_DIR_DOCKER}" || sudo mkdir "${INSTALL_DIR_DOCKER}"
     # makes directory to store docker/dojo data
 
     if [ -d /etc/docker ]; then
@@ -261,9 +261,9 @@ EOF
 
     # We can skip this if daemon.json was previous created
     if [ ! -f /etc/docker/daemon.json ]; then
-        sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-{ "data-root": "/mnt/usb/docker" }
-EOF'
+        sudo bash -c "cat << EOF > /etc/docker/daemon.json
+{ \"data-root\": \"${INSTALL_DIR_DOCKER}\" }
+EOF"
         cat <<EOF
 ${RED}
 ***
@@ -413,8 +413,8 @@ ${NC}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
-        # Make sure to stop tor and docker when mount point is /mnt/usb
-        if [ "${mountpoint}" = "/mnt/usb" ]; then
+        # Make sure to stop tor and docker when mount point is ${INSTALL_DIR}
+        if [ "${mountpoint}" = "${INSTALL_DIR}" ]; then
             for x in tor docker; do
                 sudo systemctl stop "${x}"
             done

@@ -197,23 +197,23 @@ _sleep 3
 cat <<EOF
 ${RED}
 ***
-Creating /mnt/usb directory...
+Creating "${INSTALL_DIR}" directory...
 ***
 ${NC}
 EOF
 
-test -d /mnt/usb || sudo mkdir /mnt/usb
+test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
 _sleep 2
-# test for /mnt/usb directory, otherwise creates using mkdir
+# test for ${INSTALL_DIR} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
 if [ -b /dev/sda1 ]; then
   echo -e "${RED}"
   echo "***"
-  echo "Creating /mnt/salvage directory..."
+  echo "Creating ${SALVAGE_DIR} directory..."
   echo "***"
   echo -e "${NC}"
-  sudo mkdir /mnt/salvage
+  sudo mkdir "${SALVAGE_DIR}"
   _sleep 2
 
   echo -e "${RED}"
@@ -222,7 +222,7 @@ if [ -b /dev/sda1 ]; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 /mnt/salvage
+  sudo mount /dev/sda1 "${SALVAGE_DIR}"
 else
   echo -e "${RED}"
   echo "***"
@@ -231,17 +231,17 @@ else
   echo -e "${NC}"
   _sleep 2
 fi
-# mount main storage drive to /mnt/salvage directory if found in prep for data salvage
+# mount main storage drive to "${SALVAGE_DIR}" directory if found in prep for data salvage
 
-if sudo test -d /mnt/salvage/uninstall-salvage; then
+if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sudo rm -rf /mnt/salvage/{swapfile,docker,tor}
-  sudo umount /mnt/salvage
-  sudo rmdir /mnt/salvage
+  sudo rm -rf "${SALVAGE_DIR}"/{swapfile,docker,tor}
+  sudo umount "${SALVAGE_DIR}"
+  sudo rmdir "${SALVAGE_DIR}"
   # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
   echo -e "${RED}"
@@ -250,9 +250,9 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 /mnt/usb
+  sudo mount /dev/sda1 "${INSTALL_DIR}"
   _sleep
-  # mount main storage drive to /mnt/usb directory
+  # mount main storage drive to ${INSTALL_DIR} directory
 
   echo -e "${RED}"
   echo "***"
@@ -273,7 +273,7 @@ if sudo test -d /mnt/salvage/uninstall-salvage; then
   _sleep 4
   # checks disk info
 
-  create_swap --file /mnt/usb/swapfile --size 2G
+  create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   _docker_datadir_setup
@@ -295,7 +295,7 @@ else
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; then
+if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -309,9 +309,9 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mkdir /mnt/salvage/system-setup-salvage
-  sudo mv -v /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/salvage/system-setup-salvage/
-  # moves blockchain salvage data to /mnt/salvage if found
+  sudo mkdir "${SALVAGE_DIR_SYSTEM}"
+  sudo mv -v "${SALVAGE_DIR_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_DIR_SYSTEM}"/
+  # moves blockchain salvage data to ${SALVAGE_DIR} if found
 
   echo -e "${RED}"
   echo "***"
@@ -319,11 +319,11 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo rm -rf /mnt/salvage/{docker,tor,swapfile}
-  sudo umount /mnt/salvage
-  sudo rmdir /mnt/salvage
-  # remove docker, tor, swap file directories from /mnt/salvage
-  # then unmount and remove /mnt/salvage
+  sudo rm -rf "${SALVAGE_DIR}"/{docker,tor,swapfile}
+  sudo umount "${SALVAGE_DIR}"
+  sudo rmdir "${SALVAGE_DIR}"
+  # remove docker, tor, swap file directories from ${SALVAGE_DIR}
+  # then unmount and remove ${SALVAGE_DIR}
 
   echo -e "${RED}"
   echo "***"
@@ -331,9 +331,9 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 /mnt/usb
+  sudo mount /dev/sda1 "${INSTALL_DIR}"
   _sleep
-  # mount main storage drive to /mnt/usb directory
+  # mount main storage drive to ${INSTALL_DIR} directory
 
   echo -e "${RED}"
   echo "***"
@@ -355,7 +355,7 @@ if sudo test -d /mnt/salvage/docker/volumes/my-dojo_data-bitcoind/_data/blocks; 
   _sleep 4
   # checks disk info
 
-  create_swap --file /mnt/usb/swapfile --size 2G
+  create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
   _docker_datadir_setup
@@ -376,9 +376,9 @@ else
   echo -e "${NC}"
   _sleep 3
 
-  if findmnt "/mnt/salvage" 1>/dev/null; then
-    sudo umount /mnt/salvage
-    sudo rmdir /mnt/salvage
+  if findmnt "${SALVAGE_DIR}" 1>/dev/null; then
+    sudo umount "${SALVAGE_DIR}"
+    sudo rmdir "${SALVAGE_DIR}"
   fi
 fi
 # checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
@@ -390,7 +390,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "/mnt/usb"; then
+if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "${INSTALL_DIR}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
@@ -415,7 +415,7 @@ df -h /dev/sda1
 _sleep 5
 # checks disk info
 
-create_swap --file /mnt/usb/swapfile --size 2G
+create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 echo -e "${RED}"
@@ -424,9 +424,9 @@ echo "Creating Tor directory on the external SSD..."
 echo "***"
 echo -e "${NC}"
 _sleep 3
-test -d /mnt/usb/tor || sudo mkdir /mnt/usb/tor
-sudo chown -R tor:tor /mnt/usb/tor
-# tests for /mnt/usb/tor directory, if not found it is created
+test -d "${INSTALL_DIR_TOR}" || sudo mkdir "${INSTALL_DIR_TOR}"
+sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
+# tests for ${INSTALL_DIR_TOR} directory, if not found it is created
 # then chown is used to change owner to tor user
 
 _docker_datadir_setup

@@ -274,7 +274,7 @@ cd "$DOJO_PATH" || exit
 # wait for dojo install to reach bitcoind sync
 # use Ctrl + C to exit and trigger the salvage attempt below
 
-if sudo test -d /mnt/usb/uninstall-salvage; then
+if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -293,8 +293,8 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
 
   cd "$DOJO_PATH" || exit
   ./dojo.sh stop
-  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
-  sudo mv -v /mnt/usb/uninstall-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+  sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
   # websearch "bash Logical OR (||)" for info
   # stops dojo and removes new data directories
@@ -306,7 +306,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
   echo "***"
   echo -e "${NC}"
   _sleep 3
-  sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
+  sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit
@@ -315,7 +315,7 @@ if sudo test -d /mnt/usb/uninstall-salvage; then
 fi
 # check for uninstall-salvage, if not found continue
 
-if sudo test -d /mnt/usb/system-setup-salvage; then
+if sudo test -d "${INSTALL_DIR_SYSTEM}"; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -334,8 +334,8 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
 
   cd "$DOJO_PATH" || exit
   ./dojo.sh stop
-  sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
-  sudo mv -v /mnt/usb/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+  sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+  sudo mv -v "${INSTALL_DIR_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
   # websearch "bash Logical OR (||)" for info
   # stops dojo and removes new data directories
@@ -347,7 +347,7 @@ if sudo test -d /mnt/usb/system-setup-salvage; then
   echo "***"
   echo -e "${NC}"
   _sleep 3
-  sudo rm -rf /mnt/usb/{system-setup-salvage,uninstall-salvage}
+  sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit

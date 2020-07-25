@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if ! sudo test -d /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data; then
+if ! sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data; then
     cat <<EOF
 ${RED}
 ***
@@ -67,7 +67,7 @@ echo "Removing old Data..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
+sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
 # remove block data
 
 echo -e "${RED}"
@@ -77,7 +77,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo cp -av /mnt/usb1/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+sudo cp -av "${SALVAGE_MOUNT_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"
@@ -95,7 +95,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo umount /mnt/usb1 && sudo rmdir /mnt/usb1
+sudo umount "${SALVAGE_MOUNT}" && sudo rmdir "${SALVAGE_MOUNT}"
 # unmount backup drive and remove directory
 
 echo -e "${RED}"
