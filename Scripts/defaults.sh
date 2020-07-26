@@ -32,8 +32,13 @@ NC=$(tput sgr0)
 #
 # Install Defaults
 #
+RONIN_DOJO_BRANCH="" # defaults to master
+
 DOJO_PATH="$HOME/dojo/docker/my-dojo"
+DOJO_BRANCH="" # defaults to master
+
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
+SAMOURAI_BRANCH="" # defaults to master
 
 # Workaround when on x86 systems and autologin is enabled for the user account
 if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then

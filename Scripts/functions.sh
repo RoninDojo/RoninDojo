@@ -5,13 +5,13 @@ RED=$(tput setaf 1)
 NC=$(tput sgr0)
 # No Color
 
-# Update script
-. "$HOME"/RoninDojo/Scripts/update.sh
-
 #
 # Main function runs at beginning of script execution
 #
 _main() {
+    # Source update script
+    . "$HOME"/RoninDojo/Scripts/update.sh
+
     _update_01 # Check for bridge-utils version update
 
     # Create symbolic link for main ronin script
@@ -189,7 +189,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone https://code.samourai.io/ronindojo/RoninDojo
+git clone -b "${RONIN_DOJO_BRANCH:-master}" https://code.samourai.io/ronindojo/RoninDojo
 ${RED}
 ***
 Upgrade Complete!
