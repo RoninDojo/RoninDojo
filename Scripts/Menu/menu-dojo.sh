@@ -187,7 +187,7 @@ case $CHOICE in
             # takes you to ronin dojo menu2
             ;;
         9)
-            bash ~/RoninDojo/ronin
+            bash -c ronin
             # return to main ronin menu
             ;;
 esac
