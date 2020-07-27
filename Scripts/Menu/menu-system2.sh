@@ -42,7 +42,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to unlock root user, returns to menu
             ;;
-        3)
+    3)
             sudo rm -f ~/ronin-update.sh
 	        # using -f here to avoid error output if ~/ronin-update.sh does not exist
 
