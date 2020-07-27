@@ -63,9 +63,9 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
             cd "$DOJO_PATH" || exit
-            ./dojo.sh logs db -n 500 | egrep "ERROR|error"            
+            ./dojo.sh logs db -n 500 | egrep "ERROR|error"
             # shows db error logs
-	    
+
 	    echo -e "${RED}"
             echo "***"
             echo "Press any letter to return..."
