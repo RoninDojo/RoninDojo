@@ -252,6 +252,7 @@ _dojo_check() {
     local DOJO_PATH
     DOJO_PATH="$1"
 
+    # Check that ${INSTALL_DIR} is mounted
     if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
         cat <<EOF
 ${RED}
@@ -262,6 +263,11 @@ Please contact support for assistance
 ${NC}
 EOF
     bash -c ronin
+    fi
+
+    # Check that docker service running
+    if ! sudo systemctl is-active docker 1>/dev/null; then
+        sudo systemctl start docker
     fi
 
     if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
