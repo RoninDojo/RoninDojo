@@ -156,7 +156,7 @@ Showing Backend UI Credentials...
 API_KEY     =           ${API_KEY}
 JWT_SECRET  =           ${JWT_SECRET}
 PORT        =           ${BACKEND_PORT}
-TOR_ADDRESS =           ${BACKEND_TOR}
+TOR_ADDRESS =           http://${BACKEND_TOR}
 ***
 Press any letter to return...
 ${NC}
