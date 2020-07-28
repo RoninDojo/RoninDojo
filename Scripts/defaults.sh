@@ -19,6 +19,8 @@ declare -A package_dependencies=(
     [docker-compose]=docker-compose
     [ufw]=ufw
     [rsync]=rsync
+    [npm]=npm
+    [node]=nodejs
 )
 
 #
@@ -38,6 +40,12 @@ DOJO_PATH="$HOME/dojo/docker/my-dojo"
 
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 SAMOURAI_COMMITISH="v1.7.0" # empty defaults to master
+
+#
+# Backend GUI
+#
+GUI_API=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
+GUI_JWT=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 
 #
 # Filesystem Defaults
