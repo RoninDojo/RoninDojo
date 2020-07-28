@@ -151,7 +151,7 @@ _setup_tor() {
 # Backend torrc
 #
 _setup_backend_tor() {
-    if ! grep hidden_service_ronin_backend 1>/dev/null; then
+    if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
         sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
 HiddenServiceVersion 3\
