@@ -44,6 +44,7 @@ SAMOURAI_COMMITISH="v1.7.0" # empty defaults to master
 #
 # Backend GUI
 #
+BACKEND_DIR="${HOME}/RoninBackend"
 GUI_API=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 GUI_JWT=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
 
