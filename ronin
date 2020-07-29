@@ -14,10 +14,11 @@ test -f ~/.dialogrc || cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
 OPTIONS=(1 "Dojo Menu"
          2 "Whirlpool Menu"
          3 "Electrs Menu"
-         4 "Firewall Menu"
-         5 "System Menu"
-         6 "System Setup & Installations"
-         7 "Exit RoninDojo")
+         4 "Backend UI"
+         5 "Firewall Menu"
+         6 "System Menu"
+         7 "System Setup & Installations"
+         8 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -41,14 +42,18 @@ case $CHOICE in
             # runs electrs menu script
             ;;
         4)
+            bash ~/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+            # runs backend ui menu script
+            ;;
+        5)
             bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
             # runs firewall menu script
             ;;
-        5)
+        6)
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # runs system menu script
             ;;
-        6)
+        7)
             bash ~/RoninDojo/Scripts/Menu/menu-install.sh
 	    # runs installs menu
             ;;

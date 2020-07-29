@@ -148,6 +148,103 @@ _setup_tor() {
 }
 
 #
+# Backend torrc
+#
+_setup_backend_tor() {
+    if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
+        sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
+HiddenServiceVersion 3\
+HiddenServicePort 80 127.0.0.1:8470\
+" /etc/tor/torrc
+
+        # restart tor service
+        sudo systemctl restart tor
+    fi
+}
+
+#
+# Install Ronin UI Backend
+#
+_install_ronin_ui_backend() {
+    local ver current_ver pkg
+
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
+    # Import PGP keys for backend archive
+    curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
+
+    # Check for nodejs
+    if ! hash node; then
+        sudo pacman -S --noconfirm nodejs
+    fi
+
+    # Check for npm
+    if ! hash npm; then
+        sudo pacman -S --noconfirm npm
+    fi
+
+    # Check for pm2 package
+    if ! hash pm2; then
+        sudo npm install -g pm2 &>/dev/null
+    fi
+
+    # Fetch backend ui archive
+    wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
+
+    # Extract latest tar archive filename and latest version
+    pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
+    ver=$( cut -d ' ' -f2 </tmp/latest.txt )
+
+    # Create RoninBackend directory if missing
+    test -d "${BACKEND_DIR}" || mkdir "${BACKEND_DIR}"
+
+    # Get latest version of current RoninBackend if available
+    if [ -f "${BACKEND_DIR}"/package.json ]; then
+        current_ver=$(jq --raw-output '.version' "${BACKEND_DIR}"/package.json)
+    fi
+
+    # Start Backend installation procedure
+    if [[ "${ver}" != "${current_ver}" ]]; then
+        # cd into RoninBackend dir
+        cd "${BACKEND_DIR}" || exit
+
+        # Fetch tar archive
+        wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"
+
+        # Extract all file from package directory inside tar archive into current directory
+        tar xf "${pkg}" package/ --strip-components=1 || exit
+
+        # Remove tar archive
+        rm "${pkg}"
+
+        # Generate .env file
+        if [ ! -f .env ]; then
+            cat << EOF >.env
+API_KEY=$GUI_API
+JWT_SECRET=$GUI_JWT
+PORT=3000
+ACCESS_TOKEN_EXPIRATION=8h
+EOF
+
+            # NPM run
+            npm run start &>/dev/null
+
+            # pm2 save process list
+            pm2 save 1>/dev/null
+
+            # pm2 system startup
+            pm2 startup 1>/dev/null
+
+            sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "$USER" --hp "$HOME" 1>/dev/null
+
+            _setup_backend_tor
+        else # Restart process after updating
+            pm2 restart "Ronin Backend" 1>/dev/null
+        fi
+    fi
+}
+#
 # Remove old fstab entries in favor of systemd.mount
 #
 _remove_fstab() {
@@ -202,6 +299,9 @@ EOF
 
         # Reset to origin master branch
         git reset --hard origin/master
+
+        # Check for backend updates
+        _install_ronin_ui_backend
     else
         cat <<EOF > ~/ronin-update.sh
 #!/bin/bash
@@ -221,6 +321,9 @@ EOF
         # makes script executable and runs
         # end of script returns to menu
         # script is deleted during next run of update
+
+        # Check for backend updates
+        _install_ronin_ui_backend
     fi
 }
 
