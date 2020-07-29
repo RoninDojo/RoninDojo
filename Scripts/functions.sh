@@ -411,7 +411,7 @@ EOF
 }
 
 #
-# Remove old fstab entries in favor of systemd.mount
+# Remove old fstab entries in favor of systemd.mount.
 #
 _remove_fstab() {
     if grep -E '^UUID=.* \/mnt\/usb1? ext4' /etc/fstab 1>/dev/null; then
