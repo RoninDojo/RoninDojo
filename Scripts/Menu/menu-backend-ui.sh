@@ -144,6 +144,8 @@ EOF
             exit
         fi
 
+        cd "${BACKEND_DIR}" || exit
+
         API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
         JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
         BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
@@ -161,8 +163,6 @@ TOR_ADDRESS =           http://${BACKEND_TOR}
 Press any letter to return...
 ${NC}
 EOF
-        cd "${BACKEND_DIR}" || exit
-
         read -n 1 -r -s
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         # shows backend ui credentials, returns to menu
