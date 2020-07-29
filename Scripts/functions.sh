@@ -37,7 +37,7 @@ EOF
 ${RED}
 ***
 Looks like you don't belong in the docker group
-so we will add you then reload the RoninDojo GUI.
+so we will add you then reload the RoninDojo CLI.
 ***
 ${NC}
 EOF
@@ -244,6 +244,172 @@ EOF
         fi
     fi
 }
+
+#
+# Checks if dojo db container.
+#
+_dojo_check() {
+    local DOJO_PATH
+    DOJO_PATH="$1"
+
+    # Check that ${INSTALL_DIR} is mounted
+    if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Missing drive mount at ${INSTALL_DIR}! Returning to menu.
+Please contact support for assistance
+***
+${NC}
+EOF
+    bash -c ronin
+    fi
+
+    # Check that docker service running
+    if ! sudo systemctl is-active docker 1>/dev/null; then
+        sudo systemctl start docker
+    fi
+
+    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# Source DOJO confs
+#
+_source_dojo_conf() {
+    for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer}.conf .env; do
+        . "${conf}"
+    done
+
+    export BITCOIND_RPC_EXTERNAL_IP
+}
+
+#
+# Select YAML files
+#
+_select_yaml_files() {
+    local DOJO_PATH
+    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+
+    yamlFiles="-f $DOJO_PATH/docker-compose.yaml"
+
+    if [ "$BITCOIND_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.install.yaml"
+
+        if [ "$BITCOIND_RPC_EXTERNAL" == "on" ]; then
+            yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.rpc.expose.yaml"
+        fi
+    fi
+
+    if [ "$EXPLORER_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/explorer.install.yaml"
+    fi
+
+    if [ "$INDEXER_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/indexer.install.yaml"
+    fi
+
+    if [ "$WHIRLPOOL_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/whirlpool.install.yaml"
+    fi
+
+    # Return yamlFiles
+    echo "$yamlFiles"
+}
+
+#
+# Stop Samourai Dojo containers
+#
+_stop_dojo() {
+    local DOJO_PATH
+    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+
+    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+        # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+        cat <<EOF
+${RED}
+***
+Stopping Dojo...
+***
+${NC}
+EOF
+        cd "${DOJO_PATH}" || exit
+    else
+        echo -e "${RED}"
+        echo "***"
+        echo "Dojo is already stopped!"
+        echo "***"
+        echo -e "${NC}"
+        _sleep 3 --msg "Returning to menu in"
+        bash -c "$RONIN_DOJO_MENU"
+    fi
+
+    cat <<EOF
+${RED}
+***
+Preparing shutdown of Dojo. Please wait...
+***
+${NC}
+EOF
+
+    # Source conf files
+    _source_dojo_conf
+
+    # Shutdown the bitcoin daemon
+    if [ "$BITCOIND_INSTALL" == "on" ]; then
+        # Renewal of bitcoind onion address
+        if [ "$BITCOIND_EPHEMERAL_HS" = "on" ]; then
+            docker exec -it tor rm -rf /var/lib/tor/hsv2bitcoind &> /dev/null
+        fi
+
+        # Stop the bitcoin daemon
+        docker exec -it bitcoind bitcoin-cli -rpcconnect=bitcoind --rpcport=28256 \
+--rpcuser="$BITCOIND_RPC_USER" --rpcpassword="$BITCOIND_RPC_PASSWORD" stop &>/dev/null
+
+        cat <<EOF
+${RED}
+***
+Waiting for shutdown of Bitcoin Daemon...
+***
+${NC}
+EOF
+        # Check for bitcoind process
+        i=0
+        while ((i<21)); do
+            if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
+                sleep 1
+                ((i++))
+            else
+                break
+            fi
+        done
+
+        cat <<EOF
+${RED}
+***
+Bitcoind Daemon stopped...
+***
+${NC}
+EOF
+
+        cat <<EOF
+${RED}
+***
+Stopping all Dojo containers...
+***
+${NC}
+EOF
+    fi
+
+    # Stop docker containers
+    yamlFiles=$(_select_yaml_files)
+    docker-compose $yamlFiles stop || exit
+}
+
 #
 # Remove old fstab entries in favor of systemd.mount
 #
