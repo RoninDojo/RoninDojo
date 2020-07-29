@@ -175,17 +175,17 @@ _install_ronin_ui_backend() {
     curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
 
     # Check for nodejs
-    if ! hash node; then
+    if ! hash node 2>/dev/null; then
         sudo pacman -S --noconfirm nodejs
     fi
 
     # Check for npm
-    if ! hash npm; then
+    if ! hash npm 2>/dev/null; then
         sudo pacman -S --noconfirm npm
     fi
 
     # Check for pm2 package
-    if ! hash pm2; then
+    if ! hash pm2 2>/dev/null; then
         sudo npm install -g pm2 &>/dev/null
     fi
 
