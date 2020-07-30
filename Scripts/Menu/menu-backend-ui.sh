@@ -26,19 +26,27 @@ case $CHOICE in
 	1)
         _isbackend_ui
 
-        cat << EOF
+        # Check if process running, otherwise start it
+        if ! pm2 describe "Ronin Backend" &>/dev/null; then
+            cat << EOF
 ${RED}
 ***
 Starting Backend UI Server...
 ***
 ${NC}
 EOF
-        _sleep 2
-        cd "${BACKEND_DIR}" || exit
+            _sleep 2
+            cd "${BACKEND_DIR}" || exit
 
-        # Check if process running, otherwise start it
-        if ! pm2 describe "Ronin Backend" &>/dev/null; then
             pm2 start "Ronin Backend"
+        else
+            cat << EOF
+${RED}
+***
+Backend UI already started...
+***
+${NC}
+EOF
         fi
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
@@ -47,18 +55,18 @@ EOF
     2)
         _isbackend_ui
 
-        cat << EOF
+        # Check if process running before stopping it
+        if pm2 describe "Ronin Backend" &>/dev/null; then
+            cat << EOF
 ${RED}
 ***
 Stopping Backend UI Server...
 ***
 ${NC}
 EOF
-        _sleep 2
-        cd "${BACKEND_DIR}" || exit
+            _sleep 2
+            cd "${BACKEND_DIR}" || exit
 
-        # Check if process running before stopping it
-        if pm2 describe "Ronin Backend" &>/dev/null; then
             pm2 stop "Ronin Backend"
         else
             cat << EOF
