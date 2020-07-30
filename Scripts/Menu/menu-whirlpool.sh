@@ -8,8 +8,8 @@ OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
          4 "Logs"
-         5 "Tor Hidden Service"
-         6 "Reset Whirlpool"
+         5 "Reset"
+         6 "Credentials"
          7 "Whirlpool Stat Tool"
          8 "Go Back")
 
@@ -67,7 +67,7 @@ case $CHOICE in
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, return to menu
             # see defaults.sh
-	    ;;
+	        ;;
         4)
             echo -e "${RED}"
             echo "***"
@@ -88,27 +88,6 @@ case $CHOICE in
             # see defaults.sh
             ;;
         5)
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing Whirlpool Hidden Service address and API key..."
-            echo "***"
-            echo -e "${NC}"
-
-            echo -e "${RED}"
-            echo "***"
-            echo -e "${NC}"
-            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
-            echo "Whirlpool API hidden service address = http://${V3_ADDR_WHIRLPOOL}"
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            read -n 1 -r -s
-            bash -c "$RONIN_WHIRLPOOL_MENU"
-            # press any key to return to menu
-            # see defaults.sh
-            ;;
-        6)
             echo -e "${RED}"
             echo "***"
             echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
@@ -145,6 +124,27 @@ case $CHOICE in
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # re-initate whirlpool, return to menu
+            # see defaults.sh
+            ;;
+        6)
+            echo -e "${RED}"
+            echo "***"
+            echo "Showing Whirlpool Hidden Service address and API key..."
+            echo "***"
+            echo -e "${NC}"
+
+            echo -e "${RED}"
+            echo "***"
+            echo -e "${NC}"
+            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
+            echo "Whirlpool API hidden service address = http://${V3_ADDR_WHIRLPOOL}"
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            read -n 1 -r -s
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # press any key to return to menu
             # see defaults.sh
             ;;
         7)

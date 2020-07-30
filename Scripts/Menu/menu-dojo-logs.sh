@@ -8,8 +8,8 @@ OPTIONS=(1 "Bitcoind"
          2 "DB"
          3 "Indexer"
          4 "Nginx"
-         5 "Nodejs"
-         6 "TOR"
+         5 "Node.js"
+         6 "Tor"
          7 "Error Logs"
          8 "Go Back")
 

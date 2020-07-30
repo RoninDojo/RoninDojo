@@ -4,11 +4,13 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Upgrade"
-         2 "Uninstall"
-         3 "Receive Block Data from Backup"
-         4 "Send Block Data to Backup"
-         5 "Go Back")
+OPTIONS=(1 "Upgrade Dojo"
+         2 "Uninstall Dojo"
+         3 "Clean Dojo"
+         4 "Dojo Version"
+         5 "Receive Block Data from Backup"
+         6 "Send Block Data to Backup"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -99,14 +101,54 @@ case $CHOICE in
             # return to menu
             ;;
         3)
+            echo -e "${RED}"
+            echo "***"
+            echo "Deleting docker dangling images and images of previous versions in 15s..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Use Ctrl+C to exit if needed!"
+            echo "***"
+            echo -e "${NC}"
+            _sleep 5
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh clean
+
+            bash -c "$RONIN_DOJO_MENU"
+            # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
+            ;;
+        4)
+            echo -e "${RED}"
+            echo "***"
+            echo "Displaying the version info..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh version
+            # display dojo version info
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
+            bash -c "$RONIN_DOJO_MENU"
+            # press any letter to return
+            ;;
+        5)
             bash ~/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
-        4)
+        6)
             bash ~/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;
-        5)
+        7)
             bash -c "$RONIN_DOJO_MENU"
             # return to main menu
             ;;
