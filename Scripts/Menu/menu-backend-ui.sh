@@ -7,8 +7,12 @@
 OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
-         4 "Credentials"
-         5 "Go Back")
+         4 "Status"
+         5 "Logs"
+         6 "Credentials"
+         7 "Install"
+         8 "Uninstall"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -20,21 +24,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
 	1)
-        if [ ! -d "${BACKEND_DIR}" ]; then
-            cat << EOF
-${RED}
-***
-Backend is not installed, installing now...
-***
-${NC}
-EOF
-            _install_ronin_ui_backend
-            _sleep 2 --msg "Returning to menu in"
-
-            bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
-            exit
-        fi
-        # check if backend ui is already installed
+        _isbackend_ui
 
         cat << EOF
 ${RED}
@@ -55,20 +45,7 @@ EOF
         # start backend ui, return to menu
         ;;
     2)
-        if [ ! -d "${BACKEND_DIR}" ]; then
-            cat << EOF
-${RED}
-***
-Backend is not installed, installing now...
-***
-${NC}
-EOF
-            _install_ronin_ui_backend
-            _sleep 2 --msg "Returning to menu in"
-
-            bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
-            exit
-        fi
+        _isbackend_ui
 
         cat << EOF
 ${RED}
@@ -97,20 +74,7 @@ EOF
         # start backend ui, return to menu
         ;;
     3)
-        if [ ! -d "${BACKEND_DIR}" ]; then
-            cat << EOF
-${RED}
-***
-Backend is not installed, installing now...
-***
-${NC}
-EOF
-            _install_ronin_ui_backend
-            _sleep 2 --msg "Returning to menu in"
-
-            bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
-            exit
-        fi
+        _isbackend_ui
 
         cat << EOF
 ${RED}
@@ -129,20 +93,36 @@ EOF
         # start backend ui, return to menu
         ;;
     4)
-        if [ ! -d "${BACKEND_DIR}" ]; then
-            cat << EOF
+        _isbackend_ui
+
+        cat << EOF
 ${RED}
 ***
-Backend is not installed, installing now...
+Press any key to return.
 ***
 ${NC}
 EOF
-            _install_ronin_ui_backend
-            _sleep 2 --msg "Returning to menu in"
+        cd "${BACKEND_DIR}" || exit
+        pm2 status
 
-            bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
-            exit
-        fi
+        read -n 1 -r -s
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        ;;
+    5)
+        _isbackend_ui
+
+        cat << EOF
+${RED}
+***
+Press Ctrl + C to exit at any time.
+***
+${NC}
+EOF
+        cd "${BACKEND_DIR}" || exit
+        pm2 log
+        ;;
+    6)
+        _isbackend_ui
 
         cd "${BACKEND_DIR}" || exit
 
@@ -167,7 +147,35 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         # shows backend ui credentials, returns to menu
         ;;
-    5)
+    7)
+        _install_ronin_ui_backend
+        ;;
+    8)
+        _isbackend_ui
+
+        cd "${BACKEND_DIR}" || exit
+
+        cat << EOF
+${RED}
+***
+Uninstalling RoninBackend...
+Press Ctrl+C to cancel at anytime
+***
+${NC}
+EOF
+        _sleep 10 --msg "Uninstall in"
+
+        # Delete app from process list
+        pm2 delete "Ronin Backend" 2>/dev/null
+
+        # dump all processes for resurrecting them later
+        pm2 save 1>/dev/null
+
+        # Remove ${BACKEND_DIR}
+        cd "${HOME}" || exit
+        rm -rf "${BACKEND_DIR}" || exit
+        ;;
+    9)
         bash -c ronin
         # returns to main menu
         ;;

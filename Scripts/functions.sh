@@ -164,6 +164,26 @@ HiddenServicePort 80 127.0.0.1:8470\
 }
 
 #
+# Check Backend Installation
+#
+_isbackend_ui() {
+    if [ ! -d "${HOME}/RoninBackend" ]; then
+        cat << EOF
+${RED}
+***
+Backend is not installed, installing now...
+***
+${NC}
+EOF
+        _install_ronin_ui_backend
+        _sleep 2 --msg "Returning to menu in"
+
+        bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
+    fi
+    # check if backend ui is already installed
+}
+
+#
 # Install Ronin UI Backend
 #
 _install_ronin_ui_backend() {
