@@ -160,7 +160,21 @@ EOF
         # shows backend ui credentials, returns to menu
         ;;
     6)
+        cat << EOF
+${RED}
+***
+Installing RoninBackend...
+Press Ctrl+C to cancel at anytime
+***
+${NC}
+EOF
+        _sleep 5 --msg "Installing in"
+
         _install_ronin_ui_backend
+
+        _sleep 5 --msg "Sucessfully Installed, returning to menu in"
+
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         ;;
     7)
         _isbackend_ui
