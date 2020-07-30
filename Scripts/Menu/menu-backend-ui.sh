@@ -27,7 +27,7 @@ case $CHOICE in
         _isbackend_ui
 
         # Check if process running, otherwise start it
-        if ! pm2 describe "Ronin Backend" | grep status | grep stopped; then
+        if pm2 describe "Ronin Backend" | grep status | grep stopped; then
             cat << EOF
 ${RED}
 ***
