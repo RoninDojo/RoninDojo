@@ -8,11 +8,11 @@ OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
          4 "Status"
-         5 "Logs"
-         6 "Credentials"
-         7 "Install"
-         8 "Uninstall"
-         9 "Go Back")
+        #  5 "Logs"
+         5 "Credentials"
+         6 "Install"
+         7 "Uninstall"
+         8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -116,21 +116,21 @@ EOF
         read -n 1 -r -s
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         ;;
-    5)
-        _isbackend_ui
+#     5)
+#         _isbackend_ui
 
-        cat << EOF
-${RED}
-***
-Press Ctrl + C to exit at any time.
-***
-${NC}
-EOF
-        cd "${BACKEND_DIR}" || exit
-        pm2 log
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        ;;
-    6)
+#         cat << EOF
+# ${RED}
+# ***
+# Press Ctrl + C to exit at any time.
+# ***
+# ${NC}
+# EOF
+#         cd "${BACKEND_DIR}" || exit
+#         pm2 log
+#         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+#         ;;
+    5)
         _isbackend_ui
 
         cd "${BACKEND_DIR}" || exit
@@ -156,10 +156,10 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         # shows backend ui credentials, returns to menu
         ;;
-    7)
+    6)
         _install_ronin_ui_backend
         ;;
-    8)
+    7)
         _isbackend_ui
 
         cd "${BACKEND_DIR}" || exit
@@ -184,7 +184,7 @@ EOF
         cd "${HOME}" || exit
         rm -rf "${BACKEND_DIR}" || exit
         ;;
-    9)
+    8)
         bash -c ronin
         # returns to main menu
         ;;
