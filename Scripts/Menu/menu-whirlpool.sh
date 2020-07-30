@@ -78,7 +78,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "Press Ctrl+C to exit at anytime..."
             echo "***"
             echo -e "${NC}"
             cd "$DOJO_PATH" || exit
