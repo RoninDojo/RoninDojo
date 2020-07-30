@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2221,SC2222 source=/dev/null
+# shellcheck disable=SC2221,SC2222,1004 source=/dev/null
 
 RED=$(tput setaf 1)
 NC=$(tput sgr0)
@@ -152,11 +152,11 @@ _setup_tor() {
 #
 _setup_backend_tor() {
     if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
-        sudo sed -i "/################ This section is just for relays/i\
+        sudo sed -i '/################ This section is just for relays/i\
 HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
 HiddenServiceVersion 3\
 HiddenServicePort 80 127.0.0.1:8470\
-" /etc/tor/torrc
+' /etc/tor/torrc
 
         # restart tor service
         sudo systemctl restart tor
