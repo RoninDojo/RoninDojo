@@ -50,7 +50,7 @@ case $CHOICE in
             echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            _sleep 15
+            _sleep 5
 
             echo -e "${RED}"
             echo "Do you want to salvage your Blockchain data?"

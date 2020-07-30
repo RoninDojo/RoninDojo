@@ -189,7 +189,7 @@ Press Ctrl+C to cancel at anytime
 ***
 ${NC}
 EOF
-        _sleep 10 --msg "Uninstall in"
+        _sleep 5 --msg "Uninstall in"
 
         # Delete app from process list
         pm2 delete "Ronin Backend" &>/dev/null

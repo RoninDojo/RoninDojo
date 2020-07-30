@@ -175,10 +175,10 @@ case $CHOICE in
             echo "Use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            _sleep 14
+            _sleep 5
             cd "$DOJO_PATH" || exit
             ./dojo.sh clean
-            _sleep 2
+
             bash -c "$RONIN_DOJO_MENU"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;

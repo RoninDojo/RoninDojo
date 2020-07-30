@@ -27,7 +27,7 @@ echo "***"
 echo "Use Ctrl+C to exit now if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 10
+_sleep 5
 
 ~/RoninDojo/Scripts/.logo
 # display ronindojo logo

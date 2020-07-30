@@ -19,17 +19,16 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Upgrading Dojo in 30s..."
+echo "Upgrading Dojo in 10s..."
 echo "***"
 echo -e "${NC}"
-_sleep 3
 
 echo -e "${RED}"
 echo "***"
 echo "Use Ctrl+C to exit if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 27
+_sleep 5
 
 # Make sure permissions are properly set for ${DOJO_PATH}
 _check_dojo_perms "${DOJO_PATH}"
@@ -155,7 +154,7 @@ if [ -f /etc/systemd/system/whirlpool.service ] ; then
    echo "See wiki for more information"
    echo "***"
    echo -e "${NC}"
-   _sleep 10
+   _sleep 5
 else
    echo -e "${RED}"
    echo "Whirlpool will be installed via Dojo Docker"
