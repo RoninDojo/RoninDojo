@@ -4,11 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Enable Firewall"
-         2 "Disable Firewall"
-         3 "Firewall Status"
+OPTIONS=(1 "Enable"
+         2 "Disable"
+         3 "Status"
          4 "Delete Rule"
-         5 "Reload Firewall"
+         5 "Reload"
          6 "Add New IP Range for SSH"
          7 "Add Specific IP for SSH"
          8 "Next Page"

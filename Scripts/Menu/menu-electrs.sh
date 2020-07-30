@@ -4,10 +4,10 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start Electrs"
-         2 "Stop Electrs"
-         3 "Restart Electrs"
-         4 "View Logs"
+OPTIONS=(1 "Start"
+         2 "Stop"
+         3 "Restart"
+         4 "Logs"
          5 "Tor Hidden Service"
          6 "Go Back")
 

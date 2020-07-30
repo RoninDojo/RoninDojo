@@ -4,10 +4,10 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start Dojo"
-         2 "Stop Dojo"
-         3 "Restart Dojo"
-         4 "View Logs"
+OPTIONS=(1 "Start"
+         2 "Stop"
+         3 "Restart"
+         4 "Logs"
          5 "Tor Hidden Service"
          6 "Version Info"
          7 "Clean Dojo"

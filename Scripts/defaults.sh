@@ -84,7 +84,7 @@ HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
 TITLE="RoninDojo"
-MENU="Choose one of the following options:"
+MENU="Choose one of the following menu options:"
 
 #
 # Dojo Existing Configuration Values

@@ -4,12 +4,12 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Bitcoind Logs"
-         2 "Db Logs"
-         3 "Indexer Logs"
-         4 "Nginx Logs"
-         5 "Nodejs Logs"
-         6 "Tor Logs"
+OPTIONS=(1 "Bitcoind"
+         2 "DB"
+         3 "Indexer"
+         4 "Nginx"
+         5 "Nodejs"
+         6 "TOR"
          7 "Go Back")
 
 CHOICE=$(dialog --clear \

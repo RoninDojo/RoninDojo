@@ -4,8 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Upgrade Dojo"
-         2 "Uninstall Dojo"
+OPTIONS=(1 "Upgrade"
+         2 "Uninstall"
          3 "Receive Block Data from Backup"
          4 "Send Block Data to Backup"
          5 "Go Back")

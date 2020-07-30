@@ -4,10 +4,10 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start Whirlpool"
-         2 "Stop Whirlpool"
-         3 "Restart Whirlpool"
-         4 "View Logs"
+OPTIONS=(1 "Start"
+         2 "Stop"
+         3 "Restart"
+         4 "Logs"
          5 "Tor Hidden Service"
          6 "Reset Whirlpool"
          7 "Whirlpool Stat Tool"
