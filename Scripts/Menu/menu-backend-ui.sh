@@ -128,6 +128,7 @@ ${NC}
 EOF
         cd "${BACKEND_DIR}" || exit
         pm2 log
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         ;;
     6)
         _isbackend_ui
