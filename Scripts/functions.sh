@@ -78,6 +78,20 @@ sysctl...
 ${NC}
 EOF
     fi
+
+    # Check for sudoers file for password prompt timeout
+    _set_sudo_timeout
+}
+
+#
+# Sets timeout for sudo prompt to 15mins
+#
+_set_sudo_timeout() {
+    if [ ! -f /etc/sudoers.d/21-ronindojo ]; then
+        sudo bash -c 'cat <<SUDO >>/etc/sudoers.d/21-ronindojo
+Defaults env_reset,timestamp_timeout=15
+SUDO'
+    fi
 }
 
 #
