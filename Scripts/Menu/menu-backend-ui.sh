@@ -128,6 +128,7 @@ Press ESC key to exit at any time.
 ${NC}
 EOF
         cd "${BACKEND_DIR}" || exit
+        _sleep 5 # Workaround until a proper FIX
         less --force logs/combined.log
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
