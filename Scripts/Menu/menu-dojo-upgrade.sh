@@ -2,6 +2,7 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/generated-credentials.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 WORK_DIR=$(mktemp -d)

@@ -115,26 +115,28 @@ case $CHOICE in
             fi
             # checks if dojo is not running (check the db container), if not running, tells user to start dojo first
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Displaying your Tor Hidden Service addresses..."
-            echo -e "${RED}"
-            echo "***"
-            echo -e "${NC}"
-            echo "Dojo Maintenance Tool hidden service address (v3) = http://$V3_ADDR_API/admin"
-            echo "Dojo Maintenance Tool Password = $NODE_ADMIN_KEY_TOR"
-            echo "Dojo API key = $NODE_API_KEY_TOR"
-            echo ""
-            echo "Whirlpool Hidden Service Address = http://$V3_ADDR_WHIRLPOOL"
-            echo "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}"
-            echo ""
-            echo "Explorer hidden service address (v3) = http://$V3_ADDR_EXPLORER"
-            echo "No username required. Explorer Password = $EXPLORER_KEY_TOR"
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<DOJO
+${RED}
+***
+Samourai Dojo Credentials
+***
+${NC}
+Maintenance Tool            = http://$V3_ADDR_API/admin
+Admin Key                   = $NODE_ADMIN_KEY
+API Key                     = $NODE_API_KEY
+
+Whirlpool Tor URL           = http://$V3_ADDR_WHIRLPOOL
+Whirlpool API Key           = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+
+Bitcoin Explorer Tor URL    = http://$V3_ADDR_EXPLORER (No username required)
+Bitcoin Explorer Password   = $EXPLORER_KEY
+
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+DOJO
             read -n 1 -r -s
             bash -c "$RONIN_DOJO_MENU"
             # press any key to return to menu

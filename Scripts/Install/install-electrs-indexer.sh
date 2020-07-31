@@ -2,6 +2,7 @@
 # shellcheck source=/dev/null disable=1004
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/generated-credentials.sh
 
 RPC_USER=$(sudo grep BITCOIND_RPC_USER= "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
 RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
@@ -25,7 +26,7 @@ if [ "$INDEXER_INSTALL" == "on" ]; then\
 \  tor_options+=(--HiddenServiceDirGroupReadable 1)\
 fi\
 ' "${DOJO_PATH}"/tor/restart.sh
-# modify tor/restart.sh for electrs hidden service 
+# modify tor/restart.sh for electrs hidden service
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 # we append everything above the EXPLORER if statement
 

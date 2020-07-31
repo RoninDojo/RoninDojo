@@ -190,6 +190,7 @@ _install_ronin_ui_backend() {
     local ver current_ver pkg
 
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
+    . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
 
     # Import PGP keys for backend archive
     curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
