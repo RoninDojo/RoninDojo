@@ -127,21 +127,22 @@ case $CHOICE in
             # see defaults.sh
             ;;
         6)
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing Whirlpool Hidden Service address and API key..."
-            echo "***"
-            echo -e "${NC}"
+            cat << WHIRLPOOL
+${RED}
+***
+Samourai Whirlpool CLI Credentials
+***
 
-            echo -e "${RED}"
-            echo "***"
-            echo -e "${NC}"
-            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
-            echo "Whirlpool API hidden service address = http://${V3_ADDR_WHIRLPOOL}"
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
+***
+${NC}
+Whirlpool API Key      = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Whirlpool Tor URL      = http://${V3_ADDR_WHIRLPOOL}
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+WHIRLPOOL
             read -n 1 -r -s
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # press any key to return to menu
