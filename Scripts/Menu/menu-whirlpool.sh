@@ -155,7 +155,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
@@ -163,7 +163,7 @@ case $CHOICE in
             # see defaults.sh
             ;;
         8)
-            bash ~/RoninDojo/ronin
+            bash "$HOME"/RoninDojo/ronin
             # return to menu
             ;;
 esac

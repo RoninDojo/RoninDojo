@@ -19,8 +19,8 @@ _main() {
         sudo ln -sf "$HOME"/RoninDojo/ronin /usr/local/bin/ronin
     fi
 
-    if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
-        cat << EOF >> ~/.bashrc
+    if ! grep RoninDojo "$HOME"/.bashrc 1>/dev/null; then
+        cat << EOF >> "$HOME"/.bashrc
 if [ -d $HOME/RoninDojo ]; then
 $HOME/RoninDojo/Scripts/.logo
 ronin
@@ -29,7 +29,7 @@ EOF
     fi
     # place main ronin menu script symbolic link at /usr/local/bin folder
     # because most likely that will be path already added to your $PATH variable
-    # place logo and ronin main menu script ~/.bashrc to run at each login
+    # place logo and ronin main menu script "$HOME"/.bashrc to run at each login
 
     # Adding user to docker group if needed
     if ! getent group docker| grep -q "${USER}"; then
@@ -467,7 +467,7 @@ _remove_ipv6() {
 # Update RoninDojo
 #
 _update_ronin() {
-    if [ -d ~/RoninDojo/.git ]; then
+    if [ -d "$HOME"/RoninDojo/.git ]; then
         cat <<EOF
 ${RED}
 ***
@@ -489,7 +489,7 @@ EOF
         # Check for backend updates
         _install_ronin_ui_backend
     else
-        cat <<EOF > ~/ronin-update.sh
+        cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
@@ -502,8 +502,8 @@ ${NC}
 sleep 2
 bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 EOF
-        sudo chmod +x ~/ronin-update.sh
-        bash ~/ronin-update.sh
+        sudo chmod +x "$HOME"/ronin-update.sh
+        bash "$HOME"/ronin-update.sh
         # makes script executable and runs
         # end of script returns to menu
         # script is deleted during next run of update

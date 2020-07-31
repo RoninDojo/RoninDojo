@@ -13,7 +13,7 @@ IBD not found! Did you forget to install dojo?
 ${NC}
 EOF
     _sleep 5 --msg "Returning to menu in"
-    bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 # if data directory is not found then warn and return to menu
 
@@ -31,7 +31,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -44,7 +44,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -104,5 +104,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 # return to menu

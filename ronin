@@ -6,9 +6,9 @@
 # Run system checks
 _main
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 
-test -f ~/.dialogrc || cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
+test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dialogrc
 # config file for dialog color
 
 OPTIONS=(1 "Dojo"
@@ -29,27 +29,27 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo.sh
             # runs dojo management menu script
             ;;
         2)
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # runs the whirlpool menu script
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # runs electrs menu script
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
             # runs backend ui menu script
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # runs system menu script
             ;;
         6)
-            bash ~/RoninDojo/Scripts/Menu/menu-install.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 	    # runs installs menu
             ;;
     	255)

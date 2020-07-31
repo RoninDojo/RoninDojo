@@ -13,15 +13,15 @@ for choice in $choices
 do
     case $choice in
         1)
-            bash ~/RoninDojo/Scripts/Install/install-system-setup.sh
+            bash "$HOME"/RoninDojo/Scripts/Install/install-system-setup.sh
             # runs system setup script which will installs dependencies, setup ssd, assigns local ip range to ufw, etc.
             ;;
         2)
-            bash ~/RoninDojo/Scripts/Install/install-dojo.sh
+            bash "$HOME"/RoninDojo/Scripts/Install/install-dojo.sh
             # runs dojo install script
             ;;
         3)
-            bash ~/RoninDojo/ronin
+            bash "$HOME"/RoninDojo/ronin
             # return to main ronin menu
             ;;
     esac

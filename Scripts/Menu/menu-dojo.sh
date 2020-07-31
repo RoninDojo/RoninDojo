@@ -99,7 +99,7 @@ case $CHOICE in
             fi
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;
         5)

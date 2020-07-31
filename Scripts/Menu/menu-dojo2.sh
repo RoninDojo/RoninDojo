@@ -22,7 +22,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
             # upgrades dojo and returns to menu
             ;;
         2)
@@ -88,7 +88,7 @@ case $CHOICE in
             echo -e "${NC}"
             cd "$DOJO_PATH" || exit
             ./dojo.sh uninstall
-            sudo rm -rf ~/dojo
+            sudo rm -rf "$HOME"/dojo
             cd "${HOME}" || exit
             # uninstall dojo
 
@@ -97,7 +97,7 @@ case $CHOICE in
             echo "Complete!"
             echo "***"
             echo -e "${NC}"
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # return to menu
             ;;
         3)
@@ -141,11 +141,11 @@ case $CHOICE in
             # press any letter to return
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Install/install-receive-block-data.sh
+            bash "$HOME"/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
         6)
-            bash ~/RoninDojo/Scripts/Install/install-send-block-data.sh
+            bash "$HOME"/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;
         7)

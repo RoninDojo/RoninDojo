@@ -241,7 +241,7 @@ esac
 
 read -rp "Do you want to install Electrs? [y/n]" yn
 case $yn in
-    [Y/y]* ) bash ~/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
+    [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
     [N/n]* ) echo "Electrs will not be installed!";;
     * ) echo "Please answer Yes or No.";;
 esac

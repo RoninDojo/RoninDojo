@@ -125,7 +125,7 @@ fi
 if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
    read -rp "Do you want to install Electrs? [y/n]" yn
    case $yn in
-       [Y/y]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+       [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
        [N/n]* ) echo -e "${RED}"
                 echo "***"
                 echo "Electrs will not be installed!"
@@ -140,7 +140,7 @@ else
    echo "***"
    echo -e "${NC}"
    _sleep 3
-   bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+   bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
 fi
 # if electrs.toml is not found the user is prompted to select y/n
 # else informs user indexer is already installed

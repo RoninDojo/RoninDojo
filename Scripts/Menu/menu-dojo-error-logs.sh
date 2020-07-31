@@ -30,7 +30,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -45,7 +45,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         2)
@@ -57,7 +57,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -72,7 +72,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
 	    ;;
         3)
@@ -84,7 +84,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -99,7 +99,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         4)
@@ -111,7 +111,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -126,7 +126,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         5)
@@ -138,7 +138,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -153,7 +153,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         6)
@@ -165,7 +165,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -180,11 +180,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         7)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # goes back to logs menu
             ;;
 esac

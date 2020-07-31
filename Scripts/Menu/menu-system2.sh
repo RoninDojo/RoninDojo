@@ -29,7 +29,7 @@ case $CHOICE in
         echo -e "${NC}"
         _sleep 3
         htop
-        bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # returns to main menu
         ;;
 	2)
@@ -40,7 +40,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo passwd -l root
-            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to lock root user, returns to menu
             ;;
 	3)
@@ -51,12 +51,12 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo passwd -u root
-            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to unlock root user, returns to menu
             ;;
     4)
-            sudo rm -f ~/ronin-update.sh
-	        # using -f here to avoid error output if ~/ronin-update.sh does not exist
+            sudo rm -f "$HOME"/ronin-update.sh
+	        # using -f here to avoid error output if "$HOME"/ronin-update.sh does not exist
 
             cat <<EOF
 ${RED}
@@ -71,15 +71,15 @@ EOF
             # see functions.sh
             ;;
     5)
-        bash ~/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
+        bash "$HOME"/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
         # mounts /dev/sdb1 to ${SALVAGE_MOUNT} for access to backup blockchain data
         ;;
     6)
-        bash ~/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
+        bash "$HOME"/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
         # formats /dev/sdb1 to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on /dev/sda1 or ${INSTALL_DIR}
         ;;
     7)
-        bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # returns to menu
         ;;
 esac

@@ -49,7 +49,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
         3)
@@ -60,7 +60,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 5
             sudo pacman -Syu
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # check for system updates, then return to menu
             ;;
 	    4)
@@ -81,7 +81,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
 	    5)
@@ -104,11 +104,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
         6)
-            if [ -d ~/dojo ]; then
+            if [ -d "$HOME"/dojo ]; then
               echo -e "${RED}"
               echo "***"
               echo "Shutting down Dojo if running..."
@@ -138,7 +138,7 @@ case $CHOICE in
             fi
             ;;
         7)
-            if [ -d ~/dojo ]; then
+            if [ -d "$HOME"/dojo ]; then
               echo -e "${RED}"
               echo "***"
               echo "Shutting down Dojo if running..."
@@ -168,7 +168,7 @@ case $CHOICE in
             fi
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
             # goes to next page
             ;;
         9)
