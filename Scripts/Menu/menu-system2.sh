@@ -4,12 +4,13 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Lock Root User"
-         2 "Unlock Root User"
-         3 "Upgrade RoninDojo"
-         4 "Mount Existing Backup Drive"
-         5 "Format & Mount New Backup Drive"
-         6 "Go Back")
+OPTIONS=(1 "Task Manager"
+         2 "Lock Root User"
+         3 "Unlock Root User"
+         4 "Upgrade RoninDojo"
+         5 "Mount Existing Backup Drive"
+         6 "Format & Mount New Backup Drive"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -20,7 +21,18 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
-	1)
+    1)
+        echo -e "${RED}"
+        echo "***"
+        echo "Use Ctrl+C at any time to exit Task Manager."
+        echo "***"
+        echo -e "${NC}"
+        _sleep 3
+        htop
+        bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+        # returns to main menu
+        ;;
+	2)
             echo -e "${RED}"
             echo "***"
             echo "Locking Root User..."
@@ -31,7 +43,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to lock root user, returns to menu
             ;;
-	2)
+	3)
             echo -e "${RED}"
             echo "***"
             echo "Unlocking Root User..."
@@ -42,7 +54,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # uses passwd to unlock root user, returns to menu
             ;;
-    3)
+    4)
             sudo rm -f ~/ronin-update.sh
 	        # using -f here to avoid error output if ~/ronin-update.sh does not exist
 
@@ -58,16 +70,16 @@ EOF
             _update_ronin
             # see functions.sh
             ;;
-        4)
-            bash ~/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
-            # mounts /dev/sdb1 to ${SALVAGE_MOUNT} for access to backup blockchain data
-            ;;
-        5)
-            bash ~/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
-            # formats /dev/sdb1 to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on /dev/sda1 or ${INSTALL_DIR}
-            ;;
-        6)
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
-            # returns to menu
-            ;;
+    5)
+        bash ~/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
+        # mounts /dev/sdb1 to ${SALVAGE_MOUNT} for access to backup blockchain data
+        ;;
+    6)
+        bash ~/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
+        # formats /dev/sdb1 to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on /dev/sda1 or ${INSTALL_DIR}
+        ;;
+    7)
+        bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+        # returns to menu
+        ;;
 esac

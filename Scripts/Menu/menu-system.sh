@@ -5,15 +5,14 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Firewall"
-         2 "Task Manager"
-         3 "Check Disk Space"
-         4 "Check for System Updates"
-         5 "Check Temperature"
-         6 "Check Network Stats"
-         7 "Restart"
-         8 "Power Off"
-         9 "Next Page"
-         10 "Go Back")
+         2 "Check Disk Space"
+         3 "Check for System Updates"
+         4 "Check Temperature"
+         5 "Check Network Stats"
+         6 "Restart"
+         7 "Power Off"
+         8 "Next Page"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -26,20 +25,9 @@ clear
 
 case $CHOICE in
         1)
-            bash -c "$HOME"/RoninDojo/Menu/menu-firewall.sh
+            bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             ;;
-        2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Use Ctrl+C at any time to exit Task Manager."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 3
-            htop
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
-            # returns to main menu
-            ;;
-	    3)
+	    2)
             echo -e "${RED}"
             echo "***"
             echo "Showing Disk Space Info..."
@@ -64,7 +52,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
-        4)
+        3)
             echo -e "${RED}"
             echo "***"
             echo "Checking for system updates..."
@@ -75,7 +63,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # check for system updates, then return to menu
             ;;
-	    5)
+	    4)
             echo -e "${RED}"
             echo "***"
             echo "Showing CPU temp..."
@@ -96,7 +84,7 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
-	    6)
+	    5)
             echo -e "${RED}"
             echo "***"
             echo "Showing network stats..."
@@ -119,6 +107,36 @@ case $CHOICE in
             bash ~/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
+        6)
+            if [ -d ~/dojo ]; then
+              echo -e "${RED}"
+              echo "***"
+              echo "Shutting down Dojo if running..."
+              echo "***"
+              echo -e "${NC}"
+              cd "${DOJO_PATH}" || exit
+              ./dojo.sh stop
+              # stop dojo
+
+              echo -e "${RED}"
+              echo "***"
+              echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              sudo systemctl reboot
+              # restart machine
+	        else
+              echo -e "${RED}"
+              echo "***"
+              echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+              echo "***"
+              echo -e "${NC}"
+              _sleep 5
+              sudo systemctl reboot
+              # restart machine
+            fi
+            ;;
         7)
             if [ -d ~/dojo ]; then
               echo -e "${RED}"
@@ -132,58 +150,28 @@ case $CHOICE in
 
               echo -e "${RED}"
               echo "***"
-              echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+              echo "Powering off in 5s, or press Ctrl + C to cancel now..."
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              sudo systemctl reboot
-              # restart machine
+              sudo systemctl poweroff
+              # power off machine
 	        else
               echo -e "${RED}"
               echo "***"
-              echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+              echo "Powering off in 5s, or press Ctrl + C to cancel now..."
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              sudo systemctl reboot
-              # restart machine
+              sudo systemctl poweroff
+              # power off machine
             fi
             ;;
         8)
-            if [ -d ~/dojo ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Shutting down Dojo if running..."
-              echo "***"
-              echo -e "${NC}"
-              cd "${DOJO_PATH}" || exit
-              ./dojo.sh stop
-              # stop dojo
-
-              echo -e "${RED}"
-              echo "***"
-              echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              sudo systemctl poweroff
-              # power off machine
-	        else
-              echo -e "${RED}"
-              echo "***"
-              echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              sudo systemctl poweroff
-              # power off machine
-            fi
-            ;;
-        9)
             bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
             # goes to next page
             ;;
-        10)
+        9)
             bash -c ronin
             # returns to main menu
             ;;
