@@ -123,7 +123,7 @@ EOF
         cat << EOF
 ${RED}
 ***
-Press ESC key to exit at any time.
+Press q key to exit at any time.
 ***
 ${NC}
 EOF
