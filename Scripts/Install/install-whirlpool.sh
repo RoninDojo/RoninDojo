@@ -10,7 +10,7 @@ echo "Checking if Whirlpool is already installed..."
 echo "***"
 echo -e "${NC}"
 
-if [ -f ~/whirlpool/whirlpool.jar ]; then
+if [ -f "$HOME"/whirlpool/whirlpool.jar ]; then
     echo -e "${RED}"
     echo "***"
     echo "Whirlpool is installed!"
@@ -23,7 +23,7 @@ if [ -f ~/whirlpool/whirlpool.jar ]; then
     echo "***"
     echo -e "${NC}"
     _sleep 2
-    bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
     exit
 fi
 # checks if whirlpool.jar exists, if so kick back to menu
@@ -48,14 +48,13 @@ else
     echo -e "${NC}"
     sudo pacman -S --noconfirm tor
     _sleep
-    sudo sed -i -e 's/^DataDirectory .*$/DataDirectory /mnt/usb/tor' \
-    -e 's/^ControlPort .*$/ControlPort 9051' \
-    -e 's/^#CookieAuthentication/CookieAuthentication/' \
-    -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
 
-    if [ ! -d /mnt/usb/tor ]; then
-        sudo mkdir /mnt/usb/tor
-        sudo chown -R tor:tor /mnt/usb/tor
+    # Torrc setup
+    _setup_tor
+
+    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
+        sudo mkdir "${INSTALL_DIR_TOR}"
+        sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
     fi
 fi
 # check if tor is installed, if not install and modify torrc
@@ -89,35 +88,35 @@ if sudo ufw status | grep 8899 > /dev/null ; then
     echo -e "${NC}"
     _sleep
 else
-    ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > ~/ip_tmp.txt
+    ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/ip_tmp.txt
     # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
 
-    sed -i '2,12d' ~/ip_tmp.txt
+    sed -i '2,12d' "$HOME"/ip_tmp.txt
     # delete lines 2-12 (in the systemsetup script it is 2,10d
-    # had to be modified for whirlpool setup as an extra value gets added to ~/ip_tmp.txt)
+    # had to be modified for whirlpool setup as an extra value gets added to "$HOME"/ip_tmp.txt)
 
-    while read -r ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    while read -r ip ; do echo "### tuple ### allow any 8899 0.0.0.0/0 any ""$ip" > "$HOME"/whirlpool_rule_tmp.txt; done <"$HOME"/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 19 in /etc/ufw/user.rules
 
-    while read -r ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s $ip -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    while read -r ip ; do echo "-A ufw-user-input -p tcp --dport 8899 -s $ip -j ACCEPT" >> "$HOME"/whirlpool_rule_tmp.txt; done <"$HOME"/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 20 /etc/ufw/user.rules
 
-    while read -r ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s $ip -j ACCEPT" >> ~/whirlpool_rule_tmp.txt; done <~/ip_tmp.txt
+    while read -r ip ; do echo "-A ufw-user-input -p udp --dport 8899 -s $ip -j ACCEPT" >> "$HOME"/whirlpool_rule_tmp.txt; done <"$HOME"/ip_tmp.txt
     # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
     # for line 21 /etc/ufw/user.rules
 
-    awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+    awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' "$HOME"/whirlpool_rule_tmp.txt /etc/ufw/user.rules > "$HOME"/user.rules_tmp.txt && sudo mv "$HOME"/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 1 in whirlpool_rule_tmp.txt to line 19 in /etc/ufw/user.rules
     # using awk to get /lib/ufw/user.rules output, including newly added values, then makes a tmp file
     # after temp file is made it is mv to /lib/ufw/user.rules
     # awk does not have -i to write changes like sed does, that's why I took this approach
 
-    awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+    awk 'NR==2{a=$0}NR==FNR{next}FNR==20{print a}1' "$HOME"/whirlpool_rule_tmp.txt /etc/ufw/user.rules > "$HOME"/user.rules_tmp.txt && sudo mv "$HOME"/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 2 in whirlpool_rule_tmp.txt to line 20 in /etc/ufw/user.rules
 
-    awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' ~/whirlpool_rule_tmp.txt /etc/ufw/user.rules > ~/user.rules_tmp.txt && sudo mv ~/user.rules_tmp.txt /etc/ufw/user.rules
+    awk 'NR==3{a=$0}NR==FNR{next}FNR==21{print a}1' "$HOME"/whirlpool_rule_tmp.txt /etc/ufw/user.rules > "$HOME"/user.rules_tmp.txt && sudo mv "$HOME"/user.rules_tmp.txt /etc/ufw/user.rules
     # copying from line 3 in whirlpool_rule_tmp.txt to line 21 in /etc/ufw/user.rules
 
      sudo sed -i "18G" /etc/ufw/user.rules
@@ -128,7 +127,7 @@ else
     # when /etc/ufw/user.rules is edited using awk or sed, the owner gets changed from Root to whatever User that edited that file
     # that causes a warning to be displayed as /etc/ufw/user.rules does need to be owned by root:root
 
-     sudo rm ~/ip_tmp.txt ~/whirlpool_rule_tmp.txt
+     sudo rm "$HOME"/ip_tmp.txt "$HOME"/whirlpool_rule_tmp.txt
     # removes txt files that are no longer needed
 
     echo -e "${RED}"

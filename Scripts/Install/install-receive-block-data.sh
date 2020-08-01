@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if ! sudo test -d /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data; then
+if ! sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data; then
     cat <<EOF
 ${RED}
 ***
@@ -13,7 +13,7 @@ IBD not found! Did you forget to install dojo?
 ${NC}
 EOF
     _sleep 5 --msg "Returning to menu in"
-    bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 # if data directory is not found then warn and return to menu
 
@@ -31,7 +31,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -44,7 +44,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -67,7 +67,7 @@ echo "Removing old Data..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo rm -rf /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate}
+sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
 # remove block data
 
 echo -e "${RED}"
@@ -77,7 +77,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo cp -av /mnt/usb1/system-setup-salvage/{blocks,chainstate} /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/
+sudo cp -av "${SALVAGE_MOUNT_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"
@@ -95,7 +95,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo umount /mnt/usb1 && sudo rmdir /mnt/usb1
+sudo umount "${SALVAGE_MOUNT}" && sudo rmdir "${SALVAGE_MOUNT}"
 # unmount backup drive and remove directory
 
 echo -e "${RED}"
@@ -118,5 +118,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 # return to menu

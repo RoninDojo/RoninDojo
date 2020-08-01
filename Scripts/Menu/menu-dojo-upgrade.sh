@@ -2,6 +2,7 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/generated-credentials.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 WORK_DIR=$(mktemp -d)
@@ -19,17 +20,16 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Upgrading Dojo in 30s..."
+echo "Upgrading Dojo in 10s..."
 echo "***"
 echo -e "${NC}"
-_sleep 3
 
 echo -e "${RED}"
 echo "***"
 echo "Use Ctrl+C to exit if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 27
+_sleep 5
 
 # Make sure permissions are properly set for ${DOJO_PATH}
 _check_dojo_perms "${DOJO_PATH}"
@@ -42,7 +42,7 @@ fi
 # enable BITCOIND_RPC_EXTERNAL
 
 cd "${WORK_DIR}" || exit
-git clone -b "${SAMOURAI_BRANCH:-master}" "$SAMOURAI_REPO" # temporary
+git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" # temporary
 
 cp -ua samourai-dojo/* "$HOME"/dojo/
 # copy only when the SOURCE file is newer than the
@@ -126,7 +126,7 @@ fi
 if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
    read -rp "Do you want to install Electrs? [y/n]" yn
    case $yn in
-       [Y/y]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+       [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
        [N/n]* ) echo -e "${RED}"
                 echo "***"
                 echo "Electrs will not be installed!"
@@ -141,7 +141,7 @@ else
    echo "***"
    echo -e "${NC}"
    _sleep 3
-   bash ~/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+   bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
 fi
 # if electrs.toml is not found the user is prompted to select y/n
 # else informs user indexer is already installed
@@ -155,7 +155,7 @@ if [ -f /etc/systemd/system/whirlpool.service ] ; then
    echo "See wiki for more information"
    echo "***"
    echo -e "${NC}"
-   _sleep 10
+   _sleep 5
 else
    echo -e "${RED}"
    echo "Whirlpool will be installed via Dojo Docker"

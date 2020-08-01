@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Task Manager"
+OPTIONS=(1 "Firewall"
          2 "Check Disk Space"
          3 "Check for System Updates"
          4 "Check Temperature"
@@ -25,15 +25,7 @@ clear
 
 case $CHOICE in
         1)
-            echo -e "${RED}"
-            echo "***"
-            echo "Use Ctrl+C at any time to exit Task Manager."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 3
-            htop
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
-            # returns to main menu
+            bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             ;;
 	    2)
             echo -e "${RED}"
@@ -46,8 +38,8 @@ case $CHOICE in
             sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
             sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")
             echo "Internal: ${sd} remaining"
-            hdd_free_ratio=$(printf "%s" "$(df  | grep "/mnt/usb" | awk '{ print $4/$2*100 }')") 2>/dev/null
-            hdd=$(printf "%s (%s%%)" "$(df -h | grep "/mnt/usb" | awk '{ print $4 }')" "${hdd_free_ratio}")
+            hdd_free_ratio=$(printf "%s" "$(df  | grep "${INSTALL_DIR}" | awk '{ print $4/$2*100 }')") 2>/dev/null
+            hdd=$(printf "%s (%s%%)" "$(df -h | grep "${INSTALL_DIR}" | awk '{ print $4 }')" "${hdd_free_ratio}")
             echo "External: ${hdd} remaining"
             # disk space info
 
@@ -57,7 +49,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
         3)
@@ -68,7 +60,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 5
             sudo pacman -Syu
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # check for system updates, then return to menu
             ;;
 	    4)
@@ -89,7 +81,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
 	    5)
@@ -112,11 +104,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # press any key to return to menu
             ;;
         6)
-            if [ -d ~/dojo ]; then
+            if [ -d "$HOME"/dojo ]; then
               echo -e "${RED}"
               echo "***"
               echo "Shutting down Dojo if running..."
@@ -146,7 +138,7 @@ case $CHOICE in
             fi
             ;;
         7)
-            if [ -d ~/dojo ]; then
+            if [ -d "$HOME"/dojo ]; then
               echo -e "${RED}"
               echo "***"
               echo "Shutting down Dojo if running..."
@@ -176,11 +168,11 @@ case $CHOICE in
             fi
             ;;
         8)
-            bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
             # goes to next page
             ;;
         9)
-            bash ~/RoninDojo/ronin
+            bash -c ronin
             # returns to main menu
             ;;
 esac

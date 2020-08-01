@@ -10,8 +10,8 @@ echo "Installing Whirlpool Stat Tool..."
 echo "***"
 echo -e "${NC}"
 
-mkdir ~/wst
-cd ~/wst || exit
+mkdir "$HOME"/wst
+cd "$HOME"/wst || exit
 # make wst directory and change to it, otherwise exit
 
 git clone https://github.com/Samourai-Wallet/whirlpool_stats.git;
@@ -40,5 +40,5 @@ sudo pip3 install -r ./requirements.txt
 # change to whirlpool stats directory, otherwise exit
 # install whirlpool stat tool
 
-bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
 # return to menu

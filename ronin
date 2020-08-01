@@ -6,17 +6,17 @@
 # Run system checks
 _main
 
-. ~/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 
-test -f ~/.dialogrc || cp ~/RoninDojo/Scripts/.dialogrc ~/.dialogrc
+test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dialogrc
 # config file for dialog color
 
-OPTIONS=(1 "Dojo Menu"
-         2 "Whirlpool Menu"
-         3 "Electrs Menu"
-         4 "Firewall Menu"
-         5 "System Menu"
-         6 "System Setup & Installations"
+OPTIONS=(1 "Dojo"
+         2 "Whirlpool"
+         3 "Electrs"
+         4 "Backend UI"
+         5 "System"
+         6 "System Setup & Install"
          7 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
@@ -29,31 +29,30 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo.sh
             # runs dojo management menu script
             ;;
         2)
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
             # runs the whirlpool menu script
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # runs electrs menu script
             ;;
         4)
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
-            # runs firewall menu script
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+            # runs backend ui menu script
             ;;
         5)
-            bash ~/RoninDojo/Scripts/Menu/menu-system.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
             # runs system menu script
             ;;
         6)
-            bash ~/RoninDojo/Scripts/Menu/menu-install.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 	    # runs installs menu
             ;;
     	255)
-            clear
 	        _sleep 5 --msg "RoninDojo Exiting in"
 	        exit 1
         # exits Ronin

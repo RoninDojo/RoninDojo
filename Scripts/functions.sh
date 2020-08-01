@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2221,SC2222 source=/dev/null
+# shellcheck disable=SC2221,SC2222,1004 source=/dev/null
 
 RED=$(tput setaf 1)
 NC=$(tput sgr0)
@@ -19,8 +19,8 @@ _main() {
         sudo ln -sf "$HOME"/RoninDojo/ronin /usr/local/bin/ronin
     fi
 
-    if ! grep RoninDojo ~/.bashrc 1>/dev/null; then
-        cat << EOF >> ~/.bashrc
+    if ! grep RoninDojo "$HOME"/.bashrc 1>/dev/null; then
+        cat << EOF >> "$HOME"/.bashrc
 if [ -d $HOME/RoninDojo ]; then
 $HOME/RoninDojo/Scripts/.logo
 ronin
@@ -29,7 +29,7 @@ EOF
     fi
     # place main ronin menu script symbolic link at /usr/local/bin folder
     # because most likely that will be path already added to your $PATH variable
-    # place logo and ronin main menu script ~/.bashrc to run at each login
+    # place logo and ronin main menu script "$HOME"/.bashrc to run at each login
 
     # Adding user to docker group if needed
     if ! getent group docker| grep -q "${USER}"; then
@@ -37,7 +37,7 @@ EOF
 ${RED}
 ***
 Looks like you don't belong in the docker group
-so we will add you then reload the RoninDojo GUI.
+so we will add you then reload the RoninDojo CLI.
 ***
 ${NC}
 EOF
@@ -77,6 +77,20 @@ sysctl...
 ***
 ${NC}
 EOF
+    fi
+
+    # Check for sudoers file for password prompt timeout
+    _set_sudo_timeout
+}
+
+#
+# Sets timeout for sudo prompt to 15mins
+#
+_set_sudo_timeout() {
+    if [ ! -f /etc/sudoers.d/21-ronindojo ]; then
+        sudo bash -c 'cat <<SUDO >>/etc/sudoers.d/21-ronindojo
+Defaults env_reset,timestamp_timeout=15
+SUDO'
     fi
 }
 
@@ -130,7 +144,309 @@ _sleep() {
 }
 
 #
-# Remove old fstab entries in favor of systemd.mount
+# Setup torrc
+#
+_setup_tor() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh # FIX ME!
+
+    if ! grep "${INSTALL_DIR_TOR}" /etc/tor/torrc 1>/dev/null; then
+        sudo sed -i -e "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" \
+            -e 's/^#ControlPort .*$/ControlPort 9051/' \
+            -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
+
+        if ! grep "CookieAuthFileGroupReadable" 1>/dev/null; then
+            sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+        fi
+    fi
+    # check if /etc/tor/torrc is configured
+}
+
+#
+# Backend torrc
+#
+_setup_backend_tor() {
+    if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
+        sudo sed -i '/################ This section is just for relays/i\
+HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
+HiddenServiceVersion 3\
+HiddenServicePort 80 127.0.0.1:8470\
+' /etc/tor/torrc
+
+        # restart tor service
+        sudo systemctl restart tor
+    fi
+}
+
+#
+# Check Backend Installation
+#
+_isbackend_ui() {
+    if [ ! -d "${HOME}/RoninBackend" ]; then
+        cat << EOF
+${RED}
+***
+Backend is not installed, installing now...
+***
+${NC}
+EOF
+        _install_ronin_ui_backend
+        _sleep 2 --msg "Returning to menu in"
+
+        bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
+    fi
+    # check if backend ui is already installed
+}
+
+#
+# Install Ronin UI Backend
+#
+_install_ronin_ui_backend() {
+    local ver current_ver pkg
+
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+    . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
+
+    # Import PGP keys for backend archive
+    curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
+
+    # Check for nodejs
+    if ! hash node 2>/dev/null; then
+        sudo pacman -S --noconfirm nodejs
+    fi
+
+    # Check for npm
+    if ! hash npm 2>/dev/null; then
+        sudo pacman -S --noconfirm npm
+    fi
+
+    # Check for pm2 package
+    if ! hash pm2 2>/dev/null; then
+        sudo npm install -g pm2 &>/dev/null
+    fi
+
+    # Fetch backend ui archive
+    wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
+
+    # Extract latest tar archive filename and latest version
+    pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
+    ver=$( cut -d ' ' -f2 </tmp/latest.txt )
+
+    # Create RoninBackend directory if missing
+    test -d "${BACKEND_DIR}" || mkdir "${BACKEND_DIR}"
+
+    # Get latest version of current RoninBackend if available
+    if [ -f "${BACKEND_DIR}"/package.json ]; then
+        current_ver=$(jq --raw-output '.version' "${BACKEND_DIR}"/package.json)
+    fi
+
+    # Start Backend installation procedure
+    if [[ "${ver}" != "${current_ver}" ]]; then
+        # cd into RoninBackend dir
+        cd "${BACKEND_DIR}" || exit
+
+        # Fetch tar archive
+        wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"
+
+        # Extract all file from package directory inside tar archive into current directory
+        tar xf "${pkg}" package/ --strip-components=1 || exit
+
+        # Remove tar archive
+        rm "${pkg}"
+
+        # Generate .env file
+        if [ ! -f .env ]; then
+            cat << EOF >.env
+API_KEY=$GUI_API
+JWT_SECRET=$GUI_JWT
+PORT=3000
+ACCESS_TOKEN_EXPIRATION=8h
+EOF
+
+            # NPM run
+            npm run start &>/dev/null
+
+            # pm2 save process list
+            pm2 save 1>/dev/null
+
+            # pm2 system startup
+            pm2 startup 1>/dev/null
+
+            sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "$USER" --hp "$HOME" 1>/dev/null
+
+            _setup_backend_tor
+        else # Restart process after updating
+            pm2 restart "Ronin Backend" 1>/dev/null
+        fi
+    fi
+}
+
+#
+# Checks if dojo db container.
+#
+_dojo_check() {
+    local DOJO_PATH
+    DOJO_PATH="$1"
+
+    # Check that ${INSTALL_DIR} is mounted
+    if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Missing drive mount at ${INSTALL_DIR}! Returning to menu.
+Please contact support for assistance
+***
+${NC}
+EOF
+    bash -c ronin
+    fi
+
+    # Check that docker service running
+    if ! sudo systemctl is-active docker 1>/dev/null; then
+        sudo systemctl start docker
+    fi
+
+    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# Source DOJO confs
+#
+_source_dojo_conf() {
+    for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer}.conf .env; do
+        . "${conf}"
+    done
+
+    export BITCOIND_RPC_EXTERNAL_IP
+}
+
+#
+# Select YAML files
+#
+_select_yaml_files() {
+    local DOJO_PATH
+    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+
+    yamlFiles="-f $DOJO_PATH/docker-compose.yaml"
+
+    if [ "$BITCOIND_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.install.yaml"
+
+        if [ "$BITCOIND_RPC_EXTERNAL" == "on" ]; then
+            yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.rpc.expose.yaml"
+        fi
+    fi
+
+    if [ "$EXPLORER_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/explorer.install.yaml"
+    fi
+
+    if [ "$INDEXER_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/indexer.install.yaml"
+    fi
+
+    if [ "$WHIRLPOOL_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/whirlpool.install.yaml"
+    fi
+
+    # Return yamlFiles
+    echo "$yamlFiles"
+}
+
+#
+# Stop Samourai Dojo containers
+#
+_stop_dojo() {
+    local DOJO_PATH
+    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+
+    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+        # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+        cat <<EOF
+${RED}
+***
+Stopping Dojo...
+***
+${NC}
+EOF
+        cd "${DOJO_PATH}" || exit
+    else
+        echo -e "${RED}"
+        echo "***"
+        echo "Dojo is already stopped!"
+        echo "***"
+        echo -e "${NC}"
+        _sleep 3 --msg "Returning to menu in"
+        bash -c "$RONIN_DOJO_MENU"
+    fi
+
+    cat <<EOF
+${RED}
+***
+Preparing shutdown of Dojo. Please wait...
+***
+${NC}
+EOF
+
+    # Source conf files
+    _source_dojo_conf
+
+    # Shutdown the bitcoin daemon
+    if [ "$BITCOIND_INSTALL" == "on" ]; then
+        # Renewal of bitcoind onion address
+        if [ "$BITCOIND_EPHEMERAL_HS" = "on" ]; then
+            docker exec -it tor rm -rf /var/lib/tor/hsv2bitcoind &> /dev/null
+        fi
+
+        # Stop the bitcoin daemon
+        docker exec -it bitcoind bitcoin-cli -rpcconnect=bitcoind --rpcport=28256 \
+--rpcuser="$BITCOIND_RPC_USER" --rpcpassword="$BITCOIND_RPC_PASSWORD" stop &>/dev/null
+
+        cat <<EOF
+${RED}
+***
+Waiting for shutdown of Bitcoin Daemon...
+***
+${NC}
+EOF
+        # Check for bitcoind process
+        i=0
+        while ((i<21)); do
+            if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
+                sleep 1
+                ((i++))
+            else
+                break
+            fi
+        done
+
+        cat <<EOF
+${RED}
+***
+Bitcoind Daemon stopped...
+***
+${NC}
+EOF
+
+        cat <<EOF
+${RED}
+***
+Stopping all Dojo containers...
+***
+${NC}
+EOF
+    fi
+
+    # Stop docker containers
+    yamlFiles=$(_select_yaml_files)
+    docker-compose $yamlFiles stop || exit
+}
+
+#
+# Remove old fstab entries in favor of systemd.mount.
 #
 _remove_fstab() {
     if grep -E '^UUID=.* \/mnt\/usb1? ext4' /etc/fstab 1>/dev/null; then
@@ -166,7 +482,7 @@ _remove_ipv6() {
 # Update RoninDojo
 #
 _update_ronin() {
-    if [ -d ~/RoninDojo/.git ]; then
+    if [ -d "$HOME"/RoninDojo/.git ]; then
         cat <<EOF
 ${RED}
 ***
@@ -184,8 +500,11 @@ EOF
 
         # Reset to origin master branch
         git reset --hard origin/master
+
+        # Check for backend updates
+        _install_ronin_ui_backend
     else
-        cat <<EOF > ~/ronin-update.sh
+        cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
@@ -198,11 +517,14 @@ ${NC}
 sleep 2
 bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 EOF
-        sudo chmod +x ~/ronin-update.sh
-        bash ~/ronin-update.sh
+        sudo chmod +x "$HOME"/ronin-update.sh
+        bash "$HOME"/ronin-update.sh
         # makes script executable and runs
         # end of script returns to menu
         # script is deleted during next run of update
+
+        # Check for backend updates
+        _install_ronin_ui_backend
     fi
 }
 
@@ -218,7 +540,7 @@ Now configuring docker to use the external SSD...
 ${NC}
 EOF
     _sleep 3
-    test -d /mnt/usb/docker || sudo mkdir /mnt/usb/docker
+    test -d "${INSTALL_DIR_DOCKER}" || sudo mkdir "${INSTALL_DIR_DOCKER}"
     # makes directory to store docker/dojo data
 
     if [ -d /etc/docker ]; then
@@ -243,9 +565,9 @@ EOF
 
     # We can skip this if daemon.json was previous created
     if [ ! -f /etc/docker/daemon.json ]; then
-        sudo bash -c 'cat << EOF > /etc/docker/daemon.json
-{ "data-root": "/mnt/usb/docker" }
-EOF'
+        sudo bash -c "cat << EOF > /etc/docker/daemon.json
+{ \"data-root\": \"${INSTALL_DIR_DOCKER}\" }
+EOF"
         cat <<EOF
 ${RED}
 ***
@@ -395,8 +717,8 @@ ${NC}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
-        # Make sure to stop tor and docker when mount point is /mnt/usb
-        if [ "${mountpoint}" = "/mnt/usb" ]; then
+        # Make sure to stop tor and docker when mount point is ${INSTALL_DIR}
+        if [ "${mountpoint}" = "${INSTALL_DIR}" ]; then
             for x in tor docker; do
                 sudo systemctl stop "${x}"
             done

@@ -4,12 +4,12 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Bitcoind Logs"
-         2 "Db Logs"
-         3 "Indexer Logs"
-         4 "Nginx Logs"
-         5 "Nodejs Logs"
-         6 "Tor Logs"
+OPTIONS=(1 "Bitcoind"
+         2 "DB"
+         3 "Indexer"
+         4 "Nginx"
+         5 "Node.js"
+         6 "Tor"
          7 "Error Logs"
          8 "Go Back")
 
@@ -31,7 +31,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -44,7 +44,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs bitcoind
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for bitcoind
             ;;
         2)
@@ -56,7 +56,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -69,7 +69,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs db
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for db
             ;;
         3)
@@ -81,7 +81,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -94,7 +94,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs indexer
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for indexer
             ;;
         4)
@@ -106,7 +106,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -119,7 +119,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs nginx
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for nginx
             ;;
         5)
@@ -131,7 +131,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -144,7 +144,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs node
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for nodejs
             ;;
         6)
@@ -156,7 +156,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               _sleep 5
-              bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               exit
             fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
@@ -170,11 +170,11 @@ case $CHOICE in
 
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs tor
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # shows logs for tor
             ;;
         7)
-            bash ~/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # goes to error logs menu
             ;;
         8)

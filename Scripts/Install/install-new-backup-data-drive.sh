@@ -26,13 +26,13 @@ else
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
   # no drive detected, press any letter to return to menu
 fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Format and Mount /dev/sdb1 to /mnt/usb1..."
+echo "Preparing to Format and Mount /dev/sdb1 to ${SALVAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
@@ -51,7 +51,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-system2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -64,7 +64,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"; then
+if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "${SALVAGE_MOUNT}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
@@ -88,7 +88,7 @@ df -h /dev/sdb1
 _sleep 2
 # checks disk info
 
-create_swap --file /mnt/usb1/swapfile --size 2G
+create_swap --file "${SALVAGE_MOUNT}"/swapfile --size 2G
 # created a 2GB swapfile on the external backup drive
 # see create_swap in functions.sh
 
@@ -98,5 +98,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
 # press any letter to return to menu-system2.sh

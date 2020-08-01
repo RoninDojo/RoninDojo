@@ -11,8 +11,8 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
-    bash ~/RoninDojo/Scripts/Install/install-wst.sh
+if [ ! -f "$HOME"/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
+    bash "$HOME"/RoninDojo/Scripts/Install/install-wst.sh
 else
     echo -e "${RED}"
     echo "***"

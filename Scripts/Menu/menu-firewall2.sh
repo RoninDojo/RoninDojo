@@ -72,7 +72,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
             # press any key to return to menu
             ;;
         2)
@@ -130,10 +130,10 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall2.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
             # press any key to return to menu
             ;;
         3)
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             ;;
 esac

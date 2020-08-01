@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if ! sudo test -d /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data; then
+if ! sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data; then
     cat <<EOF
 ${RED}
 ***
@@ -13,7 +13,7 @@ IBD not found! Did you forget to install dojo?
 ${NC}
 EOF
     _sleep 5 --msg "Returning to menu in"
-    bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 # if data directory is not found then warn and return to menu
 
@@ -31,7 +31,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -44,7 +44,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -67,10 +67,10 @@ echo "Copying..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo test -d /mnt/usb1/system-setup-salvage || sudo mkdir /mnt/usb1/system-setup-salvage
+sudo test -d "${SALVAGE_MOUNT_SYSTEM}" || sudo mkdir "${SALVAGE_MOUNT_SYSTEM}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
-if sudo test -d /mnt/usb1/system-setup-salvage/blocks; then
+if sudo test -d "${SALVAGE_MOUNT_SYSTEM}"/blocks; then
     # Use rsync when existing IBD is found
     if ! hash rsync 2>/dev/null; then
         cat <<EOF
@@ -84,9 +84,9 @@ EOF
         sudo pacman -S --noconfirm rsync &>/dev/null
     fi
 
-    sudo rsync -vahW --no-compress --progress --delete-after /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+    sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_MOUNT_SYSTEM}"
 else
-  sudo cp -av /mnt/usb/docker/volumes/my-dojo_data-bitcoind/_data/{blocks,chainstate} /mnt/usb1/system-setup-salvage
+  sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_MOUNT_SYSTEM}"
   # use cp for initial fresh IBD copy
 fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
@@ -104,5 +104,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/menu-dojo2.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 # return to menu

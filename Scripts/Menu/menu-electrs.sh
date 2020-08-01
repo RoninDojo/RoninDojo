@@ -4,10 +4,10 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start Electrs"
-         2 "Stop Electrs"
-         3 "Restart Electrs"
-         4 "View Logs"
+OPTIONS=(1 "Start"
+         2 "Stop"
+         3 "Restart"
+         4 "Logs"
          5 "Tor Hidden Service"
          6 "Go Back")
 
@@ -35,7 +35,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep
-                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
             # check if electrs is already installed
@@ -47,7 +47,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             docker start indexer
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
         2)
@@ -65,7 +65,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep
-                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
             # check if electrs is already installed
@@ -77,7 +77,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             docker stop indexer
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # stop electrs, return to menu
             ;;
         3)
@@ -95,7 +95,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep
-                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
             # check if electrs is already installed
@@ -107,7 +107,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             docker restart indexer
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # restart electrs, return to menu
             ;;
         4)
@@ -125,7 +125,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep
-                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
             # check if electrs is already installed
@@ -143,7 +143,7 @@ case $CHOICE in
             _sleep 2
             cd "$DOJO_PATH" || exit
             ./dojo.sh logs indexer
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
         5)
@@ -161,7 +161,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep
-                bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
                 exit
             fi
             # check if electrs is already installed
@@ -188,11 +188,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-electrs.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # return to menu
             ;;
 	6)
-            bash ~/RoninDojo/ronin
+            bash "$HOME"/RoninDojo/ronin
             # returns to main menu
             ;;
 esac
