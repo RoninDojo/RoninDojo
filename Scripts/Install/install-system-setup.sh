@@ -79,9 +79,6 @@ done
 # install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
 
-# Torrc setup
-_setup_tor
-
 if sudo ufw status | grep 22 > /dev/null ; then
   echo -e "${RED}"
   echo "***"
@@ -418,16 +415,8 @@ _sleep 5
 create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-echo -e "${RED}"
-echo "***"
-echo "Creating Tor directory on the external SSD..."
-echo "***"
-echo -e "${NC}"
-_sleep 3
-test -d "${INSTALL_DIR_TOR}" || sudo mkdir "${INSTALL_DIR_TOR}"
-sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
-# tests for ${INSTALL_DIR_TOR} directory, if not found it is created
-# then chown is used to change owner to tor user
+_setup_tor
+# tor configuration setup, see functions.sh
 
 _docker_datadir_setup
 # docker data directory setup, see functions.sh

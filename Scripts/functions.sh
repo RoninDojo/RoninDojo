@@ -147,9 +147,31 @@ _sleep() {
 # Setup torrc
 #
 _setup_tor() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh # FIX ME!
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    # Setup directory
+    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
+        cat <<TOR_DIR
+${RED}
+***
+Creating Tor directory...
+***
+${NC}
+TOR_DIR
+        mkdir "${INSTALL_DIR_TOR}"
+    fi
+
+    # Set permissions
+    sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
 
     if ! grep "${INSTALL_DIR_TOR}" /etc/tor/torrc 1>/dev/null; then
+        cat <<TOR_CONFIG
+${RED}
+***
+Initial Tor Configuration...
+***
+${NC}
+TOR_CONFIG
         sudo sed -i -e "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" \
             -e 's/^#ControlPort .*$/ControlPort 9051/' \
             -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
@@ -157,8 +179,15 @@ _setup_tor() {
         if ! grep "CookieAuthFileGroupReadable" 1>/dev/null; then
             sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
         fi
+
+        # Restart Tor
+        sudo systemctl restart tor
+
+        # Enable service on startup
+        if ! sudo systemctl is-enabled tor 1>/dev/null; then
+            sudo systemctl enable tor
+        fi
     fi
-    # check if /etc/tor/torrc is configured
 }
 
 #
@@ -166,6 +195,13 @@ _setup_tor() {
 #
 _setup_backend_tor() {
     if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
+        cat <<BACKEND_TOR_CONFIG
+${RED}
+***
+Configuring RoninDojo Backend Tor Address...
+***
+${NC}
+BACKEND_TOR_CONFIG
         sudo sed -i '/################ This section is just for relays/i\
 HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
 HiddenServiceVersion 3\
