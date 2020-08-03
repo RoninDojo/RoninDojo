@@ -194,7 +194,7 @@ Creating Tor directory...
 ***
 ${NC}
 TOR_DIR
-        mkdir "${INSTALL_DIR_TOR}"
+        sudo mkdir "${INSTALL_DIR_TOR}"
     fi
 
     # Set permissions
