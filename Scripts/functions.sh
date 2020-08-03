@@ -100,14 +100,14 @@ _systemd_unit_drop_in_check() {
     systemd_mountpoint=${tmp////-}     # Replace / with -
 
     for x in docker tor; do
-        if [ ! -d "/usr/lib/systemd/system/${x}.service.d" ]; then
+        if [ ! -d "/etc/systemd/system/${x}.service.d" ]; then
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
-                sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
+                sudo bash -c "cat <<EOF >/etc/systemd/system/${x}.service.d/override.conf
 [Unit]
 After=${systemd_mountpoint}.mount
 EOF"
             else # Legacy fstab systemd automount
-                sudo bash -c "cat <<EOF >>/etc/systemd/system/${systemd_mountpoint}.automount
+                sudo bash -c "cat <<EOF >>/etc/systemd/system/${x}.service.d/override.conf
 [Unit]
 After=${systemd_mountpoint}.automount
 EOF"
