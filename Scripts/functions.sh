@@ -102,12 +102,12 @@ _systemd_unit_drop_in_check() {
     for x in docker tor; do
         if [ ! -d "/usr/lib/systemd/system/${x}.service.d" ]; then
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
-                sudo bash -c "cat <<EOF
+                sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
 After=${systemd_mountpoint}.mount
 EOF"
             else # Legacy fstab systemd automount
-                sudo bash -c "cat <<EOF
+                sudo bash -c "cat <<EOF >>/etc/systemd/system/${systemd_mountpoint}.automount
 [Unit]
 After=${systemd_mountpoint}.automount
 EOF"
