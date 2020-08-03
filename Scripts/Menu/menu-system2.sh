@@ -72,11 +72,11 @@ EOF
             ;;
     5)
         bash "$HOME"/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
-        # mounts /dev/sdb1 to ${SALVAGE_MOUNT} for access to backup blockchain data
+        # mounts ${SECONDARY_STORAGE} to ${SALVAGE_MOUNT} for access to backup blockchain data
         ;;
     6)
         bash "$HOME"/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
-        # formats /dev/sdb1 to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on /dev/sda1 or ${INSTALL_DIR}
+        # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
         ;;
     7)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh

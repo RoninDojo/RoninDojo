@@ -204,7 +204,7 @@ _sleep 2
 # test for ${INSTALL_DIR} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
-if [ -b /dev/sda1 ]; then
+if [ -b "${PRIMARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"
   echo "Creating ${SALVAGE_DIR} directory..."
@@ -219,11 +219,11 @@ if [ -b /dev/sda1 ]; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 "${SALVAGE_DIR}"
+  sudo mount "${PRIMARY_STORAGE}" "${SALVAGE_DIR}"
 else
   echo -e "${RED}"
   echo "***"
-  echo "Did not find /dev/sda1 for Blockchain data salvage."
+  echo "Did not find ${PRIMARY_STORAGE} for Blockchain data salvage."
   echo "***"
   echo -e "${NC}"
   _sleep 2
@@ -247,7 +247,7 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 "${INSTALL_DIR}"
+  sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
 
@@ -257,16 +257,16 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  lsblk -o NAME,SIZE,LABEL /dev/sda1
+  lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
   _sleep 2
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
   echo -e "${RED}"
   echo "***"
-  echo "Check output above for /dev/sda1 and make sure everything looks ok."
+  echo "Check output above for ${PRIMARY_STORAGE} and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h /dev/sda1
+  df -h "${PRIMARY_STORAGE}"
   _sleep 4
   # checks disk info
 
@@ -328,7 +328,7 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo mount /dev/sda1 "${INSTALL_DIR}"
+  sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
 
@@ -338,17 +338,17 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  lsblk -o NAME,SIZE,LABEL /dev/sda1
+  lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
   _sleep 2
   # lsblk lists disk by device
-  # double-check that /dev/sda1 exists, and its storage capacity is what you expected
+  # double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
 
   echo -e "${RED}"
   echo "***"
-  echo "Check output for /dev/sda1 and make sure everything looks ok."
+  echo "Check output for ${PRIMARY_STORAGE} and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h /dev/sda1
+  df -h "${PRIMARY_STORAGE}"
   _sleep 4
   # checks disk info
 
@@ -387,7 +387,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "${INSTALL_DIR}"; then
+if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
@@ -399,16 +399,16 @@ echo "***"
 echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
-lsblk -o NAME,SIZE,LABEL /dev/sda1
+lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
 _sleep 2
-# double-check that /dev/sda1 exists, and its storage capacity is what you expected
+# double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
 
 echo -e "${RED}"
 echo "***"
-echo "Check output for /dev/sda1 and make sure everything looks ok..."
+echo "Check output for ${PRIMARY_STORAGE} and make sure everything looks ok..."
 echo "***"
 echo -e "${NC}"
-df -h /dev/sda1
+df -h "${PRIMARY_STORAGE}"
 _sleep 5
 # checks disk info
 

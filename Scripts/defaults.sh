@@ -45,6 +45,8 @@ SAMOURAI_COMMITISH="v1.7.0" # empty defaults to master
 #
 # Filesystem Defaults
 #
+PRIMARY_STORAGE="/dev/sda1"
+SECONDARY_STORAGE="/dev/sdb1"
 INSTALL_DIR="/mnt/usb"
 INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"

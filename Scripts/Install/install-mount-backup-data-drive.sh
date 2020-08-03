@@ -4,14 +4,14 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if [ -b /dev/sdb1 ]; then
+if [ -b "${SECONDARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"
   echo "Your backup drive partition 1 has been detected..."
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  # checks for /dev/sdb1
+  # checks for ${SECONDARY_STORAGE}
 else
   echo -e "${RED}"
   echo "***"
@@ -32,7 +32,7 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Mount /dev/sdb1 to ${SALVAGE_MOUNT}..."
+echo "Preparing to Mount ${SECONDARY_STORAGE} to ${SALVAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 3
@@ -55,11 +55,11 @@ test ! -d "${SALVAGE_MOUNT}" && sudo mkdir "${SALVAGE_MOUNT}"
 
 echo -e "${RED}"
 echo "***"
-echo "Mounting /dev/sdb1 to ${SALVAGE_MOUNT}..."
+echo "Mounting ${SECONDARY_STORAGE} to ${SALVAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo mount /dev/sdb1 "${SALVAGE_MOUNT}"
+sudo mount "${SECONDARY_STORAGE}" "${SALVAGE_MOUNT}"
 # mount backup drive to ${SALVAGE_MOUNT} directory
 
 echo -e "${RED}"
