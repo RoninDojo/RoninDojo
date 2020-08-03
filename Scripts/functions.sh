@@ -81,6 +81,42 @@ EOF
 
     # Check for sudoers file for password prompt timeout
     _set_sudo_timeout
+
+    # Force dependency on docker and tor unit files to depend on
+    # external drive mount
+    _systemd_unit_drop_in_check
+}
+
+#
+# Set systemd unit dependencies for docker and tor unit files
+# to depend on ${INSTALL_DIR} mount point
+#
+_systemd_unit_drop_in_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    local tmp systemd_mountpoint
+
+    tmp=${INSTALL_DIR:1}               # Remove leading '/'
+    systemd_mountpoint=${tmp////-}     # Replace / with -
+
+    for x in docker tor; do
+        if [ ! -d "/usr/lib/systemd/system/${x}.service.d" ]; then
+            if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
+                sudo bash -c "cat <<EOF
+[Unit]
+After=${systemd_mountpoint}.mount
+EOF"
+            else # Legacy fstab systemd automount
+                sudo bash -c "cat <<EOF
+[Unit]
+After=${systemd_mountpoint}.automount
+EOF"
+            fi
+
+            # Reload systemd manager configuration
+            sudo systemctl daemon-reload
+        fi
+    done
 }
 
 #
