@@ -214,7 +214,7 @@ TOR_CONFIG
             -e 's/^#ControlPort .*$/ControlPort 9051/' \
             -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
 
-        if ! grep "CookieAuthFileGroupReadable" 1>/dev/null /etc/tor/torrc; then
+        if ! grep "CookieAuthFileGroupReadable" /etc/tor/torrc 1>/dev/null; then
             sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
         fi
 
