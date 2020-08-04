@@ -815,6 +815,9 @@ EOF
         sudo sfdisk --quiet --wipe always --delete "${_device}" &>/dev/null
         # if device exists, use sfdisk to erase filesystem and partition table
 
+        # wipe labels
+        sudo wipefs -a --force "${_device}" &>/dev/null
+
         # reload partition table
         partprobe
 
