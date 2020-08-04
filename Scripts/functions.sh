@@ -806,17 +806,20 @@ EOF
         sudo umount -l "${mountpoint}"
     fi
 
+    # This quick hack checks if device is either a SSD device or a NVMe device
+    [[ "${device}" =~ "sd" ]] && _device="${device%?}" || _device="${device%??}"
+
     if [ ! -b "${device}" ]; then
-        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
+        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
     else
-        sudo sfdisk --quiet --wipe always --delete "${device%?}" &>/dev/null
+        sudo sfdisk --quiet --wipe always --delete "${_device}" &>/dev/null
         # if device exists, use sfdisk to erase filesystem and partition table
 
         # reload partition table
         partprobe
 
         # Create a partition table with a single partition that takes the whole disk
-        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
+        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
     fi
 
     cat <<EOF
