@@ -798,8 +798,8 @@ EOF
             done
 
             # Stop swap on mount point
-            if ! check_swap "${mountpoint}"/swapfile; then
-                sudo swapoff "${mountpoint}"/swapfile
+            if ! check_swap "${INSTALL_DIR_SWAP}"; then
+                sudo swapoff "${INSTALL_DIR_SWAP}"
             fi
         fi
 
