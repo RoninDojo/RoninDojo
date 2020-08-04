@@ -796,14 +796,14 @@ EOF
             for x in tor docker; do
                 sudo systemctl stop "${x}"
             done
+
+            # Stop swap on mount point
+            if ! check_swap "${mountpoint}"/swapfile; then
+                sudo swapoff "${mountpoint}"/swapfile
+            fi
         fi
 
-        # Stop swap on mount point
-        if ! check_swap "${mountpoint}"/swapfile; then
-            sudo swapoff "${mountpoint}"/swapfile
-        fi
-
-        sudo umount -l "${mountpoint}"
+        sudo umount -l "${device}"
     fi
 
     # This quick hack checks if device is either a SSD device or a NVMe device
