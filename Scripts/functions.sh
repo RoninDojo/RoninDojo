@@ -218,8 +218,8 @@ TOR_CONFIG
             sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
         fi
 
-        # Restart Tor
-        sudo systemctl restart tor
+        # Start Tor
+        sudo systemctl is-active tor 1>/dev/null || sudo systemctl start tor
 
         # Enable service on startup
         if ! sudo systemctl is-enabled tor 1>/dev/null; then
