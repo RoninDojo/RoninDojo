@@ -28,11 +28,9 @@ case $CHOICE in
         2)
             echo -e "${RED}"
             echo "***"
-            echo "Uninstalling Dojo in 30s..."
+            echo "Uninstalling Dojo in 15s..."
             echo "***"
             echo -e "${NC}"
-            _sleep 5likewhoa123456789
-            _sleep 5
 
             echo -e "${RED}"
             echo "***"
@@ -46,7 +44,7 @@ case $CHOICE in
             echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            _sleep 5
+            _sleep 10
 
             echo -e "${RED}"
             echo "Do you want to salvage your Blockchain data?"
@@ -61,7 +59,7 @@ case $CHOICE in
                             echo -e "${NC}"
                             _sleep 2
                             cd "$DOJO_PATH" || exit
-                            ./dojo.sh stop
+                            _stop_dojo || exit
                             # stop dojo
 
                             test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
