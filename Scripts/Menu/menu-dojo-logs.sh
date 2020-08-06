@@ -10,8 +10,9 @@ OPTIONS=(1 "Bitcoind"
          4 "Nginx"
          5 "Node.js"
          6 "Tor"
-         7 "Error Logs"
-         8 "Go Back")
+         7 "Whirlpool"
+         8 "Error Logs"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -174,10 +175,29 @@ case $CHOICE in
             # shows logs for tor
             ;;
         7)
+            echo -e "${RED}"
+            echo "***"
+            echo "Viewing Whirlpool Logs..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press Ctrl+C to exit at anytime..."
+            echo "***"
+            echo -e "${NC}"
+            cd "$DOJO_PATH" || exit
+            ./dojo.sh logs whirlpool
+            bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            # view logs, return to menu
+            # see defaults.sh
+            ;;
+        8)
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # goes to error logs menu
             ;;
-        8)
+        9)
             bash -c "$RONIN_DOJO_MENU"
             # goes back to ronin dojo menu
             ;;
