@@ -117,7 +117,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               cd "${DOJO_PATH}" || exit
-              ./dojo.sh stop
+              _stop_dojo || exit
               # stop dojo
 
               echo -e "${RED}"
@@ -147,7 +147,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               cd "${DOJO_PATH}" || exit
-              ./dojo.sh stop
+              _stop_dojo || exit
               # stop dojo
 
               echo -e "${RED}"

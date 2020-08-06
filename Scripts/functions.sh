@@ -700,13 +700,13 @@ _check_dojo_perms() {
     cd "${DOJO_PATH}" || exit
 
     if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
-        sudo ./dojo.sh stop
+        _stop_dojo || exit
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
         sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
     else
-        ./dojo.sh stop
+        _stop_dojo || exit
     fi
 
     return 0

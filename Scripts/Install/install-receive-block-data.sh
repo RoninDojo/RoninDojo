@@ -58,7 +58,7 @@ echo -e "${NC}"
 _sleep 2
 
 cd "${DOJO_PATH}" || exit
-./dojo.sh stop
+_stop_dojo || exit
 # stop dojo
 
 echo -e "${RED}"

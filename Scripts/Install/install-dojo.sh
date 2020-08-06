@@ -297,7 +297,8 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   # if the user is AFK there may be timeout
 
   cd "$DOJO_PATH" || exit
-  ./dojo.sh stop
+  _stop_dojo || exit
+
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
   sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
@@ -315,7 +316,12 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit
-  ./dojo.sh start
+
+  _source_dojo_conf
+
+  # Start docker containers
+  yamlFiles=$(_select_yaml_files)
+  docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
   # start dojo
 fi
 # check for uninstall-salvage, if not found continue
@@ -338,7 +344,7 @@ if sudo test -d "${INSTALL_DIR_SYSTEM}"; then
   # if the user is AFK there may be timeout
 
   cd "$DOJO_PATH" || exit
-  ./dojo.sh stop
+  _stop_dojo || exit
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
   sudo mv -v "${INSTALL_DIR_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
@@ -356,7 +362,12 @@ if sudo test -d "${INSTALL_DIR_SYSTEM}"; then
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit
-  ./dojo.sh start
+
+  _source_dojo_conf
+
+  # Start docker containers
+  yamlFiles=$(_select_yaml_files)
+  docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
   # start dojo
 fi
 # check for system-setup-salvage, if not found continue
