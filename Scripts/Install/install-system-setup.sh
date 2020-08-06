@@ -17,19 +17,20 @@ if [ -d "$HOME"/dojo ]; then
 else
   echo -e "${RED}"
   echo "***"
-  echo "Setting up system and installing Dependencies in 15s..."
+  echo "Setting up system and installing Dependencies in 10s..."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
 fi
 # checks for "$HOME"/dojo directory, if found kicks back to menu
 
-echo -e "${RED}"
-echo "***"
-echo "Use Ctrl+C to exit now if needed!"
-echo "***"
-echo -e "${NC}"
-_sleep 5
+cat <<SYSTEM
+${RED}
+***
+Use Ctrl+C to exit now if needed!
+***
+${NC}
+SYSTEM
+_sleep 10
 
 "$HOME"/RoninDojo/Scripts/.logo
 # display ronindojo logo
