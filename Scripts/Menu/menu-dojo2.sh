@@ -31,13 +31,7 @@ case $CHOICE in
             echo "Uninstalling Dojo in 30s..."
             echo "***"
             echo -e "${NC}"
-            _sleep 5
-
-            echo -e "${RED}"
-            echo "***"
-            echo "You will be asked if you wish to salvage any data..."
-            echo "***"
-            echo -e "${NC}"
+            _sleep 5likewhoa123456789
             _sleep 5
 
             echo -e "${RED}"
@@ -103,10 +97,9 @@ case $CHOICE in
         3)
             echo -e "${RED}"
             echo "***"
-            echo "Deleting docker dangling images and images of previous versions in 15s..."
+            echo "Deleting docker dangling images and images of previous versions in 5s..."
             echo "***"
             echo -e "${NC}"
-            _sleep
 
             echo -e "${RED}"
             echo "***"
