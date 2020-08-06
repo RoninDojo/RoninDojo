@@ -36,6 +36,7 @@ MENU="Choose one of the following menu options:"
 RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
 RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
 RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
+RONIN_BACKEND_UI_MENU="$HOME/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
 
 #
 # Terminal Colors
