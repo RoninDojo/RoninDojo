@@ -11,7 +11,6 @@ NC=$(tput sgr0)
 _main() {
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
         _sleep 10 --msg "Welcome to RoninDojo. Loading in"
-    else
         touch "$HOME/.config/RoninDojo/.run"
     fi
 
