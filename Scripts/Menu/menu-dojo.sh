@@ -34,6 +34,19 @@ case $CHOICE in
                 _sleep 5
                 bash -c "$RONIN_DOJO_MENU"
             else
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+
                 echo -e "${RED}"
                 echo "***"
                 echo "Starting Dojo..."
@@ -41,17 +54,6 @@ case $CHOICE in
                 echo -e "${NC}"
                 _sleep 2
 
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Is Dojo installed?
-***
-${NC}
-DOJO
-                    bash -c "$RONIN_DOJO_MENU"
-                fi
                 cd "$DOJO_PATH" || exit
 
                 _source_dojo_conf
