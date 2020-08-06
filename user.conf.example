@@ -35,6 +35,9 @@
 
 #PRIMARY_STORAGE=""
 #SECONDARY_STORAGE=""
+
+# Install directory variable can ONLY be enabled once during initial install. DO NOT EDIT this is
+# on an existing RoninDojo installation!
 #INSTALL_DIR=""
 
 #
