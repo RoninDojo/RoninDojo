@@ -40,6 +40,18 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep 2
+
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Is Dojo installed?
+***
+${NC}
+DOJO
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
                 cd "$DOJO_PATH" || exit
 
                 _source_dojo_conf
