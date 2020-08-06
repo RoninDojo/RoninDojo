@@ -9,7 +9,11 @@ NC=$(tput sgr0)
 # Main function runs at beginning of script execution
 #
 _main() {
-    _sleep 2 --msg "Starting RoninDojo in"
+    if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
+        _sleep 10 --msg "Welcome to RoninDojo. Loading in"
+    else
+        touch "$HOME/.config/RoninDojo/.run"
+    fi
 
     # Source update script
     . "$HOME"/RoninDojo/Scripts/update.sh
