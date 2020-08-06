@@ -9,17 +9,16 @@ _load_user_conf
 
 echo -e "${RED}"
 echo "***"
-echo "Running Dojo install in 15s..."
+echo "Running Dojo install in 10s..."
 echo "***"
 echo -e "${NC}"
-_sleep 5
 
 echo -e "${RED}"
 echo "***"
 echo "Use Ctrl+C to exit now if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 5
+_sleep 10
 
 echo -e "${RED}"
 echo "***"
@@ -27,20 +26,23 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd "$HOME" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo
+git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo &>/dev/null
 
 echo -e "${RED}"
 echo "***"
 echo "Values necessary for usernames, passwords, etc. will randomly be generated now..."
 echo "***"
 echo -e "${NC}"
-_sleep 5
 
-echo -e "${RED}"
-echo "***"
-echo "These values are found in RoninDojo menus or in the ${DOJO_PATH}/conf directory."
-echo "***"
-echo -e "${NC}"
+cat <<DOJO
+${RED}
+***
+These values are found in RoninDojo menus, ${DOJO_PATH}/conf directory
+or in the ~/RoninDojo/user.conf.example file. See file for more info
+***
+${NC}
+DOJO
+
 _sleep 5
 # see defaults.sh for dojo path
 
