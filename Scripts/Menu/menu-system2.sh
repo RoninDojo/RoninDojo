@@ -4,6 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 OPTIONS=(1 "Task Manager"
          2 "Lock Root User"
          3 "Unlock Root User"

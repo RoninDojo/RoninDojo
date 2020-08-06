@@ -14,6 +14,9 @@ _main() {
 
     _update_01 # Check for bridge-utils version update
 
+    # Create RoninDojo config directory
+    test ! -d "$HOME"/.config/RoninDojo && mkdir "$HOME"/.config/RoninDojo
+
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
         sudo ln -sf "$HOME"/RoninDojo/ronin /usr/local/bin/ronin
@@ -85,6 +88,17 @@ EOF
     # Force dependency on docker and tor unit files to depend on
     # external drive mount
     _systemd_unit_drop_in_check
+
+    _install_ronin_ui_backend
+}
+
+#
+# Load user defined variables
+#
+_load_user_conf() {
+if [ -f "${HOME}/.config/RoninDojo/user.conf" ]; then
+  . "${HOME}/.config/RoninDojo/user.conf"
+fi
 }
 
 #
@@ -93,6 +107,8 @@ EOF
 #
 _systemd_unit_drop_in_check() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
 
     local tmp systemd_mountpoint
 
@@ -280,6 +296,8 @@ _install_ronin_ui_backend() {
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
 
+    _load_user_conf
+
     # Import PGP keys for backend archive
     curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
 
@@ -358,6 +376,10 @@ EOF
 # Checks if dojo db container.
 #
 _dojo_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
     local DOJO_PATH
     DOJO_PATH="$1"
 

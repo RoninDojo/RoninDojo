@@ -5,6 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/generated-credentials.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 echo -e "${RED}"
 echo "***"
 echo "Running Dojo install in 15s..."

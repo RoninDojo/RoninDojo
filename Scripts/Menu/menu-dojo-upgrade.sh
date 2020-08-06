@@ -2,11 +2,12 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/generated-credentials.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 WORK_DIR=$(mktemp -d)
-# temporaly directory location
+# temporaly temp directory location
 
 if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
     echo -e "${RED}"
@@ -31,34 +32,26 @@ echo "***"
 echo -e "${NC}"
 _sleep 5
 
-# Make sure permissions are properly set for ${DOJO_PATH}
 _check_dojo_perms "${DOJO_PATH}"
 # make sure permissions are properly set for ${DOJO_PATH}
 
-# Enable BITCOIND_RPC_EXTERNAL
 if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
     sed -i 's/BITCOIND_RPC_EXTERNAL=off/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
 fi
 # enable BITCOIND_RPC_EXTERNAL
-
 cd "${WORK_DIR}" || exit
 git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" # temporary
 
-cp -ua samourai-dojo/* "$HOME"/dojo/
+cp -ua samourai-dojo/* "${DOJO_PATH%/docker/my-dojo}"/
 # copy only when the SOURCE file is newer than the
 # destination file or when the destination file is missing
 # and keep all permissions
 
-cp -ua samourai-dojo/* "${DOJO_PATH%/docker/my-dojo}"/
-
-# Remove $WORK_DIR
 rm -rf "${WORK_DIR}"
 # remove $WORK_DIR
 
 # Return to previous working path
 cd "${HOME}" || exit
-
-# Stop dojo and prepare for upgrade
 
 echo -e "${RED}"
 echo "***"

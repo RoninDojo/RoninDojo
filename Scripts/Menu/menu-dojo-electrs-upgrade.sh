@@ -2,7 +2,8 @@
 # shellcheck source=/dev/null disable=1004
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/generated-credentials.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
+. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 
 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf

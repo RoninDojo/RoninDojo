@@ -4,6 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 if [ -b "${SECONDARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"

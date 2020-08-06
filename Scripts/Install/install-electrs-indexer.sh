@@ -2,7 +2,9 @@
 # shellcheck source=/dev/null disable=1004
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/generated-credentials.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
+
+_load_user_conf
 
 RPC_USER=$(sudo grep BITCOIND_RPC_USER= "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
 RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
