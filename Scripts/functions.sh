@@ -9,6 +9,8 @@ NC=$(tput sgr0)
 # Main function runs at beginning of script execution
 #
 _main() {
+    _sleep 2 --msg "Starting RoninDojo in"
+
     # Source update script
     . "$HOME"/RoninDojo/Scripts/update.sh
 
