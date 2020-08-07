@@ -59,12 +59,12 @@ SAMOURAI_COMMITISH="v1.7.0" # empty defaults to master
 #
 PRIMARY_STORAGE="/dev/sda1"
 SECONDARY_STORAGE="/dev/sdb1"
+SECONDARY_STORAGE_MOUNT="/mnt/backup"
 
 INSTALL_DIR="/mnt/usb"
 INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
-INSTALL_DIR_UNINSTALL="${INSTALL_DIR}/uninstall-salvage"
-INSTALL_DIR_SYSTEM="${INSTALL_DIR}/system-setup-salvage"
+INSTALL_DIR_UNINSTALL="${INSTALL_DIR}/bitcoin"
 INSTALL_DIR_DOCKER="${INSTALL_DIR}/docker"
 
 DOCKER_VOLUMES="${INSTALL_DIR_DOCKER}/volumes"
@@ -72,12 +72,9 @@ DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
 DOCKER_VOLUME_WP="${DOCKER_VOLUMES}/my-dojo_data-whirlpool"
 DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
 
-SALVAGE_MOUNT="/mnt/usb1"
-SALVAGE_MOUNT_SYSTEM="${SALVAGE_MOUNT}/system-setup-salvage"
-SALVAGE_DIR="/mnt/salvage"
-SALVAGE_DIR_UNINSTALL="${SALVAGE_DIR}/uninstall-salvage"
-SALVAGE_DIR_SYSTEM="${SALVAGE_DIR}/system-setup-salvage"
-SALVAGE_DIR_BITCOIND="${SALVAGE_DIR}/docker/volumes/my-dojo_data-bitcoind"
+SALVAGE_MOUNT="${SECONDARY_STORAGE_MOUNT}"
+SALVAGE_BITCOIN_IBD_DATA="${SALVAGE_MOUNT}/bitcoin"
+BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
 
 # Workaround when on x86 systems and autologin is enabled for the user account
 if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then

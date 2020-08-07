@@ -34,17 +34,16 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Users with a fully sync'd Blockchain should answer yes to salvage!"
+            echo "Users with a fully synced Blockchain should answer yes to salvage!"
             echo "***"
             echo -e "${NC}"
-            _sleep 5
 
             echo -e "${RED}"
             echo "***"
             echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
             echo "***"
             echo -e "${NC}"
-            _sleep 10
+            _sleep 7
 
             echo -e "${RED}"
             echo "Do you want to salvage your Blockchain data?"
@@ -65,7 +64,7 @@ case $CHOICE in
                             test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
                             # check if salvage directory exist
 
-                            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"
+                            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/
                             # copies blockchain data to uninstall-salvage to be used by the dojo install script
                             break;;
                     [Nn]* ) break;;

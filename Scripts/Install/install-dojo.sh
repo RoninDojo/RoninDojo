@@ -275,7 +275,7 @@ cd "$DOJO_PATH" || exit
 # wait for dojo install to reach bitcoind sync
 # use Ctrl + C to exit and trigger the salvage attempt below
 
-if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
+if sudo test -d "${INSTALL_DIR}"/bitcoin; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -308,7 +308,7 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
+  sudo rm -rf "${INSTALL_DIR}"/bitcoin
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit
@@ -320,50 +320,4 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
   # start dojo
 fi
-# check for uninstall-salvage, if not found continue
-
-if sudo test -d "${INSTALL_DIR_SYSTEM}"; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data salvage starting..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any letter to continue..."
-  echo "***"
-  echo -e "${NC}"
-  read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps
-  # if the user is AFK there may be timeout
-
-  cd "$DOJO_PATH" || exit
-  _stop_dojo || exit
-  sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-  sudo mv -v "${INSTALL_DIR_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
-  # changes to dojo path, otherwise exit
-  # websearch "bash Logical OR (||)" for info
-  # stops dojo and removes new data directories
-  # then moves salvaged block data
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data salvage complete!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 3
-  sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
-  # remove old salvage directories
-
-  cd "$DOJO_PATH" || exit
-
-  _source_dojo_conf
-
-  # Start docker containers
-  yamlFiles=$(_select_yaml_files)
-  docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
-  # start dojo
-fi
-# check for system-setup-salvage, if not found continue
+# check for IBD data, if not found continue
