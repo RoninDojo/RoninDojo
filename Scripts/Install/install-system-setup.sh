@@ -95,7 +95,7 @@ else
   echo "Setting up UFW..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw default deny incoming
   sudo ufw default allow outgoing
   # setting up uncomplicated firewall
@@ -105,7 +105,7 @@ else
   echo "Enabling UFW..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw --force enable
   sudo systemctl enable ufw
   # enabling ufw so /etc/ufw/user.rules file configures properly, then edit using awk and sed below
@@ -153,7 +153,7 @@ else
   echo "Reloading UFW..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw reload
 
   echo -e "${RED}"
@@ -161,30 +161,27 @@ else
   echo "Checking UFW status..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw status
-  _sleep 4
 
   echo -e "${RED}"
   echo "***"
   echo "Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
 
   echo -e "${RED}"
   echo "***"
   echo "Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
 
   echo -e "${RED}"
   echo "***"
   echo "Firewall rules can be adjusted using the RoninDojo Firewall Menu."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
+  _sleep 10
 fi
 
 echo -e "${RED}"
@@ -192,7 +189,7 @@ echo "***"
 echo "All Dojo dependencies installed..."
 echo "***"
 echo -e "${NC}"
-_sleep 3
+_sleep 2
 
 cat <<EOF
 ${RED}
@@ -203,7 +200,6 @@ ${NC}
 EOF
 
 test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
-_sleep 2
 # test for ${INSTALL_DIR} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
@@ -214,14 +210,13 @@ if [ -b "${PRIMARY_STORAGE}" ]; then
   echo "***"
   echo -e "${NC}"
   sudo mkdir "${SALVAGE_DIR}"
-  _sleep 2
 
   echo -e "${RED}"
   echo "***"
   echo "Attempting to mount drive for Blockchain data salvage..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo mount "${PRIMARY_STORAGE}" "${SALVAGE_DIR}"
 else
   echo -e "${RED}"
@@ -229,7 +224,7 @@ else
   echo "Did not find ${PRIMARY_STORAGE} for Blockchain data salvage."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
 fi
 # mount main storage drive to "${SALVAGE_DIR}" directory if found in prep for data salvage
 
@@ -249,7 +244,6 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
   sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
@@ -259,9 +253,7 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
   lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
-  _sleep 2
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
   echo -e "${RED}"
@@ -270,7 +262,7 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "***"
   echo -e "${NC}"
   df -h "${PRIMARY_STORAGE}"
-  _sleep 4
+  _sleep 5
   # checks disk info
 
   create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
@@ -291,7 +283,7 @@ else
   echo "No Blockchain data found for salvage check 1..."
   echo "***"
   echo -e "${NC}"
-  _sleep 3
+  _sleep 2
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
@@ -301,7 +293,6 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  _sleep 2
 
   echo -e "${RED}"
   echo "***"
@@ -330,7 +321,6 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
   sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
@@ -340,9 +330,7 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
   lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
-  _sleep 2
   # lsblk lists disk by device
   # double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
 
@@ -352,7 +340,7 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "***"
   echo -e "${NC}"
   df -h "${PRIMARY_STORAGE}"
-  _sleep 4
+  _sleep 5
   # checks disk info
 
   create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
@@ -366,7 +354,7 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
   echo "Dojo is ready to be installed!"
   echo "***"
   echo -e "${NC}"
-  _sleep 3
+  _sleep 2
   exit
 else
   echo -e "${RED}"
@@ -374,7 +362,7 @@ else
   echo "No Blockchain data found for salvage check 2..."
   echo "***"
   echo -e "${NC}"
-  _sleep 3
+  _sleep 2
 
   if findmnt "${SALVAGE_DIR}" 1>/dev/null; then
     sudo umount "${SALVAGE_DIR}"
@@ -392,7 +380,7 @@ _sleep 2
 
 if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
-  exit
+  exit 1
 fi
 # create a partition table with a single partition that takes the whole disk
 # format partition
@@ -403,7 +391,6 @@ echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
 lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
-_sleep 2
 # double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
 
 echo -e "${RED}"

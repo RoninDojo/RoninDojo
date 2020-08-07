@@ -9,7 +9,7 @@ _load_user_conf
 
 echo -e "${RED}"
 echo "***"
-echo "Running Dojo install in 10s..."
+echo "Running Dojo install in 5s..."
 echo "***"
 echo -e "${NC}"
 
@@ -18,7 +18,7 @@ echo "***"
 echo "Use Ctrl+C to exit now if needed!"
 echo "***"
 echo -e "${NC}"
-_sleep 10
+_sleep 5
 
 echo -e "${RED}"
 echo "***"
@@ -43,22 +43,19 @@ or in the ~/RoninDojo/user.conf.example file. See file for more info
 ${NC}
 DOJO
 
-_sleep 5
-# see defaults.sh for dojo path
-
 echo -e "${RED}"
 echo "***"
 echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
 echo "***"
 echo -e "${NC}"
-_sleep 8
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
 echo "Setting the RPC User and Password..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
@@ -149,14 +146,14 @@ echo "***"
 echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 echo -e "${RED}"
 echo "***"
 echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
 #########################################
@@ -214,7 +211,7 @@ echo "***"
 echo "Installing your Dojo-backed Bitcoin Explorer..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 #########################################
@@ -257,11 +254,10 @@ echo "***"
 echo "Please see Wiki for FAQ, help, and so much more..."
 echo "***"
 echo -e "${NC}"
-_sleep 3
 
 echo -e "${RED}"
 echo "***"
-echo "https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "https://ronindojo.io/wiki"
 echo "***"
 echo -e "${NC}"
 _sleep 5
@@ -311,7 +307,7 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
-  _sleep 3
+  _sleep 2
   sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
   # remove old salvage directories
 
