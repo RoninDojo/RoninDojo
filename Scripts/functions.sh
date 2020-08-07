@@ -9,6 +9,9 @@ NC=$(tput sgr0)
 # Main function runs at beginning of script execution
 #
 _main() {
+    # Create RoninDojo config directory
+    test ! -d "$HOME"/.config/RoninDojo && mkdir "$HOME"/.config/RoninDojo
+
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
         _sleep 10 --msg "Welcome to RoninDojo. Loading in"
         touch "$HOME/.config/RoninDojo/.run"
@@ -18,9 +21,6 @@ _main() {
     . "$HOME"/RoninDojo/Scripts/update.sh
 
     _update_01 # Check for bridge-utils version update
-
-    # Create RoninDojo config directory
-    test ! -d "$HOME"/.config/RoninDojo && mkdir "$HOME"/.config/RoninDojo
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
