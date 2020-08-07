@@ -13,7 +13,7 @@ _main() {
     test ! -d "$HOME"/.config/RoninDojo && mkdir "$HOME"/.config/RoninDojo
 
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
-        _sleep 10 --msg "Welcome to RoninDojo. Loading in"
+        _sleep 5 --msg "Welcome to RoninDojo. Loading in"
         touch "$HOME/.config/RoninDojo/.run"
     fi
 
