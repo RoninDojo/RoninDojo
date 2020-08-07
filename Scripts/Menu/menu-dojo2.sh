@@ -84,6 +84,9 @@ case $CHOICE in
             cd "${HOME}" || exit
             # uninstall dojo
 
+            # Restart docker daemon
+            sudo systemctl restart docker
+
             echo -e "${RED}"
             echo "***"
             echo "Complete!"
