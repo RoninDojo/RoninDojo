@@ -247,6 +247,9 @@ TOR_CONFIG
             sudo systemctl enable tor
         fi
     fi
+
+    # Start Tor if needed
+    sudo systemctl is-active tor 1>/dev/null || sudo systemctl start tor
 }
 
 #
