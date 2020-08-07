@@ -238,14 +238,11 @@ TOR_CONFIG
         if ! grep "CookieAuthFileGroupReadable" /etc/tor/torrc 1>/dev/null; then
             sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
         fi
+    fi
 
-        # Start Tor
-        sudo systemctl is-active tor 1>/dev/null || sudo systemctl start tor
-
-        # Enable service on startup
-        if ! sudo systemctl is-enabled tor 1>/dev/null; then
-            sudo systemctl enable tor
-        fi
+    # Enable service on startup
+    if ! sudo systemctl is-enabled tor 1>/dev/null; then
+        sudo systemctl enable tor
     fi
 
     # Start Tor if needed
