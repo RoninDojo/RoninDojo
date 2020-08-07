@@ -242,7 +242,7 @@ TOR_CONFIG
 
     # Enable service on startup
     if ! sudo systemctl is-enabled tor 1>/dev/null; then
-        sudo systemctl enable tor
+        sudo systemctl enable tor 2>/dev/null
     fi
 
     # Start Tor if needed
