@@ -127,12 +127,7 @@ _systemd_unit_drop_in_check() {
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
                 sudo bash -c "cat <<EOF >/etc/systemd/system/${x}.service.d/override.conf
 [Unit]
-After=${systemd_mountpoint}.mount
-EOF"
-            else # Legacy fstab systemd automount
-                sudo bash -c "cat <<EOF >/etc/systemd/system/${x}.service.d/override.conf
-[Unit]
-After=${systemd_mountpoint}.automount
+RequiresMountsFor=${INSTALL_DIR}
 EOF"
             fi
 
