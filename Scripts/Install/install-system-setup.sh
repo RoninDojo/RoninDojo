@@ -314,7 +314,7 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   echo -e "${NC}"
   _sleep 2
 
-  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks/"{blocks,chainstate} "${SALVAGE_DATA_DIR}"/
+  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_DATA_DIR}"/
   # moves blockchain salvage data to ${SALVAGE_MOUNT} if found
 
   echo -e "${RED}"
