@@ -7,6 +7,19 @@
 
 _load_user_conf
 
+# Makes sure Dojo has been uninstalled
+if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ] || [ ! "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+  cat <<DOJO
+${RED}
+***
+Dojo is already installed...
+***
+${NC}
+DOJO
+  _sleep 5 --msg "Returning to menu in"
+  bash -c ronin
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Running Dojo install in 5s..."
@@ -42,6 +55,7 @@ or in the ~/RoninDojo/user.conf.example file. See file for more info
 ***
 ${NC}
 DOJO
+_sleep
 
 echo -e "${RED}"
 echo "***"
