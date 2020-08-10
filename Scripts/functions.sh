@@ -320,6 +320,11 @@ _install_ronin_ui_backend() {
         sudo npm install -g pm2 &>/dev/null
     fi
 
+    # Check for jq package
+    if ! hash jq 2>/dev/null; then
+        sudo pacman -S --noconfirm jq
+    fi
+
     # Fetch backend ui archive
     wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
 
