@@ -79,7 +79,7 @@ case $CHOICE in
             echo -e "${NC}"
             cd "$DOJO_PATH" || exit
             ./dojo.sh uninstall
-            sudo rm -rf "$HOME"/dojo
+            sudo rm -rf "${DOJO_PATH%/docker/my-dojo}"
             cd "${HOME}" || exit
             # uninstall dojo
 

@@ -8,7 +8,7 @@
 _load_user_conf
 
 # Makes sure Dojo has been uninstalled
-if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ] || [ ! "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+if [ -d "${DOJO_PATH}" ]; then
   cat <<DOJO
 ${RED}
 ***
