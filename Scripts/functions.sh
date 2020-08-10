@@ -10,7 +10,7 @@ NC=$(tput sgr0)
 #
 _main() {
     # Create RoninDojo config directory
-    test ! -d "$HOME"/.config/RoninDojo && mkdir "$HOME"/.config/RoninDojo
+    test ! -d "$HOME"/.config/RoninDojo && mkdir -p "$HOME"/.config/RoninDojo
 
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
         _sleep 5 --msg "Welcome to RoninDojo. Loading in"
