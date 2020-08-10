@@ -58,7 +58,7 @@ case $CHOICE in
                             echo -e "${NC}"
                             _sleep 2
                             cd "$DOJO_PATH" || exit
-                            _stop_dojo || exit
+                            _stop_dojo
                             # stop dojo
 
                             test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"

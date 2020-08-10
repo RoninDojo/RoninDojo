@@ -293,7 +293,7 @@ if sudo test -d "${INSTALL_DIR}"/bitcoin; then
   # if the user is AFK there may be timeout
 
   cd "$DOJO_PATH" || exit
-  _stop_dojo || exit
+  _stop_dojo
 
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
   sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/

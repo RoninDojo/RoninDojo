@@ -74,7 +74,7 @@ DOJO
             # press any letter to return to menu
             ;;
         2)
-            _stop_dojo || exit
+            _stop_dojo
 
             echo -e "${RED}"
             echo "***"
@@ -97,7 +97,7 @@ DOJO
 
                 # Check if db container running before stopping all containers
                 if _dojo_check "$DOJO_PATH"; then
-                    _stop_dojo || exit
+                    _stop_dojo
                 fi
 
                 # Start docker containers

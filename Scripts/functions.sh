@@ -484,8 +484,6 @@ EOF
         echo "Dojo is already stopped!"
         echo "***"
         echo -e "${NC}"
-        _sleep 3 --msg "Returning to menu in"
-        bash -c "$RONIN_DOJO_MENU"
     fi
 
     cat <<EOF
@@ -548,6 +546,8 @@ EOF
     # Stop docker containers
     yamlFiles=$(_select_yaml_files)
     docker-compose $yamlFiles stop || exit
+
+    return 0
 }
 
 #
@@ -704,13 +704,13 @@ _check_dojo_perms() {
     cd "${DOJO_PATH}" || exit
 
     if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
-        _stop_dojo || exit
+        _stop_dojo
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
         sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
     else
-        _stop_dojo || exit
+        _stop_dojo
     fi
 
     return 0
