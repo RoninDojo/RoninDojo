@@ -4,18 +4,20 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if [ -b /dev/sdb1 ]; then
+_load_user_conf
+
+if [ -b "${SECONDARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"
-  echo "Your backup drive partition 1 has been detected..."
+  echo "Your backup drive partition has been detected..."
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  # checks for /dev/sdb1
+  # checks for ${SECONDARY_STORAGE}
 else
   echo -e "${RED}"
   echo "***"
-  echo "No backup drive partition 1 detected! Please make sure it is plugged in and has power if needed."
+  echo "No backup drive partition detected! Please make sure it is plugged in and has power if needed."
   echo "***"
   echo -e "${NC}"
   _sleep 5
@@ -32,7 +34,7 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Mount /dev/sdb1 to ${SALVAGE_MOUNT}..."
+echo "Preparing to Mount ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 3
@@ -50,17 +52,17 @@ while true; do
 done
 # ask user to proceed
 
-test ! -d "${SALVAGE_MOUNT}" && sudo mkdir "${SALVAGE_MOUNT}"
+test ! -d "${SECONDARY_STORAGE_MOUNT}" && sudo mkdir "${SECONDARY_STORAGE_MOUNT}"
 # create mount directory if not available
 
 echo -e "${RED}"
 echo "***"
-echo "Mounting /dev/sdb1 to ${SALVAGE_MOUNT}..."
+echo "Mounting ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo mount /dev/sdb1 "${SALVAGE_MOUNT}"
-# mount backup drive to ${SALVAGE_MOUNT} directory
+sudo mount "${SECONDARY_STORAGE}" "${SECONDARY_STORAGE_MOUNT}"
+# mount backup drive to ${SECONDARY_STORAGE_MOUNT} directory
 
 echo -e "${RED}"
 echo "***"

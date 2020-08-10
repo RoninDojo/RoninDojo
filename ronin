@@ -50,11 +50,11 @@ case $CHOICE in
             ;;
         6)
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
-	    # runs installs menu
+	        # runs installs menu
             ;;
-    	255)
+    	255|7)
 	        _sleep 5 --msg "RoninDojo Exiting in"
-	        exit 1
+	        exit 0
         # exits Ronin
 	        ;;
 esac

@@ -1,8 +1,11 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2086
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
+
+_load_user_conf
 
 OPTIONS=(1 "Start"
          2 "Stop"
@@ -31,12 +34,26 @@ case $CHOICE in
                 _sleep 5
                 bash -c "$RONIN_DOJO_MENU"
             else
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+
                 echo -e "${RED}"
                 echo "***"
                 echo "Starting Dojo..."
                 echo "***"
                 echo -e "${NC}"
                 _sleep 2
+
                 cd "$DOJO_PATH" || exit
 
                 _source_dojo_conf
@@ -57,7 +74,7 @@ case $CHOICE in
             # press any letter to return to menu
             ;;
         2)
-            _stop_dojo || exit
+            _stop_dojo
 
             echo -e "${RED}"
             echo "***"
@@ -80,7 +97,7 @@ case $CHOICE in
 
                 # Check if db container running before stopping all containers
                 if _dojo_check "$DOJO_PATH"; then
-                    _stop_dojo || exit
+                    _stop_dojo
                 fi
 
                 # Start docker containers

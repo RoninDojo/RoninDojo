@@ -4,6 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 if [ -d "$HOME"/dojo ]; then
   echo -e "${RED}"
   echo "***"
@@ -15,19 +17,20 @@ if [ -d "$HOME"/dojo ]; then
 else
   echo -e "${RED}"
   echo "***"
-  echo "Setting up system and installing Dependencies in 15s..."
+  echo "Setting up system and installing Dependencies in 10s..."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
 fi
 # checks for "$HOME"/dojo directory, if found kicks back to menu
 
-echo -e "${RED}"
-echo "***"
-echo "Use Ctrl+C to exit now if needed!"
-echo "***"
-echo -e "${NC}"
-_sleep 5
+cat <<SYSTEM
+${RED}
+***
+Use Ctrl+C to exit now if needed!
+***
+${NC}
+SYSTEM
+_sleep 10
 
 "$HOME"/RoninDojo/Scripts/.logo
 # display ronindojo logo
@@ -79,9 +82,6 @@ done
 # install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
 
-# Torrc setup
-_setup_tor
-
 if sudo ufw status | grep 22 > /dev/null ; then
   echo -e "${RED}"
   echo "***"
@@ -95,7 +95,7 @@ else
   echo "Setting up UFW..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw default deny incoming
   sudo ufw default allow outgoing
   # setting up uncomplicated firewall
@@ -105,7 +105,7 @@ else
   echo "Enabling UFW..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw --force enable
   sudo systemctl enable ufw
   # enabling ufw so /etc/ufw/user.rules file configures properly, then edit using awk and sed below
@@ -153,7 +153,7 @@ else
   echo "Reloading UFW..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw reload
 
   echo -e "${RED}"
@@ -161,30 +161,27 @@ else
   echo "Checking UFW status..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
   sudo ufw status
-  _sleep 4
 
   echo -e "${RED}"
   echo "***"
   echo "Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
 
   echo -e "${RED}"
   echo "***"
   echo "Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
 
   echo -e "${RED}"
   echo "***"
   echo "Firewall rules can be adjusted using the RoninDojo Firewall Menu."
   echo "***"
   echo -e "${NC}"
-  _sleep 5
+  _sleep 10
 fi
 
 echo -e "${RED}"
@@ -192,7 +189,7 @@ echo "***"
 echo "All Dojo dependencies installed..."
 echo "***"
 echo -e "${NC}"
-_sleep 3
+_sleep 2
 
 cat <<EOF
 ${RED}
@@ -203,45 +200,52 @@ ${NC}
 EOF
 
 test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
-_sleep 2
 # test for ${INSTALL_DIR} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
-if [ -b /dev/sda1 ]; then
+if [ -b "${PRIMARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"
-  echo "Creating ${SALVAGE_DIR} directory..."
+  echo "Creating ${SALVAGE_MOUNT} directory..."
   echo "***"
   echo -e "${NC}"
-  sudo mkdir "${SALVAGE_DIR}"
-  _sleep 2
+  test ! -d "${SALVAGE_MOUNT}" && sudo mkdir "${SALVAGE_MOUNT}"
 
   echo -e "${RED}"
   echo "***"
   echo "Attempting to mount drive for Blockchain data salvage..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
-  sudo mount /dev/sda1 "${SALVAGE_DIR}"
+  _sleep
+  sudo mount "${PRIMARY_STORAGE}" "${SALVAGE_MOUNT}"
 else
   echo -e "${RED}"
   echo "***"
-  echo "Did not find /dev/sda1 for Blockchain data salvage."
+  echo "Did not find ${PRIMARY_STORAGE} for Blockchain data salvage."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
+  _sleep
 fi
-# mount main storage drive to "${SALVAGE_DIR}" directory if found in prep for data salvage
+# mount main storage drive to "${SALVAGE_MOUNT}" directory if found in prep for data salvage
 
-if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
+if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
   echo "***"
   echo -e "${NC}"
-  sudo rm -rf "${SALVAGE_DIR}"/{swapfile,docker,tor}
-  sudo umount "${SALVAGE_DIR}"
-  sudo rmdir "${SALVAGE_DIR}"
+
+  # Check if swap in use
+  if check_swap; then
+    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  fi
+
+  sudo rm -rf "${SALVAGE_MOUNT}"/{swapfile,docker,tor}
+
+  if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
+    sudo umount "${SALVAGE_MOUNT}"
+    sudo rmdir "${SALVAGE_MOUNT}"
+  fi
   # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
   echo -e "${RED}"
@@ -249,8 +253,7 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
-  sudo mount /dev/sda1 "${INSTALL_DIR}"
+  sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
 
@@ -259,104 +262,23 @@ if sudo test -d "${SALVAGE_DIR_UNINSTALL}"; then
   echo "Displaying the name on the external disk..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
-  lsblk -o NAME,SIZE,LABEL /dev/sda1
-  _sleep 2
+  lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
   # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
   echo -e "${RED}"
   echo "***"
-  echo "Check output above for /dev/sda1 and make sure everything looks ok."
+  echo "Check output above for ${PRIMARY_STORAGE} and make sure everything looks ok."
   echo "***"
   echo -e "${NC}"
-  df -h /dev/sda1
-  _sleep 4
+  df -h "${PRIMARY_STORAGE}"
+  _sleep 5
   # checks disk info
 
   create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
   # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-  _docker_datadir_setup
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Dojo is ready to be installed!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 3
-  exit
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "No Blockchain data found for salvage check 1..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 3
-fi
-# checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
-
-if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Found Blockchain data for salvage!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Moving to temporary directory..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  sudo mkdir "${SALVAGE_DIR_SYSTEM}"
-  sudo mv -v "${SALVAGE_DIR_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_DIR_SYSTEM}"/
-  # moves blockchain salvage data to ${SALVAGE_DIR} if found
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data prepared for salvage!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  sudo rm -rf "${SALVAGE_DIR}"/{docker,tor,swapfile}
-  sudo umount "${SALVAGE_DIR}"
-  sudo rmdir "${SALVAGE_DIR}"
-  # remove docker, tor, swap file directories from ${SALVAGE_DIR}
-  # then unmount and remove ${SALVAGE_DIR}
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Mounting drive..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  sudo mount /dev/sda1 "${INSTALL_DIR}"
-  _sleep
-  # mount main storage drive to ${INSTALL_DIR} directory
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Displaying the name on the external disk..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  lsblk -o NAME,SIZE,LABEL /dev/sda1
-  _sleep 2
-  # lsblk lists disk by device
-  # double-check that /dev/sda1 exists, and its storage capacity is what you expected
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Check output for /dev/sda1 and make sure everything looks ok."
-  echo "***"
-  echo -e "${NC}"
-  df -h /dev/sda1
-  _sleep 4
-  # checks disk info
-
-  create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
-  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
+  _setup_tor
+  # tor configuration setup, see functions.sh
 
   _docker_datadir_setup
   # docker data directory setup, see functions.sh
@@ -371,14 +293,107 @@ if sudo test -d "${SALVAGE_DIR_BITCOIND}"/_data/blocks; then
 else
   echo -e "${RED}"
   echo "***"
+  echo "No Blockchain data found for salvage check 1..."
+  echo "***"
+  echo -e "${NC}"
+  _sleep 2
+fi
+# checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
+
+if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
+  echo -e "${RED}"
+  echo "***"
+  echo "Found Blockchain data for salvage!"
+  echo "***"
+  echo -e "${NC}"
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Moving to temporary directory..."
+  echo "***"
+  echo -e "${NC}"
+  _sleep 2
+
+  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks/"{blocks,chainstate} "${SALVAGE_DATA_DIR}"/
+  # moves blockchain salvage data to ${SALVAGE_MOUNT} if found
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Blockchain data prepared for salvage!"
+  echo "***"
+  echo -e "${NC}"
+  _sleep 2
+
+  # Check if swap in use
+  if check_swap; then
+    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  fi
+
+  sudo rm -rf "${SALVAGE_MOUNT}"/{docker,tor,swapfile}
+
+  if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
+    sudo umount "${SALVAGE_MOUNT}"
+    sudo rmdir "${SALVAGE_MOUNT}"
+  fi
+  # remove docker, tor, swap file directories from ${SALVAGE_MOUNT}
+  # then unmount and remove ${SALVAGE_MOUNT}
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Mounting drive..."
+  echo "***"
+  echo -e "${NC}"
+
+  # Mount primary drive if not already mounted
+  findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+
+  _sleep
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Displaying the name on the external disk..."
+  echo "***"
+  echo -e "${NC}"
+  lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
+  # lsblk lists disk by device
+  # double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Check output for ${PRIMARY_STORAGE} and make sure everything looks ok."
+  echo "***"
+  echo -e "${NC}"
+  df -h "${PRIMARY_STORAGE}"
+  _sleep 5
+  # checks disk info
+
+  create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+  # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
+
+  _setup_tor
+  # tor configuration setup, see functions.sh
+
+  _docker_datadir_setup
+  # docker data directory setup, see functions.sh
+
+  echo -e "${RED}"
+  echo "***"
+  echo "Dojo is ready to be installed!"
+  echo "***"
+  echo -e "${NC}"
+  _sleep 2
+  exit
+else
+  echo -e "${RED}"
+  echo "***"
   echo "No Blockchain data found for salvage check 2..."
   echo "***"
   echo -e "${NC}"
-  _sleep 3
+  _sleep 2
 
-  if findmnt "${SALVAGE_DIR}" 1>/dev/null; then
-    sudo umount "${SALVAGE_DIR}"
-    sudo rmdir "${SALVAGE_DIR}"
+  if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
+    sudo umount "${SALVAGE_MOUNT}"
+    sudo rmdir "${SALVAGE_MOUNT}"
   fi
 fi
 # checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
@@ -390,9 +405,9 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "main" --device "/dev/sda1" --mountpoint "${INSTALL_DIR}"; then
+if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
-  exit
+  exit 1
 fi
 # create a partition table with a single partition that takes the whole disk
 # format partition
@@ -402,32 +417,28 @@ echo "***"
 echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
-lsblk -o NAME,SIZE,LABEL /dev/sda1
-_sleep 2
-# double-check that /dev/sda1 exists, and its storage capacity is what you expected
+lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
+# double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
 
 echo -e "${RED}"
 echo "***"
-echo "Check output for /dev/sda1 and make sure everything looks ok..."
+echo "Check output for ${PRIMARY_STORAGE} and make sure everything looks ok..."
 echo "***"
 echo -e "${NC}"
-df -h /dev/sda1
+df -h "${PRIMARY_STORAGE}"
 _sleep 5
 # checks disk info
 
 create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-echo -e "${RED}"
-echo "***"
-echo "Creating Tor directory on the external SSD..."
-echo "***"
-echo -e "${NC}"
-_sleep 3
-test -d "${INSTALL_DIR_TOR}" || sudo mkdir "${INSTALL_DIR_TOR}"
-sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
-# tests for ${INSTALL_DIR_TOR} directory, if not found it is created
-# then chown is used to change owner to tor user
+if [ ! -d "${HOME}/RoninBackend" ]; then
+  _install_ronin_ui_backend
+  # Install backend ui service
+fi
+
+_setup_tor
+# tor configuration setup, see functions.sh
 
 _docker_datadir_setup
 # docker data directory setup, see functions.sh

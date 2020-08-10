@@ -4,6 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 OPTIONS=(1 "Firewall"
          2 "Check Disk Space"
          3 "Check for System Updates"
@@ -115,7 +117,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               cd "${DOJO_PATH}" || exit
-              ./dojo.sh stop
+              _stop_dojo
               # stop dojo
 
               echo -e "${RED}"
@@ -145,7 +147,7 @@ case $CHOICE in
               echo "***"
               echo -e "${NC}"
               cd "${DOJO_PATH}" || exit
-              ./dojo.sh stop
+              _stop_dojo
               # stop dojo
 
               echo -e "${RED}"

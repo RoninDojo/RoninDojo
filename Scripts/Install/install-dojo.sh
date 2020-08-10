@@ -5,12 +5,26 @@
 . "$HOME"/RoninDojo/Scripts/generated-credentials.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
+# Makes sure Dojo has been uninstalled
+if [ -d "${DOJO_PATH}" ]; then
+  cat <<DOJO
+${RED}
+***
+Dojo is already installed...
+***
+${NC}
+DOJO
+  _sleep 5 --msg "Returning to menu in"
+  bash -c ronin
+fi
+
 echo -e "${RED}"
 echo "***"
-echo "Running Dojo install in 15s..."
+echo "Running Dojo install in 5s..."
 echo "***"
 echo -e "${NC}"
-_sleep 5
 
 echo -e "${RED}"
 echo "***"
@@ -25,36 +39,37 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd "$HOME" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo
+git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo &>/dev/null
 
 echo -e "${RED}"
 echo "***"
 echo "Values necessary for usernames, passwords, etc. will randomly be generated now..."
 echo "***"
 echo -e "${NC}"
-_sleep 5
 
-echo -e "${RED}"
-echo "***"
-echo "These values are found in RoninDojo menus or in the ${DOJO_PATH}/conf directory."
-echo "***"
-echo -e "${NC}"
-_sleep 5
-# see defaults.sh for dojo path
+cat <<DOJO
+${RED}
+***
+These values are found in RoninDojo menus, ${DOJO_PATH}/conf directory
+or in the ~/RoninDojo/user.conf.example file. See file for more info
+***
+${NC}
+DOJO
+_sleep
 
 echo -e "${RED}"
 echo "***"
 echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
 echo "***"
 echo -e "${NC}"
-_sleep 8
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
 echo "Setting the RPC User and Password..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
@@ -145,14 +160,14 @@ echo "***"
 echo "Setting the Node API Key and JWT Secret..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 echo -e "${RED}"
 echo "***"
 echo "Setting the Node Admin Key..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
 #########################################
@@ -210,7 +225,7 @@ echo "***"
 echo "Installing your Dojo-backed Bitcoin Explorer..."
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep
 
 cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 #########################################
@@ -253,11 +268,10 @@ echo "***"
 echo "Please see Wiki for FAQ, help, and so much more..."
 echo "***"
 echo -e "${NC}"
-_sleep 3
 
 echo -e "${RED}"
 echo "***"
-echo "https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "https://ronindojo.io/wiki"
 echo "***"
 echo -e "${NC}"
 _sleep 5
@@ -275,7 +289,7 @@ cd "$DOJO_PATH" || exit
 # wait for dojo install to reach bitcoind sync
 # use Ctrl + C to exit and trigger the salvage attempt below
 
-if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
+if sudo test -d "${INSTALL_DIR}"/bitcoin; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -293,7 +307,8 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   # if the user is AFK there may be timeout
 
   cd "$DOJO_PATH" || exit
-  ./dojo.sh stop
+  _stop_dojo
+
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
   sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
   # changes to dojo path, otherwise exit
@@ -306,53 +321,17 @@ if sudo test -d "${INSTALL_DIR}"/uninstall-salvage; then
   echo "Blockchain data salvage complete!"
   echo "***"
   echo -e "${NC}"
-  _sleep 3
-  sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
-  # remove old salvage directories
-
-  cd "$DOJO_PATH" || exit
-  ./dojo.sh start
-  # start dojo
-fi
-# check for uninstall-salvage, if not found continue
-
-if sudo test -d "${INSTALL_DIR_SYSTEM}"; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data salvage starting..."
-  echo "***"
-  echo -e "${NC}"
   _sleep 2
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any letter to continue..."
-  echo "***"
-  echo -e "${NC}"
-  read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps
-  # if the user is AFK there may be timeout
-
-  cd "$DOJO_PATH" || exit
-  ./dojo.sh stop
-  sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-  sudo mv -v "${INSTALL_DIR_SYSTEM}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
-  # changes to dojo path, otherwise exit
-  # websearch "bash Logical OR (||)" for info
-  # stops dojo and removes new data directories
-  # then moves salvaged block data
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Blockchain data salvage complete!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 3
-  sudo rm -rf "${INSTALL_DIR}"/{system-setup-salvage,uninstall-salvage}
+  sudo rm -rf "${INSTALL_DIR}"/bitcoin
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit
-  ./dojo.sh start
+
+  _source_dojo_conf
+
+  # Start docker containers
+  yamlFiles=$(_select_yaml_files)
+  docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
   # start dojo
 fi
-# check for system-setup-salvage, if not found continue
+# check for IBD data, if not found continue

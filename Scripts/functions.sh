@@ -9,6 +9,14 @@ NC=$(tput sgr0)
 # Main function runs at beginning of script execution
 #
 _main() {
+    # Create RoninDojo config directory
+    test ! -d "$HOME"/.config/RoninDojo && mkdir "$HOME"/.config/RoninDojo
+
+    if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
+        _sleep 5 --msg "Welcome to RoninDojo. Loading in"
+        touch "$HOME/.config/RoninDojo/.run"
+    fi
+
     # Source update script
     . "$HOME"/RoninDojo/Scripts/update.sh
 
@@ -81,6 +89,52 @@ EOF
 
     # Check for sudoers file for password prompt timeout
     _set_sudo_timeout
+
+    # Force dependency on docker and tor unit files to depend on
+    # external drive mount
+    _systemd_unit_drop_in_check
+
+    _install_ronin_ui_backend
+}
+
+#
+# Load user defined variables
+#
+_load_user_conf() {
+if [ -f "${HOME}/.config/RoninDojo/user.conf" ]; then
+  . "${HOME}/.config/RoninDojo/user.conf"
+fi
+}
+
+#
+# Set systemd unit dependencies for docker and tor unit files
+# to depend on ${INSTALL_DIR} mount point
+#
+_systemd_unit_drop_in_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    local tmp systemd_mountpoint
+
+    tmp=${INSTALL_DIR:1}               # Remove leading '/'
+    systemd_mountpoint=${tmp////-}     # Replace / with -
+
+    for x in docker tor; do
+        if [ ! -d "/etc/systemd/system/${x}.service.d" ]; then
+            sudo mkdir "/etc/systemd/system/${x}.service.d"
+
+            if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
+                sudo bash -c "cat <<EOF >/etc/systemd/system/${x}.service.d/override.conf
+[Unit]
+RequiresMountsFor=${INSTALL_DIR}
+EOF"
+            fi
+
+            # Reload systemd manager configuration
+            sudo systemctl daemon-reload
+        fi
+    done
 }
 
 #
@@ -147,18 +201,47 @@ _sleep() {
 # Setup torrc
 #
 _setup_tor() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh # FIX ME!
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    # Setup directory
+    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
+        cat <<TOR_DIR
+${RED}
+***
+Creating Tor directory...
+***
+${NC}
+TOR_DIR
+        sudo mkdir "${INSTALL_DIR_TOR}"
+    fi
+
+    # Set permissions
+    sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
 
     if ! grep "${INSTALL_DIR_TOR}" /etc/tor/torrc 1>/dev/null; then
+        cat <<TOR_CONFIG
+${RED}
+***
+Initial Tor Configuration...
+***
+${NC}
+TOR_CONFIG
         sudo sed -i -e "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" \
             -e 's/^#ControlPort .*$/ControlPort 9051/' \
             -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
 
-        if ! grep "CookieAuthFileGroupReadable" 1>/dev/null; then
+        if ! grep "CookieAuthFileGroupReadable" /etc/tor/torrc 1>/dev/null; then
             sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
         fi
     fi
-    # check if /etc/tor/torrc is configured
+
+    # Enable service on startup
+    if ! sudo systemctl is-enabled tor 1>/dev/null; then
+        sudo systemctl enable tor 2>/dev/null
+    fi
+
+    # Start Tor if needed
+    sudo systemctl is-active tor 1>/dev/null || sudo systemctl start tor
 }
 
 #
@@ -166,6 +249,13 @@ _setup_tor() {
 #
 _setup_backend_tor() {
     if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
+        cat <<BACKEND_TOR_CONFIG
+${RED}
+***
+Configuring RoninDojo Backend Tor Address...
+***
+${NC}
+BACKEND_TOR_CONFIG
         sudo sed -i '/################ This section is just for relays/i\
 HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
 HiddenServiceVersion 3\
@@ -181,7 +271,11 @@ HiddenServicePort 80 127.0.0.1:8470\
 # Check Backend Installation
 #
 _isbackend_ui() {
-    if [ ! -d "${HOME}/RoninBackend" ]; then
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    if [ ! -d "${BACKEND_DIR}" ]; then
         cat << EOF
 ${RED}
 ***
@@ -192,7 +286,7 @@ EOF
         _install_ronin_ui_backend
         _sleep 2 --msg "Returning to menu in"
 
-        bash -c "${HOME}/RoninDojo/Scripts/Menu/menu-backend-ui.sh"
+        bash -c "${RONIN_BACKEND_UI_MENU}"
     fi
     # check if backend ui is already installed
 }
@@ -205,6 +299,8 @@ _install_ronin_ui_backend() {
 
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
+
+    _load_user_conf
 
     # Import PGP keys for backend archive
     curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
@@ -284,6 +380,10 @@ EOF
 # Checks if dojo db container.
 #
 _dojo_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
     local DOJO_PATH
     DOJO_PATH="$1"
 
@@ -379,8 +479,7 @@ EOF
         echo "Dojo is already stopped!"
         echo "***"
         echo -e "${NC}"
-        _sleep 3 --msg "Returning to menu in"
-        bash -c "$RONIN_DOJO_MENU"
+        return 1
     fi
 
     cat <<EOF
@@ -443,6 +542,8 @@ EOF
     # Stop docker containers
     yamlFiles=$(_select_yaml_files)
     docker-compose $yamlFiles stop || exit
+
+    return 0
 }
 
 #
@@ -599,13 +700,13 @@ _check_dojo_perms() {
     cd "${DOJO_PATH}" || exit
 
     if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
-        sudo ./dojo.sh stop
+        _stop_dojo
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
         sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
     else
-        ./dojo.sh stop
+        _stop_dojo
     fi
 
     return 0
@@ -722,27 +823,33 @@ EOF
             for x in tor docker; do
                 sudo systemctl stop "${x}"
             done
+
+            # Stop swap on mount point
+            if ! check_swap "${INSTALL_DIR_SWAP}"; then
+                sudo swapoff "${INSTALL_DIR_SWAP}"
+            fi
         fi
 
-        # Stop swap on mount point
-        if ! check_swap "${mountpoint}"/swapfile; then
-            sudo swapoff "${mountpoint}"/swapfile
-        fi
-
-        sudo umount -l "${mountpoint}"
+        sudo umount -l "${device}"
     fi
 
+    # This quick hack checks if device is either a SSD device or a NVMe device
+    [[ "${device}" =~ "sd" ]] && _device="${device%?}" || _device="${device%??}"
+
     if [ ! -b "${device}" ]; then
-        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
+        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
     else
-        sudo sfdisk --quiet --wipe always --delete "${device%?}" &>/dev/null
+        sudo sfdisk --quiet --wipe always --delete "${_device}" &>/dev/null
         # if device exists, use sfdisk to erase filesystem and partition table
+
+        # wipe labels
+        sudo wipefs -a --force "${_device}" &>/dev/null
 
         # reload partition table
         partprobe
 
         # Create a partition table with a single partition that takes the whole disk
-        echo 'type=83' | sudo sfdisk -q "${device%?}" 2>/dev/null
+        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
     fi
 
     cat <<EOF

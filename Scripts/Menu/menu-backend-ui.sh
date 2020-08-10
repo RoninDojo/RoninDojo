@@ -4,6 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+_load_user_conf
+
 OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"

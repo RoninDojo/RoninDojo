@@ -58,7 +58,7 @@ echo -e "${NC}"
 _sleep 2
 
 cd "${DOJO_PATH}" || exit
-./dojo.sh stop
+_stop_dojo
 # stop dojo
 
 echo -e "${RED}"
@@ -67,10 +67,10 @@ echo "Copying..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo test -d "${SALVAGE_MOUNT_SYSTEM}" || sudo mkdir "${SALVAGE_MOUNT_SYSTEM}"
+sudo test -d "${SALVAGE_MOUNT}" || sudo mkdir "${SALVAGE_MOUNT}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
-if sudo test -d "${SALVAGE_MOUNT_SYSTEM}"/blocks; then
+if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}"/blocks; then
     # Use rsync when existing IBD is found
     if ! hash rsync 2>/dev/null; then
         cat <<EOF
@@ -84,9 +84,9 @@ EOF
         sudo pacman -S --noconfirm rsync &>/dev/null
     fi
 
-    sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_MOUNT_SYSTEM}"
+    sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
 else
-  sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_MOUNT_SYSTEM}"
+  sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
   # use cp for initial fresh IBD copy
 fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly

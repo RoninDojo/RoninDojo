@@ -51,13 +51,7 @@ else
 
     # Torrc setup
     _setup_tor
-
-    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
-        sudo mkdir "${INSTALL_DIR_TOR}"
-        sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
-    fi
 fi
-# check if tor is installed, if not install and modify torrc
 
 echo -e "${RED}"
 echo "***"
