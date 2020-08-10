@@ -484,6 +484,7 @@ EOF
         echo "Dojo is already stopped!"
         echo "***"
         echo -e "${NC}"
+        return 1
     fi
 
     cat <<EOF
