@@ -21,6 +21,7 @@ declare -A package_dependencies=(
     [rsync]=rsync
     [npm]=npm
     [node]=nodejs
+    [jq]=jq
 )
 
 #

@@ -285,9 +285,7 @@ _sleep 2
 
 cd "$DOJO_PATH" || exit
 
-./dojo.sh install
-# wait for dojo install to reach bitcoind sync
-# use Ctrl + C to exit and trigger the salvage attempt below
+./dojo.sh install --nolog
 
 if sudo test -d "${INSTALL_DIR}"/bitcoin; then
   echo -e "${RED}"
