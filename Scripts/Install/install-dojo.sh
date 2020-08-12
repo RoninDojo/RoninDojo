@@ -285,7 +285,7 @@ _sleep 2
 
 cd "$DOJO_PATH" || exit
 
-./dojo.sh install
+./dojo.sh install --nolog
 # wait for dojo install to reach bitcoind sync
 # use Ctrl + C to exit and trigger the salvage attempt below
 
