@@ -26,23 +26,17 @@ case $CHOICE in
             # upgrades dojo and returns to menu
             ;;
         2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Uninstalling Dojo in 15s..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<DOJO
+${RED}
+***
+Uninstalling Dojo in 15s...
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Users with a fully synced Blockchain should answer yes to salvage!"
-            echo "***"
-            echo -e "${NC}"
+Users with a fully synced Blockchain should answer yes to salvage!
 
-            echo -e "${RED}"
-            echo "***"
-            echo "WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!"
-            echo "***"
-            echo -e "${NC}"
+WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!
+***
+${NC}
+DOJO
             _sleep 7
 
             echo -e "${RED}"
