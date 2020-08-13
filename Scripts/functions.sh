@@ -203,22 +203,25 @@ _sleep() {
 _setup_tor() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    # Setup directory
-    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
-        cat <<TOR_DIR
+
+    # If the setting is already active, assume user has configured it already
+    if ! grep -E "^\s*DataDirectory\s+.+$" /etc/tor/torrc 1>/dev/null; then
+
+        # Setup directory
+        if [ ! -d "${INSTALL_DIR_TOR}" ]; then
+            cat <<TOR_DIR
 ${RED}
 ***
 Creating Tor directory...
 ***
 ${NC}
 TOR_DIR
-        sudo mkdir "${INSTALL_DIR_TOR}"
-    fi
+            sudo mkdir "${INSTALL_DIR_TOR}"
+        fi
 
-    # Set permissions
-    sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
+        # Set ownership
+        sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
 
-    if ! grep "${INSTALL_DIR_TOR}" /etc/tor/torrc 1>/dev/null; then
         cat <<TOR_CONFIG
 ${RED}
 ***
@@ -226,22 +229,35 @@ Initial Tor Configuration...
 ***
 ${NC}
 TOR_CONFIG
-        sudo sed -i -e "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" \
-            -e 's/^#ControlPort .*$/ControlPort 9051/' \
-            -e 's/^#CookieAuthentication/CookieAuthentication/' /etc/tor/torrc
 
-        if ! grep "CookieAuthFileGroupReadable" /etc/tor/torrc 1>/dev/null; then
-            sudo sed -i -e '/CookieAuthentication/a CookieAuthFileGroupReadable 1' /etc/tor/torrc
+        # Default config file has example value #DataDirectory /var/lib/tor,
+        if grep -E "^#DataDirectory" /etc/tor/torrc 1>/dev/null; then
+            sudo sed -i -e "s:^#DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
+        else
+            sudo sed -i -e '$sDataDirectory ${INSTALL_DIR_TOR}' /etc/tor/torrc
         fi
+
     fi
 
+    cat <<TOR_CONFIG
+${RED}
+***
+Setting up the Tor service...
+***
+${NC}
+TOR_CONFIG
+
     # Enable service on startup
-    if ! sudo systemctl is-enabled tor 1>/dev/null; then
+    if ! systemctl is-enabled tor 1>/dev/null; then
         sudo systemctl enable tor 2>/dev/null
     fi
 
     # Start Tor if needed
-    sudo systemctl is-active tor 1>/dev/null || sudo systemctl start tor
+    if ! systemctl is-active tor 1>/dev/null; then
+        sudo systemctl start tor
+    else
+        sudo systemctl restart tor
+    fi
 }
 
 #
