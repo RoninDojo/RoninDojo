@@ -16,6 +16,13 @@ RoninDojo CLI:
 RoninDojo GUI:
     - @pajasevi (Pavel Ševčík)
 
-RoninDojo Wiki:
+RoninDojo Documentation:
     - @Crazyk031
     - @BitcoinQnA
+
+RoninDojo Quality Assurance:
+    - @Crazyk031
+    - @BitcoinQnA
+    - @likewhoa
+    - @BTCxZelko
+    - @s2l1
