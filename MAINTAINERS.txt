@@ -1,6 +1,6 @@
 RoninDojo is built and maintained by the Samourai project community.
 Everyone is encouraged to submit issues and changes (patches) to improve RoninDojo, and to
-contribute in other ways -- see https://ronindojo/contribute to find out how.
+contribute in other ways -- see https://ronindojo.io/contribute to find out how.
 
 Branch maintainers
 ------------------
