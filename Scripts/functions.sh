@@ -121,7 +121,7 @@ _systemd_unit_drop_in_check() {
     systemd_mountpoint=${tmp////-}     # Replace / with -
 
     for x in docker tor; do
-        if [ ! -d "/etc/systemd/system/${x}.service.d" ]; then
+        if [ ! -f "/etc/systemd/system/${x}.service.d/override.conf" ]; then
             sudo mkdir "/etc/systemd/system/${x}.service.d"
 
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
