@@ -938,7 +938,7 @@ EOF
     fi
 
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
-    sudo systemctl enable "${systemd_mountpoint}".mount || return 1
+    sudo systemctl enable "${systemd_mountpoint}".mount &>/dev/null || return 1
     # mount drive to ${mountpoint} using systemd.mount
 
 
