@@ -287,7 +287,7 @@ cd "$DOJO_PATH" || exit
 
 ./dojo.sh install --nolog
 
-if sudo test -d "${INSTALL_DIR}"/bitcoin; then
+if sudo test -d "${INSTALL_DIR_UNINSTALL}"; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
