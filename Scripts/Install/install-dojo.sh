@@ -320,7 +320,7 @@ if sudo test -d "${INSTALL_DIR_UNINSTALL}"; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo rm -rf "${INSTALL_DIR}"/bitcoin
+  sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit
