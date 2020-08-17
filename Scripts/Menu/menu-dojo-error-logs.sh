@@ -34,7 +34,7 @@ DOJO
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
               cd "$DOJO_PATH" || exit
-              ./dojo.sh logs bitcoind -n 200
+              ./dojo.sh logs bitcoind -n 200 | grep -i 'error'
               # shows bitcoind error logs
 
             cat <<LOGS
@@ -62,7 +62,7 @@ DOJO
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
               cd "$DOJO_PATH" || exit
-              ./dojo.sh logs db -n 500 | grep -E "ERROR|error"
+              ./dojo.sh logs db -n 500 | grep -i 'error'
               # shows db error logs
             fi
 
@@ -90,7 +90,7 @@ DOJO
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
               cd "$DOJO_PATH" || exit
-              ./dojo.sh logs indexer -n 500 | grep -E "ERROR|error"
+              ./dojo.sh logs indexer -n 500 | grep -i 'error'
               # shows indexer error logs
             fi
 
@@ -118,7 +118,7 @@ DOJO
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
               cd "$DOJO_PATH" || exit
-              ./dojo.sh logs node -n 500 | grep -E "ERROR|error"
+              ./dojo.sh logs node -n 500 | grep -i 'error'
               # shows nodejs error logs
             fi
 
@@ -146,7 +146,7 @@ DOJO
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
               cd "$DOJO_PATH" || exit
-              ./dojo.sh logs tor -n 500 | grep -E "ERROR|error"
+              ./dojo.sh logs tor -n 500 | grep -i 'error'
               # shows tor error logs
             fi
 
