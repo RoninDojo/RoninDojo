@@ -287,6 +287,18 @@ cd "$DOJO_PATH" || exit
 
 ./dojo.sh install --nolog
 
+cat <<DOJO
+${RED}
+***
+Press any letter to continue...
+***
+${NC}
+DOJO
+
+read -n 1 -r -s
+# press to continue is needed because sudo password can be requested for next steps
+# if the user is AFK there may be timeout
+
 if sudo test -d "${INSTALL_DIR_UNINSTALL}"; then
   echo -e "${RED}"
   echo "***"
