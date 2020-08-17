@@ -160,7 +160,7 @@ echo "Pulling Whirlpool from Github..."
 echo "***"
 echo -e "${NC}"
 _sleep
-wget -O whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
+wget -qO whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
 # pull Whirlpool run times
 
 # whirlpool service. Check if present else create it
@@ -218,7 +218,7 @@ echo -e "${NC}"
 _sleep
 
 sudo systemctl start whirlpool
-sudo systemctl enable whirlpool
+sudo systemctl enable whirlpool 2>/dev/null
 _sleep 3
 
 echo -e "${RED}"

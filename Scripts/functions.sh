@@ -704,7 +704,7 @@ EOF
 
     # Enable service on startup
     if ! sudo systemctl is-enabled docker 1>/dev/null; then
-        sudo systemctl enable docker
+        sudo systemctl enable docker 2>/dev/null
     fi
 
     return 0
@@ -938,7 +938,7 @@ EOF
     fi
 
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
-    sudo systemctl enable "${systemd_mountpoint}".mount &>/dev/null || return 1
+    sudo systemctl enable "${systemd_mountpoint}".mount 2>/dev/null || return 1
     # mount drive to ${mountpoint} using systemd.mount
 
 
