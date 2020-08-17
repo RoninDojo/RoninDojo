@@ -240,7 +240,9 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
-  sudo rm -rf "${SALVAGE_MOUNT}"/{swapfile,docker,tor}
+  if [ -f "${SALVAGE_MOUNT}"/swapfile ]; then
+    sudo rm -rf "${SALVAGE_MOUNT}"/{swapfile,docker,tor}
+  fi
 
   if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
     sudo umount "${SALVAGE_MOUNT}"
