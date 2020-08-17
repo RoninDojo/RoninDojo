@@ -307,15 +307,6 @@ if sudo test -d "${INSTALL_DIR_UNINSTALL}"; then
   echo -e "${NC}"
   _sleep 2
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any letter to continue..."
-  echo "***"
-  echo -e "${NC}"
-  read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps
-  # if the user is AFK there may be timeout
-
   cd "$DOJO_PATH" || exit
   _stop_dojo
 
