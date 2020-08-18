@@ -5,13 +5,13 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Bitcoind"
-         2 "DB"
+         2 "MariaDB"
          3 "Indexer"
-         4 "Nginx"
-         5 "Node.js"
-         6 "Tor"
-         7 "Whirlpool"
-         8 "Error Logs"
+         4 "Node.js"
+         5 "Tor"
+         6 "Whirlpool"
+         7 "Error Logs"
+         8 "All Logs"
          9 "Go Back")
 
 CHOICE=$(dialog --clear \
@@ -24,178 +24,196 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              exit
-            fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs bitcoind
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for bitcoind
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              cat <<LOGS
+${RED}
+***
+Press Ctrl + C to exit at any time.
+***
+${NC}
+LOGS
+              _sleep 2
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs bitcoind
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              # shows logs for bitcoind
+            fi
             ;;
         2)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              cat <<LOGS
+${RED}
+***
+Press Ctrl + C to exit at any time.
+***
+${NC}
+LOGS
+              _sleep 2
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs db
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              exit
+              # shows logs for db
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs db
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for db
             ;;
         3)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              cat <<LOGS
+${RED}
+***
+Press Ctrl + C to exit at any time.
+***
+${NC}
+LOGS
+              _sleep 2
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs indexer
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              exit
+              # shows logs for nginx
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs indexer
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for indexer
             ;;
         4)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              cat <<LOGS
+${RED}
+***
+Press Ctrl + C to exit at any time.
+***
+${NC}
+LOGS
+              _sleep 2
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs node
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              exit
+              # shows logs for nodejs
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs nginx
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for nginx
             ;;
         5)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              exit
-            fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              cat <<LOGS
+${RED}
+***
+Press Ctrl + C to exit at any time.
+***
+${NC}
+LOGS
+              _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs node
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for nodejs
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs tor
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              # shows logs for tor
+            fi
             ;;
         6)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              exit
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              _sleep 2
+
+              cat <<LOGS
+${RED}
+***
+Press Ctrl+C to exit at anytime...
+***
+${NC}
+LOGS
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs whirlpool
+              bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              # view logs, return to menu
+              # see defaults.sh
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl + C to exit at any time."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs tor
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # shows logs for tor
             ;;
         7)
-            echo -e "${RED}"
-            echo "***"
-            echo "Viewing Whirlpool Logs..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press Ctrl+C to exit at anytime..."
-            echo "***"
-            echo -e "${NC}"
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs whirlpool
-            bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-            # view logs, return to menu
-            # see defaults.sh
-            ;;
-        8)
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # goes to error logs menu
+            ;;
+        8)
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+            else
+              _sleep 2
+
+              cat <<LOGS
+${RED}
+***
+Press Ctrl+C to exit at anytime...
+***
+${NC}
+LOGS
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs
+              bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              # view logs, return to menu
+              # see defaults.sh
+            fi
             ;;
         9)
             bash -c "$RONIN_DOJO_MENU"

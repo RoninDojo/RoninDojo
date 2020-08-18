@@ -107,7 +107,7 @@ else
   echo -e "${NC}"
   _sleep
   sudo ufw --force enable
-  sudo systemctl enable ufw
+  sudo systemctl enable ufw 2>/dev/null
   # enabling ufw so /etc/ufw/user.rules file configures properly, then edit using awk and sed below
 
   ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/ip_tmp.txt
@@ -240,7 +240,9 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
-  sudo rm -rf "${SALVAGE_MOUNT}"/{swapfile,docker,tor}
+  if [ -f "${SALVAGE_MOUNT}"/swapfile ]; then
+    sudo rm -rf "${SALVAGE_MOUNT}"/{swapfile,docker,tor}
+  fi
 
   if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
     sudo umount "${SALVAGE_MOUNT}"

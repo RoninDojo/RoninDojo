@@ -121,7 +121,7 @@ _systemd_unit_drop_in_check() {
     systemd_mountpoint=${tmp////-}     # Replace / with -
 
     for x in docker tor; do
-        if [ ! -d "/etc/systemd/system/${x}.service.d" ]; then
+        if [ ! -f "/etc/systemd/system/${x}.service.d/override.conf" ]; then
             sudo mkdir "/etc/systemd/system/${x}.service.d"
 
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
@@ -630,7 +630,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${RONIN_DOJO_BRANCH:-master}" https://code.samourai.io/ronindojo/RoninDojo
+git clone -b "${RONIN_DOJO_BRANCH:-master}" https://code.samourai.io/ronindojo/RoninDojo 2>/dev/null
 ${RED}
 ***
 Upgrade Complete!
@@ -704,7 +704,7 @@ EOF
 
     # Enable service on startup
     if ! sudo systemctl is-enabled docker 1>/dev/null; then
-        sudo systemctl enable docker
+        sudo systemctl enable docker 2>/dev/null
     fi
 
     return 0
@@ -938,7 +938,7 @@ EOF
     fi
 
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
-    sudo systemctl enable "${systemd_mountpoint}".mount || return 1
+    sudo systemctl enable "${systemd_mountpoint}".mount 2>/dev/null || return 1
     # mount drive to ${mountpoint} using systemd.mount
 
 

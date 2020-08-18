@@ -14,7 +14,7 @@ mkdir "$HOME"/wst
 cd "$HOME"/wst || exit
 # make wst directory and change to it, otherwise exit
 
-git clone https://github.com/Samourai-Wallet/whirlpool_stats.git;
+git clone https://github.com/Samourai-Wallet/whirlpool_stats.git 2>/dev/null
 # download whirlpool stat tool
 
 if find_pkg python-pip; then

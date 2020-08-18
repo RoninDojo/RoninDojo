@@ -39,7 +39,7 @@ echo "Downloading and extracting latest RoninDojo release..."
 echo "***"
 echo -e "${NC}"
 cd "$HOME" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo &>/dev/null
+git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
 
 echo -e "${RED}"
 echo "***"
@@ -287,22 +287,25 @@ cd "$DOJO_PATH" || exit
 
 ./dojo.sh install --nolog
 
-if sudo test -d "${INSTALL_DIR}"/bitcoin; then
+cat <<DOJO
+${RED}
+***
+Press any letter to continue...
+***
+${NC}
+DOJO
+
+read -n 1 -r -s
+# press to continue is needed because sudo password can be requested for next steps
+# if the user is AFK there may be timeout
+
+if sudo test -d "${INSTALL_DIR_UNINSTALL}"; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
   _sleep 2
-
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any letter to continue..."
-  echo "***"
-  echo -e "${NC}"
-  read -n 1 -r -s
-  # press to continue is needed because sudo password can be requested for next steps
-  # if the user is AFK there may be timeout
 
   cd "$DOJO_PATH" || exit
   _stop_dojo
@@ -320,7 +323,7 @@ if sudo test -d "${INSTALL_DIR}"/bitcoin; then
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  sudo rm -rf "${INSTALL_DIR}"/bitcoin
+  sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
   # remove old salvage directories
 
   cd "$DOJO_PATH" || exit

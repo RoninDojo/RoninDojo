@@ -5,12 +5,11 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Bitcoind"
-         2 "DB"
+         2 "MariaDB"
          3 "Indexer"
-         4 "Nginx"
-         5 "Node.js"
-         6 "Tor"
-         7 "Go Back")
+         4 "Node.js"
+         5 "Tor"
+         6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -22,168 +21,147 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
-            fi
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
+            if ! _dojo_check "$DOJO_PATH"; then
+              cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+              _sleep 5
+              bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            else
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs bitcoind -n 200 | grep -i 'error'
+              # shows bitcoind error logs
 
-            cd "$DOJO_PATH" || exit 
-            ./dojo.sh logs bitcoind -n 200
-            # shows bitcoind error logs
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-            # press any key to return to menu
+            cat <<LOGS
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+LOGS
+              read -n 1 -r -s
+              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+              # press any key to return to menu
+            fi
             ;;
         2)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
+            if ! _dojo_check "$DOJO_PATH"; then
+              cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
               _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
+              bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            else
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs db -n 500 | grep -i 'error'
+              # shows db error logs
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs db -n 500 | egrep "ERROR|error"
-            # shows db error logs
-
-	    echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<LOGS
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+LOGS
             read -n 1 -r -s
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
-	    ;;
+	          ;;
         3)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
+            if ! _dojo_check "$DOJO_PATH"; then
+              cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
               _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
+              bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            else
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs indexer -n 500 | grep -i 'error'
+              # shows indexer error logs
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs indexer -n 500 | egrep "ERROR|error"
-            # shows indexer error logs
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<LOGS
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+LOGS
             read -n 1 -r -s
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         4)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
+            if ! _dojo_check "$DOJO_PATH"; then
+              cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
               _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
+              bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            else
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs node -n 500 | grep -i 'error'
+              # shows nodejs error logs
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs nginx -n 500 | egrep "ERROR|error"
-            # shows nginx error logs
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<LOGS
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+LOGS
             read -n 1 -r -s
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         5)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
+            if ! _dojo_check "$DOJO_PATH"; then
+                cat <<DOJO
+${RED}
+***
+Please start Dojo first!
+***
+${NC}
+DOJO
+                _sleep 5
+                bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
+            else
+              cd "$DOJO_PATH" || exit
+              ./dojo.sh logs tor -n 500 | grep -i 'error'
+              # shows tor error logs
             fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
 
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs node -n 500 | egrep "ERROR|error"
-            # shows nodejs error logs
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<LOGS
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+LOGS
             read -n 1 -r -s
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         6)
-            isRunning=$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)
-            if [ $? -eq 1 ] || [ "$isRunning" == "false" ]; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Dojo needs to be started first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-              exit
-            fi
-            # checks if dojo is running (check the db container), if not running tells user to start dojo first
-
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh logs tor -n 500 | egrep "ERROR|error"
-            # shows tor error logs
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
-            # press any key to return to menu
-            ;;
-        7)
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # goes back to logs menu
             ;;
