@@ -319,7 +319,7 @@ _install_ronin_ui_backend() {
     _load_user_conf
 
     # Import PGP keys for backend archive
-    curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
+    #curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
 
     # Check for nodejs
     if ! hash node 2>/dev/null; then
