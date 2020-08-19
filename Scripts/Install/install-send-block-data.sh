@@ -67,7 +67,8 @@ echo "Copying..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo test -d "${SALVAGE_MOUNT}" || sudo mkdir "${SALVAGE_MOUNT}"
+
+sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}" || sudo mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
 if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}"/blocks; then
@@ -86,8 +87,8 @@ EOF
 
     sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
 else
-  sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
-  # use cp for initial fresh IBD copy
+    sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
+    # use cp for initial fresh IBD copy
 fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
