@@ -77,7 +77,7 @@ cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
 # User account used for rpc access to bitcoind
 # Type: alphanumeric
-BITCOIND_RPC_USER=RoninDojo
+BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-RoninDojo}
 # Password of user account used for rpc access to bitcoind
 # Type: alphanumeric
 BITCOIND_RPC_PASSWORD=$RPC_PASS
@@ -89,7 +89,7 @@ BITCOIND_MAX_CONNECTIONS=16
 BITCOIND_MAX_MEMPOOL=400
 # Db cache size in MB
 # Type: integer
-BITCOIND_DB_CACHE=700
+BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}
 # Number of threads to service RPC calls
 # Type: integer
 BITCOIND_RPC_THREADS=6
@@ -119,7 +119,7 @@ BITCOIND_EPHEMERAL_HS=on
 # Warning: Do not expose your RPC API to internet!
 # See BITCOIND_RPC_EXTERNAL_IP
 # Value: on | off
-BITCOIND_RPC_EXTERNAL=on
+BITCOIND_RPC_EXTERNAL=${BITCOIND_RPC_EXTERNAL:-on}
 # IP address used to expose the RPC API to external apps
 # This parameter is inactive if BITCOIND_RPC_EXTERNAL isn't set to 'on'
 # Warning: Do not expose your RPC API to internet!
@@ -127,7 +127,7 @@ BITCOIND_RPC_EXTERNAL=on
 #   linux: 127.0.0.1
 #   macos or windows: IP address of the VM running the docker host
 # Type: string
-BITCOIND_RPC_EXTERNAL_IP=127.0.0.1
+BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}
 #
 # INSTALL AND RUN BITCOIND INSIDE DOCKER
 #
@@ -193,7 +193,7 @@ NODE_JWT_SECRET=$NODE_JWT_SECRET
 
 # Indexer or third-party service used for imports and rescans of addresses
 # Values: local_bitcoind | third_party_explorer
-NODE_ACTIVE_INDEXER=local_bitcoind
+NODE_ACTIVE_INDEXER=${NODE_ACTIVE_INDEXER:-local_bitcoind}
 
 # FEE TYPE USED FOR FEES ESTIMATIONS BY BITCOIND
 # Allowed values are ECONOMICAL or CONSERVATIVE
@@ -233,7 +233,7 @@ cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 #########################################
 # Install and run a block explorer inside Dojo (recommended)
 # Value: on | off
-EXPLORER_INSTALL=on
+EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}
 # Password required for accessing the block explorer
 # (login can be anything)
 # Keep this password secret!
