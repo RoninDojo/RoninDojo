@@ -67,8 +67,11 @@ echo "Removing old Data..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-# remove block data
+
+# Make sure we have directories to delete
+if sudo -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
+    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+fi
 
 echo -e "${RED}"
 echo "***"
@@ -77,7 +80,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo cp -av "${SECONDARY_STORAGE_MOUNT}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+sudo cp -av "${SALVAGE_BITCOIN_IBD_DATA}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
 # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 
 echo -e "${RED}"
@@ -95,7 +98,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo umount "${SECONDARY_STORAGE}" && sudo rmdir "${SECONDARY_STORAGE}"
+sudo umount "${SECONDARY_STORAGE}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
 # unmount backup drive and remove directory
 
 echo -e "${RED}"

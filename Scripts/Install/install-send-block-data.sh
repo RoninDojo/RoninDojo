@@ -94,10 +94,21 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Complete!"
+echo "Transfer Completed.."
 echo "***"
 echo -e "${NC}"
 _sleep 2
+
+cat <<EOF
+${RED}
+***
+Unmounting...
+***
+${NC}
+EOF
+_sleep 2
+
+sudo umount "${SECONDARY_STORAGE}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
 
 echo -e "${RED}"
 echo "***"
