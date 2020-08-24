@@ -316,7 +316,9 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   echo -e "${NC}"
   _sleep 2
 
-  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_DATA_DIR}"/
+  test -d "${SALVAGE_BITCOIN_IBD_DATA}" || mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
+
+  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"/
   # moves blockchain salvage data to ${SALVAGE_MOUNT} if found
 
   echo -e "${RED}"
@@ -392,6 +394,11 @@ else
   echo "***"
   echo -e "${NC}"
   _sleep 2
+
+  # Check if swap in use
+  if check_swap; then
+    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  fi
 
   if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
     sudo umount "${SALVAGE_MOUNT}"
