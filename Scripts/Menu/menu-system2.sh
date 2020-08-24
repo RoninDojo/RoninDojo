@@ -11,8 +11,9 @@ OPTIONS=(1 "Task Manager"
          3 "Unlock Root User"
          4 "Upgrade RoninDojo"
          5 "Mount Existing Backup Drive"
-         6 "Format & Mount New Backup Drive"
-         7 "Go Back")
+         6 "UMount Existing Backup Drive"
+         7 "Format & Mount New Backup Drive"
+         8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -77,10 +78,14 @@ EOF
         # mounts ${SECONDARY_STORAGE} to ${SALVAGE_MOUNT} for access to backup blockchain data
         ;;
     6)
+        bash "$HOME"/RoninDojo/Scripts/Install/install-umount-backup-data-drive.sh
+        # umounts ${SECONDARY_STORAGE} drive
+        ;;
+    7)
         bash "$HOME"/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
         # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
         ;;
-    7)
+    8)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # returns to menu
         ;;
