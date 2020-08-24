@@ -88,10 +88,6 @@ df -h "${SECONDARY_STORAGE}"
 _sleep 2
 # checks disk info
 
-create_swap --file "${SECONDARY_STORAGE_MOUNT}"/swapfile --size 2G
-# created a 2GB swapfile on the external backup drive
-# see create_swap in functions.sh
-
 echo -e "${RED}"
 echo "***"
 echo "Press any letter to return..."
