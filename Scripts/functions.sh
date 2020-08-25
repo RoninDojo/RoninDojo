@@ -94,7 +94,8 @@ EOF
     # external drive mount
     _systemd_unit_drop_in_check
 
-    _install_ronin_ui_backend
+    # Checks to see if BackendUI is installed
+    _isbackend_ui
 }
 
 #
@@ -302,7 +303,7 @@ EOF
         _install_ronin_ui_backend
         _sleep 2 --msg "Returning to menu in"
 
-        bash -c "${RONIN_BACKEND_UI_MENU}"
+        bash -c ronin
     fi
     # check if backend ui is already installed
 }
