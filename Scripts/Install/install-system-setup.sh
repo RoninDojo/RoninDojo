@@ -236,7 +236,7 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${NC}"
 
   # Check if swap in use
-  if check_swap; then
+  if check_swap "${SALVAGE_MOUNT}/swapfile"; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
@@ -329,7 +329,7 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   _sleep 2
 
   # Check if swap in use
-  if check_swap; then
+  if check_swap "${SALVAGE_MOUNT}/swapfile"; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
@@ -396,7 +396,7 @@ else
   _sleep 2
 
   # Check if swap in use
-  if check_swap; then
+  if check_swap"${SALVAGE_MOUNT}/swapfile" ; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
