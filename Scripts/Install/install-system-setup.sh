@@ -255,7 +255,10 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+
+  # Mount primary drive if not already mounted
+  findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
 
