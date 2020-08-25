@@ -321,6 +321,15 @@ _install_ronin_ui_backend() {
     # Import PGP keys for backend archive
     #curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
 
+    cat <<BACKEND
+${RED}
+***
+Checking for package dependencies for BackendUI
+***
+${NC}
+BACKEND
+    _sleep 2
+
     # Check for nodejs
     if ! hash node 2>/dev/null; then
         sudo pacman -S --noconfirm nodejs
