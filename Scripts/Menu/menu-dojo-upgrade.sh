@@ -79,36 +79,23 @@ fi
 # checks for docker-explorer.conf, if found informs user
 # else uses sed to modify
 
-if [ ! -f "${DOJO_PATH}"/conf/docker-indexer.conf ] ; then
+if grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null; then
     read -rp "Do you want to install an Indexer? [y/n]" yn
     case $yn in
         [Y/y]* )
-                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
-                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl;;
+                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
+                 sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf;;
         [N/n]* )  echo -e "${RED}"
                  echo "***"
-                 echo "Indexer will not be installed!"
+                 echo "Indexer will not be installed..."
                  echo "***"
                  echo -e "${NC}";;
         * ) echo "Please answer Yes or No.";;
     esac
-elif grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf > /dev/null ; then
-        read -rp "Do you want to install an Indexer? [y/n]" yn
-        case $yn in
-            [Y/y]* )
-                     sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-                     sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf;;
-            [N/n]* ) echo -e "${RED}"
-                     echo "***"
-                     echo "Indexer will not be installed!"
-                     echo "***"
-                     echo -e "${NC}";;
-            * ) echo "Please answer Yes or No.";;
-        esac
 else
     echo -e "${RED}"
     echo "***"
-    echo "Indexer is already installed! If you were running Electrs, press y at next prompt..."
+    echo "Indexer is already installed..."
     echo "***"
     echo -e "${NC}"
 fi
