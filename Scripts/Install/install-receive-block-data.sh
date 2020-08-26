@@ -69,7 +69,7 @@ echo -e "${NC}"
 _sleep 2
 
 # Make sure we have directories to delete
-if sudo -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
+if test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
     sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
 fi
 

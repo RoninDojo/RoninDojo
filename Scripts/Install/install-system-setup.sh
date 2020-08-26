@@ -236,7 +236,7 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${NC}"
 
   # Check if swap in use
-  if check_swap; then
+  if check_swap "${SALVAGE_MOUNT}/swapfile"; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
@@ -255,7 +255,10 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo "Mounting drive..."
   echo "***"
   echo -e "${NC}"
-  sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+
+  # Mount primary drive if not already mounted
+  findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+
   _sleep
   # mount main storage drive to ${INSTALL_DIR} directory
 
@@ -316,7 +319,9 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   echo -e "${NC}"
   _sleep 2
 
-  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_DATA_DIR}"/
+  test -d "${SALVAGE_BITCOIN_IBD_DATA}" || mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
+
+  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"/
   # moves blockchain salvage data to ${SALVAGE_MOUNT} if found
 
   echo -e "${RED}"
@@ -327,7 +332,7 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   _sleep 2
 
   # Check if swap in use
-  if check_swap; then
+  if check_swap "${SALVAGE_MOUNT}/swapfile"; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
@@ -392,6 +397,11 @@ else
   echo "***"
   echo -e "${NC}"
   _sleep 2
+
+  # Check if swap in use
+  if check_swap"${SALVAGE_MOUNT}/swapfile" ; then
+    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  fi
 
   if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
     sudo umount "${SALVAGE_MOUNT}"

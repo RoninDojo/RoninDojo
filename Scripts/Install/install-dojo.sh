@@ -271,7 +271,7 @@ echo -e "${NC}"
 
 echo -e "${RED}"
 echo "***"
-echo "https://ronindojo.io/wiki"
+echo "https://wiki.ronindojo.io"
 echo "***"
 echo -e "${NC}"
 _sleep 5
@@ -299,7 +299,7 @@ read -n 1 -r -s
 # press to continue is needed because sudo password can be requested for next steps
 # if the user is AFK there may be timeout
 
-if sudo test -d "${INSTALL_DIR_UNINSTALL}"; then
+if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks"; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."

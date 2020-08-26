@@ -22,10 +22,40 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
+            if ! _dojo_check "$DOJO_PATH"; then
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+            fi
+
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
             # upgrades dojo and returns to menu
             ;;
         2)
+            if ! _dojo_check "$DOJO_PATH"; then
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+            fi
+
             cat <<DOJO
 ${RED}
 ***
@@ -89,6 +119,21 @@ DOJO
             # return to menu
             ;;
         3)
+            if ! _dojo_check "$DOJO_PATH"; then
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+            fi
+
             echo -e "${RED}"
             echo "***"
             echo "Deleting docker dangling images and images of previous versions in 5s..."
@@ -108,6 +153,21 @@ DOJO
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         4)
+            if ! _dojo_check "$DOJO_PATH"; then
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+            fi
+
             echo -e "${RED}"
             echo "***"
             echo "Displaying the version info..."
@@ -128,10 +188,40 @@ DOJO
             # press any letter to return
             ;;
         5)
+            if ! _dojo_check "$DOJO_PATH"; then
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+            fi
+
             bash "$HOME"/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
         6)
+            if ! _dojo_check "$DOJO_PATH"; then
+                # Is dojo installed?
+                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                    cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+***
+${NC}
+DOJO
+                    _sleep 2
+                    bash -c "$RONIN_DOJO_MENU"
+                fi
+            fi
+
             bash "$HOME"/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;

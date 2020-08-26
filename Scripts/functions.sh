@@ -94,7 +94,8 @@ EOF
     # external drive mount
     _systemd_unit_drop_in_check
 
-    _install_ronin_ui_backend
+    # Checks to see if BackendUI is installed
+    _isbackend_ui
 }
 
 #
@@ -302,7 +303,7 @@ EOF
         _install_ronin_ui_backend
         _sleep 2 --msg "Returning to menu in"
 
-        bash -c "${RONIN_BACKEND_UI_MENU}"
+        bash -c ronin
     fi
     # check if backend ui is already installed
 }
@@ -320,6 +321,15 @@ _install_ronin_ui_backend() {
 
     # Import PGP keys for backend archive
     #curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
+
+    cat <<BACKEND
+${RED}
+***
+Checking for package dependencies for BackendUI
+***
+${NC}
+BACKEND
+    _sleep 2
 
     # Check for nodejs
     if ! hash node 2>/dev/null; then

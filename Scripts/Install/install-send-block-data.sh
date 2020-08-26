@@ -108,13 +108,14 @@ ${NC}
 EOF
 _sleep 2
 
-sudo umount "${SECONDARY_STORAGE}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
-
 echo -e "${RED}"
 echo "***"
-echo "Press any letter to return..."
+echo "Press any letter to continue..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
+
+sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 # return to menu

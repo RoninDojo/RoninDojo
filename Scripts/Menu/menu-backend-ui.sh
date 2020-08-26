@@ -26,8 +26,6 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
 	1)
-        _isbackend_ui
-
         # Check if process running, otherwise start it
         if pm2 describe "Ronin Backend" | grep status | grep stopped 1>/dev/null; then
             cat << EOF
@@ -56,8 +54,6 @@ EOF
         # start backend ui, return to menu
         ;;
     2)
-        _isbackend_ui
-
         # Check if process running before stopping it
         if pm2 describe "Ronin Backend" &>/dev/null; then
             cat << EOF
@@ -85,8 +81,6 @@ EOF
         # start backend ui, return to menu
         ;;
     3)
-        _isbackend_ui
-
         cat << EOF
 ${RED}
 ***
@@ -104,8 +98,6 @@ EOF
         # start backend ui, return to menu
         ;;
     4)
-        _isbackend_ui
-
         cat << EOF
 ${RED}
 ***
@@ -120,8 +112,6 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         ;;
     5)
-        _isbackend_ui
-
         cat << EOF
 ${RED}
 ***
@@ -136,8 +126,6 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         ;;
     6)
-        _isbackend_ui
-
         cd "${BACKEND_DIR}" || exit
 
         API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
@@ -181,8 +169,6 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
         ;;
     8)
-        _isbackend_ui
-
         cd "${BACKEND_DIR}" || exit
 
         cat << EOF
