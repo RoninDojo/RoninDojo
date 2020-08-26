@@ -26,6 +26,18 @@ case $CHOICE in
             # upgrades dojo and returns to menu
             ;;
         2)
+            if [ ! -d "${DOJO_PATH}" ]; then
+                cat <<DOJO
+${RED}
+***
+Dojo is already uninstalled... Exiting
+***
+${NC}
+DOJO
+                _sleep 3 --msg "Returning to main menu in"
+                bash -c ronin
+            fi
+
             cat <<DOJO
 ${RED}
 ***
