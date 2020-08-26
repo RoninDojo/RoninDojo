@@ -271,7 +271,7 @@ echo -e "${NC}"
 
 echo -e "${RED}"
 echo "***"
-echo "https://ronindojo.io/wiki"
+echo "https://wiki.ronindojo.io"
 echo "***"
 echo -e "${NC}"
 _sleep 5
