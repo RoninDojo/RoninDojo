@@ -95,10 +95,25 @@ DOJO
                 _sleep 2
                 cd "$DOJO_PATH" || exit
 
+                cat <<DOJO
+${RED}
+***
+Stopping Dojo...
+***
+${NC}
+DOJO
                 # Check if db container running before stopping all containers
                 if _dojo_check "$DOJO_PATH"; then
                     _stop_dojo
                 fi
+
+                cat <<DOJO
+${RED}
+***
+Starting Dojo...
+***
+${NC}
+DOJO
 
                 # Start docker containers
                 yamlFiles=$(_select_yaml_files)
