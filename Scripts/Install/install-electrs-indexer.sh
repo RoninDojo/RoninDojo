@@ -51,5 +51,5 @@ sudo sed -i \
 -e 's/^addrindexrs .*$/electrs "${indexer_options[@]}"/' "${DOJO_PATH}"/indexer/restart.sh
 # modify indexer/restart.sh for electrs
 
-wget -O "${DOJO_PATH}"/indexer/Dockerfile https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
+wget -qO "${DOJO_PATH}"/indexer/Dockerfile https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
 # replace indexer dockerfile for electrs usage

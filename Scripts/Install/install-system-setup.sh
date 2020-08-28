@@ -399,7 +399,7 @@ else
   _sleep 2
 
   # Check if swap in use
-  if check_swap"${SALVAGE_MOUNT}/swapfile" ; then
+  if check_swap "${SALVAGE_MOUNT}/swapfile" ; then
     sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
