@@ -802,7 +802,7 @@ create_fs() {
     # Parse Arguments
     while [ $# -gt 0 ]; do
         case "$1" in
-            --fstype|fs)
+            --fstype|-fs)
                 if [[ ! "${supported_filesystems[*]}" =~ ${2} ]]; then
                     cat <<EOF
 ${RED}
