@@ -927,7 +927,7 @@ Description=Mount External SSD Drive ${device}
 [Mount]
 What=/dev/disk/by-uuid/${uuid}
 Where=${mountpoint}
-Type=ext4
+Type=${fstype}
 Options=defaults
 
 [Install]
