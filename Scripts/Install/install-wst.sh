@@ -20,7 +20,7 @@ cd "$HOME"/wst || exit
 git clone https://github.com/Samourai-Wallet/whirlpool_stats.git 2>/dev/null
 # download whirlpool stat tool
 
-if ! find_pkg python-pip; then
+if ! hash pip; then
   cat <<PIP
 ${RED}
 ***
