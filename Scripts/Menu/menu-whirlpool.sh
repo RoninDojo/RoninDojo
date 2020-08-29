@@ -29,7 +29,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker start whirlpool
+            docker start whirlpool 1>/dev/null
 
             echo -e "${RED}"
             echo "***"
@@ -48,7 +48,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker stop whirlpool
+            docker stop whirlpool 1>/dev/null
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # stop whirlpool, return to menu
             # see defaults.sh
@@ -60,9 +60,9 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker stop whirlpool
+            docker stop whirlpool 1>/dev/null
             _sleep 5
-            docker start whirlpool
+            docker start whirlpool 1>/dev/null
             _sleep 2
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, return to menu

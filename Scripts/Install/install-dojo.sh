@@ -7,6 +7,20 @@
 
 _load_user_conf
 
+if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+  cat <<DOJO
+${RED}
+***
+Missing drive mount at ${INSTALL_DIR}!
+Please contact support for assistance.
+Exiting RoninDojo in 5 seconds...
+***
+${NC}
+DOJO
+  _sleep 5
+  exit 1
+fi
+
 # Makes sure Dojo has been uninstalled
 if [ -d "${DOJO_PATH}" ]; then
   cat <<DOJO
@@ -299,7 +313,7 @@ read -n 1 -r -s
 # press to continue is needed because sudo password can be requested for next steps
 # if the user is AFK there may be timeout
 
-if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks"; then
+if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
   echo -e "${RED}"
   echo "***"
   echo "Blockchain data salvage starting..."
@@ -319,7 +333,7 @@ if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks"; then
 
   echo -e "${RED}"
   echo "***"
-  echo "Blockchain data salvage complete!"
+  echo "Blockchain data salvage completed..."
   echo "***"
   echo -e "${NC}"
   _sleep 2

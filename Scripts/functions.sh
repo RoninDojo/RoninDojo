@@ -428,10 +428,11 @@ Please contact support for assistance
 ***
 ${NC}
 EOF
-    bash -c ronin
+        _sleep 5 --msg "Returning to main menu in"
+        bash -c ronin
     fi
 
-    # Check that docker service running
+    # Check that docker service is running
     if ! sudo systemctl is-active docker 1>/dev/null; then
         sudo systemctl start docker
     fi
@@ -802,7 +803,7 @@ create_fs() {
     # Parse Arguments
     while [ $# -gt 0 ]; do
         case "$1" in
-            --fstype|fs)
+            --fstype|-fs)
                 if [[ ! "${supported_filesystems[*]}" =~ ${2} ]]; then
                     cat <<EOF
 ${RED}
@@ -927,7 +928,7 @@ Description=Mount External SSD Drive ${device}
 [Mount]
 What=/dev/disk/by-uuid/${uuid}
 Where=${mountpoint}
-Type=ext4
+Type=${fstype}
 Options=defaults
 
 [Install]
