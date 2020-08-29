@@ -47,7 +47,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker start indexer
+            docker start indexer 1>/dev/null
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # start electrs, return to menu
             ;;
@@ -77,7 +77,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker stop indexer
+            docker stop indexer 1>/dev/null
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # stop electrs, return to menu
             ;;
@@ -107,7 +107,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker restart indexer
+            docker restart indexer 1>/dev/null
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
             # restart electrs, return to menu
             ;;
@@ -172,13 +172,13 @@ case $CHOICE in
             echo "Displaying Electrs Tor Hiddenservice address..."
             echo "***"
             echo -e "${NC}"
-            echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"
+            echo "Electrs hidden service address = $V3_ADDR_ELECTRS"
             _sleep
             # displaying electrs tor address to connect to electrum
 
             echo -e "${RED}"
             echo "***"
-            echo "Check the RoninDojo Wiki for pairing information."
+            echo "Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io"
             echo "***"
             echo -e "${NC}"
             _sleep
