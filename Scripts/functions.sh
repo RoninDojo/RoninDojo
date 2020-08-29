@@ -428,10 +428,11 @@ Please contact support for assistance
 ***
 ${NC}
 EOF
-    bash -c ronin
+        _sleep 5 --msg "Returning to main menu in"
+        bash -c ronin
     fi
 
-    # Check that docker service running
+    # Check that docker service is running
     if ! sudo systemctl is-active docker 1>/dev/null; then
         sudo systemctl start docker
     fi

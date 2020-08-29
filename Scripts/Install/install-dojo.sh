@@ -7,6 +7,20 @@
 
 _load_user_conf
 
+if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+  cat <<DOJO
+${RED}
+***
+Missing drive mount at ${INSTALL_DIR}!
+Please contact support for assistance.
+Exiting RoninDojo in 5 seconds...
+***
+${NC}
+DOJO
+  _sleep 5
+  exit 1
+fi
+
 # Makes sure Dojo has been uninstalled
 if [ -d "${DOJO_PATH}" ]; then
   cat <<DOJO
