@@ -292,7 +292,7 @@ _isbackend_ui() {
 
     _load_user_conf
 
-    if [ ! -d "${BACKEND_DIR}" ]; then
+    if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
         cat << EOF
 ${RED}
 ***
@@ -359,17 +359,17 @@ BACKEND
     ver=$( cut -d ' ' -f2 </tmp/latest.txt )
 
     # Create RoninBackend directory if missing
-    test -d "${BACKEND_DIR}" || mkdir "${BACKEND_DIR}"
+    test -d "${RONIN_UI_BACKEND_DIR}" || mkdir "${RONIN_UI_BACKEND_DIR}"
 
     # Get latest version of current RoninBackend if available
-    if [ -f "${BACKEND_DIR}"/package.json ]; then
-        current_ver=$(jq --raw-output '.version' "${BACKEND_DIR}"/package.json)
+    if [ -f "${RONIN_UI_BACKEND_DIR}"/package.json ]; then
+        current_ver=$(jq --raw-output '.version' "${RONIN_UI_BACKEND_DIR}"/package.json)
     fi
 
     # Start Backend installation procedure
     if [[ "${ver}" != "${current_ver}" ]]; then
         # cd into RoninBackend dir
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         # Fetch tar archive
         wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"

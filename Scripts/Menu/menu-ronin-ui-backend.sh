@@ -36,7 +36,7 @@ Starting UI Backend Server...
 ${NC}
 EOF
             _sleep 2
-            cd "${BACKEND_DIR}" || exit
+            cd "${RONIN_UI_BACKEND_DIR}" || exit
 
             pm2 start "Ronin Backend"
         else
@@ -64,7 +64,7 @@ Stopping UI Backend Server...
 ${NC}
 EOF
             _sleep 2
-            cd "${BACKEND_DIR}" || exit
+            cd "${RONIN_UI_BACKEND_DIR}" || exit
 
             pm2 stop "Ronin Backend"
         else
@@ -89,7 +89,7 @@ Restarting UI Backend Server...
 ${NC}
 EOF
         _sleep 2
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         # Restart service
         pm2 restart "Ronin Backend" 1>/dev/null
@@ -105,7 +105,7 @@ Press any key to return.
 ***
 ${NC}
 EOF
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
         pm2 status
 
         read -n 1 -r -s
@@ -119,14 +119,14 @@ Press q key to exit at any time.
 ***
 ${NC}
 EOF
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
         _sleep 5 # Workaround until a proper FIX
         less --force logs/combined.log
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     6)
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
         JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
@@ -171,7 +171,7 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     8)
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         cat << EOF
 ${RED}
@@ -189,9 +189,9 @@ EOF
         # dump all processes for resurrecting them later
         pm2 save 1>/dev/null
 
-        # Remove ${BACKEND_DIR}
+        # Remove ${RONIN_UI_BACKEND_DIR}
         cd "${HOME}" || exit
-        rm -rf "${BACKEND_DIR}" || exit
+        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
