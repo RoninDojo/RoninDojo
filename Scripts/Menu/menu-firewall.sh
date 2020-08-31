@@ -4,11 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Enable Firewall"
-         2 "Disable Firewall"
-         3 "Firewall Status"
+OPTIONS=(1 "Enable"
+         2 "Disable"
+         3 "Status"
          4 "Delete Rule"
-         5 "Reload Firewall"
+         5 "Reload"
          6 "Add New IP Range for SSH"
          7 "Add Specific IP for SSH"
          8 "Next Page"
@@ -32,7 +32,7 @@ case $CHOICE in
             _sleep 2
             sudo ufw enable
             _sleep
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # enables firewall
             ;;
         2)
@@ -44,7 +44,7 @@ case $CHOICE in
             _sleep 2
             sudo ufw disable
             _sleep
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # disables firewall
             ;;
         3)
@@ -63,7 +63,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
         4)
@@ -111,7 +111,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any letter to return to menu
             ;;
         5)
@@ -122,7 +122,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo ufw reload
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # reload and return to menu
             ;;
         6)
@@ -180,7 +180,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
         7)
@@ -238,15 +238,15 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash ~/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
             # press any key to return to menu
             ;;
         8)
-	    bash ~/RoninDojo/Scripts/Menu/menu-firewall2.sh
+	    bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
             # go to next menu page
             ;;
         9)
-            bash ~/RoninDojo/ronin
+            bash "$HOME"/RoninDojo/ronin
             # return to main menu
             ;;
 esac

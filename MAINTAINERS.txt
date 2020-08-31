@@ -1,0 +1,28 @@
+RoninDojo is built and maintained by the Samourai project community.
+Everyone is encouraged to submit issues and changes (patches) to improve RoninDojo, and to
+contribute in other ways -- see https://ronindojo.io/contribute to find out how.
+
+Branch maintainers
+------------------
+
+The Core RoninDojo maintainers oversee the development of RoninDojo as a whole.
+The branch maintainers for RoninDojo are:
+
+RoninDojo CLI:
+    - @likewhoa             - https://code.samourai.io/likewhoa
+    - @BTCxZelko            - https://code.samourai.io/BTCxZelko
+    - @s2l1  (GuerraMoneta) - https://code.samourai.io/s2l1
+
+RoninDojo GUI:
+    - @pajasevi (Pavel Ševčík)
+
+RoninDojo Documentation:
+    - @Crazyk031
+    - @BitcoinQnA
+
+RoninDojo Quality Assurance:
+    - @Crazyk031
+    - @BitcoinQnA
+    - @likewhoa
+    - @BTCxZelko
+    - @s2l1

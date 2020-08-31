@@ -2,6 +2,9 @@
 # shellcheck source=/dev/null disable=1004
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/functions.sh
+
+_load_user_conf
 
 RPC_USER=$(sudo grep BITCOIND_RPC_USER= "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
 RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
@@ -25,7 +28,7 @@ if [ "$INDEXER_INSTALL" == "on" ]; then\
 \  tor_options+=(--HiddenServiceDirGroupReadable 1)\
 fi\
 ' "${DOJO_PATH}"/tor/restart.sh
-# modify tor/restart.sh for electrs hidden service 
+# modify tor/restart.sh for electrs hidden service
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 # we append everything above the EXPLORER if statement
 
@@ -48,5 +51,5 @@ sudo sed -i \
 -e 's/^addrindexrs .*$/electrs "${indexer_options[@]}"/' "${DOJO_PATH}"/indexer/restart.sh
 # modify indexer/restart.sh for electrs
 
-wget -O "${DOJO_PATH}"/indexer/Dockerfile https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
+wget -qO "${DOJO_PATH}"/indexer/Dockerfile https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
 # replace indexer dockerfile for electrs usage

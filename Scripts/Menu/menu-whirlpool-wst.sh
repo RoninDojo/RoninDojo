@@ -4,80 +4,106 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-echo -e "${RED}"
-echo "***"
-echo "Checking for Whirlpool Stat Tool..."
-echo "***"
-echo -e "${NC}"
+cat <<WST
+${RED}
+***
+Checking for Whirlpool Stat Tool...
+***
+${NC}
+WST
+
 _sleep 2
 
-if [ ! -f ~/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
-    bash ~/RoninDojo/Scripts/Install/install-wst.sh
+if [ ! -f "$HOME"/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
+    bash "$HOME"/RoninDojo/Scripts/Install/install-wst.sh
 else
-    echo -e "${RED}"
-    echo "***"
-    echo "Whirlpool Stat Tool Already Installed!";
-    echo "***"
-    echo -e "${NC}"
+    cat <<WST
+${RED}
+***
+Whirlpool Stat Tool Already Installed!
+***
+${NC}
+WST
     _sleep 2
 
-    echo -e "${RED}"
-    echo "***"
-    echo "Launching Whirlpool Stat Tool..."
-    echo "***"
-    echo -e "${NC}"
+    cat <<WST
+${RED}
+***
+Launching Whirlpool Stat Tool...
+***
+${NC}
+WST
     _sleep 2
     cd "$HOME"/wst/whirlpool_stats/whirlpool_stats || exit
 fi
 # if wst.py is not found then run install script
 # else inform user and launch
 
-echo -e "${RED}"
-echo "Whirlpool Stat Tool INSTRUCTIONS:"
-echo -e "${NC}"
+cat <<WST
+${RED}
+Whirlpool Stat Tool INSTRUCTIONS:
+${NC}
+WST
+
 _sleep 2
 # instructions are given to user
 
-echo -e "${RED}"
-echo "Download in the working directory a snaphot for the 0.01BTC pools:"
-echo -e "${NC}"
-echo "download 001"
+cat <<WST
+${RED}
+Download in the working directory a snaphot for the 0.01BTC pools:
+${NC}
+download 001
+WST
+
 _sleep 2
 
-echo -e "${RED}"
-echo "Load and compute the statistcs for the snaphot:"
-echo -e "${NC}"
-echo "load 001"
+cat <<WST
+${RED}
+Load and compute the statistcs for the snaphot:
+${NC}
+load 001
+WST
+
 _sleep 2
 
-echo -e "${RED}"
-echo "Display the metrics computed for a transaction stored in the active snapshot:"
-echo -e "${NC}"
-echo "score <ENTER TXID OF DESIRED 0.01 BTC transaction>"
+cat <<WST
+${RED}
+Display the metrics computed for a transaction stored in the active snapshot:
+${NC}
+score <ENTER TXID OF DESIRED 0.01 BTC transaction>
+WST
+
 _sleep 2
 
-echo -e "${RED}"
-echo "Sample output..."
-echo -e "${NC}"
-echo "Backward-looking metrics for the outputs of this mix:"
-echo   "anonset = 92"
-echo   "spread = 89%"
-echo "Forward-looking metrics for the outputs of Tx0s having this transaction as their first mix:"
-echo   "anonset = 127"
-echo   "spread = 76%"
+cat <<WST
+${RED}
+Sample output...
+${NC}
+Backward-looking metrics for the outputs of this mix:
+    anonset = 92
+    spread = 89%
+
+Forward-looking metrics for the outputs of Tx0s having this transaction as their first mix:
+    anonset = 127
+    spread = 76%
+WST
+
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Type: 'quit' at anytime to exit WST."
-echo "***"
-echo ""
-echo "***"
-echo "Press any letter to continue..."
-echo "***"
-echo -e "${NC}"
+cat <<WST
+${RED}
+***
+Type: 'quit' at anytime to exit WST.
+***
+
+***
+Press any letter to continue...
+***
+${NC}
+WST
+
 read -n 1 -r -s
 # press any letter to return
 
-python3 wst.py -w=/tmp -s=127.0.0.1:9050
+python3 wst.py -w=/tmp
 # run wst.py using python3

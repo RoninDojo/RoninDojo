@@ -31,7 +31,7 @@ Press Ctrl+C if you wish to skip this update now
 ***
 ${NC}
 EOF
-            _sleep 10 --msg "Rebooting in"
+            _sleep 5 --msg "Rebooting in"
             sudo systemctl reboot
         fi
     fi

@@ -4,32 +4,30 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-echo -e "${RED}"
-echo "***"
-echo "Installing Whirlpool Stat Tool..."
-echo "***"
-echo -e "${NC}"
+cat <<WST
+${RED}
+***
+Installing Whirlpool Stat Tool...
+***
+${NC}
+WST
 
-mkdir ~/wst
-cd ~/wst || exit
+test -d "$HOME"/wst || mkdir "$HOME"/wst
+
+cd "$HOME"/wst || exit
 # make wst directory and change to it, otherwise exit
 
-git clone https://github.com/Samourai-Wallet/whirlpool_stats.git;
+git clone https://github.com/Samourai-Wallet/whirlpool_stats.git 2>/dev/null
 # download whirlpool stat tool
 
-if find_pkg python-pip; then
-  echo -e "${RED}"
-  echo "***"
-  echo "python-pip already installed..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing python-pip..."
-  echo "***"
-  echo -e "${NC}"
+if ! hash pip; then
+  cat <<PIP
+${RED}
+***
+Installing python-pip...
+***
+${NC}
+PIP
   _sleep
   sudo pacman -S --noconfirm python-pip
 fi
@@ -40,5 +38,5 @@ sudo pip3 install -r ./requirements.txt
 # change to whirlpool stats directory, otherwise exit
 # install whirlpool stat tool
 
-bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
 # return to menu

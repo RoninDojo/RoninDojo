@@ -26,13 +26,13 @@ else
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
   # no drive detected, press any letter to return to menu
 fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Format and Mount /dev/sdb1 to /mnt/usb1..."
+echo "Preparing to Format and Mount ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
@@ -51,7 +51,7 @@ while true; do
     read -rp "Y/N?: " yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) bash ~/RoninDojo/Scripts/Menu/menu-system2.sh;exit;;
+        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh;exit;;
         * ) echo "Please answer yes or no.";;
     esac
 done
@@ -64,7 +64,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "backup" --device "/dev/sdb1" --mountpoint "/mnt/usb1"; then
+if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${SECONDARY_STORAGE_MOUNT}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
@@ -75,22 +75,18 @@ echo "***"
 echo "Displaying the name on the external disk..."
 echo "***"
 echo -e "${NC}"
-lsblk -o NAME,SIZE,LABEL /dev/sdb1
+lsblk -o NAME,SIZE,LABEL "${SECONDARY_STORAGE}"
 _sleep 2
-# double-check that /dev/sdb1 exists, and that its storage capacity is what you expected
+# double-check that "${SECONDARY_STORAGE}" exists, and that its storage capacity is what you expected
 
 echo -e "${RED}"
 echo "***"
-echo "Check output for /dev/sdb1 and make sure everything looks ok."
+echo "Check output for ${SECONDARY_STORAGE} and make sure everything looks ok."
 echo "***"
 echo -e "${NC}"
-df -h /dev/sdb1
+df -h "${SECONDARY_STORAGE}"
 _sleep 2
 # checks disk info
-
-create_swap --file /mnt/usb1/swapfile --size 2G
-# created a 2GB swapfile on the external backup drive
-# see create_swap in functions.sh
 
 echo -e "${RED}"
 echo "***"
@@ -98,5 +94,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash ~/RoninDojo/Scripts/Menu/menu-system2.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
 # press any letter to return to menu-system2.sh
