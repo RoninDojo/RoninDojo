@@ -95,7 +95,7 @@ EOF
     _systemd_unit_drop_in_check
 
     # Checks to see if BackendUI is installed
-    _isbackend_ui
+    _is_ronin_ui_backend
 }
 
 #
@@ -287,7 +287,7 @@ HiddenServicePort 80 127.0.0.1:8470\
 #
 # Check Backend Installation
 #
-_isbackend_ui() {
+_is_ronin_ui_backend() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     _load_user_conf
@@ -296,7 +296,7 @@ _isbackend_ui() {
         cat << EOF
 ${RED}
 ***
-Backend is not installed, installing now...
+Ronin UI Backend is not installed, installing now...
 ***
 ${NC}
 EOF
@@ -325,7 +325,7 @@ _install_ronin_ui_backend() {
     cat <<BACKEND
 ${RED}
 ***
-Checking for package dependencies for BackendUI
+Checking for package dependencies for Ronin UI Backend
 ***
 ${NC}
 BACKEND
