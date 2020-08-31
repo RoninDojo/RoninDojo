@@ -4,12 +4,12 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start Whirlpool"
-         2 "Stop Whirlpool"
-         3 "Restart Whirlpool"
-         4 "View Logs"
-         5 "Tor Hidden Service"
-         6 "Reset Whirlpool"
+OPTIONS=(1 "Start"
+         2 "Stop"
+         3 "Restart"
+         4 "Logs"
+         5 "Reset"
+         6 "Credentials"
          7 "Whirlpool Stat Tool"
          8 "Go Back")
 
@@ -29,7 +29,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker start whirlpool
+            docker start whirlpool 1>/dev/null
 
             echo -e "${RED}"
             echo "***"
@@ -48,7 +48,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker stop whirlpool
+            docker stop whirlpool 1>/dev/null
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # stop whirlpool, return to menu
             # see defaults.sh
@@ -60,14 +60,14 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 2
-            docker stop whirlpool
+            docker stop whirlpool 1>/dev/null
             _sleep 5
-            docker start whirlpool
+            docker start whirlpool 1>/dev/null
             _sleep 2
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, return to menu
             # see defaults.sh
-	    ;;
+	        ;;
         4)
             echo -e "${RED}"
             echo "***"
@@ -78,7 +78,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press Ctrl + C or q to exit at anytime..."
+            echo "Press Ctrl+C to exit at anytime..."
             echo "***"
             echo -e "${NC}"
             cd "$DOJO_PATH" || exit
@@ -88,27 +88,6 @@ case $CHOICE in
             # see defaults.sh
             ;;
         5)
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing Whirlpool Hidden Service address and API key..."
-            echo "***"
-            echo -e "${NC}"
-
-            echo -e "${RED}"
-            echo "***"
-            echo -e "${NC}"
-            echo -e "Whirlpool API key = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}\n"
-            echo "Whirlpool API hidden service address = $V3_ADDR_WHIRLPOOL"
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any letter to return..."
-            echo "***"
-            read -n 1 -r -s
-            bash -c "$RONIN_WHIRLPOOL_MENU"
-            # press any key to return to menu
-            # see defaults.sh
-            ;;
-        6)
             echo -e "${RED}"
             echo "***"
             echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
@@ -147,6 +126,28 @@ case $CHOICE in
             # re-initate whirlpool, return to menu
             # see defaults.sh
             ;;
+        6)
+            cat << WHIRLPOOL
+${RED}
+***
+Samourai Whirlpool CLI Credentials
+***
+
+***
+${NC}
+Whirlpool API Key      = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Whirlpool Tor URL      = http://${V3_ADDR_WHIRLPOOL}
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+WHIRLPOOL
+            read -n 1 -r -s
+            bash -c "$RONIN_WHIRLPOOL_MENU"
+            # press any key to return to menu
+            # see defaults.sh
+            ;;
         7)
             echo -e "${RED}"
             echo "***"
@@ -155,7 +156,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep
-            bash ~/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             echo -e "${NC}"
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
@@ -163,7 +164,7 @@ case $CHOICE in
             # see defaults.sh
             ;;
         8)
-            bash ~/RoninDojo/ronin
+            bash "$HOME"/RoninDojo/ronin
             # return to menu
             ;;
 esac

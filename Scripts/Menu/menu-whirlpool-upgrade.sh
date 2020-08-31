@@ -8,7 +8,7 @@ CLI_VERSION="$(jq -r '.CLI_VERSION' <<< "${CLI_OBJECT}")"
 CLI_CHECKSUM="$(jq -r '.CLI_CHECKSUM' <<< "${CLI_OBJECT}")"
 CLI_FILENAME="/home/$USER/whirlpool/whirlpool.jar"
 
-sudo systemctl stop whirlpool > /dev/null 2>&1
+sudo systemctl stop whirlpool &>/dev/null
 # stop whirlpool service
 
 if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
@@ -19,7 +19,8 @@ if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ];
   wget --output-document="${CLI_FILENAME}" "https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/${CLI_VERSION}/whirlpool-client-cli-${CLI_VERSION}-run.jar"
   if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
     echo "Failed to correct corrupted/missing whirlpool binary.";
-    exit 1;
+    _sleep 5 --msg "Returning to main menu in"
+    bash -c ronin;
   fi;
 fi;
 # if the sha256 hash does not match then warn corrupted/missing

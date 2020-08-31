@@ -6,7 +6,7 @@
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ]; then
+if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${SECONDARY_STORAGE_MOUNT}"; then
   echo -e "${RED}"
   echo "***"
   echo "Your backup drive partition has been detected..."
@@ -17,7 +17,7 @@ if [ -b "${SECONDARY_STORAGE}" ]; then
 else
   echo -e "${RED}"
   echo "***"
-  echo "No backup drive partition detected! Please make sure it is plugged in and has power if needed."
+  echo "No backup drive partition detected and or drive not mounted!"
   echo "***"
   echo -e "${NC}"
   _sleep 5
@@ -34,13 +34,13 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Mount ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT}..."
+echo "Preparing to UMount ${SECONDARY_STORAGE}..."
 echo "***"
 echo -e "${NC}"
 _sleep 3
 
 echo -e "${RED}"
-echo "Are you ready to mount?"
+echo "Are you ready to umount?"
 echo -e "${NC}"
 while true; do
     read -rp "Y/N?: " yn
@@ -52,17 +52,14 @@ while true; do
 done
 # ask user to proceed
 
-test ! -d "${SECONDARY_STORAGE_MOUNT}" && sudo mkdir "${SECONDARY_STORAGE_MOUNT}"
-# create mount directory if not available
-
 echo -e "${RED}"
 echo "***"
-echo "Mounting ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT}..."
+echo "Umounting ${SECONDARY_STORAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo mount "${SECONDARY_STORAGE}" "${SECONDARY_STORAGE_MOUNT}"
-# mount backup drive to ${SECONDARY_STORAGE_MOUNT} directory
+sudo umount "${SECONDARY_STORAGE_MOUNT}"
+# umount backup drive ${SECONDARY_STORAGE}
 
 echo -e "${RED}"
 echo "***"
