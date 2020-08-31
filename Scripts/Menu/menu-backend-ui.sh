@@ -31,7 +31,7 @@ case $CHOICE in
             cat << EOF
 ${RED}
 ***
-Starting Backend UI Server...
+Starting UI Backend Server...
 ***
 ${NC}
 EOF
@@ -43,7 +43,7 @@ EOF
             cat << EOF
 ${RED}
 ***
-Backend UI already started...
+UI Backend already started...
 ***
 ${NC}
 EOF
@@ -59,7 +59,7 @@ EOF
             cat << EOF
 ${RED}
 ***
-Stopping Backend UI Server...
+Stopping UI Backend Server...
 ***
 ${NC}
 EOF
@@ -71,7 +71,7 @@ EOF
             cat << EOF
 ${RED}
 ***
-Backend UI Server already stopped...
+UI Backend Server already stopped...
 ***
 ${NC}
 EOF
@@ -84,7 +84,7 @@ EOF
         cat << EOF
 ${RED}
 ***
-Restarting Backend UI Server...
+Restarting UI Backend Server...
 ***
 ${NC}
 EOF
@@ -136,7 +136,7 @@ EOF
         cat << EOF
 ${RED}
 ***
-RoninDojo Backend UI Credentials
+RoninUI Backend Credentials
 
 API_KEY     =   ${API_KEY}
 JWT_SECRET  =   ${JWT_SECRET}
@@ -155,7 +155,7 @@ EOF
         cat << EOF
 ${RED}
 ***
-Installing RoninBackend...
+Installing Ronin UI Backend...
 Press Ctrl+C to cancel at anytime
 ***
 ${NC}
@@ -174,7 +174,7 @@ EOF
         cat << EOF
 ${RED}
 ***
-Uninstalling RoninBackend...
+Uninstalling Ronin UI Backend...
 Press Ctrl+C to cancel at anytime
 ***
 ${NC}

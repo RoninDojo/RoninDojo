@@ -14,7 +14,7 @@ test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dia
 OPTIONS=(1 "Dojo"
          2 "Whirlpool"
          3 "Electrs"
-         4 "Backend UI"
+         4 "UI Backend"
          5 "System"
          6 "System Setup & Install"
          7 "Exit RoninDojo")
