@@ -1,3 +1,27 @@
+RoninDojo v1.6 Change Log
+
+- Integration of Ronin UI Backend
+- Added user.conf for user defined configuration settings, see user.conf.example for info
+- Enhanced Storage Mounting Logic
+- Enhanced Backup Drive Usage Logic
+- Whirlpool Stat Tool Fix
+- Added MAINTAINERS.txt
+- General Cleanup
+- Minor Bug Fixes
+
+RoninDojo v1.5 Change Log
+
+- Bash Code Refactoring (big thanks @likewhoa)
+- Dojo v1.6
+- Whirlpool CLI v0.10.6
+- Whirlpool now included in docker deployment
+- Electrs v0.8.5
+- AddrssIndexer v0.3.0
+- BTC Explorer v2.0.0
+- Thorough code comments for beginners
+- Reorganized menu layout and options
+- Fixed swapfile creation bug
+
 RoninDojo v1.4 Change Log
 
 - Added Electrs for Hardware Wallet support, now an option during Dojo install or upgrade
@@ -8,14 +32,3 @@ RoninDojo v1.4 Change Log
 - Polished the system-setup script
 - Ipv6 is now disabled during the system-setup script
 - Cleaned up text output, sleep timers, and code spacing to improve readablilty
-
-RoninDojo v1.6 Change Log
-
-- Implemented RoninUI Backend
-- Added user.conf For More Personalization
-- Enhanced Storage Mounting Logic 
-- Enhanced Backup Drive Usage Logic
-- Whirlpool Stat Tool Fix
-- Added Maintainers.txt
-- General Cleanup
-- Minor Bug Fixes
