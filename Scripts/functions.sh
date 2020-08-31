@@ -123,7 +123,7 @@ _systemd_unit_drop_in_check() {
 
     for x in docker tor; do
         if [ ! -f "/etc/systemd/system/${x}.service.d/override.conf" ]; then
-            sudo mkdir "/etc/systemd/system/${x}.service.d"
+            test -d "/etc/systemd/system/${x}.service.d" || sudo mkdir "/etc/systemd/system/${x}.service.d"
 
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
                 sudo bash -c "cat <<EOF >/etc/systemd/system/${x}.service.d/override.conf
