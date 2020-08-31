@@ -41,13 +41,14 @@
 #INSTALL_DIR=""
 
 #
-# Backend GUI Credentials
+# Ronin UI Backend & Ronin GUI Credentials
 #
 
-# These values are for the desktop GUI app
-# BACKEND_DIR must be set before installation of backend UI service
+# RONIN_UI_BACKEND_DIR must be set before installation of backend UI service
 
-#BACKEND_DIR=""
+#RONIN_UI_BACKEND_DIR=""
+
+# These values are for the desktop GUI app
 #GUI_API=""
 
 ##############################

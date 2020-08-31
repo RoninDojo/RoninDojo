@@ -95,7 +95,7 @@ EOF
     _systemd_unit_drop_in_check
 
     # Checks to see if BackendUI is installed
-    _isbackend_ui
+    _is_ronin_ui_backend
 }
 
 #
@@ -287,16 +287,16 @@ HiddenServicePort 80 127.0.0.1:8470\
 #
 # Check Backend Installation
 #
-_isbackend_ui() {
+_is_ronin_ui_backend() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     _load_user_conf
 
-    if [ ! -d "${BACKEND_DIR}" ]; then
+    if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
         cat << EOF
 ${RED}
 ***
-Backend is not installed, installing now...
+Ronin UI Backend is not installed, installing now...
 ***
 ${NC}
 EOF
@@ -305,7 +305,7 @@ EOF
 
         bash -c ronin
     fi
-    # check if backend ui is already installed
+    # check if Ronin UI Backend is already installed
 }
 
 #
@@ -325,7 +325,7 @@ _install_ronin_ui_backend() {
     cat <<BACKEND
 ${RED}
 ***
-Checking for package dependencies for BackendUI
+Checking for package dependencies for Ronin UI Backend
 ***
 ${NC}
 BACKEND
@@ -351,7 +351,7 @@ BACKEND
         sudo pacman -S --noconfirm jq
     fi
 
-    # Fetch backend ui archive
+    # Fetch Ronin UI Backend archive
     wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
 
     # Extract latest tar archive filename and latest version
@@ -359,17 +359,17 @@ BACKEND
     ver=$( cut -d ' ' -f2 </tmp/latest.txt )
 
     # Create RoninBackend directory if missing
-    test -d "${BACKEND_DIR}" || mkdir "${BACKEND_DIR}"
+    test -d "${RONIN_UI_BACKEND_DIR}" || mkdir "${RONIN_UI_BACKEND_DIR}"
 
     # Get latest version of current RoninBackend if available
-    if [ -f "${BACKEND_DIR}"/package.json ]; then
-        current_ver=$(jq --raw-output '.version' "${BACKEND_DIR}"/package.json)
+    if [ -f "${RONIN_UI_BACKEND_DIR}"/package.json ]; then
+        current_ver=$(jq --raw-output '.version' "${RONIN_UI_BACKEND_DIR}"/package.json)
     fi
 
     # Start Backend installation procedure
     if [[ "${ver}" != "${current_ver}" ]]; then
         # cd into RoninBackend dir
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         # Fetch tar archive
         wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"

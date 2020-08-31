@@ -14,7 +14,7 @@ test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dia
 OPTIONS=(1 "Dojo"
          2 "Whirlpool"
          3 "Electrs"
-         4 "Backend UI"
+         4 "UI Backend"
          5 "System"
          6 "System Setup & Install"
          7 "Exit RoninDojo")
@@ -41,8 +41,8 @@ case $CHOICE in
             # runs electrs menu script
             ;;
         4)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-            # runs backend ui menu script
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+            # runs Ronin UI Backend menu script
             ;;
         5)
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh

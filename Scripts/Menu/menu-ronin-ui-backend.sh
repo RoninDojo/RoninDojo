@@ -31,27 +31,27 @@ case $CHOICE in
             cat << EOF
 ${RED}
 ***
-Starting Backend UI Server...
+Starting UI Backend Server...
 ***
 ${NC}
 EOF
             _sleep 2
-            cd "${BACKEND_DIR}" || exit
+            cd "${RONIN_UI_BACKEND_DIR}" || exit
 
             pm2 start "Ronin Backend"
         else
             cat << EOF
 ${RED}
 ***
-Backend UI already started...
+UI Backend already started...
 ***
 ${NC}
 EOF
             _sleep 2
         fi
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # start backend ui, return to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # start Ronin UI Backend, return to menu
         ;;
     2)
         # Check if process running before stopping it
@@ -59,43 +59,43 @@ EOF
             cat << EOF
 ${RED}
 ***
-Stopping Backend UI Server...
+Stopping UI Backend Server...
 ***
 ${NC}
 EOF
             _sleep 2
-            cd "${BACKEND_DIR}" || exit
+            cd "${RONIN_UI_BACKEND_DIR}" || exit
 
             pm2 stop "Ronin Backend"
         else
             cat << EOF
 ${RED}
 ***
-Backend UI Server already stopped...
+UI Backend Server already stopped...
 ***
 ${NC}
 EOF
         fi
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # start backend ui, return to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # start Ronin UI Backend, return to menu
         ;;
     3)
         cat << EOF
 ${RED}
 ***
-Restarting Backend UI Server...
+Restarting UI Backend Server...
 ***
 ${NC}
 EOF
         _sleep 2
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         # Restart service
         pm2 restart "Ronin Backend" 1>/dev/null
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # start backend ui, return to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # start Ronin UI Backend, return to menu
         ;;
     4)
         cat << EOF
@@ -105,11 +105,11 @@ Press any key to return.
 ***
 ${NC}
 EOF
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
         pm2 status
 
         read -n 1 -r -s
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)
         cat << EOF
@@ -119,14 +119,14 @@ Press q key to exit at any time.
 ***
 ${NC}
 EOF
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
         _sleep 5 # Workaround until a proper FIX
         less --force logs/combined.log
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     6)
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
         JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
@@ -136,26 +136,28 @@ EOF
         cat << EOF
 ${RED}
 ***
-RoninDojo Backend UI Credentials
+Ronin UI Backend Credentials
+${NC}
 
 API_KEY     =   ${API_KEY}
 JWT_SECRET  =   ${JWT_SECRET}
 PORT        =   ${BACKEND_PORT}
 TOR_ADDRESS =   http://${BACKEND_TOR}
 
+${RED}
 ***
 Press any letter to return...
 ${NC}
 EOF
         read -n 1 -r -s
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # shows backend ui credentials, returns to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # shows Ronin UI Backend credentials, returns to menu
         ;;
     7)
         cat << EOF
 ${RED}
 ***
-Installing RoninBackend...
+Installing Ronin UI Backend...
 Press Ctrl+C to cancel at anytime
 ***
 ${NC}
@@ -166,15 +168,15 @@ EOF
 
         _sleep 5 --msg "Sucessfully Installed, returning to menu in"
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     8)
-        cd "${BACKEND_DIR}" || exit
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         cat << EOF
 ${RED}
 ***
-Uninstalling RoninBackend...
+Uninstalling Ronin UI Backend...
 Press Ctrl+C to cancel at anytime
 ***
 ${NC}
@@ -187,11 +189,11 @@ EOF
         # dump all processes for resurrecting them later
         pm2 save 1>/dev/null
 
-        # Remove ${BACKEND_DIR}
+        # Remove ${RONIN_UI_BACKEND_DIR}
         cd "${HOME}" || exit
-        rm -rf "${BACKEND_DIR}" || exit
+        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     9)
         bash -c ronin
