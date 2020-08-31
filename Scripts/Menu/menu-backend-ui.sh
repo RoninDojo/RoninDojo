@@ -136,13 +136,15 @@ EOF
         cat << EOF
 ${RED}
 ***
-RoninUI Backend Credentials
+Ronin UI Backend Credentials
+${NC}
 
 API_KEY     =   ${API_KEY}
 JWT_SECRET  =   ${JWT_SECRET}
 PORT        =   ${BACKEND_PORT}
 TOR_ADDRESS =   http://${BACKEND_TOR}
 
+${RED}
 ***
 Press any letter to return...
 ${NC}
