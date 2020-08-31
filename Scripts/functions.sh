@@ -305,7 +305,7 @@ EOF
 
         bash -c ronin
     fi
-    # check if backend ui is already installed
+    # check if Ronin UI Backend is already installed
 }
 
 #
@@ -351,7 +351,7 @@ BACKEND
         sudo pacman -S --noconfirm jq
     fi
 
-    # Fetch backend ui archive
+    # Fetch Ronin UI Backend archive
     wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
 
     # Extract latest tar archive filename and latest version

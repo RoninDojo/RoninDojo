@@ -41,8 +41,8 @@ case $CHOICE in
             # runs electrs menu script
             ;;
         4)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-            # runs backend ui menu script
+            bash "$HOME"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+            # runs Ronin UI Backend menu script
             ;;
         5)
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh

@@ -50,8 +50,8 @@ EOF
             _sleep 2
         fi
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # start backend ui, return to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # start Ronin UI Backend, return to menu
         ;;
     2)
         # Check if process running before stopping it
@@ -77,8 +77,8 @@ ${NC}
 EOF
         fi
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # start backend ui, return to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # start Ronin UI Backend, return to menu
         ;;
     3)
         cat << EOF
@@ -94,8 +94,8 @@ EOF
         # Restart service
         pm2 restart "Ronin Backend" 1>/dev/null
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # start backend ui, return to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # start Ronin UI Backend, return to menu
         ;;
     4)
         cat << EOF
@@ -109,7 +109,7 @@ EOF
         pm2 status
 
         read -n 1 -r -s
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)
         cat << EOF
@@ -123,7 +123,7 @@ EOF
         _sleep 5 # Workaround until a proper FIX
         less --force logs/combined.log
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     6)
         cd "${BACKEND_DIR}" || exit
@@ -150,8 +150,8 @@ Press any letter to return...
 ${NC}
 EOF
         read -n 1 -r -s
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
-        # shows backend ui credentials, returns to menu
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # shows Ronin UI Backend credentials, returns to menu
         ;;
     7)
         cat << EOF
@@ -168,7 +168,7 @@ EOF
 
         _sleep 5 --msg "Sucessfully Installed, returning to menu in"
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     8)
         cd "${BACKEND_DIR}" || exit
@@ -193,7 +193,7 @@ EOF
         cd "${HOME}" || exit
         rm -rf "${BACKEND_DIR}" || exit
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-backend-ui.sh
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     9)
         bash -c ronin

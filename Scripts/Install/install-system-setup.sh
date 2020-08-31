@@ -446,7 +446,7 @@ create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
 
 if [ ! -d "${HOME}/RoninBackend" ]; then
   _install_ronin_ui_backend
-  # Install backend ui service
+  # Install Ronin UI Backend service
 fi
 
 _setup_tor
