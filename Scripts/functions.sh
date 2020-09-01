@@ -218,10 +218,10 @@ TOR_CONFIG
         # Default config file has example value #DataDirectory /var/lib/tor,
         if grep -E "^#DataDirectory" /etc/tor/torrc 1>/dev/null; then
             sudo sed -i "s:^#DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
-        else
-            sudo sed -i "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
         fi
 
+    else
+        sudo sed -i "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
     fi
 
     # Setup directory
