@@ -207,22 +207,6 @@ _setup_tor() {
 
     # If the setting is already active, assume user has configured it already
     if ! grep -E "^\s*DataDirectory\s+.+$" /etc/tor/torrc 1>/dev/null; then
-
-        # Setup directory
-        if [ ! -d "${INSTALL_DIR_TOR}" ]; then
-            cat <<TOR_DIR
-${RED}
-***
-Creating Tor directory...
-***
-${NC}
-TOR_DIR
-            sudo mkdir "${INSTALL_DIR_TOR}"
-        fi
-
-        # Set ownership
-        sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
-
         cat <<TOR_CONFIG
 ${RED}
 ***
@@ -233,11 +217,28 @@ TOR_CONFIG
 
         # Default config file has example value #DataDirectory /var/lib/tor,
         if grep -E "^#DataDirectory" /etc/tor/torrc 1>/dev/null; then
-            sudo sed -i -e "s:^#DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
+            sudo sed -i "s:^#DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
         else
-            sudo sed -i -e '$sDataDirectory ${INSTALL_DIR_TOR}' /etc/tor/torrc
+            sudo sed -i "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
         fi
 
+    fi
+
+    # Setup directory
+    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
+        cat <<TOR_DIR
+${RED}
+***
+Creating Tor directory...
+***
+${NC}
+TOR_DIR
+        sudo mkdir "${INSTALL_DIR_TOR}"
+    fi
+
+    # Check for ownership
+    if ! [ "$(stat -c "%U" "${INSTALL_DIR_TOR}")" = "tor" ]; then
+        sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
     fi
 
     cat <<TOR_CONFIG
