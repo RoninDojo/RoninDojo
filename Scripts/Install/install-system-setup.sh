@@ -236,8 +236,8 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${NC}"
 
   # Check if swap in use
-  if check_swap "${SALVAGE_MOUNT}/swapfile"; then
-    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  if ! check_swap "${SALVAGE_MOUNT}/swapfile"; then
+    test -f "${SALVAGE_MOUNT}/swapfile" && sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
   if [ -f "${SALVAGE_MOUNT}"/swapfile ]; then
@@ -332,8 +332,8 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   _sleep 2
 
   # Check if swap in use
-  if check_swap "${SALVAGE_MOUNT}/swapfile"; then
-    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  if ! check_swap "${SALVAGE_MOUNT}/swapfile"; then
+    test -f "${SALVAGE_MOUNT}/swapfile" && sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
   sudo rm -rf "${SALVAGE_MOUNT}"/{docker,tor,swapfile}
@@ -399,8 +399,8 @@ else
   _sleep 2
 
   # Check if swap in use
-  if check_swap "${SALVAGE_MOUNT}/swapfile" ; then
-    sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  if ! check_swap "${SALVAGE_MOUNT}/swapfile" ; then
+    test -f "${SALVAGE_MOUNT}/swapfile" && sudo swapoff "${SALVAGE_MOUNT}/swapfile"
   fi
 
   if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
@@ -444,7 +444,7 @@ _sleep 5
 create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-if [ ! -d "${HOME}/RoninBackend" ]; then
+if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
   _install_ronin_ui_backend
   # Install Ronin UI Backend service
 fi

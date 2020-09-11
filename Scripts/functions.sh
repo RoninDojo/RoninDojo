@@ -858,8 +858,8 @@ EOF
             done
 
             # Stop swap on mount point
-            if ! check_swap "${INSTALL_DIR_SWAP}"; then
-                sudo swapoff "${INSTALL_DIR_SWAP}"
+            if check_swap "${INSTALL_DIR_SWAP}"; then
+                test -f "${INSTALL_DIR_SWAP}" && sudo swapoff "${INSTALL_DIR_SWAP}"
             fi
         fi
 
@@ -965,10 +965,10 @@ check_swap() {
     swapfile="$1"
 
     if ! grep "$swapfile" /proc/swaps 1>/dev/null; then # no swap currently
-        return 0
+        return 1
     fi
 
-    return 1
+    return 0
 }
 
 #
@@ -994,7 +994,7 @@ create_swap() {
         esac
     done
 
-    if check_swap "${file}"; then
+    if ! check_swap "${file}"; then
         cat <<EOF
 ${RED}
 ***
