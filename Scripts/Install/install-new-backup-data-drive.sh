@@ -4,14 +4,16 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if [ -b /dev/sdb ]; then
+_load_user_conf
+
+if [ -b "${SECONDARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"
   echo "Your new backup drive has been detected..."
   echo "***"
   echo -e "${NC}"
   _sleep 2
-  # checks for /dev/sdb
+  # checks for ${SECONDARY_STORAGE}
 else
   echo -e "${RED}"
   echo "***"
