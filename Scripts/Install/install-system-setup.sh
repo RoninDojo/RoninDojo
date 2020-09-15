@@ -108,22 +108,19 @@ else
   _sleep
   sudo ufw --force enable
   sudo systemctl enable ufw 2>/dev/null
-  # enabling ufw so /etc/ufw/user.rules file configures properly, then edit using awk and sed below
+  # enabling ufw so /etc/ufw/user.rules file configures properly
 
   ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/ip_tmp.txt
-  # creates ip_tmp.txt with IP address listed in ip addr, and makes ending .0/24
+  # creates ip_tmp.txt with IP addresses listed in ip addr
 
   while read -r ip ; do echo "### tuple ### allow any 22 0.0.0.0/0 any $ip" > "$HOME"/rule_tmp.txt; done <"$HOME"/ip_tmp.txt
-  # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-  # for line 19 in /etc/ufw/user.rules
+  # make rule_tmp.txt with needed changes plus the ip address
 
   while read -r ip ; do echo "-A ufw-user-input -p tcp --dport 22 -s $ip -j ACCEPT" >> "$HOME"/rule_tmp.txt; done <"$HOME"/ip_tmp.txt
-  # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-  # for line 20 /etc/ufw/user.rules
+  # edit rule_tmp.txt
 
   while read -r ip ; do echo "-A ufw-user-input -p udp --dport 22 -s $ip -j ACCEPT" >> "$HOME"/rule_tmp.txt; done <"$HOME"/ip_tmp.txt
-  # pipes output from ip_tmp.txt into read, then uses echo to make next text file with needed changes plus the ip address
-  # for line 21 /etc/ufw/user.rules
+  # edit rule_tmp.txt
 
   awk 'NR==1{a=$0}NR==FNR{next}FNR==19{print a}1' "$HOME"/rule_tmp.txt /etc/ufw/user.rules > "$HOME"/user.rules_tmp.txt && sudo mv "$HOME"/user.rules_tmp.txt /etc/ufw/user.rules
   # copying from line 1 in rule_tmp.txt to line 19 in /etc/ufw/user.rules
@@ -147,6 +144,9 @@ else
 
   sudo rm "$HOME"/ip_tmp.txt "$HOME"/rule_tmp.txt
   # removes txt files that are no longer needed
+
+  UFW_IP=`sudo ufw status | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"`
+  sudo ufw allow from "$UFW_IP"/24 to any port 22 comment 'SSH access restricted to local network'
 
   echo -e "${RED}"
   echo "***"
