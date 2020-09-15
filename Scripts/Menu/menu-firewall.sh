@@ -128,14 +128,22 @@ case $CHOICE in
         6)
             echo -e "${RED}"
             echo "***"
-            echo "Obtain the IP address you wish to give access to SSH."
+            echo "Obtain the IP address of any machine on the same local network as your RoninDojo."
             echo "***"
             echo -e "${NC}"
             _sleep 2
 
             echo -e "${RED}"
             echo "***"
-            echo "Your IP address on your network may look like 192.168.4.21"
+            echo "The IP address entered will be adapted to end with .0/24"
+            echo "This will allow any machine on the same network to have SSH access."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Your IP address on the network may look like 192.168.4.21"
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
@@ -148,7 +156,7 @@ case $CHOICE in
             echo -e "${NC}"
 
             read -rp 'Local IP Address: ' ip_address
-            sudo ufw allow from "$ip_address"/24 to any port 22 comment 'SSH access restricted to local LAN only'
+            sudo ufw allow from "$ip_address"/24 to any port 22 comment 'SSH access restricted to local network'
 
             echo -e "${RED}"
             echo "***"
@@ -186,7 +194,22 @@ case $CHOICE in
         7)
             echo -e "${RED}"
             echo "***"
-            echo "Obtain the IP address you wish to give access to SSH."
+            echo "Obtain the specific IP address you wish to give access to SSH."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "SSH access will be restricted to this IP address only."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Be careful when deleting old firewall rules!"
+            echo "Don't lock yourself out from SSH access."
             echo "***"
             echo -e "${NC}"
             _sleep 2
@@ -206,7 +229,7 @@ case $CHOICE in
             echo -e "${NC}"
 
             read -rp 'Local IP Address: ' ip_address
-            sudo ufw allow from "$ip_address" to any port 22 comment 'SSH access restricted to local LAN only'
+            sudo ufw allow from "$ip_address" to any port 22 comment 'SSH access restricted to specific IP'
 
             echo -e "${RED}"
             echo "***"
