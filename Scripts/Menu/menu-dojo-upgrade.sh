@@ -53,20 +53,6 @@ rm -rf "${WORK_DIR}"
 # Return to previous working path
 cd "${HOME}" || exit
 
-echo -e "${RED}"
-echo "***"
-echo "Installing your Dojo-backed Bitcoin Explorer..."
-echo "***"
-echo -e "${NC}"
-_sleep 2
-
-echo -e "${RED}"
-echo "***"
-echo "A randomly generated 16 character password will be created if you haven't already made one."
-echo "***"
-echo -e "${NC}"
-_sleep 3
-
 if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
     echo -e "${RED}"
     echo "***"
@@ -74,10 +60,23 @@ if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
     echo "***"
     echo -e "${NC}"
 else
+    echo -e "${RED}"
+    echo "***"
+    echo "Installing your Blockchain Explorer..."
+    echo "***"
+    echo -e "${NC}"
+    _sleep 2
+
+    echo -e "${RED}"
+    echo "***"
+    echo "A randomly generated 16 character password will be created if you haven't already made one."
+    echo "***"
+    echo -e "${NC}"
+    _sleep 3
     sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 fi
 # checks for docker-explorer.conf, if found informs user
-# else uses sed to modify
+# else uses sed to modify for explorer to be installed
 
 if grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null; then
     read -rp "Do you want to install an Indexer? [y/n]" yn

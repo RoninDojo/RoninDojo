@@ -21,22 +21,22 @@ DOJO
   exit 1
 fi
 
-# Makes sure Dojo has been uninstalled
 if [ -d "${DOJO_PATH}" ]; then
   cat <<DOJO
 ${RED}
 ***
-Dojo is already installed...
+Already installed...
 ***
 ${NC}
 DOJO
   _sleep 5 --msg "Returning to menu in"
   bash -c ronin
 fi
+# Makes sure Dojo has been uninstalled
 
 echo -e "${RED}"
 echo "***"
-echo "Running Dojo install in 5s..."
+echo "Running RoninDojo install in 5s..."
 echo "***"
 echo -e "${NC}"
 
