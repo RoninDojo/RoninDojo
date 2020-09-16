@@ -206,10 +206,10 @@ test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
 if [ -b "${PRIMARY_STORAGE}" ]; then
   echo -e "${RED}"
   echo "***"
-  echo "Creating ${SALVAGE_MOUNT} directory..."
+  echo "Creating ${SECONDARY_STORAGE_MOUNT} directory..."
   echo "***"
   echo -e "${NC}"
-  test ! -d "${SALVAGE_MOUNT}" && sudo mkdir "${SALVAGE_MOUNT}"
+  test ! -d "${SECONDARY_STORAGE_MOUNT}" && sudo mkdir "${SECONDARY_STORAGE_MOUNT}"
 
   echo -e "${RED}"
   echo "***"
@@ -217,7 +217,7 @@ if [ -b "${PRIMARY_STORAGE}" ]; then
   echo "***"
   echo -e "${NC}"
   _sleep
-  sudo mount "${PRIMARY_STORAGE}" "${SALVAGE_MOUNT}"
+  sudo mount "${PRIMARY_STORAGE}" "${SECONDARY_STORAGE_MOUNT}"
 else
   echo -e "${RED}"
   echo "***"
@@ -226,7 +226,7 @@ else
   echo -e "${NC}"
   _sleep
 fi
-# mount main storage drive to "${SALVAGE_MOUNT}" directory if found in prep for data salvage
+# mount main storage drive to "${SECONDARY_STORAGE_MOUNT}" directory if found in prep for data salvage
 
 if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${RED}"
@@ -236,17 +236,17 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${NC}"
 
   # Check if swap in use
-  if ! check_swap "${SALVAGE_MOUNT}/swapfile"; then
-    test -f "${SALVAGE_MOUNT}/swapfile" && sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
+    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile"
   fi
 
-  if [ -f "${SALVAGE_MOUNT}"/swapfile ]; then
-    sudo rm -rf "${SALVAGE_MOUNT}"/{swapfile,docker,tor}
+  if [ -f "${SECONDARY_STORAGE_MOUNT}"/swapfile ]; then
+    sudo rm -rf "${SECONDARY_STORAGE_MOUNT}"/{swapfile,docker,tor}
   fi
 
-  if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
-    sudo umount "${SALVAGE_MOUNT}"
-    sudo rmdir "${SALVAGE_MOUNT}"
+  if findmnt "${SECONDARY_STORAGE_MOUNT}" 1>/dev/null; then
+    sudo umount "${SECONDARY_STORAGE_MOUNT}"
+    sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
   fi
   # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
@@ -305,7 +305,7 @@ else
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
+if sudo test -d "${SECONDARY_STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -321,8 +321,8 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
 
   test -d "${SALVAGE_BITCOIN_IBD_DATA}" || mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
 
-  sudo mv -v "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"/
-  # moves blockchain salvage data to ${SALVAGE_MOUNT} if found
+  sudo mv -v "${SECONDARY_STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"/
+  # moves blockchain salvage data to ${SECONDARY_STORAGE_MOUNT} if found
 
   echo -e "${RED}"
   echo "***"
@@ -332,18 +332,18 @@ if sudo test -d "${SALVAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   _sleep 2
 
   # Check if swap in use
-  if ! check_swap "${SALVAGE_MOUNT}/swapfile"; then
-    test -f "${SALVAGE_MOUNT}/swapfile" && sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
+    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile"
   fi
 
-  sudo rm -rf "${SALVAGE_MOUNT}"/{docker,tor,swapfile}
+  sudo rm -rf "${SECONDARY_STORAGE_MOUNT}"/{docker,tor,swapfile}
 
-  if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
-    sudo umount "${SALVAGE_MOUNT}"
-    sudo rmdir "${SALVAGE_MOUNT}"
+  if findmnt "${SECONDARY_STORAGE_MOUNT}" 1>/dev/null; then
+    sudo umount "${SECONDARY_STORAGE_MOUNT}"
+    sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
   fi
-  # remove docker, tor, swap file directories from ${SALVAGE_MOUNT}
-  # then unmount and remove ${SALVAGE_MOUNT}
+  # remove docker, tor, swap file directories from ${SECONDARY_STORAGE_MOUNT}
+  # then unmount and remove ${SECONDARY_STORAGE_MOUNT}
 
   echo -e "${RED}"
   echo "***"
@@ -399,13 +399,13 @@ else
   _sleep 2
 
   # Check if swap in use
-  if ! check_swap "${SALVAGE_MOUNT}/swapfile" ; then
-    test -f "${SALVAGE_MOUNT}/swapfile" && sudo swapoff "${SALVAGE_MOUNT}/swapfile"
+  if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile" ; then
+    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile"
   fi
 
-  if findmnt "${SALVAGE_MOUNT}" 1>/dev/null; then
-    sudo umount "${SALVAGE_MOUNT}"
-    sudo rmdir "${SALVAGE_MOUNT}"
+  if findmnt "${SECONDARY_STORAGE_MOUNT}" 1>/dev/null; then
+    sudo umount "${SECONDARY_STORAGE_MOUNT}"
+    sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
   fi
 fi
 # checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive

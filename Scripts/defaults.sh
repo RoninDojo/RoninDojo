@@ -73,8 +73,7 @@ DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
 DOCKER_VOLUME_WP="${DOCKER_VOLUMES}/my-dojo_data-whirlpool"
 DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
 
-SALVAGE_MOUNT="${SECONDARY_STORAGE_MOUNT}"
-SALVAGE_BITCOIN_IBD_DATA="${SALVAGE_MOUNT}/bitcoin"
+SALVAGE_BITCOIN_IBD_DATA="${SECONDARY_STORAGE_MOUNT}/bitcoin"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
 
 # Workaround when on x86 systems and autologin is enabled for the user account
