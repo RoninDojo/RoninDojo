@@ -73,6 +73,11 @@ if test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
     sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
 fi
 
+# Check to see if we have old legacy backup directory, if so rename to ${SECONDARY_STORAGE_MOUNT}
+if sudo test -d "${SECONDARY_STORAGE_MOUNT}"/system-setup-salvage; then
+    sudo mv "${SECONDARY_STORAGE_MOUNT}"/system-setup-salvage "${SALVAGE_BITCOIN_IBD_DATA}" 1>/dev/null
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Copying..."
