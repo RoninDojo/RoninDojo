@@ -80,8 +80,22 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo cp -av "${SALVAGE_BITCOIN_IBD_DATA}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
-# copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}"/blocks; then
+    sudo cp -av "${SALVAGE_BITCOIN_IBD_DATA}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+    # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+else
+    sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+    cat <<BACKUP
+${RED}
+***
+No backup data available to receive! Umounting drive now...
+***
+${NC}
+BACKUP
+    _sleep 5 --msg "Returning to menu in"
+
+    bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
+fi
 
 echo -e "${RED}"
 echo "***"
@@ -98,7 +112,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo umount "${SECONDARY_STORAGE}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
 # unmount backup drive and remove directory
 
 echo -e "${RED}"

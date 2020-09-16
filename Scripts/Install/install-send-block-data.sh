@@ -86,9 +86,21 @@ EOF
     fi
 
     sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
-else
+elif sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
     sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
     # use cp for initial fresh IBD copy
+else
+    sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+    cat <<BACKUP
+${RED}
+***
+No backup data available to send! Umounting drive now...
+***
+${NC}
+BACKUP
+    _sleep 5 "Returning to menu in"
+
+    bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
