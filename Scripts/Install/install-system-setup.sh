@@ -161,7 +161,7 @@ else
   _sleep
   sudo ufw status
 
-  UFW_IP=`sudo ufw status | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"`
+  UFW_IP=$(sudo ufw status | grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b")
   sudo ufw allow from "$UFW_IP"/24 to any port 22 comment 'SSH access restricted to local network'
   # add comment to initial ufw rule
 

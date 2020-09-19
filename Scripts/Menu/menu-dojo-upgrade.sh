@@ -62,7 +62,7 @@ if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
 else
     echo -e "${RED}"
     echo "***"
-    echo "Installing your Blockchain Explorer..."
+    echo "Installing your BTC RPC Explorer..."
     echo "***"
     echo -e "${NC}"
     _sleep 2

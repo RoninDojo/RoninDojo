@@ -25,7 +25,7 @@ if [ -d "${DOJO_PATH}" ]; then
   cat <<DOJO
 ${RED}
 ***
-Already installed...
+RoninDojo is already installed...
 ***
 ${NC}
 DOJO
