@@ -616,6 +616,8 @@ _remove_ipv6() {
 # Update RoninDojo
 #
 _update_ronin() {
+    _load_user_conf
+
     if [ -d "$HOME"/RoninDojo/.git ]; then
         cat <<EOF
 ${RED}
@@ -627,13 +629,14 @@ EOF
         cd "$HOME/RoninDojo" || exit
 
         # Checkout master branch
-        git checkout master
+        git checkout "${RONIN_DOJO_BRANCH:-master}"
 
         # Fetch remotes
         git fetch --all
 
-        # Reset to origin master branch
-        git reset --hard origin/master
+        # Reset to origin master branch unless variable set by
+        # user.conf override
+        [ -z "${RONIN_DOJO_BRANCH}" ] && git reset --hard origin/"${RONIN_DOJO_BRANCH:-master}"
 
         # Check for backend updates
         _install_ronin_ui_backend
