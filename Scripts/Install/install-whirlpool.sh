@@ -156,11 +156,11 @@ cd whirlpool || exit
 
 echo -e "${RED}"
 echo "***"
-echo "Pulling Whirlpool from Github..."
+echo "Pulling Whirlpool from Gitlab..."
 echo "***"
 echo -e "${NC}"
 _sleep
-wget -qO whirlpool.jar https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/0.10.5/whirlpool-client-cli-0.10.5-run.jar
+wget -qO whirlpool.jar https://code.samourai.io/whirlpool/whirlpool-client-cli/uploads/7998ea5a9bb180451616809bc346b9ac/whirlpool-client-cli-0.10.8-run.jar
 # pull Whirlpool run times
 
 # whirlpool service. Check if present else create it
@@ -230,7 +230,7 @@ _sleep 3
 
 echo -e "${RED}"
 echo "***"
-echo "For pairing with GUI head to full guide at: https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home"
+echo "For pairing with GUI head to full guide at: https://wiki.ronindojo.io/en/cli-setup/step3. This install is for non Tor whirlpool, can only access locally"
 echo "***"
 echo -e "${NC}"
 _sleep 3
