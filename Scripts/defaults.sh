@@ -53,7 +53,7 @@ DOJO_PATH="$HOME/dojo/docker/my-dojo"
 RONIN_DOJO_BRANCH="" # defaults to master
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
-SAMOURAI_COMMITISH="v1.7.0" # empty defaults to master
+SAMOURAI_COMMITISH="v1.8.0" # empty defaults to master
 
 #
 # Filesystem Defaults
