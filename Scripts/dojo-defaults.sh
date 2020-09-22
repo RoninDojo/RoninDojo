@@ -34,7 +34,7 @@ fi
 
 # Bitcoin Explorer
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer; then
-    V2_ADDR_EXPLORER=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer/hostname)
+    V3_ADDR_EXPLORER=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer/hostname)
 fi
 
 # Dojo Maintanance Tool
