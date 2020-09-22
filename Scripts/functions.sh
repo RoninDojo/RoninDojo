@@ -297,7 +297,7 @@ _is_ronin_ui_backend() {
         cat << EOF
 ${RED}
 ***
-Ronin UI Backend is not installed, installing now...
+RoninUI Backend is not installed, installing now...
 ***
 ${NC}
 EOF
@@ -326,7 +326,7 @@ _install_ronin_ui_backend() {
     cat <<BACKEND
 ${RED}
 ***
-Checking for package dependencies for Ronin UI Backend
+Checking package dependencies for RoninUI Backend...
 ***
 ${NC}
 BACKEND

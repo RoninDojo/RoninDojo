@@ -163,6 +163,8 @@ Whirlpool API Key           = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. 
 Bitcoin Explorer Tor URL    = http://$V3_ADDR_EXPLORER (No username required)
 Bitcoin Explorer Password   = $EXPLORER_KEY
 
+Bitcoind Tor URL            = http://$V2_ADDR_BITCOIN
+
 ${RED}
 ***
 Press any letter to return...

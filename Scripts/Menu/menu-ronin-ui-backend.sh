@@ -137,6 +137,7 @@ EOF
 ${RED}
 ***
 Ronin UI Backend Credentials
+***
 ${NC}
 
 API_KEY     =   ${API_KEY}
@@ -147,6 +148,7 @@ TOR_ADDRESS =   http://${BACKEND_TOR}
 ${RED}
 ***
 Press any letter to return...
+***
 ${NC}
 EOF
         read -n 1 -r -s
