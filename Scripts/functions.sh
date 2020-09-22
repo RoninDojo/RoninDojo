@@ -663,6 +663,9 @@ EOF
         # Check for backend updates
         _install_ronin_ui_backend
     fi
+
+    # Check TOR
+    _setup_tor
 }
 
 #
