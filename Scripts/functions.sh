@@ -875,21 +875,17 @@ EOF
     # This quick hack checks if device is either a SSD device or a NVMe device
     [[ "${device}" =~ "sd" ]] && _device="${device%?}" || _device="${device%??}"
 
-    if [ ! -b "${device}" ]; then
-        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
-    else
-        sudo sfdisk --quiet --wipe always --delete "${_device}" &>/dev/null
-        # if device exists, use sfdisk to erase filesystem and partition table
+    sudo sfdisk --quiet --wipe always --delete "${_device}" &>/dev/null
+    # if device exists, use sfdisk to erase filesystem and partition table
 
-        # wipe labels
-        sudo wipefs -a --force "${_device}" &>/dev/null
+    # wipe labels
+    sudo wipefs -a --force "${_device}" &>/dev/null
 
-        # reload partition table
-        partprobe
+    # reload partition table
+    partprobe
 
-        # Create a partition table with a single partition that takes the whole disk
-        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
-    fi
+    # Create a partition table with a single partition that takes the whole disk
+    echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
 
     cat <<EOF
 ${RED}
