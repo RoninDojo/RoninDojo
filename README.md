@@ -5,4 +5,4 @@ RoninDojo is an Installation Assistant and Administration Tool for Samourai Wall
 
 Guides, hardware suggestions, useful commands, and more can be found on the RoninDojo Wiki page.
 
-[**RoninDojo Wiki Home**](https://code.samourai.io/ronindojo/RoninDojo/-/wikis/home)
+[**RoninDojo Wiki Home**](https://wiki.ronindojo.io/)
