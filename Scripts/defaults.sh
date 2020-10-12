@@ -22,6 +22,7 @@ declare -A package_dependencies=(
     [npm]=npm
     [node]=nodejs
     [jq]=jq
+    [pipenv]=python-pipenv
 )
 
 #
@@ -38,6 +39,8 @@ RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
 RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
 RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
 RONIN_UI_BACKEND_MENU="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh"
+RONIN_UPDATES_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
+RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
 
 #
 # Terminal Colors
@@ -50,6 +53,7 @@ NC=$(tput sgr0) # No Color
 # Install Defaults
 #
 DOJO_PATH="$HOME/dojo/docker/my-dojo"
+BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_DOJO_BRANCH="" # defaults to master
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'

@@ -12,6 +12,8 @@ fi
 if [ -f "${DOJO_PATH}"/conf/docker-bitcoind.conf ]; then
     RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
     RPC_USER_CONF=$(grep BITCOIND_RPC_USER "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    RPC_IP=$(grep BITCOIND_IP "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    RPC_PORT=$(grep BITCOIND_RPC_PORT "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
 fi
 
 if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ]; then
