@@ -92,10 +92,10 @@ cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
 # User account used for rpc access to bitcoind
 # Type: alphanumeric
-BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-RoninDojo}
+BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$RPC_USER}
 # Password of user account used for rpc access to bitcoind
 # Type: alphanumeric
-BITCOIND_RPC_PASSWORD=$RPC_PASS
+BITCOIND_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD:-$RPC_PASS}
 # Max number of connections to network peers
 # Type: integer
 BITCOIND_MAX_CONNECTIONS=16
@@ -108,6 +108,9 @@ BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}
 # Number of threads to service RPC calls
 # Type: integer
 BITCOIND_RPC_THREADS=6
+# RPC Work queue size
+# Type: integer
+BITCOIND_RPC_WORK_QUEUE=16
 # Mempool expiry in hours
 # Defines how long transactions stay in your local mempool before expiring
 # Type: integer
@@ -115,6 +118,11 @@ BITCOIND_MEMPOOL_EXPIRY=72
 # Min relay tx fee in BTC
 # Type: numeric
 BITCOIND_MIN_RELAY_TX_FEE=0.00001
+# Allow incoming connections
+# This parameter is inactive if BITCOIND_INSTALL is set to 'off'
+# Values: on | off
+BITCOIND_LISTEN_MODE=on
+
 #
 # EXPERT SETTINGS
 #
@@ -166,6 +174,14 @@ BITCOIND_ZMQ_RAWTXS=9501
 # Set value to 9502 if BITCOIND_INSTALL is set to 'on'
 # Type: integer
 BITCOIND_ZMQ_BLK_HASH=9502
+#
+# SHUTDOWN
+#
+# Max delay for bitcoind shutdown (expressed in seconds)
+# Defines how long Dojo waits for a clean shutdown of bitcoind before shutting down the bitcoind container
+# This parameter is inactive if BITCOIND_INSTALL is set to 'off'
+# Type: integer
+BITCOIND_SHUTDOWN_DELAY=180
 EOF
 # create new docker bitcoind conf file
 # websearch "bash heredoc" for info on redirection
@@ -361,6 +377,24 @@ _sleep
 esac
 done
 
+cat <<EOF
+${RED}
+***
+Do you want to install the Mempool Visualizer? [y/n]
+***
+${NC}
+EOF
+
+read -r yn
+case $yn in
+    [Y/y]* )
+      _mempool_conf conf.tpl
+      ;;
+    [N/n]* ) echo "Mempool will not be installed!";;
+    * ) echo "Please answer Yes or No.";;
+esac
+# install mempool prompt
+
 echo -e "${RED}"
 echo "***"
 echo "Please see Wiki for FAQ, help, and so much more..."
@@ -384,6 +418,9 @@ _sleep 2
 cd "$DOJO_PATH" || exit
 
 ./dojo.sh install --nolog
+
+# Checks if urls need to be changed for mempool UI
+_mempool_urls_to_local_btc_explorer
 
 cat <<DOJO
 ${RED}

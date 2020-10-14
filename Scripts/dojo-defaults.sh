@@ -53,3 +53,8 @@ fi
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3whirlpool; then
     V3_ADDR_WHIRLPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3whirlpool/hostname)
 fi
+
+# Mempool
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool; then
+    V3_ADDR_MEMPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool/hostname)
+fi

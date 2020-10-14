@@ -10,9 +10,10 @@ _load_user_conf
 OPTIONS=(1 "Dojo"
          2 "Whirlpool"
          3 "Electrs"
-         4 "UI Backend"
-         5 "Bitcoind"
-         6 "Go Back")
+         4 "Mempool"
+         5 "UI Backend"
+         6 "Bitcoind"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -23,7 +24,7 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
-	1)
+        1)
         cat <<MENU
 ${RED}
 ***
@@ -50,7 +51,7 @@ MENU
             # press any key to return to menu
             # shows samouraio dojo credentials and returns to menu
             ;;
-    2)
+        2)
         cat <<MENU
 ${RED}
 ***
@@ -76,7 +77,7 @@ MENU
         # press any key to return to menu
         # shows whirlpool credentials and returns to menu
         ;;
-    3)
+        3)
         if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
             echo -e "${RED}"
             echo "***"
@@ -122,7 +123,28 @@ MENU
         bash -c "$RONIN_CREDENTIALS_MENU"
         # return to menu
         ;;
-    4)
+        4)
+        cat << WHIRLPOOL
+${RED}
+***
+Mempool Credentials
+***
+
+***
+${NC}
+Mempool Tor URL      = http://${V3_ADDR_MEMPOOL}
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+WHIRLPOOL
+        read -n 1 -r -s
+        bash -c "$RONIN_MEMPOOL_MENU"
+        # press any key to return to menu
+        # see defaults.sh
+        ;;
+        5)
         cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
@@ -152,7 +174,7 @@ MENU
         bash -c "$RONIN_CREDENTIALS_MENU"
         # shows Ronin UI Backend credentials, returns to menu
         ;;
-    5)
+        6)
         cat <<MENU
 ${RED}
 ***
@@ -184,7 +206,7 @@ MENU
         # press any key to return to menu
         # shows bitcoind and btc rpc explorer credentials and returns to menu
         ;;
-	6)
+        7)
         bash -c ronin
         # returns to main menu
         ;;
