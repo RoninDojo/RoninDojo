@@ -14,7 +14,7 @@ BOLTZMANN
 _sleep
 
 cd "$HOME" || exit
-git clone https://code.samourai.io/oxt/boltzmann.git &>/dev/null
+git clone "$BOLTZMANN_REPO" &>/dev/null
 cd boltzmann || exit
 # pull Boltzmann
 

@@ -12,29 +12,26 @@ Installing Whirlpool Stat Tool...
 ${NC}
 WST
 
-test -d "$HOME"/wst || mkdir "$HOME"/wst
+cd "$HOME" || exit
 
-cd "$HOME"/wst || exit
-# make wst directory and change to it, otherwise exit
-
-git clone https://github.com/Samourai-Wallet/whirlpool_stats.git 2>/dev/null
+git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
 # download whirlpool stat tool
 
-if ! hash pip; then
+if ! hash pipenv; then
   cat <<PIP
 ${RED}
 ***
-Installing python-pip...
+Installing python-pipenv...
 ***
 ${NC}
 PIP
   _sleep
-  sudo pacman -S --noconfirm python-pip
+  sudo pacman -S --noconfirm python-pipenv &>/dev/null
 fi
 # check for python-pip and install if not found
 
-cd whirlpool_stats || exit
-sudo pip3 install -r ./requirements.txt
+cd Whirlpool-Stats-Tool || exit
+pipenv install -r requirements.txt &>/dev/null
 # change to whirlpool stats directory, otherwise exit
 # install whirlpool stat tool
 

@@ -4,39 +4,13 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-cat <<WST
-${RED}
-***
-Checking for Whirlpool Stat Tool...
-***
-${NC}
-WST
-
-_sleep 2
-
-if [ ! -f "$HOME"/wst/whirlpool_stats/whirlpool_stats/wst.py ]; then
+if [ ! -d "$HOME"/Whirlpool-Stats-Tool ]; then
     bash "$HOME"/RoninDojo/Scripts/Install/install-wst.sh
 else
-    cat <<WST
-${RED}
-***
-Whirlpool Stat Tool Already Installed!
-***
-${NC}
-WST
     _sleep 2
-
-    cat <<WST
-${RED}
-***
-Launching Whirlpool Stat Tool...
-***
-${NC}
-WST
-    _sleep 2
-    cd "$HOME"/wst/whirlpool_stats/whirlpool_stats || exit
+    cd "$HOME"/Whirlpool-Stats-Tool || exit
 fi
-# if wst.py is not found then run install script
+# if "$HOME"/whirlpool_stats is not found then run install script
 # else inform user and launch
 
 cat <<WST
@@ -93,7 +67,7 @@ _sleep 2
 cat <<WST
 ${RED}
 ***
-Type: 'quit' at anytime to exit WST.
+Type: 'quit' at anytime to exit the Whirlpool Statitics Tool.
 ***
 
 ***
@@ -107,3 +81,5 @@ read -n 1 -r -s
 
 python3 wst.py -w=/tmp
 # run wst.py using python3
+
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh

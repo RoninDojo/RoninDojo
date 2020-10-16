@@ -4,7 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 
 OPTIONS=(1 "Boltzmann"
-         2 "Go Back")
+         2 "Whirlpool Stats Tool"
+         3 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -21,6 +22,19 @@ case $CHOICE in
         # Boltzmann menu
         ;;
     2)
+        cat <<WST
+${RED}
+***
+Starting Whirlpool Stats Tool...
+***
+${NC}
+WST
+        _sleep
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
+        # check for wst install and/or launch wst, return to menu
+        # see defaults.sh
+        ;;
+    3)
         bash ronin
         # returns to main menu
         ;;

@@ -11,8 +11,7 @@ OPTIONS=(1 "Start"
          4 "Logs"
          5 "Reset"
          6 "Credentials"
-         7 "Whirlpool Stat Tool"
-         8 "Go Back")
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -150,22 +149,7 @@ WHIRLPOOL
             # see defaults.sh
             ;;
         7)
-            echo -e "${RED}"
-            echo "***"
-            echo "Starting Whirlpool Stat Tool..."
-            echo "Press Ctrl+C to exit"
-            echo "***"
-            echo -e "${NC}"
-            _sleep
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
-            echo -e "${NC}"
-            _sleep
-            bash -c "$RONIN_WHIRLPOOL_MENU"
-            # check for wst install and/or launch wst, return to menu
-            # see defaults.sh
-            ;;
-        8)
-            bash "$HOME"/RoninDojo/ronin
+            bash -c ronin
             # return to menu
             ;;
 esac

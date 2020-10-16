@@ -54,10 +54,14 @@ NC=$(tput sgr0) # No Color
 #
 DOJO_PATH="$HOME/dojo/docker/my-dojo"
 BOLTZMANN_PATH="$HOME/boltzmann"
-RONIN_DOJO_BRANCH="" # defaults to master
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
+
+# Repositories
+RONIN_DOJO_BRANCH="" # defaults to master
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 SAMOURAI_COMMITISH="v1.8.0" # empty defaults to master
+BOLTZMANN_REPO='https://code.samourai.io/oxt/boltzmann.git'
+WHIRLPOOL_STATS_REPO='https://code.samourai.io/whirlpool/whirlpool_stats.git'
 
 #
 # Filesystem Defaults
