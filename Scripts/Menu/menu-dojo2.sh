@@ -4,13 +4,12 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Upgrade Dojo"
-         2 "Uninstall Dojo"
-         3 "Clean Dojo"
-         4 "Dojo Version"
-         5 "Receive Block Data from Backup"
-         6 "Send Block Data to Backup"
-         7 "Go Back")
+OPTIONS=(1 "Uninstall Dojo"
+         2 "Clean Dojo"
+         3 "Dojo Version"
+         4 "Receive Block Data from Backup"
+         5 "Send Block Data to Backup"
+         6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -22,25 +21,6 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                fi
-            fi
-
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
-            # upgrades dojo and returns to menu
-            ;;
-        2)
             if ! _dojo_check "$DOJO_PATH"; then
                 # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
