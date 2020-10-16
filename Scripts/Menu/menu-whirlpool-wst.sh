@@ -8,7 +8,7 @@ if [ ! -d "$HOME"/Whirlpool-Stats-Tool ]; then
     bash "$HOME"/RoninDojo/Scripts/Install/install-wst.sh
 else
     _sleep 2
-    cd "$HOME"/Whirlpool-Stats-Tool || exit
+    cd "$HOME"/Whirlpool-Stats-Tool/whirlpool_stats || exit
 fi
 # if "$HOME"/whirlpool_stats is not found then run install script
 # else inform user and launch
@@ -79,7 +79,8 @@ WST
 read -n 1 -r -s
 # press any letter to return
 
-python3 wst.py -w=/tmp
+pipenv run python wst.py -w=/tmp
 # run wst.py using python3
 
+_sleep 3 --msg "Returning to menu in"
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh

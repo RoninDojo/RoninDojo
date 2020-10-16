@@ -36,3 +36,10 @@ EOF
         fi
     fi
 }
+
+# Remove old whirlpool stats tool directory
+_update_02() {
+    if [ -d "$HOME"/wst ]; then
+        rm -rf "$HOME"/wst
+    fi
+}

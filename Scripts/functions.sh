@@ -21,6 +21,7 @@ _main() {
     . "$HOME"/RoninDojo/Scripts/update.sh
 
     _update_01 # Check for bridge-utils version update
+    _update_02 # Migrate WST to new location and install method
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
