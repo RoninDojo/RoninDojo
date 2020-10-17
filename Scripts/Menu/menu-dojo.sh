@@ -11,9 +11,8 @@ OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
          4 "Logs"
-         5 "Credentials"
-         6 "Next Page"
-         7 "Go Back")
+         5 "Next Page"
+         6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -135,52 +134,10 @@ DOJO
             # go to dojo logs menu
             ;;
         5)
-            if ! _dojo_check "$DOJO_PATH"; then
-              echo -e "${RED}"
-              echo "***"
-              echo "Please start Dojo first!"
-              echo "***"
-              echo -e "${NC}"
-              _sleep 5
-              bash -c "$RONIN_DOJO_MENU"
-              exit
-            fi
-            # checks if dojo is not running (check the db container), if not running, tells user to start dojo first
-
-            cat <<DOJO
-${RED}
-***
-Samourai Dojo Credentials
-***
-${NC}
-Maintenance Tool            = http://$V3_ADDR_API/admin
-Admin Key                   = $NODE_ADMIN_KEY
-API Key                     = $NODE_API_KEY
-
-Whirlpool Tor URL           = http://$V3_ADDR_WHIRLPOOL
-Whirlpool API Key           = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
-
-Bitcoin Explorer Tor URL    = http://$V3_ADDR_EXPLORER (No username required)
-Bitcoin Explorer Password   = $EXPLORER_KEY
-
-Bitcoind Tor URL            = http://$V2_ADDR_BITCOIN
-
-${RED}
-***
-Press any letter to return...
-***
-${NC}
-DOJO
-            read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
-            # press any key to return to menu
-            # shows .onion and returns to menu
-            ;;
-        6)
             bash -c "$RONIN_DOJO_MENU2"
             # takes you to ronin dojo menu2
             ;;
-        7)
+        6)
             bash -c ronin
             # return to main ronin menu
             ;;

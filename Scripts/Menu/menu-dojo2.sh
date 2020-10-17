@@ -98,7 +98,7 @@ DOJO
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # return to menu
             ;;
-        3)
+        2)
             if ! _dojo_check "$DOJO_PATH"; then
                 # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -132,7 +132,7 @@ DOJO
             bash -c "$RONIN_DOJO_MENU"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
-        4)
+        3)
             if ! _dojo_check "$DOJO_PATH"; then
                 # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -167,7 +167,7 @@ DOJO
             bash -c "$RONIN_DOJO_MENU"
             # press any letter to return
             ;;
-        5)
+        4)
             if ! _dojo_check "$DOJO_PATH"; then
                 # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -186,7 +186,7 @@ DOJO
             bash "$HOME"/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
-        6)
+        5)
             if ! _dojo_check "$DOJO_PATH"; then
                 # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -205,7 +205,7 @@ DOJO
             bash "$HOME"/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;
-        7)
+        6)
             bash -c "$RONIN_DOJO_MENU"
             # return to main menu
             ;;

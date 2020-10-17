@@ -11,10 +11,9 @@ OPTIONS=(1 "Start"
          3 "Restart"
          4 "Status"
          5 "Logs"
-         6 "Credentials"
-         7 "Install"
-         8 "Uninstall"
-         9 "Go Back")
+         6 "Install"
+         7 "Uninstall"
+         8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -126,36 +125,6 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     6)
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
-
-        API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
-        JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
-        BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
-        BACKEND_TOR=$(sudo cat /var/lib/tor/hidden_service_ronin_backend/hostname)
-
-        cat << EOF
-${RED}
-***
-Ronin UI Backend Credentials
-***
-${NC}
-
-API_KEY     =   ${API_KEY}
-JWT_SECRET  =   ${JWT_SECRET}
-PORT        =   ${BACKEND_PORT}
-TOR_ADDRESS =   http://${BACKEND_TOR}
-
-${RED}
-***
-Press any letter to return...
-***
-${NC}
-EOF
-        read -n 1 -r -s
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        # shows Ronin UI Backend credentials, returns to menu
-        ;;
-    7)
         cat << EOF
 ${RED}
 ***
@@ -172,7 +141,7 @@ EOF
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
-    8)
+    7)
         cd "${RONIN_UI_BACKEND_DIR}" || exit
 
         cat << EOF
@@ -197,7 +166,7 @@ EOF
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
-    9)
+    8)
         bash -c ronin
         # returns to main menu
         ;;

@@ -15,9 +15,10 @@ OPTIONS=(1 "Dojo"
          2 "Whirlpool"
          3 "Electrs"
          4 "UI Backend"
-         5 "Extras"
-         6 "System"
-         7 "Exit RoninDojo")
+         5 "Credentials"
+         6 "Extras"
+         7 "System"
+         8 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -45,14 +46,18 @@ case $CHOICE in
         # runs Ronin UI Backend menu script
         ;;
     5)
+        bash "$RONIN_CREDENTIALS_MENU"
+        # runs credentials menu script
+        ;;
+    6)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
         # runs extras menu script
         ;;
-    6)
+    7)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # runs system menu script
         ;;
-    255|7)
+    255|8)
         _sleep 5 --msg "RoninDojo Exiting in"
         exit 0
         # exits Ronin

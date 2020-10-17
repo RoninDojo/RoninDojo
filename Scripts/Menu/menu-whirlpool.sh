@@ -10,8 +10,7 @@ OPTIONS=(1 "Start"
          3 "Restart"
          4 "Logs"
          5 "Reset"
-         6 "Credentials"
-         7 "Go Back")
+         6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -127,28 +126,6 @@ case $CHOICE in
             # see defaults.sh
             ;;
         6)
-            cat << WHIRLPOOL
-${RED}
-***
-Samourai Whirlpool CLI Credentials
-***
-
-***
-${NC}
-Whirlpool API Key      = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
-Whirlpool Tor URL      = http://${V3_ADDR_WHIRLPOOL}
-${RED}
-***
-Press any letter to return...
-***
-${NC}
-WHIRLPOOL
-            read -n 1 -r -s
-            bash -c "$RONIN_WHIRLPOOL_MENU"
-            # press any key to return to menu
-            # see defaults.sh
-            ;;
-        7)
             bash -c ronin
             # return to menu
             ;;
