@@ -28,7 +28,7 @@ else
   echo "***"
   echo -e "${NC}"
   read -n 1 -r -s
-  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
+  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
   # no drive detected, press any letter to return to menu
 fi
 
@@ -70,5 +70,5 @@ echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
-# press any letter to return to menu-system2.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
+# press any letter to return to menu-system-storage.sh

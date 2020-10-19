@@ -7,9 +7,10 @@
 _load_user_conf
 
 OPTIONS=(1 "Firewall"
-         2 "Lock Root User"
-         3 "Unlock Root User"
-         8 "Go Back")
+         2 "Change User Password"
+         3 "Lock Root User"
+         4 "Unlock Root User"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -23,7 +24,25 @@ case $CHOICE in
     1)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
         ;;
-	2)
+    2)
+        echo -e "${RED}"
+        echo "***"
+        echo "Prepare to type new password..."
+        echo "***"
+        echo -e "${NC}"
+        _sleep 2
+        sudo passwd
+
+        echo -e "${RED}"
+        echo "***"
+        echo "Returning to menu..."
+        echo "***"
+        echo -e "${NC}"
+        _sleep 2
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
+        # user change password, returns to menu
+        ;;
+    3)
         echo -e "${RED}"
         echo "***"
         echo "Locking Root User..."
@@ -34,7 +53,7 @@ case $CHOICE in
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
         # uses passwd to lock root user, returns to menu
         ;;
-	3)
+    4)
         echo -e "${RED}"
         echo "***"
         echo "Unlocking Root User..."
@@ -45,7 +64,7 @@ case $CHOICE in
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
         # uses passwd to unlock root user, returns to menu
         ;;
-    4)
+    5)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # returns to menu
         ;;

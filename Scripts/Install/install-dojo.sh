@@ -11,8 +11,10 @@ if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
   cat <<DOJO
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}!
-Please contact support for assistance.
+Missing drive mount at ${INSTALL_DIR}! Please contact support for assistance.
+***
+
+***
 Exiting RoninDojo in 5 seconds...
 ***
 ${NC}
@@ -57,26 +59,25 @@ git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
 
 echo -e "${RED}"
 echo "***"
-echo "Values necessary for usernames, passwords, etc. will randomly be generated now..."
+echo "Credentials necessary for usernames, passwords, etc. will randomly be generated now..."
 echo "***"
 echo -e "${NC}"
 
 cat <<DOJO
 ${RED}
 ***
-These values are found in RoninDojo menus, ${DOJO_PATH}/conf directory
-or in the ~/RoninDojo/user.conf.example file. See file for more info
+Credentials are found in RoninDojo menu, ${DOJO_PATH}/conf, or in the ~/RoninDojo/user.conf.example file.
 ***
 ${NC}
 DOJO
-_sleep
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
-echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
+echo "Be aware these credentials are used to login to Dojo Maintenance Tool, Block Explorer, and more!"
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep 5
 
 echo -e "${RED}"
 echo "***"

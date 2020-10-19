@@ -9,7 +9,7 @@ OPTIONS=(1 "Enable"
          3 "Status"
          4 "Delete Rule"
          5 "Reload"
-         6 "Add New IP Range for SSH"
+         6 "Add IP Range for SSH"
          7 "Add Specific IP for SSH"
          8 "Next Page"
          9 "Go Back")

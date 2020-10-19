@@ -27,18 +27,20 @@ case $CHOICE in
         cat <<MENU
 ${RED}
 ***
-${NC}
 Samourai Dojo Credentials
-${RED}
-WARNING: Do not share these onion addresses with anyone!
-         To allow another person to use this Dojo with her Samourai Wallet,
-         you should share the QRCodes provided by the Maintenance Tool.
-
 ***
 ${NC}
+
+${RED}
+***
+WARNING: Do not share these onion addresses with anyone!
+***
+${NC}
+
 Maintenance Tool            = http://$V3_ADDR_API/admin
 Admin Key                   = $NODE_ADMIN_KEY
 API Key                     = $NODE_API_KEY
+
 ${RED}
 ***
 Press any letter to return...
@@ -54,17 +56,19 @@ MENU
         cat <<MENU
 ${RED}
 ***
-${NC}
 Samourai Whirlpool Credentials
-${RED}
-WARNING: Do not share these onion addresses with anyone!
-        To allow another person to use this Dojo with her Samourai Wallet,
-        you should share the QRCodes provided by the Maintenance Tool.
-
 ***
 ${NC}
+
+${RED}
+***
+WARNING: Do not share these onion addresses with anyone!
+***
+${NC}
+
 Whirlpool Tor URL           = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key           = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+
 ${RED}
 ***
 Press any letter to return...
@@ -102,6 +106,7 @@ ${RED}
 Electrs Credentials
 ***
 ${NC}
+
 Electrs Tor URL = $V3_ADDR_ELECTRS
 MENU
         _sleep
@@ -112,6 +117,7 @@ ${RED}
 ***
 Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 ***
+
 ${RED}
 ***
 Press any letter to return...
@@ -156,11 +162,10 @@ MENU
         cat <<MENU
 ${RED}
 ***
-${NC}
 Bitcoin Credentials
-${RED}
 ***
 ${NC}
+
 Bitcoin Daemon:
 
 Tor URL                 = http://$V2_ADDR_BITCOIN
@@ -173,6 +178,7 @@ Bitcoin RPC Explorer:
 
 Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
 Password                = $EXPLORER_KEY
+
 ${RED}
 ***
 Press any letter to return...

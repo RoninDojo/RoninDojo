@@ -27,7 +27,7 @@ case $CHOICE in
 	1)
         # Check if process running, otherwise start it
         if pm2 describe "Ronin Backend" | grep status | grep stopped 1>/dev/null; then
-            cat << EOF
+            
 ${RED}
 ***
 Starting UI Backend Server...
@@ -39,7 +39,7 @@ EOF
 
             pm2 start "Ronin Backend"
         else
-            cat << EOF
+            
 ${RED}
 ***
 UI Backend already started...
@@ -48,6 +48,16 @@ ${NC}
 EOF
             _sleep 2
         fi
+        
+        
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+EOF
+        read -n 1 -r -s
+        # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         # start Ronin UI Backend, return to menu
@@ -55,7 +65,7 @@ EOF
     2)
         # Check if process running before stopping it
         if pm2 describe "Ronin Backend" &>/dev/null; then
-            cat << EOF
+            
 ${RED}
 ***
 Stopping UI Backend Server...
@@ -67,7 +77,7 @@ EOF
 
             pm2 stop "Ronin Backend"
         else
-            cat << EOF
+            
 ${RED}
 ***
 UI Backend Server already stopped...
@@ -76,11 +86,21 @@ ${NC}
 EOF
         fi
 
+
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+EOF
+        read -n 1 -r -s
+        # press to return is needed so the user has time to see outputs
+
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         # start Ronin UI Backend, return to menu
         ;;
     3)
-        cat << EOF
+        
 ${RED}
 ***
 Restarting UI Backend Server...
@@ -90,17 +110,29 @@ EOF
         _sleep 2
         cd "${RONIN_UI_BACKEND_DIR}" || exit
 
-        # Restart service
+        
         pm2 restart "Ronin Backend" 1>/dev/null
+        # restart service
+
+        
+${RED}
+***
+Press any letter to return...
+***
+${NC}
+EOF
+
+        read -n 1 -r -s
+        # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         # start Ronin UI Backend, return to menu
         ;;
     4)
-        cat << EOF
+        
 ${RED}
 ***
-Press any key to return.
+Showing UI Backend Status...
 ***
 ${NC}
 EOF
@@ -111,10 +143,10 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)
-        cat << EOF
+        
 ${RED}
 ***
-Press q key to exit at any time.
+Press "q" key to exit at any time...
 ***
 ${NC}
 EOF
@@ -125,10 +157,13 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     6)
-        cat << EOF
+        cat <<EOF
 ${RED}
 ***
 Installing Ronin UI Backend...
+***
+
+***
 Press Ctrl+C to cancel at anytime
 ***
 ${NC}
@@ -144,10 +179,13 @@ EOF
     7)
         cd "${RONIN_UI_BACKEND_DIR}" || exit
 
-        cat << EOF
+        cat <<EOF
 ${RED}
 ***
 Uninstalling Ronin UI Backend...
+***
+
+***
 Press Ctrl+C to cancel at anytime
 ***
 ${NC}

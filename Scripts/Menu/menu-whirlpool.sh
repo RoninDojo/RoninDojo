@@ -36,9 +36,16 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 5
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # see defaults.sh
-            # start whirlpool, return to menu
+            # start whirlpool, press to return to menu
             ;;
         2)
             echo -e "${RED}"
@@ -48,8 +55,15 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             docker stop whirlpool 1>/dev/null
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s
             bash -c "$RONIN_WHIRLPOOL_MENU"
-            # stop whirlpool, return to menu
+            # stop whirlpool, press to return to menu
             # see defaults.sh
             ;;
         3)
@@ -63,8 +77,15 @@ case $CHOICE in
             _sleep 5
             docker start whirlpool 1>/dev/null
             _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Press any letter to return..."
+            echo "***"
+            echo -e "${NC}"
+            read -n 1 -r -s            
             bash -c "$RONIN_WHIRLPOOL_MENU"
-            # enable whirlpool at startup, return to menu
+            # enable whirlpool at startup, press to return to menu
             # see defaults.sh
 	        ;;
         4)
