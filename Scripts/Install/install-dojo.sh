@@ -11,8 +11,10 @@ if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
   cat <<DOJO
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}!
-Please contact support for assistance.
+Missing drive mount at ${INSTALL_DIR}! Please contact support for assistance.
+***
+
+***
 Exiting RoninDojo in 5 seconds...
 ***
 ${NC}
@@ -57,26 +59,25 @@ git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
 
 echo -e "${RED}"
 echo "***"
-echo "Values necessary for usernames, passwords, etc. will randomly be generated now..."
+echo "Credentials necessary for usernames, passwords, etc. will randomly be generated now..."
 echo "***"
 echo -e "${NC}"
 
 cat <<DOJO
 ${RED}
 ***
-These values are found in RoninDojo menus, ${DOJO_PATH}/conf directory
-or in the ~/RoninDojo/user.conf.example file. See file for more info
+Credentials are found in RoninDojo menu, ${DOJO_PATH}/conf, or in the ~/RoninDojo/user.conf.example file.
 ***
 ${NC}
 DOJO
-_sleep
+_sleep 2
 
 echo -e "${RED}"
 echo "***"
-echo "Be aware you will use these values to login to Dojo Maintenance Tool, Block Explorer, and more!"
+echo "Be aware these credentials are used to login to Dojo Maintenance Tool, Block Explorer, and more!"
 echo "***"
 echo -e "${NC}"
-_sleep 2
+_sleep 5
 
 echo -e "${RED}"
 echo "***"
@@ -258,24 +259,107 @@ EOF
 # create new block explorer conf file
 # websearch "bash heredoc" for info on redirection
 
-read -rp "Do you want to install an indexer? [y/n]" yn
-case $yn in
-    [Y/y]* )
-      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
-      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
-      ;;
-    [N/n]* ) echo "Indexer will not be installed!";;
-    * ) echo "Please answer Yes or No.";;
-esac
-# install indexer prompt
+    cat <<EOF
+${RED}
+***
+Preparing for Indexer Prompt...
+***
+${NC}
+EOF
+_sleep 2
 
-read -rp "Do you want to install Electrs? [y/n]" yn
-case $yn in
-    [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
-    [N/n]* ) echo "Electrs will not be installed!";;
-    * ) echo "Please answer Yes or No.";;
+    cat <<EOF
+${RED}
+***
+Samourai Indexer is recommended for most users as it helps with querying balances...
+***
+${NC}
+EOF
+_sleep 3
+
+    cat <<EOF
+${RED}
+***
+Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
+***
+${NC}
+EOF
+_sleep 3
+
+    cat <<EOF
+${RED}
+***
+Skipping the installation of either Indexer option is ok! You can always install later...
+***
+${NC}
+EOF
+_sleep 3
+
+    cat <<EOF
+${RED}
+***
+Choose one of the following options for your Indexer...
+***
+${NC}
+EOF
+_sleep 3
+
+select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"
+# indexer names here are used as data source
+
+do
+case $indexer in
+"Samourai Indexer")
+    cat <<EOF
+${RED}
+***
+Installing Samourai Indexer...
+***
+${NC}
+EOF
+_sleep
+sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
+sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
+break;;
+# samourai indexer install enabled in .conf.tpl files using sed
+
+"Electrum Rust Server")
+    cat <<EOF
+${RED}
+***
+Installing Electrum Rust Server...
+***
+${NC}
+EOF
+_sleep
+bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
+# triggers electrs install script
+
+"Do Not Install Indexer")
+    cat <<EOF
+${RED}
+***
+Indexer will not be installed...
+***
+${NC}
+EOF
+_sleep
+break;;
+# indexer will not be installed
+
+*)
+    cat <<EOF
+${RED}
+***
+Invalid Entry!
+***
+${NC}
+EOF
+_sleep
+;;
+# invalid data try again
 esac
-# install electrs prompt
+done
 
 echo -e "${RED}"
 echo "***"
