@@ -85,7 +85,7 @@ Installing your BTC RPC Explorer...
 ${NC}
 EOF
     _sleep 2
-    
+
     cat <<EOF
 ${RED}
 ***
@@ -155,63 +155,59 @@ ${NC}
 EOF
     _sleep 3
 
-    select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"
     # indexer names here are used as data source
-
-    do
-    case $indexer in
-    "Samourai Indexer")
-    cat <<EOF
+    select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"; do
+        case $indexer in
+            "Samourai Indexer")
+                cat <<EOF
 ${RED}
 ***
 Installing Samourai Indexer...
 ***
 ${NC}
 EOF
-    _sleep
-    sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-    sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
-    break;;
-    # samourai indexer install enabled in .conf.tpl files using sed
+                _sleep
+                sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
+                sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
+                break;;
+                # samourai indexer install enabled in .conf.tpl files using sed
 
-"Electrum Rust Server")
-    cat <<EOF
+            "Electrum Rust Server")
+                cat <<EOF
 ${RED}
 ***
 Installing Electrum Rust Server...
 ***
 ${NC}
 EOF
-    _sleep
-    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-    # triggers electrs install script
+                _sleep
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+                # triggers electrs install script
 
-    "Do Not Install Indexer")
-    cat <<EOF
+            "Do Not Install Indexer")
+                cat <<EOF
 ${RED}
 ***
 An Indexer will not be installed during this upgrade...
 ***
 ${NC}
 EOF
-    _sleep
-    break;;
-    # indexer will not be installed
-
-    *)
-    cat <<EOF
+                _sleep
+                break;;
+                # indexer will not be installed
+            *)
+                cat <<EOF
 ${RED}
 ***
 Invalid Entry! Valid values are 1, 2, 3...
 ***
 ${NC}
 EOF
-    _sleep
-    ;;
-    # invalid data try again
-    esac
+                _sleep
+                ;;
+                # invalid data try again
+        esac
     done
-
 else
     cat <<EOF
 ${RED}
@@ -231,7 +227,7 @@ No Indexer found...
 ${NC}
 EOF
         _sleep 3
-        
+
         cat <<EOF
 ${RED}
 ***
@@ -252,15 +248,15 @@ EOF
                      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
                      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf;;
             [N/n]* ) cat <<EOF
-                     ${RED}
-                     ***
-                     Indexer will not be installed...
-                     ***
-                     ${NC}
-EOF;;
+${RED}
+***
+Indexer will not be installed...
+***
+${NC}
+EOF
+                    ;;
             * ) printf "\nPlease answer Yes or No.\n";;
         esac
-    
     else
         cat <<EOF
 ${RED}
@@ -311,22 +307,22 @@ EOF
        case $yn in
            [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
            [N/n]* ) cat <<EOF
-                    ${RED}
-                    ***
-                    Electrum Rust Server will not be installed!
-                    ***
-                    ${NC}
-EOF;;
+${RED}
+***
+Electrum Rust Server will not be installed!
+***
+${NC}
+EOF
+                    ;;
            * ) printf "\nPlease answer Yes or No.\n";;
         esac
-        
     else
         cat <<EOF
-   ${RED}
-   ***
-   Electrum Rust Server is already installed!
-   ***
-   ${NC}
+${RED}
+***
+Electrum Rust Server is already installed!
+***
+${NC}
 EOF
         _sleep 3
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
@@ -338,32 +334,32 @@ fi
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
    cat <<EOF
-   ${RED}
-   ***
-   Whirlpool will be installed via Docker...
-   ***
-   ${NC}
+${RED}
+***
+Whirlpool will be installed via Docker...
+***
+${NC}
 
-   ${RED}
-   ***
-   You will need to re-pair with GUI, see Wiki for more information...
-   ***
-   ${NC}
+${RED}
+***
+You will need to re-pair with GUI, see Wiki for more information...
+***
+${NC}
 EOF
    _sleep 5
 else
    cat <<EOF
-   ${RED}
-   ***
-   Whirlpool will be installed via Docker...
-   ***
-   ${NC}
+${RED}
+***
+Whirlpool will be installed via Docker...
+***
+${NC}
 
-   ${RED}
-   ***
-   For pairing information see the wiki...
-   ***
-   ${NC}
+${RED}
+***
+For pairing information see the wiki...
+***
+${NC}
 EOF
    _sleep 3
 fi
