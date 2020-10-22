@@ -237,7 +237,7 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
   echo -e "${NC}"
 
   # Check if swap in use
-  if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
+  if check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
     test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile" &>/dev/null
   fi
 
@@ -333,7 +333,7 @@ if sudo test -d "${SECONDARY_STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; 
   _sleep 2
 
   # Check if swap in use
-  if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
+  if check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
     test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile" &>/dev/null
   fi
 
@@ -400,7 +400,7 @@ else
   _sleep 2
 
   # Check if swap in use
-  if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile" ; then
+  if check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile" ; then
     test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile" &>/dev/null
   fi
 
