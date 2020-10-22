@@ -28,7 +28,7 @@ Upgrading Dojo in 10s...
 ***
 ${NC}
 
-{RED}
+${RED}
 ***
 Use Ctrl+C to exit if needed!
 ***
