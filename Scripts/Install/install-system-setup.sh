@@ -238,7 +238,7 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
 
   # Check if swap in use
   if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
-    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile"
+    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile" &>/dev/null
   fi
 
   if [ -f "${SECONDARY_STORAGE_MOUNT}"/swapfile ]; then
@@ -320,7 +320,7 @@ if sudo test -d "${SECONDARY_STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; 
   echo -e "${NC}"
   _sleep 2
 
-  test -d "${SALVAGE_BITCOIN_IBD_DATA}" || mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
+  test -d "${SALVAGE_BITCOIN_IBD_DATA}" || sudo mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
 
   sudo mv -v "${SECONDARY_STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"/
   # moves blockchain salvage data to ${SECONDARY_STORAGE_MOUNT} if found
@@ -334,7 +334,7 @@ if sudo test -d "${SECONDARY_STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; 
 
   # Check if swap in use
   if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile"; then
-    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile"
+    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile" &>/dev/null
   fi
 
   sudo rm -rf "${SECONDARY_STORAGE_MOUNT}"/{docker,tor,swapfile}
@@ -401,7 +401,7 @@ else
 
   # Check if swap in use
   if ! check_swap "${SECONDARY_STORAGE_MOUNT}/swapfile" ; then
-    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile"
+    test -f "${SECONDARY_STORAGE_MOUNT}/swapfile" && sudo swapoff "${SECONDARY_STORAGE_MOUNT}/swapfile" &>/dev/null
   fi
 
   if findmnt "${SECONDARY_STORAGE_MOUNT}" 1>/dev/null; then
