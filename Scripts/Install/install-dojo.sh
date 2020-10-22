@@ -440,10 +440,11 @@ if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLU
   echo "Blockchain data salvage starting..."
   echo "***"
   echo -e "${NC}"
-  _sleep 2
 
   cd "$DOJO_PATH" || exit
   _stop_dojo
+
+  _sleep
 
   sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
   sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
