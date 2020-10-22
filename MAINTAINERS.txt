@@ -13,8 +13,13 @@ RoninDojo CLI:
     - @BTCxZelko            - https://code.samourai.io/BTCxZelko
     - @s2l1  (GuerraMoneta) - https://code.samourai.io/s2l1
 
-RoninDojo GUI:
+RoninDojo Website:
+    - @s2l1
+    - @likewhoa
     - @pajasevi (Pavel Ševčík)
+
+RoninDojo GUI:
+    - @pajasevi
 
 RoninDojo Documentation:
     - @Crazyk031
