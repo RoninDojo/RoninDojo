@@ -100,6 +100,13 @@ EOF
 }
 
 #
+# Random Password
+#
+_rand_passwd() {
+    tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1
+}
+
+#
 # Load user defined variables
 #
 _load_user_conf() {
@@ -410,6 +417,69 @@ EOF
 }
 
 #
+# Setup mempool docker variables
+#
+_mempool_conf() {
+    local conf RPC_USER RPC_PASS RPC_IP RPC_PORT MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
+
+    conf="$1"
+    RPC_USER=$(grep BITCOIND_RPC_USER "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    RPC_IP=$(grep BITCOIND_IP "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    RPC_PORT=$(grep BITCOIND_RPC_PORT "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${DOJO_PATH}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
+    MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${DOJO_PATH}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
+
+    _load_user_conf
+
+    # Enable mempool and set MySQL credentials
+    sudo sed -i -e 's/MEMPOOL_INSTALL=off/MEMPOOL_INSTALL=on/' \
+    -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
+    -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${DOJO_PATH}"/conf/docker-mempool."${conf}"
+
+    # Set environment values for Dockerfile
+    sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \
+    -e "s/DB_USER .*$/DB_USER ${MEMPOOL_MYSQL_USER}/" -e "s/DB_PASSWORD .*$/DB_PASSWORD ${MEMPOOL_MYSQL_PASSWORD}/" \
+    -e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${RPC_IP}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${RPC_PORT}/" \
+    -e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${RPC_USER}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${RPC_PASS}/" \
+    "${DOJO_PATH}"/mempool/Dockerfile
+}
+
+#
+# Check if mempool enabled
+#
+_is_mempool() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    local conf="${DOJO_PATH}/conf/docker-mempool.conf"
+
+    if [ -f "$conf" ]; then
+        if grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}"/conf/docker-mempool.conf 1>/dev/null; then
+            return 0
+        else
+            return 1
+        fi
+    elif grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}"/conf/docker-mempool.conf.tpl 1>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# Mempool url rewrites
+#
+_mempool_urls_to_local_btc_explorer() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
+
+    if ! _is_mempool && grep "blockstream" "${DOJO_PATH}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
+        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${DOJO_PATH}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html
+        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${DOJO_PATH}"/mempool/frontend/src/app/blockchain-blocks/block-modal/block-modal.component.html
+        sudo sed -i "s:http\://www.blockstream.info/tx/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/tx/:" "${DOJO_PATH}"/mempool/frontend/src/app/tx-bubble/tx-bubble.component.html
+    fi
+}
+
+#
 # Checks if dojo db container.
 #
 _dojo_check() {
@@ -450,7 +520,7 @@ EOF
 # Source DOJO confs
 #
 _source_dojo_conf() {
-    for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer}.conf .env; do
+    for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer,mempool}.conf .env; do
         . "${conf}"
     done
 
@@ -484,6 +554,10 @@ _select_yaml_files() {
 
     if [ "$WHIRLPOOL_INSTALL" == "on" ]; then
         yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/whirlpool.install.yaml"
+    fi
+
+    if [ "$MEMPOOL_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/mempool.install.yaml"
     fi
 
     # Return yamlFiles

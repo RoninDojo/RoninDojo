@@ -2,6 +2,7 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 _load_user_conf
@@ -331,6 +332,43 @@ EOF
 # else informs user indexer is already installed
 fi
 
+if _is_mempool; then
+    cat <<EOF
+${RED}
+***
+Do you want to install the Mempool Visualizer? [y/n]
+***
+${NC}
+EOF
+    read -r yn
+    case $yn in
+        [Y/y]* )
+                if [ ! -f "${DOJO_PATH}"/conf/docker-mempool.conf ]; then # New install
+                    _mempool_conf conf.tpl
+                else # Existing install?
+                    _mempool_conf conf
+                fi
+
+                # Checks if urls need to be changed for mempool UI
+                _mempool_urls_to_local_btc_explorer
+                ;;
+        [N/n]* )  echo -e "${RED}"
+                 echo "***"
+                 echo "Mempool will not be installed..."
+                 echo "***"
+                 echo -e "${NC}";;
+        * ) echo "Please answer Yes or No.";;
+    esac
+else
+    _mempool_conf conf
+    echo -e "${RED}"
+    echo "***"
+    echo "Mempool visualizer is already installed..."
+    echo "***"
+    echo -e "${NC}"
+fi
+# Check if mempool available or not
+
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
    cat <<EOF
@@ -369,5 +407,5 @@ cd "${DOJO_PATH}" || exit
 ./dojo.sh upgrade
 # run upgrade
 
-bash -c "$RONIN_DOJO_MENU"
+bash -c "$RONIN_UPDATES_MENU"
 # return to menu
