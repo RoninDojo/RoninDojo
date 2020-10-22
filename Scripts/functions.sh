@@ -295,7 +295,7 @@ _is_ronin_ui_backend() {
     _load_user_conf
 
     if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-        cat << EOF
+        cat <<EOF
 ${RED}
 ***
 RoninUI Backend is not installed, installing now...

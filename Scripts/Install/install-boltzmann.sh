@@ -52,7 +52,7 @@ pipenv install -r requirements.txt &>/dev/null
 
 echo -e "${RED}"
 echo "***"
-echo "Press any letter to continue..."
+echo "Press any letter to return..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s
