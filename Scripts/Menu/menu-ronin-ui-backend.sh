@@ -27,7 +27,7 @@ case $CHOICE in
 	1)
         # Check if process running, otherwise start it
         if pm2 describe "Ronin Backend" | grep status | grep stopped 1>/dev/null; then
-            
+            cat <<EOF
 ${RED}
 ***
 Starting UI Backend Server...
@@ -39,7 +39,7 @@ EOF
 
             pm2 start "Ronin Backend"
         else
-            
+            cat <<EOF
 ${RED}
 ***
 UI Backend already started...
@@ -48,8 +48,8 @@ ${NC}
 EOF
             _sleep 2
         fi
-        
-        
+
+        cat <<EOF
 ${RED}
 ***
 Press any letter to return...
@@ -65,7 +65,7 @@ EOF
     2)
         # Check if process running before stopping it
         if pm2 describe "Ronin Backend" &>/dev/null; then
-            
+            cat <<EOF
 ${RED}
 ***
 Stopping UI Backend Server...
@@ -77,7 +77,7 @@ EOF
 
             pm2 stop "Ronin Backend"
         else
-            
+            cat <<EOF
 ${RED}
 ***
 UI Backend Server already stopped...
@@ -86,7 +86,7 @@ ${NC}
 EOF
         fi
 
-
+        cat <<EOF
 ${RED}
 ***
 Press any letter to return...
@@ -100,7 +100,7 @@ EOF
         # start Ronin UI Backend, return to menu
         ;;
     3)
-        
+        cat <<EOF
 ${RED}
 ***
 Restarting UI Backend Server...
@@ -110,11 +110,10 @@ EOF
         _sleep 2
         cd "${RONIN_UI_BACKEND_DIR}" || exit
 
-        
         pm2 restart "Ronin Backend" 1>/dev/null
         # restart service
 
-        
+        cat <<EOF
 ${RED}
 ***
 Press any letter to return...
@@ -129,7 +128,7 @@ EOF
         # start Ronin UI Backend, return to menu
         ;;
     4)
-        
+        cat <<EOF
 ${RED}
 ***
 Showing UI Backend Status...
@@ -143,7 +142,7 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)
-        
+        cat <<EOF
 ${RED}
 ***
 Press "q" key to exit at any time...
