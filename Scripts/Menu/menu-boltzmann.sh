@@ -52,7 +52,7 @@ export BOLTZMANN_RPC_HOST=${RPC_IP}
 export BOLTZMANN_RPC_PORT=${RPC_PORT}
 
 # Loop command until user quits
-until [[ "$txids" =~ (Q|Quit) ]]
+until [[ "$txids" =~ (Q|q|quit|Quit) ]]
 do
   printf "\nEnter a txid or multiple txids separated by commas. Type [Q|Quit] to exit boltzmann\n"
   read -r txids
