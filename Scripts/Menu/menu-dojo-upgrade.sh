@@ -18,7 +18,7 @@ Could not create temp dir, upgrade failed!
 ***
 ${NC}
 EOF
-exit 1
+    exit 1
 fi
 # check if tmp dir was created
 
@@ -59,14 +59,15 @@ rm -rf "${WORK_DIR}"
 cd "${HOME}" || exit
 # return to previous working path
 
-        cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Checking BTC RPC Explorer...
 ***
 ${NC}
 EOF
-    _sleep 1
+
+_sleep 1
 
 if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
     cat <<EOF
@@ -76,7 +77,6 @@ BTC RPC Explorer is already installed!
 ***
 ${NC}
 EOF
-
 else
     cat <<EOF
 ${RED}
@@ -243,7 +243,14 @@ This is recommended for most users as it helps with querying balances...
 ${NC}
 EOF
         _sleep 5
-        read -rp "Do you want to install an Indexer? [y/n]" yn
+        cat <<EOF
+${RED}
+***
+Do you want to install an Indexer? [y/n]
+***
+${NC}
+EOF
+        read -r yn
         case $yn in
             [Y/y]* )
                      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
