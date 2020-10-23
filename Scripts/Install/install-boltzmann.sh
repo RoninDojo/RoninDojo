@@ -50,11 +50,14 @@ _sleep 3
 # with all future packages that ship a requirements.txt.
 pipenv install -r requirements.txt &>/dev/null
 
-echo -e "${RED}"
-echo "***"
-echo "Press any letter to return..."
-echo "***"
-echo -e "${NC}"
+cat <<BOLTZMANN
+${RED}
+***
+Press any key to continue...
+***
+${NC}
+BOLTZMANN
+
 read -n 1 -r -s
 # will return to menu
 bash -c "$RONIN_BOLTZMANN_MENU"
