@@ -31,7 +31,7 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ${NC}
 DOJO
                     _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
+                    bash -c "$RONIN_DOJO_MENU2"
                     exit 1
                 fi
             fi
@@ -124,7 +124,7 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ${NC}
 DOJO
                     _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
+                    bash -c "$RONIN_DOJO_MENU2"
                     exit 1
                 fi
             fi
@@ -144,7 +144,7 @@ DOJO
             cd "$DOJO_PATH" || exit
             ./dojo.sh clean
 
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "$RONIN_DOJO_MENU2"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         3)
@@ -159,7 +159,7 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ${NC}
 DOJO
                     _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
+                    bash -c "$RONIN_DOJO_MENU2"
                     exit 1
                 fi
             fi
@@ -180,7 +180,7 @@ DOJO
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "$RONIN_DOJO_MENU2"
             # press any letter to return
             ;;
         4)
@@ -195,7 +195,7 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ${NC}
 DOJO
                     _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
+                    bash -c "$RONIN_DOJO_MENU2"
                     exit 1
                 fi
             fi
@@ -215,7 +215,7 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ${NC}
 DOJO
                     _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
+                    bash -c "$RONIN_DOJO_MENU2"
                     exit 1
                 fi
             fi
@@ -224,7 +224,7 @@ DOJO
             # copy block data to backup drive
             ;;
         6)
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "$RONIN_DOJO_MENU2"
             # return to main menu
             ;;
 esac
