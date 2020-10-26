@@ -108,13 +108,23 @@ case $CHOICE in
             # see defaults.sh
             ;;
         5)
-            echo -e "${RED}"
-            echo "***"
-            echo "Re-initiating Whirlpool will reset your mix count and generate new API key..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${RED}
+***
+Re-initiating Whirlpool will reset your mix count and generate new API key...
+***
+${NC}
+EOF
+_sleep 2
+            cat <<EOF
+${RED}
+***
+Are you sure you want to re-initiate Whirlpool? [Y/N]
+***
+${NC}
+EOF
 
-            read -rp "Are you sure you want to re-initiate Whirlpool? [y/n]" yn
+            read -rp "Y/N?: " yn
             case $yn in
                 [Y/y]* ) echo -e "${RED}"
                          echo "***"

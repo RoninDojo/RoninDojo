@@ -40,7 +40,9 @@ echo -e "${NC}"
 _sleep 3
 
 echo -e "${RED}"
-echo "Are you ready to mount?"
+echo "***"
+echo "Are you ready to mount? [Y/N]"
+echo "***"
 echo -e "${NC}"
 while true; do
     read -rp "Y/N?: " yn

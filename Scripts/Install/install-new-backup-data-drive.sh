@@ -47,7 +47,7 @@ echo -e "${NC}"
 _sleep 2
 
 echo -e "${RED}"
-echo "Are you sure?"
+echo "Are you sure? [Y/N]"
 echo -e "${NC}"
 while true; do
     read -rp "Y/N?: " yn

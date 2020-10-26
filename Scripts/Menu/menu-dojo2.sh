@@ -59,7 +59,7 @@ DOJO
             _sleep 10
 
             echo -e "${RED}"
-            echo "Do you want to salvage your Blockchain data?"
+            echo "Do you want to salvage your Blockchain data? [Y/N]"
             echo -e "${NC}"
             while true; do
                 read -rp "Y/N?: " yn

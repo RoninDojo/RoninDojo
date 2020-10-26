@@ -246,11 +246,11 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Do you want to install an Indexer? [y/n]
+Do you want to install an Indexer? [Y/N]
 ***
 ${NC}
 EOF
-        read -r yn
+        read -rp "Y/N?: " yn
         case $yn in
             [Y/y]* )
                      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
@@ -311,7 +311,16 @@ Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other El
 ${NC}
 EOF
        _sleep 5
-       read -rp "Do you want to install Electrum Rust Server? [y/n]" yn
+
+       cat <<EOF
+${RED}
+***
+Do you want to install Electrum Rust Server? [Y/N]
+***
+${NC}
+EOF
+       _sleep 1
+       read -rp "Y/N?: " yn
        case $yn in
            [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
            [N/n]* ) cat <<EOF
@@ -343,11 +352,11 @@ if _is_mempool; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [y/n]
+Do you want to install the Mempool Visualizer? [Y/N]
 ***
 ${NC}
 EOF
-    read -r yn
+    read -rp "Y/N?: " yn
     case $yn in
         [Y/y]* )
                 if [ ! -f "${DOJO_PATH}"/conf/docker-mempool.conf ]; then # New install
