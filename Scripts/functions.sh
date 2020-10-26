@@ -228,7 +228,7 @@ _is_active() {
 _tor_backup() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    if [ -d "${INSTALL_DIR}/${TOR_DATA_DIR}" ]; then
+    if sudo test -d "${INSTALL_DIR}/${TOR_DATA_DIR}"; then
         sudo rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
         return 0
     fi
@@ -242,7 +242,7 @@ _tor_backup() {
 _tor_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    if [ -d "${INSTALL_DIR}/${TOR_DATA_DIR}" ]; then
+    if sudo test -d "${INSTALL_DIR}/${TOR_DATA_DIR}"; then
         sudo rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
         cat <<EOF
 ${RED}
