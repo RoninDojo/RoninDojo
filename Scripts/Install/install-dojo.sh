@@ -397,7 +397,7 @@ EOF
   esac
 done
 
-if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ]; then
+if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}/conf/docker-mempool.conf" 1>/dev/null; then
   cat <<EOF
 ${RED}
 ***
