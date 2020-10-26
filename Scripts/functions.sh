@@ -207,6 +207,22 @@ _sleep() {
 }
 
 #
+# is systemd unit service active?
+#
+_is_active() {
+    local service
+    service="$1"
+
+    # Check that docker service is running
+    if ! systemctl is-active --quiet "$service"; then
+        sudo systemctl start "$service"
+        return 0
+    fi
+
+    return 1
+}
+
+#
 # Setup torrc
 #
 _setup_tor() {
@@ -262,12 +278,7 @@ TOR_CONFIG
         sudo systemctl enable tor 2>/dev/null
     fi
 
-    # Start Tor if needed
-    if ! systemctl is-active tor 1>/dev/null; then
-        sudo systemctl start tor
-    else
-        sudo systemctl restart tor
-    fi
+    _is_active tor || sudo systemctl restart tor
 }
 
 #
@@ -504,10 +515,7 @@ EOF
         bash -c ronin
     fi
 
-    # Check that docker service is running
-    if ! sudo systemctl is-active docker 1>/dev/null; then
-        sudo systemctl start docker
-    fi
+    _is_active docker
 
     if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
         return 0
@@ -790,10 +798,9 @@ Starting docker daemon.
 ***
 ${NC}
 EOF
-        sudo systemctl start docker || return 1
-    elif ! systemctl is-active docker 1>/dev/null; then # is docker started?
-        sudo systemctl start docker || return 1
     fi
+
+    _is_active docker
 
     # Enable service on startup
     if ! sudo systemctl is-enabled docker 1>/dev/null; then
@@ -854,7 +861,7 @@ EOF'
 # Disable Bluetooth
 #
 _disable_bluetooth() {
-    if sudo systemctl is-active --quiet bluetooth; then
+    if _is_active bluetooth; then
         sudo systemctl disable bluetooth 2>/dev/null
         sudo systemctl stop bluetooth
         return 0
