@@ -493,4 +493,7 @@ if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLU
   docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
   # start dojo
 fi
+
+${TOR_RESTORE} && _tor_restore
+
 # check for IBD data, if not found continue

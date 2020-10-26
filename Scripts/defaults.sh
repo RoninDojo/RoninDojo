@@ -60,6 +60,7 @@ DOJO_PATH="$HOME/dojo/docker/my-dojo"
 BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
 DOJO_RESTORE=true
+TOR_RESTORE=true
 
 # Repositories
 RONIN_DOJO_BRANCH="" # defaults to master

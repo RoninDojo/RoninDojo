@@ -223,6 +223,41 @@ _is_active() {
 }
 
 #
+# Tor credentials backup
+#
+_tor_backup() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if [ -d "${INSTALL_DIR}/${TOR_DATA_DIR}" ]; then
+        rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
+        return 0
+    fi
+
+    return 1
+}
+
+#
+# Tor credentials restore
+#
+_tor_restore() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if [ -d "${INSTALL_DIR}/${TOR_DATA_DIR}" ]; then
+        rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
+        cat <<EOF
+${RED}
+***
+Tor credentials backup detected and restored...
+If you wish to disable this feature, set TOR_RESTORE=false in
+$HOME/.conf/RoninDojo/user.conf
+EOF
+        return 0
+    fi
+
+    return 1
+}
+
+#
 # Setup torrc
 #
 _setup_tor() {
