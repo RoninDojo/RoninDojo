@@ -85,8 +85,7 @@ DOJO
             echo "***"
             echo -e "${NC}"
             cd "$DOJO_PATH" || exit
-            ./dojo.sh uninstall
-            sudo rm -rf "${DOJO_PATH%/docker/my-dojo}"
+            ./dojo.sh uninstall && sudo rm -rf "${DOJO_PATH%/docker/my-dojo}"
             cd "${HOME}" || exit
             # uninstall dojo
 
