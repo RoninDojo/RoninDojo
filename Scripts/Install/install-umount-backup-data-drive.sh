@@ -6,7 +6,7 @@
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${SECONDARY_STORAGE_MOUNT}"; then
+if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${STORAGE_MOUNT}"; then
   echo -e "${RED}"
   echo "***"
   echo "Your backup drive partition has been detected..."
@@ -54,11 +54,11 @@ done
 
 echo -e "${RED}"
 echo "***"
-echo "Umounting ${SECONDARY_STORAGE_MOUNT}..."
+echo "Umounting ${STORAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
-sudo umount "${SECONDARY_STORAGE_MOUNT}"
+sudo umount "${STORAGE_MOUNT}"
 # umount backup drive ${SECONDARY_STORAGE}
 
 echo -e "${RED}"

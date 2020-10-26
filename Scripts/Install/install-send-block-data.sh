@@ -90,7 +90,7 @@ elif sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
     sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
     # use cp for initial fresh IBD copy
 else
-    sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+    sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
     cat <<BACKUP
 ${RED}
 ***
@@ -127,7 +127,7 @@ ${NC}
 EOF
 _sleep 2
 
-sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
 # unmount backup drive and remove directory
 
 echo -e "${RED}"

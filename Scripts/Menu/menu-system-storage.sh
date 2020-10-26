@@ -47,7 +47,7 @@ case $CHOICE in
         ;;
     2)
         bash "$HOME"/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
-        # mounts ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT} for access to backup blockchain data
+        # mounts ${SECONDARY_STORAGE} to ${STORAGE_MOUNT} for access to backup blockchain data
         ;;
     3)
         bash "$HOME"/RoninDojo/Scripts/Install/install-umount-backup-data-drive.sh
@@ -55,7 +55,7 @@ case $CHOICE in
         ;;
     4)
         bash "$HOME"/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
-        # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${SECONDARY_STORAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
+        # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${STORAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
         ;;
     5)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh

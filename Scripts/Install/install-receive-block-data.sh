@@ -73,9 +73,9 @@ if test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
     sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
 fi
 
-# Check to see if we have old legacy backup directory, if so rename to ${SECONDARY_STORAGE_MOUNT}
-if sudo test -d "${SECONDARY_STORAGE_MOUNT}"/system-setup-salvage; then
-    sudo mv "${SECONDARY_STORAGE_MOUNT}"/system-setup-salvage "${SALVAGE_BITCOIN_IBD_DATA}" 1>/dev/null
+# Check to see if we have old legacy backup directory, if so rename to ${STORAGE_MOUNT}
+if sudo test -d "${STORAGE_MOUNT}"/system-setup-salvage; then
+    sudo mv "${STORAGE_MOUNT}"/system-setup-salvage "${SALVAGE_BITCOIN_IBD_DATA}" 1>/dev/null
 fi
 
 echo -e "${RED}"
@@ -89,7 +89,7 @@ if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}"/blocks; then
     sudo cp -av "${SALVAGE_BITCOIN_IBD_DATA}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
     # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
 else
-    sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+    sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
     cat <<BACKUP
 ${RED}
 ***
@@ -126,7 +126,7 @@ ${NC}
 EOF
 _sleep 2
 
-sudo umount "${SECONDARY_STORAGE_MOUNT}" && sudo rmdir "${SECONDARY_STORAGE_MOUNT}"
+sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
 # unmount backup drive and remove directory
 
 echo -e "${RED}"

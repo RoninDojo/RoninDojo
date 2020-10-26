@@ -34,7 +34,7 @@ fi
 
 echo -e "${RED}"
 echo "***"
-echo "Preparing to Format and Mount ${SECONDARY_STORAGE} to ${SECONDARY_STORAGE_MOUNT}..."
+echo "Preparing to Format and Mount ${SECONDARY_STORAGE} to ${STORAGE_MOUNT}..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
@@ -66,7 +66,7 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${SECONDARY_STORAGE_MOUNT}"; then
+if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
   echo -e "${RED}Filesystem creation failed! Exiting${NC}"
   exit
 fi
