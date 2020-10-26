@@ -77,6 +77,7 @@ DOJO
             done
 
             "${DOJO_RESTORE}" && _dojo_backup
+            "${TOR_RESTORE}" && _tor_backup
 
             echo -e "${RED}"
             echo "***"
