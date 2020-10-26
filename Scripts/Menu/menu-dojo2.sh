@@ -76,6 +76,8 @@ DOJO
                 esac
             done
 
+            "${DOJO_RESTORE}" && _dojo_backup
+
             echo -e "${RED}"
             echo "***"
             echo "Uninstalling Dojo..."
@@ -95,6 +97,9 @@ DOJO
             echo "Complete!"
             echo "***"
             echo -e "${NC}"
+
+            _sleep 5 --msg "Returning to menu in"
+
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
             # return to menu
             ;;
