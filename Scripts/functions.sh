@@ -642,6 +642,20 @@ _stop_dojo() {
     local DOJO_PATH
     DOJO_PATH="$HOME/dojo/docker/my-dojo"
 
+    if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+        cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
+***
+${NC}
+DOJO
+        _sleep 2
+        bash -c "$RONIN_DOJO_MENU"
+        exit 1
+    fi
+    # is dojo installed?
+
     if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
         # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
         cat <<EOF

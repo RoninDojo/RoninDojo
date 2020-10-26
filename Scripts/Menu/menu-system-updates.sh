@@ -22,19 +22,20 @@ clear
 case $CHOICE in
     1)
         if ! _dojo_check "$DOJO_PATH"; then
-            # Is dojo installed?
             if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
                 cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                 _sleep 2
                 bash -c "$RONIN_DOJO_MENU"
+                exit 1
             fi
         fi
+        # is dojo installed?
 
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu

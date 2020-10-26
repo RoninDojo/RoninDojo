@@ -33,18 +33,19 @@ case $CHOICE in
                 _sleep 5
                 bash -c "$RONIN_DOJO_MENU"
             else
-                # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
                     cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                     _sleep 2
                     bash -c "$RONIN_DOJO_MENU"
+                    exit 1
                 fi
+                # is dojo installed?
 
                 echo -e "${RED}"
                 echo "***"
@@ -85,6 +86,20 @@ DOJO
             # press any letter to return to menu
             ;;
         3)
+            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
+***
+${NC}
+DOJO
+                _sleep 2
+                bash -c "$RONIN_DOJO_MENU"
+                exit 1
+            fi
+            # is dojo installed?
+
             if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
                 echo -e "${RED}"
                 echo "***"
@@ -130,6 +145,20 @@ DOJO
             fi
             ;;
         4)
+            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+                cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
+***
+${NC}
+DOJO
+                _sleep 2
+                bash -c "$RONIN_DOJO_MENU"
+                exit 1
+            fi
+            # is dojo installed?
+
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;

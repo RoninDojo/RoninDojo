@@ -22,7 +22,7 @@ EOF
 fi
 # check if tmp dir was created
 
-cat <<EOF
+    cat <<EOF
 ${RED}
 ***
 Upgrading Dojo in 10s...
@@ -35,7 +35,7 @@ Use Ctrl+C to exit if needed!
 ***
 ${NC}
 EOF
-_sleep 5
+_sleep 10
 
 _check_dojo_perms "${DOJO_PATH}"
 # make sure permissions are properly set for ${DOJO_PATH}

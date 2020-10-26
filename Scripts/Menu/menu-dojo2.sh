@@ -22,32 +22,41 @@ clear
 case $CHOICE in
         1)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
                 if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
                     cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                     _sleep 2
                     bash -c "$RONIN_DOJO_MENU"
+                    exit 1
                 fi
             fi
+            # is dojo installed?
 
             cat <<DOJO
 ${RED}
 ***
-Uninstalling Dojo in 15s...
+Uninstalling Dojo in 10s...
+***
+${NC}
 
+${RED}
+***
 Users with a fully synced Blockchain should answer yes to salvage!
+***
+${NC}
 
+${RED}
+***
 WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!
 ***
 ${NC}
 DOJO
-            _sleep 7
+            _sleep 10
 
             echo -e "${RED}"
             echo "Do you want to salvage your Blockchain data?"
@@ -110,12 +119,13 @@ DOJO
                     cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                     _sleep 2
                     bash -c "$RONIN_DOJO_MENU"
+                    exit 1
                 fi
             fi
 
@@ -144,12 +154,13 @@ DOJO
                     cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                     _sleep 2
                     bash -c "$RONIN_DOJO_MENU"
+                    exit 1
                 fi
             fi
 
@@ -179,12 +190,13 @@ DOJO
                     cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                     _sleep 2
                     bash -c "$RONIN_DOJO_MENU"
+                    exit 1
                 fi
             fi
 
@@ -198,12 +210,13 @@ DOJO
                     cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu
+Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
                     _sleep 2
                     bash -c "$RONIN_DOJO_MENU"
+                    exit 1
                 fi
             fi
 
