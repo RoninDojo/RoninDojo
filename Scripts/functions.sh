@@ -229,7 +229,7 @@ _tor_backup() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if [ -d "${INSTALL_DIR}/${TOR_DATA_DIR}" ]; then
-        rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
+        sudo rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
         return 0
     fi
 
@@ -243,7 +243,7 @@ _tor_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if [ -d "${INSTALL_DIR}/${TOR_DATA_DIR}" ]; then
-        rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
+        sudo rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
         cat <<EOF
 ${RED}
 ***
@@ -532,7 +532,7 @@ _dojo_backup() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-        rsync -ac --quiet "${DOJO_PATH%/docker/my-dojo}"/ "${DOJO_BACKUP_DIR}"
+        sudo rsync -ac --quiet "${DOJO_PATH%/docker/my-dojo}"/ "${DOJO_BACKUP_DIR}"
         return 0
     fi
 
@@ -546,7 +546,7 @@ _dojo_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if "${DOJO_RESTORE}"; then
-        rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/ "${DOJO_PATH%/docker/my-dojo}"
+        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/ "${DOJO_PATH%/docker/my-dojo}"
         return 0
     fi
 
