@@ -68,10 +68,10 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}" || sudo mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
+sudo test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
-if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}"/blocks; then
+if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
     # Use rsync when existing IBD is found
     if ! hash rsync 2>/dev/null; then
         cat <<EOF
@@ -85,9 +85,9 @@ EOF
         sudo pacman -S --noconfirm rsync &>/dev/null
     fi
 
-    sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
+    sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"
 elif sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
-    sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"
+    sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"
     # use cp for initial fresh IBD copy
 else
     sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"

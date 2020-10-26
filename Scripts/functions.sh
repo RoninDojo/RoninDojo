@@ -491,6 +491,34 @@ _mempool_urls_to_local_btc_explorer() {
 }
 
 #
+# Dojo Credentials Backup
+#
+_dojo_backup() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+        rsync -ac --quiet "${DOJO_PATH%/docker/my-dojo}"/ "${DOJO_BACKUP_DIR}"
+        return 0
+    fi
+
+    return 1
+}
+
+#
+# Dojo Credentials Restore
+#
+_dojo_restore() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if "${DOJO_RESTORE}"; then
+        rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/ "${DOJO_PATH%/docker/my-dojo}"
+        return 0
+    fi
+
+    return 1
+}
+
+#
 # Checks if dojo db container.
 #
 _dojo_check() {

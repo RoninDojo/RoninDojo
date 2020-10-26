@@ -86,7 +86,28 @@ echo "***"
 echo -e "${NC}"
 _sleep
 
-cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
+if [ -d "${DOJO_BACKUP_DIR}" ]; then
+  if ! _dojo_restore; then
+  cat <<EOF
+${RED}
+***
+Dojo backup restore disabled! Enable in user.conf if you wish
+to restore credentials on dojo install when available
+***
+${NC}
+EOF
+  else
+    cat <<EOF
+${RED}
+***
+Dojo credentials backup detected and restored...
+If you wish to disable this feature, set DOJO_RESTORE=false in
+$HOME/.conf/RoninDojo/user.conf
+EOF
+  fi
+else
+  # TODO sed template files on the fly instead
+  cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
 #########################################
 # CONFIGURATION OF BITCOIND CONTAINER
 #########################################
@@ -183,24 +204,24 @@ BITCOIND_ZMQ_BLK_HASH=9502
 # Type: integer
 BITCOIND_SHUTDOWN_DELAY=180
 EOF
-# create new docker bitcoind conf file
-# websearch "bash heredoc" for info on redirection
+  # create new docker bitcoind conf file
+  # websearch "bash heredoc" for info on redirection
 
-echo -e "${RED}"
-echo "***"
-echo "Setting the Node API Key and JWT Secret..."
-echo "***"
-echo -e "${NC}"
-_sleep
+  echo -e "${RED}"
+  echo "***"
+  echo "Setting the Node API Key and JWT Secret..."
+  echo "***"
+  echo -e "${NC}"
+  _sleep
 
-echo -e "${RED}"
-echo "***"
-echo "Setting the Node Admin Key..."
-echo "***"
-echo -e "${NC}"
-_sleep
+  echo -e "${RED}"
+  echo "***"
+  echo "Setting the Node Admin Key..."
+  echo "***"
+  echo -e "${NC}"
+  _sleep
 
-cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
+  cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
 #########################################
 # CONFIGURATION OF NODE JS CONTAINER
 #########################################
@@ -230,10 +251,10 @@ NODE_ACTIVE_INDEXER=${NODE_ACTIVE_INDEXER:-local_bitcoind}
 # Allowed values are ECONOMICAL or CONSERVATIVE
 NODE_FEE_TYPE=ECONOMICAL
 EOF
-# create new docker node conf file
-# websearch "bash heredoc" for info on redirection
+  # create new docker node conf file
+  # websearch "bash heredoc" for info on redirection
 
-cat << EOF > "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
+  cat << EOF > "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
 #########################################
 # CONFIGURATION OF MYSQL CONTAINER
 #########################################
@@ -247,18 +268,18 @@ MYSQL_USER=$MYSQL_USER
 # Type: alphanumeric
 MYSQL_PASSWORD=$MYSQL_PASSWORD
 EOF
-# create new mysql conf file
-# websearch "bash heredoc" for info on redirection
+  # create new mysql conf file
+  # websearch "bash heredoc" for info on redirection
 
-# BTC-EXPLORER PASSWORD
-echo -e "${RED}"
-echo "***"
-echo "Installing your Dojo-backed Bitcoin Explorer..."
-echo "***"
-echo -e "${NC}"
-_sleep
+  # BTC-EXPLORER PASSWORD
+  echo -e "${RED}"
+  echo "***"
+  echo "Installing your Dojo-backed Bitcoin Explorer..."
+  echo "***"
+  echo -e "${NC}"
+  _sleep
 
-cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
+  cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
 #########################################
 # CONFIGURATION OF EXPLORER CONTAINER
 #########################################
@@ -272,10 +293,14 @@ EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}
 # Type: alphanumeric
 EXPLORER_KEY=$EXPLORER_KEY
 EOF
-# create new block explorer conf file
-# websearch "bash heredoc" for info on redirection
+  # create new block explorer conf file
+  # websearch "bash heredoc" for info on redirection
 
-    cat <<EOF
+  # Backup credentials
+  _dojo_backup
+fi
+
+cat <<EOF
 ${RED}
 ***
 Preparing for Indexer Prompt...
@@ -284,7 +309,7 @@ ${NC}
 EOF
 _sleep 2
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Samourai Indexer is recommended for most users as it helps with querying balances...
@@ -293,7 +318,7 @@ ${NC}
 EOF
 _sleep 3
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
@@ -302,7 +327,7 @@ ${NC}
 EOF
 _sleep 3
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Skipping the installation of either Indexer option is ok! You can always install later...
@@ -311,7 +336,7 @@ ${NC}
 EOF
 _sleep 3
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Choose one of the following options for your Indexer...
@@ -320,38 +345,34 @@ ${NC}
 EOF
 _sleep 3
 
-select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"
 # indexer names here are used as data source
-
-do
-case $indexer in
-"Samourai Indexer")
-    cat <<EOF
+select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"; do
+  case $indexer in
+    "Samourai Indexer")
+      cat <<EOF
 ${RED}
 ***
 Installing Samourai Indexer...
 ***
 ${NC}
 EOF
-_sleep
-sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
-sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
-break;;
-# samourai indexer install enabled in .conf.tpl files using sed
-
-"Electrum Rust Server")
-    cat <<EOF
+      _sleep
+      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
+      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
+      break;;
+      # samourai indexer install enabled in .conf.tpl files using sed
+    "Electrum Rust Server")
+      cat <<EOF
 ${RED}
 ***
 Installing Electrum Rust Server...
 ***
 ${NC}
 EOF
-_sleep
-bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
-# triggers electrs install script
-
-"Do Not Install Indexer")
+      _sleep
+      bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
+      # triggers electrs install script
+  "Do Not Install Indexer")
     cat <<EOF
 ${RED}
 ***
@@ -359,11 +380,10 @@ Indexer will not be installed...
 ***
 ${NC}
 EOF
-_sleep
-break;;
-# indexer will not be installed
-
-*)
+    _sleep
+    break;;
+    # indexer will not be installed
+  *)
     cat <<EOF
 ${RED}
 ***
@@ -371,13 +391,14 @@ Invalid Entry!
 ***
 ${NC}
 EOF
-_sleep
-;;
-# invalid data try again
-esac
+    _sleep
+    ;;
+    # invalid data try again
+  esac
 done
 
-cat <<EOF
+if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ]; then
+  cat <<EOF
 ${RED}
 ***
 Do you want to install the Mempool Visualizer? [y/n]
@@ -385,15 +406,16 @@ Do you want to install the Mempool Visualizer? [y/n]
 ${NC}
 EOF
 
-read -r yn
-case $yn in
-    [Y/y]* )
-      _mempool_conf conf.tpl
-      ;;
-    [N/n]* ) echo "Mempool will not be installed!";;
-    * ) echo "Please answer Yes or No.";;
-esac
-# install mempool prompt
+  read -r yn
+  case $yn in
+      [Y/y]* )
+          _mempool_conf conf.tpl
+        ;;
+      [N/n]* ) echo "Mempool will not be installed!";;
+      * ) echo "Please answer Yes or No.";;
+  esac
+  # install mempool prompt
+fi
 
 echo -e "${RED}"
 echo "***"

@@ -59,6 +59,7 @@ NC=$(tput sgr0) # No Color
 DOJO_PATH="$HOME/dojo/docker/my-dojo"
 BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
+DOJO_RESTORE=true
 
 # Repositories
 RONIN_DOJO_BRANCH="" # defaults to master
@@ -74,6 +75,7 @@ PRIMARY_STORAGE="/dev/sda1"
 SECONDARY_STORAGE="/dev/sdb1"
 STORAGE_MOUNT="/mnt/backup"
 
+BITCOIN_IBD_BACKUP_DIR="${STORAGE_MOUNT}/bitcoin"
 INSTALL_DIR="/mnt/usb"
 INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
@@ -85,7 +87,10 @@ DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
 DOCKER_VOLUME_WP="${DOCKER_VOLUMES}/my-dojo_data-whirlpool"
 DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
 
-SALVAGE_BITCOIN_IBD_DATA="${STORAGE_MOUNT}/bitcoin"
+DOJO_BACKUP_DIR="${INSTALL_DIR}/backup/dojo"
+TOR_BACKUP_DIR="${INSTALL_DIR}/backup/tor"
+
+TOR_DATA_DIR="docker/volumes/my-dojo_data-tor"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
 
 # Workaround when on x86 systems and autologin is enabled for the user account

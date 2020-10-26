@@ -229,7 +229,7 @@ else
 fi
 # mount main storage drive to "${STORAGE_MOUNT}" directory if found in prep for data salvage
 
-if sudo test -d "${SALVAGE_BITCOIN_IBD_DATA}/blocks"; then
+if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}/blocks"; then
   echo -e "${RED}"
   echo "***"
   echo "Found Blockchain data for salvage!"
@@ -320,9 +320,9 @@ if sudo test -d "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
   echo -e "${NC}"
   _sleep 2
 
-  test -d "${SALVAGE_BITCOIN_IBD_DATA}" || sudo mkdir "${SALVAGE_BITCOIN_IBD_DATA}"
+  test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
 
-  sudo mv -v "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${SALVAGE_BITCOIN_IBD_DATA}"/
+  sudo mv -v "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"/
   # moves blockchain salvage data to ${STORAGE_MOUNT} if found
 
   echo -e "${RED}"
