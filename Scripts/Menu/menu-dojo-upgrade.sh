@@ -109,7 +109,6 @@ Checking for Indexer...
 ${NC}
 EOF
     _sleep 
-    # if indexer and electrs are not found then give user menu for install choices
 
     cat <<EOF
 ${RED}
@@ -150,65 +149,22 @@ EOF
     cat <<EOF
 ${RED}
 ***
+Skipping the installation of either Indexer option is ok! You can always install later...
+***
+${NC}
+EOF
+_sleep 3
+
+    cat <<EOF
+${RED}
+***
 Choose one of the following options for your Indexer...
 ***
 ${NC}
 EOF
     _sleep 3
-
-    # indexer names here are used as data source
-    select indexer in "Samourai Indexer (default)" "Electrum Rust Server" "Do Not Install Indexer"; do
-        case $indexer in
-            "Samourai Indexer (default)")
-                cat <<EOF
-${RED}
-***
-Installing Samourai Indexer...
-***
-${NC}
-EOF
-                _sleep
-                sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-                sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
-                break;;
-                # samourai indexer install enabled in .conf.tpl files using sed
-
-            "Electrum Rust Server")
-                cat <<EOF
-${RED}
-***
-Installing Electrum Rust Server...
-***
-${NC}
-EOF
-                _sleep
-                bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-                # triggers electrs install script
-
-            "Do Not Install Indexer")
-                cat <<EOF
-${RED}
-***
-An Indexer will not be installed during this upgrade...
-***
-${NC}
-EOF
-                _sleep
-                break;;
-                # indexer will not be installed
-            *)
-                cat <<EOF
-${RED}
-***
-Invalid Entry! Valid values are 1, 2, 3...
-***
-${NC}
-EOF
-                _sleep
-                ;;
-                # invalid data try again
-        esac
-    done
+    _no_indexer_found
+    # give user menu for install choices, see functions.sh
 else
     if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
         cat <<EOF

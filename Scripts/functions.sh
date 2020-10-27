@@ -535,6 +535,66 @@ _mempool_conf() {
 }
 
 #
+# No indexer was found so offer user choice of SW indexer, electrs, or none
+#
+_no_indexer_found() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    # indexer names here are used as data source
+    select indexer in "Samourai Indexer (default)" "Electrum Rust Server" "Do Not Install Indexer"; do
+        case $indexer in
+            "Samourai Indexer (default)")
+                cat <<EOF
+${RED}
+***
+Installing Samourai Indexer...
+***
+${NC}
+EOF
+                _sleep
+                sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
+                sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
+                break;;
+                # samourai indexer install enabled in .conf.tpl files using sed
+
+            "Electrum Rust Server")
+                cat <<EOF
+${RED}
+***
+Installing Electrum Rust Server...
+***
+${NC}
+EOF
+                _sleep
+                bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+                # triggers electrs install script
+
+            "Do Not Install Indexer")
+                cat <<EOF
+${RED}
+***
+An Indexer will not be installed during this upgrade...
+***
+${NC}
+EOF
+                _sleep
+                break;;
+                # indexer will not be installed
+            *)
+                cat <<EOF
+${RED}
+***
+Invalid Entry! Valid values are 1, 2, 3...
+***
+${NC}
+EOF
+                _sleep
+                ;;
+                # invalid data try again
+        esac
+    done
+}
+
+#
 # Check if my-dojo directory is missing
 #
 _is_dojo() {
