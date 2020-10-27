@@ -9,11 +9,10 @@ _load_user_conf
 OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
-         4 "Status"
-         5 "Logs"
-         6 "Install"
-         7 "Uninstall"
-         8 "Go Back")
+        #  4 "Status"
+         4 "Logs"
+        #  5 "Uninstall"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -127,21 +126,21 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         # start Ronin UI Backend, return to menu
         ;;
-    4)
-        cat <<EOF
-${RED}
-***
-Showing UI Backend Status...
-***
-${NC}
-EOF
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
-        pm2 status
+#     4)
+#         cat <<EOF
+# ${RED}
+# ***
+# Showing UI Backend Status...
+# ***
+# ${NC}
+# EOF
+#         cd "${RONIN_UI_BACKEND_DIR}" || exit
+#         pm2 status
 
-        read -n 1 -r -s
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        ;;
-    5)
+#         read -n 1 -r -s
+#         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+#         ;;
+    4)
         cat <<EOF
 ${RED}
 ***
@@ -155,55 +154,35 @@ EOF
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
-    6)
-        cat <<EOF
-${RED}
-***
-Installing Ronin UI Backend...
-***
+#     5)
+#         cd "${RONIN_UI_BACKEND_DIR}" || exit
 
-***
-Press Ctrl+C to cancel at anytime
-***
-${NC}
-EOF
-        _sleep 5 --msg "Installing in"
+#         cat <<EOF
+# ${RED}
+# ***
+# Uninstalling Ronin UI Backend...
+# ***
 
-        _install_ronin_ui_backend
+# ***
+# Press Ctrl+C to cancel at anytime
+# ***
+# ${NC}
+# EOF
+#         _sleep 5 --msg "Uninstall in"
 
-        _sleep 5 --msg "Sucessfully Installed, returning to menu in"
+#         # Delete app from process list
+#         pm2 delete "Ronin Backend" &>/dev/null
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        ;;
-    7)
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
+#         # dump all processes for resurrecting them later
+#         pm2 save 1>/dev/null
 
-        cat <<EOF
-${RED}
-***
-Uninstalling Ronin UI Backend...
-***
+#         # Remove ${RONIN_UI_BACKEND_DIR}
+#         cd "${HOME}" || exit
+#         rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
 
-***
-Press Ctrl+C to cancel at anytime
-***
-${NC}
-EOF
-        _sleep 5 --msg "Uninstall in"
-
-        # Delete app from process list
-        pm2 delete "Ronin Backend" &>/dev/null
-
-        # dump all processes for resurrecting them later
-        pm2 save 1>/dev/null
-
-        # Remove ${RONIN_UI_BACKEND_DIR}
-        cd "${HOME}" || exit
-        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
-
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        ;;
-    8)
+#         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+#         ;;
+    5)
         bash -c ronin
         # returns to main menu
         ;;

@@ -8,8 +8,9 @@ _load_user_conf
 
 OPTIONS=(1 "Upgrade Dojo"
          2 "Upgrade RoninDojo"
-         3 "Update System Packages"
-         4 "Go Back")
+         3 "Upgrade UI Backend"
+         4 "Update System Packages"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -40,7 +41,7 @@ DOJO
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
         ;;
-	2)
+        2)
         test -f "$HOME"/ronin-update.sh || sudo rm -f "$HOME"/ronin-update.sh
         # using -f here to avoid error output if "$HOME"/ronin-update.sh does not exist
 
@@ -56,7 +57,27 @@ EOF
         _update_ronin
         # see functions.sh
         ;;
-	3)
+        3)
+        cat <<EOF
+${RED}
+***
+Updating Ronin UI Backend...
+***
+
+***
+Press Ctrl+C to cancel at anytime
+***
+${NC}
+EOF
+        _sleep 5 --msg "Updating in"
+
+        _install_ronin_ui_backend
+
+        _sleep 5 --msg "Sucessfully Updated, returning to menu in"
+
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-system.sh
+        ;;
+	4)
         cat <<EOF
 ***
 Checking for system updates...
@@ -70,7 +91,7 @@ EOF
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
         # check for system updates, then return to menu
         ;;
-    4)
+    5)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # returns to main system menu
         ;;
