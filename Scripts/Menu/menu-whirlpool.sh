@@ -22,7 +22,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            _is_dojo $RONIN_WHIRLPOOL_MENU
+            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
             cat <<EOF
 ${RED}
 ***
@@ -55,7 +55,7 @@ EOF
             # start whirlpool, press to return to menu
             ;;
         2)
-            _is_dojo $RONIN_WHIRLPOOL_MENU
+            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
             cat <<EOF
 ${RED}
 ***
@@ -79,7 +79,7 @@ EOF
             # see defaults.sh
             ;;
         3)
-            _is_dojo $RONIN_WHIRLPOOL_MENU
+            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
             cat <<EOF
 ${RED}
 ***
@@ -106,7 +106,7 @@ EOF
             # see defaults.sh
 	        ;;
         4)
-            _is_dojo $RONIN_WHIRLPOOL_MENU
+            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
             cat <<EOF
 ${RED}
 ***
@@ -130,7 +130,7 @@ EOF
             # see defaults.sh
             ;;
         5)
-            _is_dojo $RONIN_WHIRLPOOL_MENU
+            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
             cat <<EOF
 ${RED}
 ***

@@ -539,8 +539,8 @@ _mempool_conf() {
 #
 _is_dojo() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
-     local menu
-     menu="$1"
+    local menu
+    menu="$1"
 
     if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
         cat <<DOJO

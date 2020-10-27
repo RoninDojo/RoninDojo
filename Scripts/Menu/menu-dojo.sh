@@ -33,7 +33,7 @@ case $CHOICE in
                 _sleep 5
                 bash -c "$RONIN_DOJO_MENU"
             else
-                _is_dojo $RONIN_DOJO_MENU
+                _is_dojo "${RONIN_DOJO_MENU}"
                 # is dojo installed?
 
                 echo -e "${RED}"
@@ -75,7 +75,7 @@ case $CHOICE in
             # press any letter to return to menu
             ;;
         3)
-            _is_dojo $RONIN_DOJO_MENU
+            _is_dojo "${RONIN_DOJO_MENU}"
             # is dojo installed?
 
             if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -123,7 +123,7 @@ DOJO
             fi
             ;;
         4)
-            _is_dojo $RONIN_DOJO_MENU
+            _is_dojo "${RONIN_DOJO_MENU}"
             # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
