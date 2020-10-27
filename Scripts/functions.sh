@@ -539,6 +539,8 @@ _mempool_conf() {
 #
 _is_dojo() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+     local menu
+     menu="$1"
 
     if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
         cat <<DOJO
@@ -548,47 +550,9 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
 ***
 ${NC}
 DOJO
-        bash -c "$RONIN_DOJO_MENU"
+        bash -c "$menu"
         exit 1
-    fi
-}
-
-#
-# Check if my-dojo directory is missing, return to dojo menu page 2
-#
-_is_dojo2() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
-    if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-        cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-        bash -c "$RONIN_DOJO_MENU2"
-        exit 1
-    fi
-}
-
-#
-# Check if whirlpool directory is missing
-#
-_is_whirlpool() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
-    if [ ! -d "${DOJO_PATH%/docker/my-dojo/whirlpool}" ]; then
-        cat <<WHIRLPOOL
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo/whirlpool} directory! Returning to menu...
-***
-${NC}
-WHIRLPOOL
-        bash -c "$RONIN_WHIRLPOOL_MENU"
-        exit 1
-    fi
+fi
 }
 
 #

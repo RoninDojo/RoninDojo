@@ -22,7 +22,7 @@ clear
 case $CHOICE in
         1)
             if ! _dojo_check "$DOJO_PATH"; then
-                _is_dojo2
+                _is_dojo $RONIN_DOJO_MENU2
             fi
             # is dojo installed?
 
@@ -103,7 +103,7 @@ DOJO
             ;;
         2)
             if ! _dojo_check "$DOJO_PATH"; then
-                _is_dojo2
+                _is_dojo $RONIN_DOJO_MENU2
             fi
             # is dojo installed?
 
@@ -127,7 +127,7 @@ DOJO
             ;;
         3)
             if ! _dojo_check "$DOJO_PATH"; then
-                _is_dojo2
+                _is_dojo $RONIN_DOJO_MENU2
             fi
             # is dojo installed?
 
@@ -152,7 +152,7 @@ DOJO
             ;;
         4)
             if ! _dojo_check "$DOJO_PATH"; then
-                _is_dojo2
+                _is_dojo $RONIN_DOJO_MENU2
             fi
             # is dojo installed?
 
@@ -161,7 +161,7 @@ DOJO
             ;;
         5)
             if ! _dojo_check "$DOJO_PATH"; then
-                _is_dojo2
+                _is_dojo $RONIN_DOJO_MENU2
             fi
             # is dojo installed?
 
