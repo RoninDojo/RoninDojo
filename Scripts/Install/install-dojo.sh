@@ -346,9 +346,9 @@ EOF
 _sleep 3
 
 # indexer names here are used as data source
-select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"; do
+select indexer in "Samourai Indexer (default)" "Electrum Rust Server" "Do Not Install Indexer"; do
   case $indexer in
-    "Samourai Indexer")
+    "Samourai Indexer (default)")
       cat <<EOF
 ${RED}
 ***
