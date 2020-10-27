@@ -23,6 +23,7 @@ declare -A package_dependencies=(
     [node]=nodejs
     [jq]=jq
     [pipenv]=python-pipenv
+    [sgdisk]=gptfdisk
 )
 
 #
