@@ -146,7 +146,6 @@ Are you sure you want to re-initiate Whirlpool? [Y/N]
 ***
 ${NC}
 EOF
-EOF
 
             read -rp "Y/N?: " yn
             case $yn in
