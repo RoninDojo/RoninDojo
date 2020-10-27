@@ -33,18 +33,7 @@ case $CHOICE in
                 _sleep 5
                 bash -c "$RONIN_DOJO_MENU"
             else
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
+                _is_dojo
                 # is dojo installed?
 
                 echo -e "${RED}"
@@ -86,18 +75,7 @@ DOJO
             # press any letter to return to menu
             ;;
         3)
-            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                _sleep 2
-                bash -c "$RONIN_DOJO_MENU"
-                exit 1
-            fi
+            _is_dojo
             # is dojo installed?
 
             if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -145,18 +123,7 @@ DOJO
             fi
             ;;
         4)
-            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                _sleep 2
-                bash -c "$RONIN_DOJO_MENU"
-                exit 1
-            fi
+            _is_dojo
             # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh

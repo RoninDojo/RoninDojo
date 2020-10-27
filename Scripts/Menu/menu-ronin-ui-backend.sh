@@ -144,6 +144,36 @@ EOF
         cat <<EOF
 ${RED}
 ***
+Showing UI Backend Status...
+***
+${NC}
+EOF
+
+        cat <<EOF
+${RED}
+***
+Press "q" key to exit at any time...
+***
+${NC}
+EOF
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
+        pm2 status
+
+        read -n 1 -r -s
+        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        ;;
+    5)
+        cat <<EOF
+${RED}
+***
+Showing UI Backend Logs...
+***
+${NC}
+EOF
+
+        cat <<EOF
+${RED}
+***
 Press "q" key to exit at any time...
 ***
 ${NC}

@@ -22,18 +22,7 @@ clear
 case $CHOICE in
         1)
             if ! _dojo_check "$DOJO_PATH"; then
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU2"
-                    exit 1
-                fi
+                _is_dojo2
             fi
             # is dojo installed?
 
@@ -114,20 +103,9 @@ DOJO
             ;;
         2)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU2"
-                    exit 1
-                fi
+                _is_dojo2
             fi
+            # is dojo installed?
 
             echo -e "${RED}"
             echo "***"
@@ -149,20 +127,9 @@ DOJO
             ;;
         3)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU2"
-                    exit 1
-                fi
+                _is_dojo2
             fi
+            # is dojo installed?
 
             echo -e "${RED}"
             echo "***"
@@ -185,40 +152,18 @@ DOJO
             ;;
         4)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU2"
-                    exit 1
-                fi
+                _is_dojo2
             fi
+            # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
         5)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU2"
-                    exit 1
-                fi
+                _is_dojo2
             fi
+            # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive

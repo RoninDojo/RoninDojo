@@ -223,7 +223,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Would like like to make any changes to your Indexer during this upgrade?
+Would you like to make any changes to your Indexer during this upgrade?
 ***
 ${NC}
 EOF
@@ -282,7 +282,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Would like like to make any changes to your Indexer during this upgrade?
+Would you like to make any changes to your Indexer during this upgrade?
 ***
 ${NC}
 EOF
