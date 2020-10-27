@@ -13,7 +13,8 @@ OPTIONS=(1 "Dojo"
          4 "Mempool"
          5 "UI Backend"
          6 "Bitcoind"
-         7 "Go Back")
+         7 "All Credentials"
+         8 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -38,9 +39,9 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Maintenance Tool            = http://$V3_ADDR_API/admin
-Admin Key                   = $NODE_ADMIN_KEY
-API Key                     = $NODE_API_KEY
+Maintenance Tool        = http://$V3_ADDR_API/admin
+Admin Key               = $NODE_ADMIN_KEY
+API Key                 = $NODE_API_KEY
 
 ${RED}
 ***
@@ -67,8 +68,8 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Whirlpool Tor URL           = http://$V3_ADDR_WHIRLPOOL
-Whirlpool API Key           = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
+Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
 ${RED}
 ***
@@ -108,7 +109,7 @@ Electrs Credentials
 ***
 ${NC}
 
-Electrs Tor URL = $V3_ADDR_ELECTRS
+Electrs Tor URL         = $V3_ADDR_ELECTRS
 MENU
         _sleep
         # displaying electrs tor address to connect to electrum
@@ -138,7 +139,7 @@ Mempool Credentials
 
 ***
 ${NC}
-Mempool Tor URL      = http://${V3_ADDR_MEMPOOL}
+Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
 ${RED}
 ***
 Press any key to return...
@@ -165,10 +166,10 @@ Ronin UI Backend Credentials
 ***
 ${NC}
 
-API_KEY     =   ${API_KEY}
-JWT_SECRET  =   ${JWT_SECRET}
-PORT        =   ${BACKEND_PORT}
-TOR_ADDRESS =   http://${BACKEND_TOR}
+Ronin API Key           =   ${API_KEY}
+JWT SECRET              =   ${JWT_SECRET}
+Port                    =   ${BACKEND_PORT}
+Ronin URL               =   http://${BACKEND_TOR}
 
 ${RED}
 ***
@@ -213,6 +214,113 @@ MENU
         # shows bitcoind and btc rpc explorer credentials and returns to menu
         ;;
         7)
+        cat <<WARNING
+${RED}
+***
+This is an exhausted list of all available credentials in your RoninDojo...
+***
+${NC}
+WARNING
+
+        _sleep 5 --msg "Showing credentials in "
+        cat <<MENU
+${RED}
+***
+Samourai Dojo Credentials
+***
+
+***
+WARNING: Do not share these onion addresses with anyone!
+***
+${NC}
+
+Maintenance Tool        = http://$V3_ADDR_API/admin
+Admin Key               = $NODE_ADMIN_KEY
+API Key                 = $NODE_API_KEY
+
+${RED}
+***
+Samourai Whirlpool Credentials
+***
+
+***
+WARNING: Do not share these onion addresses with anyone!
+***
+${NC}
+
+Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
+Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+
+${RED}
+***
+Electrs Credentials
+***
+${NC}
+
+Electrs Tor URL         = $V3_ADDR_ELECTRS
+
+${RED}
+***
+Mempool Credentials
+***
+
+***
+${NC}
+Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
+
+${RED}
+***
+Ronin UI Backend Credentials
+***
+${NC}
+
+Ronin API Key           =   ${API_KEY}
+JWT SECRET              =   ${JWT_SECRET}
+Port                    =   ${BACKEND_PORT}
+Ronin URL               =   http://${BACKEND_TOR}
+
+${RED}
+***
+Ronin UI Backend Credentials
+***
+${NC}
+
+API_KEY                 =   ${API_KEY}
+JWT_SECRET              =   ${JWT_SECRET}
+PORT                    =   ${BACKEND_PORT}
+TOR_ADDRESS             =   http://${BACKEND_TOR}
+
+${RED}
+***
+Bitcoin Credentials
+***
+${NC}
+
+Bitcoin Daemon:
+
+Tor URL                 = http://$V2_ADDR_BITCOIN
+RPC User                = $RPC_USER_CONF
+RPC Password            = $RPC_PASS_CONF
+RPC IP                  = $RPC_IP
+RPC Host                = $RPC_PORT
+
+Bitcoin RPC Explorer:
+
+Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
+Password                = $EXPLORER_KEY
+
+${RED}
+***
+Press any key to return...
+***
+${NC}
+MENU
+        read -n 1 -r -s
+        bash -c "$RONIN_CREDENTIALS_MENU"
+        # press any key to return to menu
+        # shows all credentials and returns to menu
+        ;;
+        8)
         ronin
         # returns to main menu
         ;;
