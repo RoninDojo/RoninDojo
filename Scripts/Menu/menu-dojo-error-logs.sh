@@ -40,7 +40,7 @@ DOJO
             cat <<LOGS
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 LOGS
@@ -69,7 +69,7 @@ DOJO
             cat <<LOGS
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 LOGS
@@ -97,7 +97,7 @@ DOJO
             cat <<LOGS
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 LOGS
@@ -125,7 +125,7 @@ DOJO
             cat <<LOGS
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 LOGS
@@ -153,7 +153,7 @@ DOJO
             cat <<LOGS
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 LOGS

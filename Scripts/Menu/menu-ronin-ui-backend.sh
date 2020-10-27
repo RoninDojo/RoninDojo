@@ -52,7 +52,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 EOF
@@ -89,7 +89,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 EOF
@@ -116,7 +116,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 EOF

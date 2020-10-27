@@ -237,7 +237,7 @@ _sleep 3
 
 echo -e "${RED}"
 echo "***"
-echo "Press any letter to continue..."
+echo "Press any key to continue..."
 echo "***"
 echo -e "${NC}"
 read -n 1 -r -s

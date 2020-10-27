@@ -447,7 +447,7 @@ _mempool_urls_to_local_btc_explorer
 cat <<DOJO
 ${RED}
 ***
-Press any letter to continue...
+Press any key to continue...
 ***
 ${NC}
 DOJO

@@ -44,7 +44,7 @@ API Key                     = $NODE_API_KEY
 
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 MENU
@@ -72,7 +72,7 @@ Whirlpool API Key           = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. 
 
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 MENU
@@ -121,7 +121,7 @@ Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 MENU
@@ -141,7 +141,7 @@ ${NC}
 Mempool Tor URL      = http://${V3_ADDR_MEMPOOL}
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 WHIRLPOOL
@@ -172,7 +172,7 @@ TOR_ADDRESS =   http://${BACKEND_TOR}
 
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 MENU
@@ -203,7 +203,7 @@ Password                = $EXPLORER_KEY
 
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 MENU

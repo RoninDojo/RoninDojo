@@ -71,7 +71,7 @@ Type: 'quit' at anytime to exit the Whirlpool Statitics Tool.
 ***
 
 ***
-Press any letter to continue...
+Press any key to continue...
 ***
 ${NC}
 WST

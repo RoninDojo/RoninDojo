@@ -39,7 +39,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
@@ -58,7 +58,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
@@ -80,7 +80,7 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s            
