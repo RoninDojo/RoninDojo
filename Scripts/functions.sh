@@ -358,7 +358,7 @@ EOF
         _install_ronin_ui_backend
         _sleep 2 --msg "Returning to menu in"
 
-        bash -c ronin
+        ronin
     fi
     # check if Ronin UI Backend is already installed
 }
@@ -575,7 +575,7 @@ Please contact support for assistance
 ${NC}
 EOF
         _sleep 5 --msg "Returning to main menu in"
-        bash -c ronin
+        ronin
     fi
 
     _is_active docker

@@ -183,7 +183,7 @@ EOF
 #         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
 #         ;;
     5)
-        bash -c ronin
+        ronin
         # returns to main menu
         ;;
 esac

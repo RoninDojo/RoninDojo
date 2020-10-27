@@ -147,7 +147,7 @@ case $CHOICE in
             # see defaults.sh
             ;;
         6)
-            bash -c ronin
+            ronin
             # return to menu
             ;;
 esac

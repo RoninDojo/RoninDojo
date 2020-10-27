@@ -32,7 +32,7 @@ RoninDojo is already installed...
 ${NC}
 DOJO
   _sleep 5 --msg "Returning to menu in"
-  bash -c ronin
+  ronin
 fi
 # Makes sure Dojo has been uninstalled
 

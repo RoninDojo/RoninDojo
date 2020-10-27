@@ -88,7 +88,7 @@ MEMPOOL
         # see defaults.sh
         ;;
     5)
-        bash -c ronin
+        ronin
         # return to menu
         ;;
 esac

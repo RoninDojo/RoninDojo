@@ -167,7 +167,7 @@ DOJO
             # takes you to ronin dojo menu2
             ;;
         6)
-            bash -c ronin
+            ronin
             # return to main ronin menu
             ;;
 esac

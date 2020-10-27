@@ -147,7 +147,7 @@ case $CHOICE in
             # start electrs, return to menu
             ;;
 	5)
-            bash -c ronin
+            ronin
             # returns to main menu
             ;;
 esac

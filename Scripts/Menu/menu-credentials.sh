@@ -213,7 +213,7 @@ MENU
         # shows bitcoind and btc rpc explorer credentials and returns to menu
         ;;
         7)
-        bash -c ronin
+        ronin
         # returns to main menu
         ;;
 esac

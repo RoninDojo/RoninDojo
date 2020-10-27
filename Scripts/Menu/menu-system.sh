@@ -105,7 +105,7 @@ case $CHOICE in
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
         ;;
     8)
-        bash -c ronin
+        ronin
         # returns to main menu
         ;;
 esac
