@@ -59,7 +59,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU}"
             # press any letter to return to menu
             ;;
         2)
@@ -71,7 +71,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU}"
             # press any letter to return to menu
             ;;
         3)
@@ -118,7 +118,7 @@ DOJO
                 echo "***"
                 echo -e "${NC}"
                 read -n 1 -r -s
-                bash -c "$RONIN_DOJO_MENU"
+                bash -c "${RONIN_DOJO_MENU}"
                 # press any letter to return to menu
             fi
             ;;
@@ -130,7 +130,7 @@ DOJO
             # go to dojo logs menu
             ;;
         5)
-            bash -c "$RONIN_DOJO_MENU2"
+            bash -c "${RONIN_DOJO_MENU2}"
             # takes you to ronin dojo menu2
             ;;
         6)

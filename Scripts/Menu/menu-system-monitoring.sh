@@ -77,7 +77,7 @@ EOF
         # press any key to return to menu
         ;;
     4)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
-        # returns to main menu
+        bash -c "${RONIN_SYSTEM_MENU}"
+        # returns to menu
         ;;
 esac

@@ -58,7 +58,7 @@ case $CHOICE in
         # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${STORAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
         ;;
     5)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
-        # returns to main menu
+        bash -c "${RONIN_SYSTEM_MENU}"
+        # returns to menu
         ;;
 esac

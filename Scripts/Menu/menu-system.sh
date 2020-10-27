@@ -6,12 +6,12 @@
 
 _load_user_conf
 
-OPTIONS=(1 "System Setup & Install"
-         2 "Software Updates"
-         3 "System Monitoring"
-         4 "Disk Storage"
-         5 "Restart"
-         6 "Power Off"
+OPTIONS=(1 "Disk Storage"
+         2 "Reboot"
+         3 "Power Off"
+         4 "Software Updates"
+         5 "System Monitoring"
+         6 "System Setup & Install"
          7 "Next Page"
          8 "Go Back")
 
@@ -26,22 +26,10 @@ clear
 
 case $CHOICE in
     1)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
-        # System Setup & Install menu
-        ;;
-    2)
-        bash -c "$RONIN_UPDATES_MENU"
-        # System updates menu
-        ;;
-    3)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
-        # System monitoring menu
-        ;;
-    4)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
         # System storage menu
         ;;
-    5)
+    2)
         if [ -d "$HOME"/dojo ]; then
             echo -e "${RED}"
             echo "***"
@@ -70,39 +58,51 @@ case $CHOICE in
             sudo systemctl reboot
             # restart machine
         fi
+        ;;
+    3)
+        if [ -d "$HOME"/dojo ]; then
+            echo -e "${RED}"
+            echo "***"
+            echo "Shutting down Dojo if running..."
+            echo "***"
+            echo -e "${NC}"
+            cd "${DOJO_PATH}" || exit
+            _stop_dojo
+            # stop dojo
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 5
+            sudo systemctl poweroff
+            # power off machine
+        else
+            echo -e "${RED}"
+            echo "***"
+            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 5
+            sudo systemctl poweroff
+            # power off machine
+        fi
+        ;;
+    4)
+        bash -c "$RONIN_UPDATES_MENU"
+        # System updates menu
+        ;;
+    5)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
+        # System monitoring menu
         ;;
     6)
-        if [ -d "$HOME"/dojo ]; then
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
-            cd "${DOJO_PATH}" || exit
-            _stop_dojo
-            # stop dojo
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
-            sudo systemctl poweroff
-            # power off machine
-        else
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
-            sudo systemctl poweroff
-            # power off machine
-        fi
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
+        # System Setup & Install menu
         ;;
     7)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
+        bash -c "${RONIN_SYSTEM_MENU2}"
         ;;
     8)
         ronin

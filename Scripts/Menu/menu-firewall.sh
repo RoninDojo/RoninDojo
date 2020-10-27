@@ -32,7 +32,7 @@ case $CHOICE in
             _sleep 2
             sudo ufw enable
             _sleep
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # enables firewall
             ;;
         2)
@@ -44,7 +44,7 @@ case $CHOICE in
             _sleep 2
             sudo ufw disable
             _sleep
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # disables firewall
             ;;
         3)
@@ -63,11 +63,11 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any key to return to menu
             ;;
         4)
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Find the rule you want to delete, and type its row number to delete it."
             echo "***"
@@ -111,7 +111,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any letter to return to menu
             ;;
         5)
@@ -122,7 +122,7 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo ufw reload
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # reload and return to menu
             ;;
         6)
@@ -188,7 +188,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any key to return to menu
             ;;
         7)
@@ -261,15 +261,15 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any key to return to menu
             ;;
         8)
-	    bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
+	        bash -c "${RONIN_FIREWALL_MENU2}"
             # go to next menu page
             ;;
         9)
-            bash "$HOME"/RoninDojo/ronin
+            bash -c ronin
             # return to main menu
             ;;
 esac
