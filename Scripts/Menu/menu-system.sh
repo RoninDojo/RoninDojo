@@ -7,8 +7,8 @@
 _load_user_conf
 
 OPTIONS=(1 "Disk Storage"
-         2 "Reboot"
-         3 "Power Off"
+         2 "Power Off"
+         3 "Reboot"
          4 "Software Updates"
          5 "System Monitoring"
          6 "System Setup & Install"
@@ -42,21 +42,21 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl reboot
-            # restart machine
+            sudo systemctl poweroff
+            # power off machine
         else
             echo -e "${RED}"
             echo "***"
-            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
+            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl reboot
-            # restart machine
+            sudo systemctl poweroff
+            # power off machine
         fi
         ;;
     3)
@@ -72,23 +72,24 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
+            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl poweroff
-            # power off machine
+            sudo systemctl reboot
+            # restart machine
         else
             echo -e "${RED}"
             echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
+            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl poweroff
-            # power off machine
+            sudo systemctl reboot
+            # restart machine
         fi
         ;;
+
     4)
         bash -c "$RONIN_UPDATES_MENU"
         # System updates menu

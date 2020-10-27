@@ -5,8 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Check Disk Space"
-         2 "Mount Existing Backup Drive"
-         3 "Unmount Existing Backup Drive"
+         2 "Mount Backup Drive"
+         3 "Unmount Backup Drive"
          4 "Format & Mount New Backup Drive"
          5 "Go Back")
 

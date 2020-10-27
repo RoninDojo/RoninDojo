@@ -87,7 +87,7 @@ case $CHOICE in
             # copy block data to backup drive
             ;;
         5)
-            bash -c "${RONIN_DOJO_MENU2}"
+            bash -c "${RONIN_DOJO_MENU}"
             # return to main menu
             ;;
 esac
