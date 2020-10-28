@@ -4,12 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Uninstall Dojo"
-         2 "Clean Dojo"
-         3 "Dojo Version"
-         4 "Receive Block Data from Backup"
-         5 "Send Block Data to Backup"
-         6 "Go Back")
+OPTIONS=(1 "Clean Dojo"
+         2 "Dojo Version"
+         3 "Receive Block Data from Backup"
+         4 "Send Block Data to Backup"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -22,112 +21,9 @@ clear
 case $CHOICE in
         1)
             if ! _dojo_check "$DOJO_PATH"; then
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
+                _is_dojo "${RONIN_DOJO_MENU2}"
             fi
             # is dojo installed?
-
-            cat <<DOJO
-${RED}
-***
-Uninstalling Dojo in 10s...
-***
-${NC}
-
-${RED}
-***
-Users with a fully synced Blockchain should answer yes to salvage!
-***
-${NC}
-
-${RED}
-***
-WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!
-***
-${NC}
-DOJO
-            _sleep 10
-
-            echo -e "${RED}"
-            echo "Do you want to salvage your Blockchain data?"
-            echo -e "${NC}"
-            while true; do
-                read -rp "Y/N?: " yn
-                case $yn in
-                    [Yy]* ) echo -e "${RED}"
-                            echo "***"
-                            echo "Copying block data to temporary directory..."
-                            echo "***"
-                            echo -e "${NC}"
-                            _sleep 2
-                            cd "$DOJO_PATH" || exit
-                            _stop_dojo
-                            # stop dojo
-
-                            test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
-                            # check if salvage directory exist
-
-                            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/
-                            # copies blockchain data to uninstall-salvage to be used by the dojo install script
-                            break;;
-                    [Nn]* ) break;;
-                    * ) echo "Please answer yes or no.";;
-                esac
-            done
-
-            "${DOJO_RESTORE}" && _dojo_backup
-            "${TOR_RESTORE}" && _tor_backup
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Uninstalling Dojo..."
-            echo "***"
-            echo -e "${NC}"
-            cd "$DOJO_PATH" || exit
-            ./dojo.sh uninstall && sudo rm -rf "${DOJO_PATH%/docker/my-dojo}"
-            cd "${HOME}" || exit
-            # uninstall dojo
-
-            # Restart docker daemon
-            sudo systemctl restart docker
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Complete!"
-            echo "***"
-            echo -e "${NC}"
-
-            _sleep 5 --msg "Returning to menu in"
-
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
-            # return to menu
-            ;;
-        2)
-            if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
-            fi
 
             echo -e "${RED}"
             echo "***"
@@ -144,25 +40,14 @@ DOJO
             cd "$DOJO_PATH" || exit
             ./dojo.sh clean
 
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU2}"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
-        3)
+        2)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
+                _is_dojo "${RONIN_DOJO_MENU2}"
             fi
+            # is dojo installed?
 
             echo -e "${RED}"
             echo "***"
@@ -180,51 +65,29 @@ DOJO
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU2}"
             # press any letter to return
             ;;
-        4)
+        3)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
+                _is_dojo "${RONIN_DOJO_MENU2}"
             fi
+            # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Install/install-receive-block-data.sh
             # copy block data from backup drive
             ;;
-        5)
+        4)
             if ! _dojo_check "$DOJO_PATH"; then
-                # Is dojo installed?
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
+                _is_dojo "${RONIN_DOJO_MENU2}"
             fi
+            # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Install/install-send-block-data.sh
             # copy block data to backup drive
             ;;
-        6)
-            bash -c "$RONIN_DOJO_MENU"
+        5)
+            bash -c "${RONIN_DOJO_MENU}"
             # return to main menu
             ;;
 esac

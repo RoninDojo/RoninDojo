@@ -108,8 +108,7 @@ Checking for Indexer...
 ***
 ${NC}
 EOF
-    _sleep 1
-    # if indexer and electrs are not found then give user menu for install choices
+    _sleep 
 
     cat <<EOF
 ${RED}
@@ -118,7 +117,7 @@ No Indexer found...
 ***
 ${NC}
 EOF
-    _sleep 1
+    _sleep 
 
     cat <<EOF
 ${RED}
@@ -150,204 +149,152 @@ EOF
     cat <<EOF
 ${RED}
 ***
+Skipping the installation of either Indexer option is ok! You can always install later...
+***
+${NC}
+EOF
+_sleep 3
+
+    cat <<EOF
+${RED}
+***
 Choose one of the following options for your Indexer...
 ***
 ${NC}
 EOF
     _sleep 3
-
-    # indexer names here are used as data source
-    select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"; do
-        case $indexer in
-            "Samourai Indexer")
-                cat <<EOF
-${RED}
-***
-Installing Samourai Indexer...
-***
-${NC}
-EOF
-                _sleep
-                sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-                sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
-                break;;
-                # samourai indexer install enabled in .conf.tpl files using sed
-
-            "Electrum Rust Server")
-                cat <<EOF
-${RED}
-***
-Installing Electrum Rust Server...
-***
-${NC}
-EOF
-                _sleep
-                bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-                # triggers electrs install script
-
-            "Do Not Install Indexer")
-                cat <<EOF
-${RED}
-***
-An Indexer will not be installed during this upgrade...
-***
-${NC}
-EOF
-                _sleep
-                break;;
-                # indexer will not be installed
-            *)
-                cat <<EOF
-${RED}
-***
-Invalid Entry! Valid values are 1, 2, 3...
-***
-${NC}
-EOF
-                _sleep
-                ;;
-                # invalid data try again
-        esac
-    done
+    _no_indexer_found
+    # give user menu for install choices, see functions.sh
 else
-    cat <<EOF
-${RED}
-***
-Checking for Indexer...
-***
-${NC}
-EOF
-    _sleep 1
-
-    if grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null; then
+    if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
         cat <<EOF
 ${RED}
 ***
-No Indexer found...
+Samourai Indexer found...
+***
+${NC}
+EOF
+        _sleep 2
+
+        cat <<EOF
+${RED}
+***
+Would you like to make any changes to your Indexer during this upgrade?
 ***
 ${NC}
 EOF
         _sleep 3
 
-        cat <<EOF
+        select indexer in "Keep Samourai Indexer (default)" "Replace With Electrum Rust Server"; do
+            case $indexer in
+                "Keep Samourai Indexer (default)")
+                    cat <<EOF
 ${RED}
 ***
-If you want to install Samourai Indexer press "Y" when prompted...
+Keeping Samourai Indexer...
 ***
 ${NC}
+EOF
+                    _sleep
+                    break;;
+                    # keep the samourai indexer
 
+                "Replace With Electrum Rust Server")
+                    cat <<EOF
 ${RED}
 ***
-This is recommended for most users as it helps with querying balances...
+Replacing with Electrum Rust Server...
 ***
 ${NC}
 EOF
-        _sleep 5
-        cat <<EOF
+                    _sleep
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+                    # triggers electrs install script
+                *)
+                    cat <<EOF
 ${RED}
 ***
-Do you want to install an Indexer? [y/n]
+Invalid Entry! Valid values are 1 or 2...
 ***
 ${NC}
 EOF
-        read -r yn
-        case $yn in
-            [Y/y]* )
-                     sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-                     sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf;;
-            [N/n]* ) cat <<EOF
-${RED}
-***
-Indexer will not be installed...
-***
-${NC}
-EOF
+                    _sleep
                     ;;
-            * ) printf "\nPlease answer Yes or No.\n";;
-        esac
-    else
-        cat <<EOF
-${RED}
-***
-Indexer is already installed...
-***
-${NC}
-EOF
+                    # invalid data try again
+            esac
+        done
     fi
-        # if docker-indexer.conf is not found prompt user to select
-        # for elif, if grep search INDEXER_INSTALL=off works, prompt user
-        # else informs user indexer is already installed
 
-    cat <<EOF
-${RED}
-***
-Checking for Electrum Rust Server...
-***
-${NC}
-EOF
-    _sleep 1
-
-    if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
+    if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
         cat <<EOF
 ${RED}
 ***
-No Electrum Rust Server found...
+Electrum Rust Server found...
 ***
 ${NC}
 EOF
-       _sleep 3
+        _sleep 2
 
-       cat <<EOF
-${RED}
-***
-If you want to install Electrum Rust Server press "Y" when prompted...
-***
-${NC}
-
-${RED}
-***
-Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
-***
-${NC}
-EOF
-       _sleep 5
-       read -rp "Do you want to install Electrum Rust Server? [y/n]" yn
-       case $yn in
-           [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-           [N/n]* ) cat <<EOF
-${RED}
-***
-Electrum Rust Server will not be installed!
-***
-${NC}
-EOF
-                    ;;
-           * ) printf "\nPlease answer Yes or No.\n";;
-        esac
-    else
         cat <<EOF
 ${RED}
 ***
-Electrum Rust Server is already installed!
+Would you like to make any changes to your Indexer during this upgrade?
 ***
 ${NC}
 EOF
         _sleep 3
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+
+        select indexer in "Keep Electrum Rust Server (default)" "Replace With Samourai Indexer"; do
+            case $indexer in
+                "Keep Electrum Rust Server (default)")
+                    cat <<EOF
+${RED}
+***
+Keeping Electrum Rust Server...
+***
+${NC}
+EOF
+                    _sleep
+                    break;;
+                    # keep electrum rust server
+
+                "Replace With Samourai Indexer")
+                    cat <<EOF
+${RED}
+***
+Replacing with Samourai Indexer...
+***
+${NC}
+EOF
+                    _sleep
+                    rm -r "${DOJO_PATH}"/indexer/electrs.toml
+                    ;;
+                    # erase electrs toml file and trigger samourai indexer install
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid Entry! Valid values are 1 or 2...
+***
+${NC}
+EOF
+                    _sleep
+                    ;;
+                    # invalid data try again
+            esac
+        done
     fi
-# if electrs.toml is not found the user is prompted to select y/n
-# else informs user indexer is already installed
 fi
 
 if _is_mempool; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [y/n]
+Do you want to install the Mempool Visualizer? [Y/N]
 ***
 ${NC}
 EOF
-    read -r yn
+    read -rp "Y/N?: " yn
     case $yn in
         [Y/y]* )
                 if [ ! -f "${DOJO_PATH}"/conf/docker-mempool.conf ]; then # New install

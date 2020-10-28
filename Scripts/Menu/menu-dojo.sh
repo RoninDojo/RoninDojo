@@ -33,18 +33,7 @@ case $CHOICE in
                 _sleep 5
                 bash -c "$RONIN_DOJO_MENU"
             else
-                if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                    cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                    _sleep 2
-                    bash -c "$RONIN_DOJO_MENU"
-                    exit 1
-                fi
+                _is_dojo "${RONIN_DOJO_MENU}"
                 # is dojo installed?
 
                 echo -e "${RED}"
@@ -70,7 +59,7 @@ DOJO
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU}"
             # press any letter to return to menu
             ;;
         2)
@@ -82,22 +71,11 @@ DOJO
             echo "***"
             echo -e "${NC}"
             read -n 1 -r -s
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU}"
             # press any letter to return to menu
             ;;
         3)
-            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                _sleep 2
-                bash -c "$RONIN_DOJO_MENU"
-                exit 1
-            fi
+            _is_dojo "${RONIN_DOJO_MENU}"
             # is dojo installed?
 
             if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
@@ -140,30 +118,19 @@ DOJO
                 echo "***"
                 echo -e "${NC}"
                 read -n 1 -r -s
-                bash -c "$RONIN_DOJO_MENU"
+                bash -c "${RONIN_DOJO_MENU}"
                 # press any letter to return to menu
             fi
             ;;
         4)
-            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-                cat <<DOJO
-${RED}
-***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
-***
-${NC}
-DOJO
-                _sleep 2
-                bash -c "$RONIN_DOJO_MENU"
-                exit 1
-            fi
+            _is_dojo "${RONIN_DOJO_MENU}"
             # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;
         5)
-            bash -c "$RONIN_DOJO_MENU2"
+            bash -c "${RONIN_DOJO_MENU2}"
             # takes you to ronin dojo menu2
             ;;
         6)

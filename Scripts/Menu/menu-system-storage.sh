@@ -5,8 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Check Disk Space"
-         2 "Mount Existing Backup Drive"
-         3 "Unmount Existing Backup Drive"
+         2 "Mount Backup Drive"
+         3 "Unmount Backup Drive"
          4 "Format & Mount New Backup Drive"
          5 "Go Back")
 
@@ -58,7 +58,7 @@ case $CHOICE in
         # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${STORAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
         ;;
     5)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
-        # returns to main menu
+        bash -c "${RONIN_SYSTEM_MENU}"
+        # returns to menu
         ;;
 esac

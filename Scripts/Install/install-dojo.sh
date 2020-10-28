@@ -344,69 +344,19 @@ Choose one of the following options for your Indexer...
 ${NC}
 EOF
 _sleep 3
-
-# indexer names here are used as data source
-select indexer in "Samourai Indexer" "Electrum Rust Server" "Do Not Install Indexer"; do
-  case $indexer in
-    "Samourai Indexer")
-      cat <<EOF
-${RED}
-***
-Installing Samourai Indexer...
-***
-${NC}
-EOF
-      _sleep
-      sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
-      sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
-      break;;
-      # samourai indexer install enabled in .conf.tpl files using sed
-    "Electrum Rust Server")
-      cat <<EOF
-${RED}
-***
-Installing Electrum Rust Server...
-***
-${NC}
-EOF
-      _sleep
-      bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh;;
-      # triggers electrs install script
-  "Do Not Install Indexer")
-    cat <<EOF
-${RED}
-***
-Indexer will not be installed...
-***
-${NC}
-EOF
-    _sleep
-    break;;
-    # indexer will not be installed
-  *)
-    cat <<EOF
-${RED}
-***
-Invalid Entry!
-***
-${NC}
-EOF
-    _sleep
-    ;;
-    # invalid data try again
-  esac
-done
+_no_indexer_found
+# give user menu for install choices, see functions.sh
 
 if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}/conf/docker-mempool.conf" 1>/dev/null; then
   cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [y/n]
+Do you want to install the Mempool Visualizer? [Y/N]
 ***
 ${NC}
 EOF
 
-  read -r yn
+  read -rp "Y/N?: " yn
   case $yn in
       [Y/y]* )
           _mempool_conf conf.tpl

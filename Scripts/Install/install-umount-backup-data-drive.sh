@@ -40,7 +40,7 @@ echo -e "${NC}"
 _sleep 3
 
 echo -e "${RED}"
-echo "Are you ready to umount?"
+echo "Are you ready to umount? [Y/N]"
 echo -e "${NC}"
 while true; do
     read -rp "Y/N?: " yn
