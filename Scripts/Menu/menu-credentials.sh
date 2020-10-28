@@ -109,7 +109,7 @@ Press any key to return...
 ${NC}
 MENU
         else
-                read -n 1 -r -s
+                _sleep 2
                 bash -c "$RONIN_CREDENTIALS_MENU"
                 # return to menu
         fi
