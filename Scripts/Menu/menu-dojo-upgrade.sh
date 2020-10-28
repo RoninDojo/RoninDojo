@@ -22,7 +22,7 @@ EOF
 fi
 # check if tmp dir was created
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Upgrading Dojo in 10s...
@@ -108,7 +108,7 @@ Checking for Indexer...
 ***
 ${NC}
 EOF
-    _sleep 
+    _sleep
 
     cat <<EOF
 ${RED}
@@ -117,7 +117,7 @@ No Indexer found...
 ***
 ${NC}
 EOF
-    _sleep 
+    _sleep
 
     cat <<EOF
 ${RED}
@@ -135,7 +135,7 @@ Samourai Indexer is recommended for most users as it helps with querying balance
 ***
 ${NC}
 EOF
-    _sleep 3
+    _sleep 2
 
     cat <<EOF
 ${RED}
@@ -144,7 +144,7 @@ Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other El
 ***
 ${NC}
 EOF
-    _sleep 3
+    _sleep 2
 
     cat <<EOF
 ${RED}
@@ -153,7 +153,7 @@ Skipping the installation of either Indexer option is ok! You can always install
 ***
 ${NC}
 EOF
-_sleep 3
+    _sleep 2
 
     cat <<EOF
 ${RED}
@@ -162,7 +162,8 @@ Choose one of the following options for your Indexer...
 ***
 ${NC}
 EOF
-    _sleep 3
+    _sleep 2
+
     _no_indexer_found
     # give user menu for install choices, see functions.sh
 else
@@ -183,7 +184,7 @@ Would you like to make any changes to your Indexer during this upgrade?
 ***
 ${NC}
 EOF
-        _sleep 3
+        _sleep 2
 
         select indexer in "Keep Samourai Indexer (default)" "Replace With Electrum Rust Server"; do
             case $indexer in
@@ -267,7 +268,7 @@ Replacing with Samourai Indexer...
 ${NC}
 EOF
                     _sleep
-                    rm -r "${DOJO_PATH}"/indexer/electrs.toml
+                    rm "${DOJO_PATH}"/indexer/electrs.toml
                     ;;
                     # erase electrs toml file and trigger samourai indexer install
                 *)
@@ -325,6 +326,7 @@ fi
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
+
    cat <<EOF
 ${RED}
 ***
@@ -353,7 +355,7 @@ For pairing information see the wiki...
 ***
 ${NC}
 EOF
-   _sleep 3
+   _sleep 2
 fi
 # stop whirlpool for existing whirlpool users
 

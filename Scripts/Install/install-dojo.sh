@@ -106,195 +106,54 @@ $HOME/.conf/RoninDojo/user.conf
 EOF
   fi
 else
-  # TODO sed template files on the fly instead
-  cat << EOF > "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
-#########################################
-# CONFIGURATION OF BITCOIND CONTAINER
-#########################################
-# User account used for rpc access to bitcoind
-# Type: alphanumeric
-BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$RPC_USER}
-# Password of user account used for rpc access to bitcoind
-# Type: alphanumeric
-BITCOIND_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD:-$RPC_PASS}
-# Max number of connections to network peers
-# Type: integer
-BITCOIND_MAX_CONNECTIONS=16
-# Mempool maximum size in MB
-# Type: integer
-BITCOIND_MAX_MEMPOOL=400
-# Db cache size in MB
-# Type: integer
-BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}
-# Number of threads to service RPC calls
-# Type: integer
-BITCOIND_RPC_THREADS=6
-# RPC Work queue size
-# Type: integer
-BITCOIND_RPC_WORK_QUEUE=16
-# Mempool expiry in hours
-# Defines how long transactions stay in your local mempool before expiring
-# Type: integer
-BITCOIND_MEMPOOL_EXPIRY=72
-# Min relay tx fee in BTC
-# Type: numeric
-BITCOIND_MIN_RELAY_TX_FEE=0.00001
-# Allow incoming connections
-# This parameter is inactive if BITCOIND_INSTALL is set to 'off'
-# Values: on | off
-BITCOIND_LISTEN_MODE=on
-
-#
-# EXPERT SETTINGS
-#
-#
-# EPHEMERAL ONION ADDRESS FOR BITCOIND
-# THIS PARAMETER HAS NO EFFECT IF BITCOIND_INSTALL IS SET TO OFF
-#
-# Generate a new onion address for bitcoind when Dojo is launched
-# Activation of this option is recommended for improved privacy.
-# Values: on | off
-BITCOIND_EPHEMERAL_HS=on
-#
-# EXPOSE BITCOIND RPC API AND ZMQ NOTIFICATIONS TO EXTERNAL APPS
-# THESE PARAMETERS HAVE NO EFFECT IF BITCOIND_INSTALL IS SET TO OFF
-#
-# Expose the RPC API to external apps
-# Warning: Do not expose your RPC API to internet!
-# See BITCOIND_RPC_EXTERNAL_IP
-# Value: on | off
-BITCOIND_RPC_EXTERNAL=${BITCOIND_RPC_EXTERNAL:-on}
-# IP address used to expose the RPC API to external apps
-# This parameter is inactive if BITCOIND_RPC_EXTERNAL isn't set to 'on'
-# Warning: Do not expose your RPC API to internet!
-# Recommended value:
-#   linux: 127.0.0.1
-#   macos or windows: IP address of the VM running the docker host
-# Type: string
-BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}
-#
-# INSTALL AND RUN BITCOIND INSIDE DOCKER
-#
-# Install and run bitcoind inside Docker
-# Set this option to 'off' for using a bitcoind hosted outside of Docker (not recommended)
-# Value: on | off
-BITCOIND_INSTALL=on
-# IP address of bitcoind used by Dojo
-# Set value to 172.28.1.5 if BITCOIND_INSTALL is set to 'on'
-# Type: string
-BITCOIND_IP=172.28.1.5
-# Port of the RPC API
-# Set value to 28256 if BITCOIND_INSTALL is set to 'on'
-# Type: integer
-BITCOIND_RPC_PORT=28256
-# Port exposing ZMQ notifications for raw transactions
-# Set value to 9501 if BITCOIND_INSTALL is set to 'on'
-# Type: integer
-BITCOIND_ZMQ_RAWTXS=9501
-# Port exposing ZMQ notifications for block hashes
-# Set value to 9502 if BITCOIND_INSTALL is set to 'on'
-# Type: integer
-BITCOIND_ZMQ_BLK_HASH=9502
-#
-# SHUTDOWN
-#
-# Max delay for bitcoind shutdown (expressed in seconds)
-# Defines how long Dojo waits for a clean shutdown of bitcoind before shutting down the bitcoind container
-# This parameter is inactive if BITCOIND_INSTALL is set to 'off'
-# Type: integer
-BITCOIND_SHUTDOWN_DELAY=180
+  cat <<EOF
+${RED}
+***
+Configuring the bitcoin daemon server...
+***
+${NC}
 EOF
-  # create new docker bitcoind conf file
-  # websearch "bash heredoc" for info on redirection
+  _sleep
+  sed -i -e "s/BITCOIND_RPC_USER=.*$/BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$RPC_USER}/" \
+    -e "s/BITCOIND_RPC_PASSWORD=.*$/BITCOIND_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD:-$RPC_PASS}/" \
+    -e "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}/" \
+    -e "s/BITCOIND_MAX_MEMPOOL=.*$/BITCOIND_MAX_MEMPOOL=400/" \
+    -e "s/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=${BITCOIND_RPC_EXTERNAL:-on}/" \
+    -e "s/BITCOIND_RPC_EXTERNAL_IP=.*$/BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}/" "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
+  # populate docker-bitcoind.conf.tpl template
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Setting the Node API Key and JWT Secret..."
-  echo "***"
-  echo -e "${NC}"
+  cat <<EOF
+${RED}
+***
+Configuring the Nodejs container...
+***
+${NC}
+EOF
   _sleep
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Setting the Node Admin Key..."
-  echo "***"
-  echo -e "${NC}"
+  sed -i -e "s/NODE_API_KEY=.*$/NODE_API_KEY=${NODE_API_KEY}/" \
+    -e "s/NODE_ADMIN_KEY=.*$/NODE_ADMIN_KEY=${NODE_ADMIN_KEY}/" \
+    -e "s/NODE_JWT_SECRET=.*$/NODE_JWT_SECRET=${NODE_JWT_SECRET}/" \
+    -e "s/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=${NODE_ACTIVE_INDEXER:-local_bitcoind}/" "${DOJO_PATH}"/conf/docker-node.conf.tpl
+  # populate docker-node.conf.tpl template
+
+  sed -i -e "s/MYSQL_ROOT_PASSWORD=.*$/MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}/" \
+    -e "s/MYSQL_USER=.*$/MYSQL_USER=${MYSQL_USER}/" \
+    -e "s/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=${MYSQL_PASSWORD}/" "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
+  # populate docker-mysql.conf.tpl template
+
+  cat <<EOF
+${RED}
+***
+Configuring the BTC RPC Explorer...
+***
+${NC}
+EOF
   _sleep
 
-  cat << EOF > "${DOJO_PATH}"/conf/docker-node.conf.tpl
-#########################################
-# CONFIGURATION OF NODE JS CONTAINER
-#########################################
-# API key required for accessing the services provided by the server
-# Keep this API key secret!
-# Provide a value with a high entropy!
-# Type: alphanumeric
-NODE_API_KEY=$NODE_API_KEY
-
-# API key required for accessing the admin/maintenance services provided by the server
-# Keep this Admin key secret!
-# Provide a value with a high entropy!
-# Type: alphanumeric
-NODE_ADMIN_KEY=$NODE_ADMIN_KEY
-
-# Secret used by the server for signing Json Web Token
-# Keep this value secret!
-# Provide a value with a high entropy!
-# Type: alphanumeric
-NODE_JWT_SECRET=$NODE_JWT_SECRET
-
-# Indexer or third-party service used for imports and rescans of addresses
-# Values: local_bitcoind | third_party_explorer
-NODE_ACTIVE_INDEXER=${NODE_ACTIVE_INDEXER:-local_bitcoind}
-
-# FEE TYPE USED FOR FEES ESTIMATIONS BY BITCOIND
-# Allowed values are ECONOMICAL or CONSERVATIVE
-NODE_FEE_TYPE=ECONOMICAL
-EOF
-  # create new docker node conf file
-  # websearch "bash heredoc" for info on redirection
-
-  cat << EOF > "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
-#########################################
-# CONFIGURATION OF MYSQL CONTAINER
-#########################################
-# Password of MySql root account
-# Type: alphanumeric
-MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-# User account used for db access
-# Type: alphanumeric
-MYSQL_USER=$MYSQL_USER
-# Password of of user account
-# Type: alphanumeric
-MYSQL_PASSWORD=$MYSQL_PASSWORD
-EOF
-  # create new mysql conf file
-  # websearch "bash heredoc" for info on redirection
-
-  # BTC-EXPLORER PASSWORD
-  echo -e "${RED}"
-  echo "***"
-  echo "Installing your Dojo-backed Bitcoin Explorer..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep
-
-  cat << EOF > "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
-#########################################
-# CONFIGURATION OF EXPLORER CONTAINER
-#########################################
-# Install and run a block explorer inside Dojo (recommended)
-# Value: on | off
-EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}
-# Password required for accessing the block explorer
-# (login can be anything)
-# Keep this password secret!
-# Provide a value with a high entropy!
-# Type: alphanumeric
-EXPLORER_KEY=$EXPLORER_KEY
-EOF
-  # create new block explorer conf file
-  # websearch "bash heredoc" for info on redirection
+  sed -i -e "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}/" \
+    -e "s/EXPLORER_KEY=.*$/EXPLORER_KEY=${EXPLORER_KEY}/" "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
+  # populate docker-explorer.conf.tpl template
 
   # Backup credentials
   _dojo_backup
@@ -361,8 +220,6 @@ EOF
       [Y/y]* )
           _mempool_conf conf.tpl
         ;;
-      [N/n]* ) echo "Mempool will not be installed!";;
-      * ) echo "Please answer Yes or No.";;
   esac
   # install mempool prompt
 fi
@@ -382,7 +239,7 @@ _sleep 5
 
 echo -e "${RED}"
 echo "***"
-echo "Installing Dojo..."
+echo "Installing Samourai Dojo..."
 echo "***"
 echo -e "${NC}"
 _sleep 2
