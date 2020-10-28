@@ -250,8 +250,6 @@ ${RED}
 ***
 Mempool Credentials
 ***
-
-***
 ${NC}
 Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
 
@@ -265,17 +263,6 @@ Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
 Port                    =   ${BACKEND_PORT}
 Ronin URL               =   http://${BACKEND_TOR}
-
-${RED}
-***
-Ronin UI Backend Credentials
-***
-${NC}
-
-API_KEY                 =   ${API_KEY}
-JWT_SECRET              =   ${JWT_SECRET}
-PORT                    =   ${BACKEND_PORT}
-TOR_ADDRESS             =   http://${BACKEND_TOR}
 
 ${RED}
 ***
