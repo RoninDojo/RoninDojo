@@ -49,7 +49,7 @@ Press any key to return...
 ***
 ${NC}
 MENU
-            read -n 1 -r -s
+            _pause
             bash -c "$RONIN_CREDENTIALS_MENU"
             # press any key to return to menu
             # shows samouraio dojo credentials and returns to menu
@@ -77,7 +77,7 @@ Press any key to return...
 ***
 ${NC}
 MENU
-        read -n 1 -r -s
+        _pause
         bash -c "$RONIN_CREDENTIALS_MENU"
         # press any key to return to menu
         # shows whirlpool credentials and returns to menu
@@ -130,7 +130,7 @@ Press any key to return...
 ***
 ${NC}
 WHIRLPOOL
-        read -n 1 -r -s
+        _pause
         bash -c "$RONIN_MEMPOOL_MENU"
         # press any key to return to menu
         # see defaults.sh
@@ -156,7 +156,7 @@ Press any key to return...
 ***
 ${NC}
 MENU
-        read -n 1 -r -s
+        _pause
         bash -c "$RONIN_CREDENTIALS_MENU"
         # shows Ronin UI Backend credentials, returns to menu
         ;;
@@ -187,7 +187,7 @@ Press any key to return...
 ***
 ${NC}
 MENU
-        read -n 1 -r -s
+        _pause
         bash -c "$RONIN_CREDENTIALS_MENU"
         # press any key to return to menu
         # shows bitcoind and btc rpc explorer credentials and returns to menu
@@ -289,7 +289,7 @@ Press any key to return...
 ***
 ${NC}
 MENU
-        read -n 1 -r -s
+        _pause
         bash -c "$RONIN_CREDENTIALS_MENU"
         # press any key to return to menu
         # shows all credentials and returns to menu

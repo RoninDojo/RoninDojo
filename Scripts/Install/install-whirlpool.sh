@@ -240,5 +240,5 @@ echo "***"
 echo "Press any key to continue..."
 echo "***"
 echo -e "${NC}"
-read -n 1 -r -s
+_pause
 # will return to menu as long as [*] Go Back was selected

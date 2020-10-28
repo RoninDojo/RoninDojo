@@ -49,7 +49,7 @@ EOF
         echo "Press any key to return..."
         echo "***"
         echo -e "${NC}"
-        read -n 1 -r -s
+        _pause
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # press any key to return to menu
         ;;
@@ -72,7 +72,7 @@ EOF
         echo "Press any key to return..."
         echo "***"
         echo -e "${NC}"
-        read -n 1 -r -s
+        _pause
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # press any key to return to menu
         ;;

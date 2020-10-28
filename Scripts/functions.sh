@@ -207,6 +207,13 @@ _sleep() {
 }
 
 #
+# Pause script
+#
+_pause() {
+    read -n 1 -r -s
+}
+
+#
 # is systemd unit service active?
 #
 _is_active() {

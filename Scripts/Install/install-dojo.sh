@@ -402,7 +402,7 @@ Press any key to continue...
 ${NC}
 DOJO
 
-read -n 1 -r -s
+_pause
 # press to continue is needed because sudo password can be requested for next steps
 # if the user is AFK there may be timeout
 

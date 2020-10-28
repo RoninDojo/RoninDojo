@@ -44,7 +44,7 @@ Press any key to return...
 ***
 ${NC}
 LOGS
-              read -n 1 -r -s
+              _pause
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               # press any key to return to menu
             fi
@@ -73,7 +73,7 @@ Press any key to return...
 ***
 ${NC}
 LOGS
-            read -n 1 -r -s
+            _pause
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
 	          ;;
@@ -101,7 +101,7 @@ Press any key to return...
 ***
 ${NC}
 LOGS
-            read -n 1 -r -s
+            _pause
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
@@ -129,7 +129,7 @@ Press any key to return...
 ***
 ${NC}
 LOGS
-            read -n 1 -r -s
+            _pause
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
@@ -157,7 +157,7 @@ Press any key to return...
 ***
 ${NC}
 LOGS
-            read -n 1 -r -s
+            _pause
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;

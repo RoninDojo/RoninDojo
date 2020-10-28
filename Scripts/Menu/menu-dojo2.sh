@@ -64,7 +64,7 @@ case $CHOICE in
             echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
+            _pause
             bash -c "${RONIN_DOJO_MENU2}"
             # press any letter to return
             ;;

@@ -45,7 +45,7 @@ else
   echo "Press any key to return..."
   echo "***"
   echo -e "${NC}"
-  read -n 1 -r -s
+  _pause
   bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
   # no drive detected, press any letter to return to menu
 fi
@@ -114,7 +114,7 @@ echo "***"
 echo "Press any key to continue..."
 echo "***"
 echo -e "${NC}"
-read -n 1 -r -s
+_pause
 # press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
 
 cat <<EOF
@@ -141,6 +141,6 @@ echo "***"
 echo "Press any key to return..."
 echo "***"
 echo -e "${NC}"
-read -n 1 -r -s
+_pause
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 # return to menu

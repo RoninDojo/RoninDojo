@@ -58,6 +58,6 @@ Press any key to continue...
 ${NC}
 BOLTZMANN
 
-read -n 1 -r -s
+_pause
 # will return to menu
 bash -c "$RONIN_BOLTZMANN_MENU"

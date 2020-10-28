@@ -45,11 +45,11 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 EOF
-            read -n 1 -r -s
+            _pause
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # see defaults.sh
             # start whirlpool, press to return to menu
@@ -69,11 +69,11 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 EOF
-            read -n 1 -r -s
+            _pause
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # stop whirlpool, press to return to menu
             # see defaults.sh
@@ -96,11 +96,11 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Press any letter to return...
+Press any key to return...
 ***
 ${NC}
 EOF
-            read -n 1 -r -s            
+            _pause            
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, press to return to menu
             # see defaults.sh

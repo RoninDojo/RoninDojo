@@ -71,7 +71,7 @@ case $CHOICE in
             echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
+            _pause
             bash -c "${RONIN_FIREWALL_MENU2}"
             # press any key to return to menu
             ;;
@@ -129,7 +129,7 @@ case $CHOICE in
             echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
+            _pause
             bash -c "${RONIN_FIREWALL_MENU2}"
             # press any key to return to menu
             ;;

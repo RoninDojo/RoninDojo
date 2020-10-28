@@ -54,7 +54,7 @@ Press any key to return...
 ***
 ${NC}
 EOF
-        read -n 1 -r -s
+        _pause
         # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
@@ -91,7 +91,7 @@ Press any key to return...
 ***
 ${NC}
 EOF
-        read -n 1 -r -s
+        _pause
         # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
@@ -119,7 +119,7 @@ Press any key to return...
 ${NC}
 EOF
 
-        read -n 1 -r -s
+        _pause
         # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
@@ -136,7 +136,7 @@ EOF
 #         cd "${RONIN_UI_BACKEND_DIR}" || exit
 #         pm2 status
 
-#         read -n 1 -r -s
+#         _pause
 #         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
 #         ;;
     4)
@@ -158,7 +158,7 @@ EOF
         cd "${RONIN_UI_BACKEND_DIR}" || exit
         pm2 status
 
-        read -n 1 -r -s
+        _pause
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)

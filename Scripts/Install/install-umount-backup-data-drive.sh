@@ -27,7 +27,7 @@ else
   echo "Press any key to return..."
   echo "***"
   echo -e "${NC}"
-  read -n 1 -r -s
+  _pause
   bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
   # no drive detected, press any letter to return to menu
 fi
@@ -66,6 +66,6 @@ echo "***"
 echo "Press any key to return..."
 echo "***"
 echo -e "${NC}"
-read -n 1 -r -s
+_pause
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
 # press any letter to return to menu-system-storage.sh

@@ -76,7 +76,7 @@ Press any key to continue...
 ${NC}
 WST
 
-read -n 1 -r -s
+_pause
 # press any letter to return
 
 pipenv run python wst.py -w=/tmp
