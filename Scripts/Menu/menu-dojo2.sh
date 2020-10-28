@@ -66,7 +66,7 @@ case $CHOICE in
             echo -e "${NC}"
             _pause
             bash -c "${RONIN_DOJO_MENU2}"
-            # press any letter to return
+            # press any key to return
             ;;
         3)
             if ! _dojo_check "$DOJO_PATH"; then

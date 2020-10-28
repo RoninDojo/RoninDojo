@@ -112,7 +112,7 @@ case $CHOICE in
             echo -e "${NC}"
             _pause
             bash -c "${RONIN_FIREWALL_MENU}"
-            # press any letter to return to menu
+            # press any key to return to menu
             ;;
         5)
             echo -e "${RED}"
@@ -265,11 +265,11 @@ case $CHOICE in
             # press any key to return to menu
             ;;
         8)
-	        bash -c "${RONIN_FIREWALL_MENU2}"
+            bash -c "${RONIN_FIREWALL_MENU2}"
             # go to next menu page
             ;;
         9)
-            bash -c ronin
+            ronin
             # return to main menu
             ;;
 esac

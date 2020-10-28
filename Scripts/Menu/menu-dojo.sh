@@ -60,7 +60,7 @@ case $CHOICE in
             echo -e "${NC}"
             _pause
             bash -c "${RONIN_DOJO_MENU}"
-            # press any letter to return to menu
+            # press any key to return to menu
             ;;
         2)
             _stop_dojo
@@ -72,7 +72,7 @@ case $CHOICE in
             echo -e "${NC}"
             _pause
             bash -c "${RONIN_DOJO_MENU}"
-            # press any letter to return to menu
+            # press any key to return to menu
             ;;
         3)
             _is_dojo "${RONIN_DOJO_MENU}"
@@ -119,7 +119,7 @@ DOJO
                 echo -e "${NC}"
                 _pause
                 bash -c "${RONIN_DOJO_MENU}"
-                # press any letter to return to menu
+                # press any key to return to menu
             fi
             ;;
         4)

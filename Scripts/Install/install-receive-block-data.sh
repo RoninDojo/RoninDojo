@@ -47,7 +47,7 @@ else
   echo -e "${NC}"
   _pause
   bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
-  # no drive detected, press any letter to return to menu
+  # no drive detected, press any key to return to menu
 fi
 
 echo -e "${RED}"

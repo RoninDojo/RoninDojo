@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
-options=(1 "Setup System" off    # any option can be set to default to "on"
+options=(1 "System Setup" off    # any option can be set to default to "on"
          2 "Install RoninDojo" off
          3 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
