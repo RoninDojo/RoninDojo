@@ -108,6 +108,7 @@ Press any key to return...
 ***
 ${NC}
 MENU
+        else
                 read -n 1 -r -s
                 bash -c "$RONIN_CREDENTIALS_MENU"
                 # return to menu
@@ -230,6 +231,9 @@ ${NC}
 Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
+MENU
+        if [ -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
+                cat <<MENU
 ${RED}
 ***
 Electrs Credentials
@@ -238,6 +242,10 @@ ${NC}
 
 Electrs Tor URL         = $V3_ADDR_ELECTRS
 
+MENU
+        fi
+
+        cat <<MENU
 ${RED}
 ***
 Mempool Credentials
