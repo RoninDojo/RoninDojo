@@ -317,6 +317,35 @@ TOR_CONFIG
 }
 
 #
+# Is Electrum Rust Server Installed
+#
+_is_electrs() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
+        cat <<EOF
+${RED}
+***
+Electrum Rust Server is not installed...
+***
+${NC}
+EOF
+        _sleep 2
+
+        cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+        return 1
+    fi
+
+    return 0
+}
+
+#
 # Backend torrc
 #
 _setup_backend_tor() {
@@ -337,6 +366,20 @@ HiddenServicePort 80 127.0.0.1:8470\
         # restart tor service
         sudo systemctl restart tor
     fi
+}
+
+#
+# UI Backend get credentials
+#
+_ui_backend_credentials() {
+    cd "${RONIN_UI_BACKEND_DIR}" || exit
+
+    API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
+    JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
+    BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
+    BACKEND_TOR=$(sudo cat /var/lib/tor/hidden_service_ronin_backend/hostname)
+
+    export API_KEY JWT_SECRET BACKEND_PORT BACKEND_TOR
 }
 
 #

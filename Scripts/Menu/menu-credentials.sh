@@ -83,26 +83,8 @@ MENU
         # shows whirlpool credentials and returns to menu
         ;;
         3)
-        if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
-            echo -e "${RED}"
-            echo "***"
-            echo "Electrs is not installed!"
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Returning to menu..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep
-            bash -c "$RONIN_CREDENTIALS_MENU"
-            exit
-        fi
-        # check if electrs is already installed
-
-        cat <<MENU
+        if _is_electrs; then
+                cat <<MENU
 ${RED}
 ***
 Electrs Credentials
@@ -111,10 +93,10 @@ ${NC}
 
 Electrs Tor URL         = $V3_ADDR_ELECTRS
 MENU
-        _sleep
-        # displaying electrs tor address to connect to electrum
+                _sleep
+                # displaying electrs tor address to connect to electrum
 
-        cat <<MENU
+                cat <<MENU
 ${RED}
 ***
 Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
@@ -126,9 +108,10 @@ Press any key to return...
 ***
 ${NC}
 MENU
-        read -n 1 -r -s
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # return to menu
+                read -n 1 -r -s
+                bash -c "$RONIN_CREDENTIALS_MENU"
+                # return to menu
+        fi
         ;;
         4)
         cat << WHIRLPOOL
@@ -139,7 +122,7 @@ Mempool Credentials
 
 ***
 ${NC}
-Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
+Mempool Tor URL         =  http://${V3_ADDR_MEMPOOL}
 ${RED}
 ***
 Press any key to return...
@@ -152,12 +135,7 @@ WHIRLPOOL
         # see defaults.sh
         ;;
         5)
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
-
-        API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
-        JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
-        BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
-        BACKEND_TOR=$(sudo cat /var/lib/tor/hidden_service_ronin_backend/hostname)
+        _ui_backend_credentials && cd "$HOME" || exit
 
         cat <<MENU
 ${RED}
@@ -214,6 +192,7 @@ MENU
         # shows bitcoind and btc rpc explorer credentials and returns to menu
         ;;
         7)
+        _ui_backend_credentials && cd "$HOME" || exit
         cat <<WARNING
 ${RED}
 ***
