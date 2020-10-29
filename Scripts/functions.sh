@@ -904,6 +904,27 @@ _remove_ipv6() {
 }
 
 #
+# Update Samourai Dojo
+#
+_dojo_update() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    cd "${DOJO_PATH%/docker/my-dojo}" || exit
+
+    # Fetch remotes
+    git fetch --all
+
+    # Reset to origin master branch unless variable set by
+    # user.conf override
+    [ -z "${SAMOURAI_COMMITISH}" ] && git reset --hard origin/"${SAMOURAI_COMMITISH}"
+
+    # Check for backend updates
+     _install_ronin_ui_backend
+}
+
+#
 # Update RoninDojo
 #
 _update_ronin() {

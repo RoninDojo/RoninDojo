@@ -7,21 +7,6 @@
 
 _load_user_conf
 
-WORK_DIR=$(mktemp -d)
-# temporaly temp directory location
-
-if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
-    cat <<EOF
-${RED}
-***
-Could not create temp dir, upgrade failed!
-***
-${NC}
-EOF
-    exit 1
-fi
-# check if tmp dir was created
-
 cat <<EOF
 ${RED}
 ***
@@ -45,16 +30,8 @@ if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/de
 fi
 # enable BITCOIND_RPC_EXTERNAL
 
-cd "${WORK_DIR}" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" 2>/dev/null # temporary
-
-cp -ua samourai-dojo/* "${DOJO_PATH%/docker/my-dojo}"/
-# copy only when the SOURCE file is newer than the
-# destination file or when the destination file is missing
-# and keep all permissions
-
-rm -rf "${WORK_DIR}"
-# remove $WORK_DIR
+# Update Samourai Dojo repo
+_dojo_update
 
 cd "${HOME}" || exit
 # return to previous working path
@@ -302,7 +279,7 @@ if _is_mempool; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [Y/N]
+Do you want to install the Mempool Visualizer? [Y/N]?
 ***
 ${NC}
 EOF
