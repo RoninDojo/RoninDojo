@@ -167,65 +167,6 @@ EOF
     _no_indexer_found
     # give user menu for install choices, see functions.sh
 else
-    if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
-        cat <<EOF
-${RED}
-***
-Samourai Indexer found...
-***
-${NC}
-EOF
-        _sleep 2
-
-        cat <<EOF
-${RED}
-***
-Would you like to make any changes to your Indexer during this upgrade?
-***
-${NC}
-EOF
-        _sleep 2
-
-        select indexer in "Keep Samourai Indexer (default)" "Replace With Electrum Rust Server"; do
-            case $indexer in
-                "Keep Samourai Indexer (default)")
-                    cat <<EOF
-${RED}
-***
-Keeping Samourai Indexer...
-***
-${NC}
-EOF
-                    _sleep
-                    break;;
-                    # keep the samourai indexer
-
-                "Replace With Electrum Rust Server")
-                    cat <<EOF
-${RED}
-***
-Replacing with Electrum Rust Server...
-***
-${NC}
-EOF
-                    _sleep
-                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-                    # triggers electrs install script
-                *)
-                    cat <<EOF
-${RED}
-***
-Invalid Entry! Valid values are 1 or 2...
-***
-${NC}
-EOF
-                    _sleep
-                    ;;
-                    # invalid data try again
-            esac
-        done
-    fi
-
     if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
         cat <<EOF
 ${RED}
@@ -243,7 +184,7 @@ Would you like to make any changes to your Indexer during this upgrade?
 ***
 ${NC}
 EOF
-        _sleep 3
+        _sleep 2
 
         select indexer in "Keep Electrum Rust Server (default)" "Replace With Samourai Indexer"; do
             case $indexer in
@@ -256,7 +197,8 @@ Keeping Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
-                    break;;
+                    break
+                    ;;
                     # keep electrum rust server
 
                 "Replace With Samourai Indexer")
@@ -268,9 +210,76 @@ Replacing with Samourai Indexer...
 ${NC}
 EOF
                     _sleep
-                    rm "${DOJO_PATH}"/indexer/electrs.toml
+                    cd ${DOJO_PATH%/docker/my-dojo}
+                    rm -r "${DOJO_PATH}"/indexer/electrs.toml
+                    for file in "${DOJO_PATH}"/tor/restart.sh "${DOJO_PATH}"/dojo.sh "${DOJO_PATH}"/indexer/Dockerfile; do
+                        git checkout "${file}"
+                    done
+                    break
                     ;;
-                    # erase electrs toml file and trigger samourai indexer install
+                    # remove electrs toml file, checkout to revert changes made in files, and trigger samourai indexer install
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid Entry! Valid values are 1 or 2...
+***
+${NC}
+EOF
+                    _sleep
+                    ;;
+                    # invalid data try again
+            esac
+        done
+    fi
+
+    if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
+        cat <<EOF
+${RED}
+***
+Samourai Indexer found...
+***
+${NC}
+EOF
+        _sleep 2
+
+        cat <<EOF
+${RED}
+***
+Would you like to make any changes to your Indexer during this upgrade?
+***
+${NC}
+EOF
+        _sleep 3
+
+        select indexer in "Keep Samourai Indexer (default)" "Replace With Electrum Rust Server"; do
+            case $indexer in
+                "Keep Samourai Indexer (default)")
+                    cat <<EOF
+${RED}
+***
+Keeping Samourai Indexer...
+***
+${NC}
+EOF
+                    _sleep
+                    break
+                    ;;
+                    # keep the samourai indexer
+
+                "Replace With Electrum Rust Server")
+                    cat <<EOF
+${RED}
+***
+Replacing with Electrum Rust Server...
+***
+${NC}
+EOF
+                    _sleep
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+                    break
+                    ;;
+                    # triggers electrs install script
                 *)
                     cat <<EOF
 ${RED}

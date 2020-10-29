@@ -76,8 +76,8 @@ Press any key to continue...
 ${NC}
 WST
 
-_pause
-# press any letter to return
+read -n 1 -r -s
+# press any key to return
 
 pipenv run python wst.py -w=/tmp
 # run wst.py using python3

@@ -185,7 +185,7 @@ EOF
         ;;
 
     6)
-        bash -c ronin
+        ronin
         # returns to main menu
         ;;
 esac

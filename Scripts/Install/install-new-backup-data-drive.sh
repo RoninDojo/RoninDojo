@@ -29,7 +29,7 @@ else
   echo -e "${NC}"
   _pause
   bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
-  # no drive detected, press any letter to return to menu
+  # no drive detected, press any key to return to menu
 fi
 
 echo -e "${RED}"
@@ -97,4 +97,4 @@ echo "***"
 echo -e "${NC}"
 _pause
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
-# press any letter to return to menu-system-storage.sh
+# press any key to return to menu-system-storage.sh
