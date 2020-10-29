@@ -57,7 +57,7 @@ EOF
     while true; do
         read -r answer
         case $answer in
-            [yY][eE][sS]|[yY])
+            [yY][eE][sS]|[yY]|"")
                 sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${DOJO_PATH}"/conf/docker-explorer.conf
                 break
                 ;;
@@ -286,7 +286,7 @@ EOF
     read -r answer
     while true; do
         case $answer in
-            [yY][eE][sS]|[yY])
+            [yY][eE][sS]|[yY]|"")
                 if [ ! -f "${DOJO_PATH}"/conf/docker-mempool.conf ]; then # New install
                     _mempool_conf conf.tpl
                 else # Existing install?
@@ -311,15 +311,6 @@ EOF
             ;;
         esac
     done
-else
-        _mempool_conf conf
-        cat <<EOF
-${RED}
-***
-Mempool visualizer is already installed...
-***
-${NC}
-EOF
 fi
 # Check if mempool available or not
 

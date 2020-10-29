@@ -50,7 +50,7 @@ EOF
 while true; do
     read -r answer
     case $answer in
-        [yY][eE][sS]|[yY]) break;;
+        [yY][eE][sS]|[yY]|"") break;;
         [nN][oO]|[Nn])
           bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh
           exit
