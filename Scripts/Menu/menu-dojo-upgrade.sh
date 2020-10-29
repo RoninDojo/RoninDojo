@@ -211,9 +211,7 @@ EOF
                     # invalid data try again
             esac
         done
-    fi
-
-    if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
+    elif grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
         cat <<EOF
 ${RED}
 ***

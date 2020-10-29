@@ -560,7 +560,8 @@ EOF
                 _sleep
                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
                 sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
-                break;;
+                break
+                ;;
                 # samourai indexer install enabled in .conf.tpl files using sed
 
             "Electrum Rust Server")
@@ -584,7 +585,8 @@ An Indexer will not be installed during this upgrade...
 ${NC}
 EOF
                 _sleep
-                break;;
+                break
+                ;;
                 # indexer will not be installed
             *)
                 cat <<EOF
