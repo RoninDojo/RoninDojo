@@ -7,21 +7,6 @@
 
 _load_user_conf
 
-cat <<EOF
-${RED}
-***
-Upgrading Dojo in 10s...
-***
-${NC}
-
-${RED}
-***
-Use Ctrl+C to exit if needed!
-***
-${NC}
-EOF
-_sleep 10
-
 _check_dojo_perms "${DOJO_PATH}"
 # make sure permissions are properly set for ${DOJO_PATH}
 
@@ -43,7 +28,6 @@ Checking BTC RPC Explorer...
 ***
 ${NC}
 EOF
-
 _sleep 1
 
 if grep "EXPLORER_INSTALL=off" "${DOJO_PATH}"/conf/docker-explorer.conf 1>/dev/null; then
