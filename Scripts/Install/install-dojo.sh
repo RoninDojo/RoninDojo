@@ -215,12 +215,27 @@ Do you want to install the Mempool Visualizer? [Y/N]
 ${NC}
 EOF
 
-  read -rp "Y/N?: " yn
-  case $yn in
-      [Y/y]* )
+  while true; do
+    read -r answer
+    case $answer in
+        [yY][eE][sS]|[yY])
           _mempool_conf conf.tpl
-        ;;
-  esac
+          break
+          ;;
+        [nN][oO]|[Nn])
+          break
+          ;;
+        *)
+          cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+          ;;
+    esac
+  done
   # install mempool prompt
 fi
 

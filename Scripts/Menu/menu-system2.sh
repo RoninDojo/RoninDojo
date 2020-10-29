@@ -102,34 +102,47 @@ EOF
 
         cat <<EOF
 ${RED}
-Do you want to salvage your Blockchain data? [Y/N]
+Do you want to salvage your Blockchain data? "Y/N"?
 ${NC}
 EOF
         _sleep
 
         while true; do
-            read -rp "Y/N?: " yn
-            case $yn in
-                [Yy]* ) cat <<EOF
+            read -r answer
+            case $answer in
+                [yY][eE][sS]|[yY])
+                    cat <<EOF
 ${RED}
 ***
 Copying block data to temporary directory...
 ***
 ${NC}
 EOF
-                        _sleep 2
-                        cd "$DOJO_PATH" || exit
-                        _stop_dojo
-                        # stop dojo
+                    _sleep 2
 
-                        test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
-                        # check if salvage directory exist
+                    cd "$DOJO_PATH" || exit
+                    _stop_dojo
+                    # stop dojo
 
-                        sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/
-                        # copies blockchain data to uninstall-salvage to be used by the dojo install script
-                        break;;
-                [Nn]* ) break;;
-                * ) printf "\nPlease answer yes or no.\n";;
+                    test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
+                    # check if salvage directory exist
+
+                    sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/
+                    # copies blockchain data to uninstall-salvage to be used by the dojo install script
+                    break
+                    ;;
+                [nN][oO]|[Nn])
+                    break
+                    ;;
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+                    ;;
             esac
         done
 

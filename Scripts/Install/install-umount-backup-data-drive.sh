@@ -42,12 +42,24 @@ _sleep 3
 echo -e "${RED}"
 echo "Are you ready to umount? [Y/N]"
 echo -e "${NC}"
+
 while true; do
-    read -rp "Y/N?: " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh;exit;;
-        * ) echo "Please answer yes or no.";;
+    read -r answer
+    case $answer in
+        [yY][eE][sS]|[yY]) break;;
+        [nN][oO]|[Nn])
+          bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh
+          exit
+          ;;
+        *)
+          cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+          ;;
     esac
 done
 # ask user to proceed

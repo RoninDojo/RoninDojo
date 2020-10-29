@@ -146,40 +146,55 @@ Are you sure you want to re-initiate Whirlpool? [Y/N]
 ***
 ${NC}
 EOF
-
-            read -rp "Y/N?: " yn
-            case $yn in
-                [Y/y]* ) cat <<EOF
+            while true; do
+                read -r answer
+                case $answer in
+                    [yY][eE][sS]|[yY])
+                        cat <<EOF
 ${RED}
-***                  
+***
 Re-initiating Whirlpool...
 ***
 ${NC}
 EOF
-                         cd "$DOJO_PATH" || exit
-                         ./dojo.sh whirlpool reset
-                         _sleep
-                         cat <<EOF
+                        cd "$DOJO_PATH" || exit
+
+                        ./dojo.sh whirlpool reset
+                        _sleep
+
+                        cat <<EOF
 ${RED}
 ***
 Re-initation complete, leave APIkey blank when pairing to GUI!
 ***
 ${NC}
 EOF
-                         _sleep 5
-                         ;;
-
-                [N/n]* ) cat <<EOF
+                        _sleep 5
+                        break
+                        ;;
+                    [nN][oO]|[Nn])
+                        cat <<EOF
 ${RED}
 ***
 Returning to menu..."
 ***
 ${NC}
 EOF
-                         _sleep 2
-                         ;;
-                * ) printf "\nPlease answer yes or no.\n";;
-            esac
+                            _sleep 2
+                            break
+                            ;;
+                    *)
+                        cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+                        ;;
+                esac
+            done
+
             _sleep
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # re-initate whirlpool, return to menu

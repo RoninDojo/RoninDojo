@@ -73,7 +73,7 @@ if grep "EXPLORER_INSTALL=off" "${DOJO_PATH}"/conf/docker-explorer.conf 1>/dev/n
     cat <<EOF
 ${RED}
 ***
-BTC RPC Explorer not installed. Would you like to install it? "Y/N"?
+BTC RPC Explorer not installed. Would you like to install it? [Y/N]
 ***
 ${NC}
 EOF
@@ -302,7 +302,7 @@ if _is_mempool; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? "Y/N"?
+Do you want to install the Mempool Visualizer? [Y/N]
 ***
 ${NC}
 EOF
