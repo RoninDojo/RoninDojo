@@ -39,9 +39,13 @@ echo "***"
 echo -e "${NC}"
 _sleep 3
 
-echo -e "${RED}"
-echo "Are you ready to umount? [Y/N]"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Are you ready to umount? [${GREEN}Yes${NC}/${RED}No${NC}]
+***
+${NC}
+EOF
 
 while true; do
     read -r answer

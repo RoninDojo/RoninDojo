@@ -46,9 +46,13 @@ echo "***"
 echo -e "${NC}"
 _sleep 2
 
-echo -e "${RED}"
-echo "Are you sure? [Y/N]"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Are you sure? [${GREEN}Yes${NC}/${RED}No${NC}]
+***
+${NC}
+EOF
 
 while true; do
     read -r answer

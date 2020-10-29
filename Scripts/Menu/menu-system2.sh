@@ -102,7 +102,7 @@ EOF
 
         cat <<EOF
 ${RED}
-Do you want to salvage your Blockchain data? "Y/N"?
+Do you want to salvage your Blockchain data? [${GREEN}Yes${NC}/${RED}No${NC}]
 ${NC}
 EOF
         _sleep

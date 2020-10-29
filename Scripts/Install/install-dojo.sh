@@ -210,7 +210,7 @@ if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off
   cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [Y/N]
+Do you want to install the Mempool Visualizer? [${GREEN}Yes${NC}/${RED}No${NC}]
 ***
 ${NC}
 EOF

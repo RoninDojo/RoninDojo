@@ -142,7 +142,7 @@ _sleep 2
             cat <<EOF
 ${RED}
 ***
-Are you sure you want to re-initiate Whirlpool? [Y/N]
+Are you sure you want to re-initiate Whirlpool? [${GREEN}Yes${NC}/${RED}No${NC}]
 ***
 ${NC}
 EOF

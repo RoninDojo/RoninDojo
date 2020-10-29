@@ -55,7 +55,7 @@ RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
 # Terminal Colors
 #
 RED=$(tput setaf 1)
-YELLOW=$(tput setaf 3)
+GREEN=$(tput setaf 2)
 NC=$(tput sgr0) # No Color
 
 #
