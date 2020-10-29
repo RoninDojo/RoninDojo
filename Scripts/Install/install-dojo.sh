@@ -68,13 +68,13 @@ echo "Credentials necessary for usernames, passwords, etc. will randomly be gene
 echo "***"
 echo -e "${NC}"
 
-cat <<DOJO
+cat <<EOF
 ${RED}
 ***
 Credentials are found in RoninDojo menu, ${DOJO_PATH}/conf, or in the ~/RoninDojo/user.conf.example file.
 ***
 ${NC}
-DOJO
+EOF
 _sleep 2
 
 echo -e "${RED}"
@@ -92,26 +92,45 @@ echo -e "${NC}"
 _sleep
 
 if [ -d "${DOJO_BACKUP_DIR}" ]; then
-  if ! _dojo_restore; then
-  cat <<EOF
+    if ! _dojo_restore; then
+        cat <<EOF
 ${RED}
 ***
-Dojo backup restore disabled! Enable in user.conf if you wish
-to restore credentials on dojo install when available
+Dojo backup restore disabled!
 ***
 ${NC}
 EOF
-  else
-    cat <<EOF
+        _sleep
+
+        cat <<EOF
+${RED}
+***
+Enable in user.conf if you wish to restore credentials on dojo install when available
+***
+${NC}
+EOF
+        _sleep 3
+    else
+        cat <<EOF
 ${RED}
 ***
 Dojo credentials backup detected and restored...
-If you wish to disable this feature, set DOJO_RESTORE=false in
-$HOME/.conf/RoninDojo/user.conf
+***
+${NC}
 EOF
-  fi
+        _sleep
+
+        cat <<EOF
+${RED}
+***
+If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.conf/RoninDojo/user.conf
+***
+${NC}
+EOF
+        _sleep 3
+    fi
 else
-  cat <<EOF
+    cat <<EOF
 ${RED}
 ***
 Configuring the bitcoin daemon server...

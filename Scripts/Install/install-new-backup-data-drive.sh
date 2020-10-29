@@ -28,7 +28,7 @@ else
   echo "***"
   echo -e "${NC}"
   _pause
-  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
+  bash -c "${RONIN_SYSTEM_STORAGE}"
   # no drive detected, press any key to return to menu
 fi
 
@@ -59,7 +59,7 @@ while true; do
     case $answer in
         [yY][eE][sS]|[yY]|"") break;;
         [nN][oO]|[Nn])
-          bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
+          bash -c "${RONIN_SYSTEM_STORAGE}"
           exit
           ;;
         * )
@@ -99,7 +99,7 @@ _sleep 2
 
 echo -e "${RED}"
 echo "***"
-echo "Check output for ${SECONDARY_STORAGE} and make sure everything looks ok."
+echo "Check output for ${SECONDARY_STORAGE} and make sure everything looks ok..."
 echo "***"
 echo -e "${NC}"
 df -h "${SECONDARY_STORAGE}"
@@ -112,5 +112,5 @@ echo "Press any key to return..."
 echo "***"
 echo -e "${NC}"
 _pause
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
+bash -c "${RONIN_SYSTEM_STORAGE}"
 # press any key to return to menu-system-storage.sh

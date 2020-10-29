@@ -7,36 +7,44 @@
 _load_user_conf
 
 if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${STORAGE_MOUNT}"; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Your backup drive partition has been detected..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  # checks for ${SECONDARY_STORAGE}
+    cat <<EOF
+${RED}
+***
+Your backup drive partition has been detected...
+***
+${NC}
+EOF
+    _sleep 2
+    # checks for ${SECONDARY_STORAGE}
 else
-  echo -e "${RED}"
-  echo "***"
-  echo "No backup drive partition detected and or drive not mounted!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 5
+    cat <<EOF
+${RED}
+***
+No backup drive partition detected and or drive not mounted!
+***
+${NC}
+EOF
+    _sleep 5
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any key to return..."
-  echo "***"
-  echo -e "${NC}"
-  _pause
-  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
-  # no drive detected, press any key to return to menu
+    cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+    _pause
+    bash -c "${RONIN_SYSTEM_STORAGE}"
+    # no drive detected, press any key to return to menu
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Preparing to UMount ${SECONDARY_STORAGE}..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Preparing to UMount ${SECONDARY_STORAGE}...
+***
+${NC}
+EOF
 _sleep 3
 
 cat <<EOF
@@ -68,20 +76,25 @@ EOF
 done
 # ask user to proceed
 
-echo -e "${RED}"
-echo "***"
-echo "Umounting ${STORAGE_MOUNT}..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Umounting ${STORAGE_MOUNT}...
+***
+${NC}
+EOF
 _sleep 2
+
 sudo umount "${STORAGE_MOUNT}"
 # umount backup drive ${SECONDARY_STORAGE}
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to return..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
 _pause
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
+bash -c "${RONIN_SYSTEM_STORAGE}"
 # press any key to return to menu-system-storage.sh

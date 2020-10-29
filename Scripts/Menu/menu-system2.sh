@@ -86,7 +86,7 @@ Uninstalling RoninDojo and all features in 10s, use Ctrl+C to exit if needed!
 ***
 ${NC}
 EOF
-_sleep 10 --msg "Uninstall in"
+_sleep 10 --msg "Uninstalling in"
 
     cat <<EOF
 ${RED}
@@ -185,7 +185,7 @@ Press Ctrl+C to cancel at anytime
 ***
 ${NC}
 EOF
-        _sleep 10 --msg "Uninstall in"
+        _sleep 10 --msg "Uninstalling in"
 
         # Delete app from process list
         pm2 delete "Ronin Backend" &>/dev/null
