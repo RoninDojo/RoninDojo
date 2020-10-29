@@ -105,10 +105,13 @@ ${RED}
 Do you want to salvage your Blockchain data? [Y/N]
 ${NC}
 EOF
+        _sleep
+
         while true; do
             read -rp "Y/N?: " yn
             case $yn in
                 [Yy]* ) cat <<EOF
+${RED}
 ***
 Copying block data to temporary directory...
 ***
