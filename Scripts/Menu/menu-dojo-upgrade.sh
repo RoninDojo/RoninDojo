@@ -69,36 +69,37 @@ EOF
 
 _sleep 1
 
-if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
+if grep "EXPLORER_INSTALL=off" "${DOJO_PATH}"/conf/docker-explorer.conf 1>/dev/null; then
     cat <<EOF
 ${RED}
 ***
-BTC RPC Explorer is already installed!
+BTC RPC Explorer not installed. Would you like to install it? "Y/N"?
 ***
 ${NC}
 EOF
-else
-    cat <<EOF
+    while true; do
+        read -r answer
+        case $answer in
+            [yY][eE][sS]|[yY])
+                sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${DOJO_PATH}"/conf/docker-explorer.conf
+                break
+                ;;
+            [nN][oO]|[Nn])
+                break
+                ;;
+                *)
+                cat <<EOF
 ${RED}
 ***
-Installing your BTC RPC Explorer...
+Invalid answer! Enter Y or N
 ***
 ${NC}
 EOF
-    _sleep 2
-
-    cat <<EOF
-${RED}
-***
-A randomly generated 16 character password will be created if you haven't already made one.
-***
-${NC}
-EOF
-    _sleep 3
-    sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
+                ;;
+        esac
+    done
 fi
-# checks for docker-explorer.conf, if found informs user
-# else uses sed to modify for explorer to be installed
+# Checks if BTC RPC Explorer is disabled
 
 if grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
     cat <<EOF
@@ -199,7 +200,7 @@ EOF
                     _sleep
                     break
                     ;;
-                    # keep electrum rust server
+                    # keep the samourai indexer
 
                 "Replace With Samourai Indexer")
                     cat <<EOF
@@ -210,7 +211,8 @@ Replacing with Samourai Indexer...
 ${NC}
 EOF
                     _sleep
-                    cd ${DOJO_PATH%/docker/my-dojo}
+                    cd "${DOJO_PATH%/docker/my-dojo}" || exit
+
                     rm -r "${DOJO_PATH}"/indexer/electrs.toml
                     for file in "${DOJO_PATH}"/tor/restart.sh "${DOJO_PATH}"/dojo.sh "${DOJO_PATH}"/indexer/Dockerfile; do
                         git checkout "${file}"
@@ -265,7 +267,7 @@ EOF
                     _sleep
                     break
                     ;;
-                    # keep the samourai indexer
+                    # keep electrum rust server
 
                 "Replace With Electrum Rust Server")
                     cat <<EOF
@@ -284,7 +286,7 @@ EOF
                     cat <<EOF
 ${RED}
 ***
-Invalid Entry! Valid values are 1 or 2...
+Invalid answer! Enter Y or N
 ***
 ${NC}
 EOF
@@ -300,13 +302,14 @@ if _is_mempool; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [Y/N]
+Do you want to install the Mempool Visualizer? "Y/N"?
 ***
 ${NC}
 EOF
-    read -rp "Y/N?: " yn
-    case $yn in
-        [Y/y]* )
+    read -r answer
+    while true; do
+        case $answer in
+            [yY][eE][sS]|[yY])
                 if [ ! -f "${DOJO_PATH}"/conf/docker-mempool.conf ]; then # New install
                     _mempool_conf conf.tpl
                 else # Existing install?
@@ -315,21 +318,31 @@ EOF
 
                 # Checks if urls need to be changed for mempool UI
                 _mempool_urls_to_local_btc_explorer
+                break
                 ;;
-        [N/n]* )  echo -e "${RED}"
-                 echo "***"
-                 echo "Mempool will not be installed..."
-                 echo "***"
-                 echo -e "${NC}";;
-        * ) echo "Please answer Yes or No.";;
-    esac
+            [Nn][oO]|[nN])
+                break
+                ;;
+            *)
+                cat <<EOF
+${RED}
+***
+Please answer Yes or No.
+***
+${NC}
+EOF
+            ;;
+        esac
+    done
 else
-    _mempool_conf conf
-    echo -e "${RED}"
-    echo "***"
-    echo "Mempool visualizer is already installed..."
-    echo "***"
-    echo -e "${NC}"
+        _mempool_conf conf
+        cat <<EOF
+${RED}
+***
+Mempool visualizer is already installed...
+***
+${NC}
+EOF
 fi
 # Check if mempool available or not
 
