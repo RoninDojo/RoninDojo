@@ -131,7 +131,7 @@ Press any key to return...
 ${NC}
 WHIRLPOOL
         _pause
-        bash -c "$RONIN_MEMPOOL_MENU"
+        bash -c "$RONIN_CREDENTIALS_MENU"
         # press any key to return to menu
         # see defaults.sh
         ;;
