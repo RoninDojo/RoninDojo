@@ -445,11 +445,6 @@ _sleep 5
 create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
-if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-  _install_ronin_ui_backend
-  # Install Ronin UI Backend service
-fi
-
 _setup_tor
 # tor configuration setup, see functions.sh
 

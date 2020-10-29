@@ -80,6 +80,9 @@ EOF
         _update_ronin
         # see functions.sh
 
+        _install_ronin_ui_backend
+        # update ronin ui backend
+
         if ! _dojo_check "$DOJO_PATH"; then
             if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
                 cat <<DOJO

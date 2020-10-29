@@ -57,6 +57,11 @@ echo -e "${NC}"
 cd "$HOME" || exit
 git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
 
+if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
+  _install_ronin_ui_backend
+  # Install Ronin UI Backend service
+fi
+
 echo -e "${RED}"
 echo "***"
 echo "Credentials necessary for usernames, passwords, etc. will randomly be generated now..."
