@@ -190,9 +190,10 @@ EOF
                     _sleep
                     cd "${DOJO_PATH%/docker/my-dojo}" || exit
 
-                    rm -r "${DOJO_PATH}"/indexer/electrs.toml
-                    for file in "${DOJO_PATH}"/tor/restart.sh "${DOJO_PATH}"/dojo.sh "${DOJO_PATH}"/indexer/Dockerfile; do
-                        git checkout "${file}"
+                    rm indexer/electrs.toml
+
+                    for file in tor/restart.sh dojo.sh indexer/Dockerfile; do
+                        git checkout "${file}" 2>/dev/null
                     done
                     break
                     ;;
