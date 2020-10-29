@@ -188,7 +188,7 @@ Replacing with Samourai Indexer...
 ${NC}
 EOF
                     _sleep
-                    cd "${DOJO_PATH%/docker/my-dojo}" || exit
+                    cd "${DOJO_PATH}" || exit
 
                     rm indexer/electrs.toml
 
