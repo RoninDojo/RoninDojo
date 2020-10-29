@@ -914,7 +914,7 @@ _dojo_update() {
     cd "${DOJO_PATH%/docker/my-dojo}" || exit
 
     # Fetch remotes
-    git fetch --all
+    git fetch --all 1>/dev/null
 
     # Reset to origin master branch unless variable set by
     # user.conf override
@@ -940,11 +940,8 @@ ${NC}
 EOF
         cd "$HOME/RoninDojo" || exit
 
-        # Checkout master branch
-        git checkout "${RONIN_DOJO_BRANCH:-master}"
-
         # Fetch remotes
-        git fetch --all
+        git fetch --all 1>/dev/null
 
         # Reset to origin master branch unless variable set by
         # user.conf override
