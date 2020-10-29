@@ -192,7 +192,7 @@ EOF
 
                     rm indexer/electrs.toml
 
-                    for file in tor/restart.sh dojo.sh indexer/{restart.sh,Dockerfile}; do
+                    for file in tor/restart.sh dojo.sh docker-compose.yaml indexer/{restart.sh,Dockerfile}; do
                         git checkout "${file}" 2>/dev/null
                     done
                     break
