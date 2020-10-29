@@ -93,7 +93,6 @@ ${NC}
 
 Electrs Tor URL         = $V3_ADDR_ELECTRS
 MENU
-                _sleep
                 # displaying electrs tor address to connect to electrum
 
                 cat <<MENU
@@ -101,21 +100,31 @@ ${RED}
 ***
 Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 ***
+${NC}
+MENU
+        else
+                cat <<MENU
+${RED}
+***
+Electrum Rust Server not enabled...
+***
+${NC}
+MENU
+        fi
 
+        cat <<MENU
 ${RED}
 ***
 Press any key to return...
 ***
 ${NC}
 MENU
-        else
-                _sleep 2
-                bash -c "$RONIN_CREDENTIALS_MENU"
-                # return to menu
-        fi
+        _pause
+        bash -c "$RONIN_CREDENTIALS_MENU"
+        # return to menu
         ;;
         4)
-        cat << WHIRLPOOL
+        cat <<MENU
 ${RED}
 ***
 Mempool Credentials
@@ -129,7 +138,8 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-WHIRLPOOL
+MENU
+
         _pause
         bash -c "$RONIN_CREDENTIALS_MENU"
         # press any key to return to menu
