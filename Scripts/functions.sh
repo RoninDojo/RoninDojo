@@ -235,7 +235,9 @@ _is_active() {
 _tor_backup() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    if sudo test -d "${INSTALL_DIR}/${TOR_DATA_DIR}"; then
+    test -d "${TOR_BACKUP_DIR}" || sudo mkdir "${TOR_BACKUP_DIR}"
+
+    if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
         sudo rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
         return 0
     fi
@@ -669,6 +671,8 @@ _mempool_urls_to_local_btc_explorer() {
 #
 _dojo_backup() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    test -d "${DOJO_BACKUP_DIR}" || sudo mkdir "${DOJO_BACKUP_DIR}"
 
     if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
         sudo rsync -ac --quiet "${DOJO_PATH%/docker/my-dojo}"/ "${DOJO_BACKUP_DIR}"
