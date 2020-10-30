@@ -75,17 +75,17 @@ ${package_dependencies[$pkg]} already installed...
 ***
 ${NC}
 EOF
-    _sleep
+      _sleep
   else
-    cat <<EOF
+      cat <<EOF
 ${RED}
 ***
 Installing ${package_dependencies[$pkg]}...
 ***
 ${NC}
 EOF
-    _sleep
-    sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
+      _sleep
+      sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
   fi
 done
 # install system dependencies, see defaults.sh

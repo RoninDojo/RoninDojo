@@ -7,43 +7,54 @@
 _load_user_conf
 
 if [ -b "${SECONDARY_STORAGE}" ]; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Your new backup drive has been detected..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  # checks for ${SECONDARY_STORAGE}
+    cat <<EOF
+${RED}
+***
+Your new backup drive has been detected...
+***
+${NC}
+EOF
+    _sleep 2
+    # checks for ${SECONDARY_STORAGE}
 else
-  echo -e "${RED}"
-  echo "***"
-  echo "No backup drive detected! Please make sure it is plugged in and has power if needed."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 5
+    cat <<EOF
+${RED}
+***
+No backup drive detected! Please make sure it is plugged in and has power if needed.
+***
+${NC}
+EOF
+    _sleep 5
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any key to return..."
-  echo "***"
-  echo -e "${NC}"
-  _pause
-  bash -c "${RONIN_SYSTEM_STORAGE}"
-  # no drive detected, press any key to return to menu
+    cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+    _pause
+
+    bash -c "${RONIN_SYSTEM_STORAGE}"
+    # no drive detected, press any key to return to menu
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Preparing to Format and Mount ${SECONDARY_STORAGE} to ${STORAGE_MOUNT}..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Preparing to Format and Mount ${SECONDARY_STORAGE} to ${STORAGE_MOUNT}...
+***
+${NC}
+EOF
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "WARNING: Any pre-existing data on this backup drive will be lost!!!"
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+WARNING: Any pre-existing data on this backup drive will be lost!
+***
+${NC}
+EOF
 _sleep 2
 
 cat <<EOF
@@ -75,42 +86,53 @@ EOF
 done
 # ask user to proceed
 
-echo -e "${RED}"
-echo "***"
-echo "Formatting the Backup Data Drive..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Formatting the Backup Data Drive...
+***
+${NC}
+EOF
 _sleep 2
 
 if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
-  echo -e "${RED}Filesystem creation failed! Exiting${NC}"
-  exit
+    echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+    exit
 fi
 # format partition, see create_fs in functions.sh
 
-echo -e "${RED}"
-echo "***"
-echo "Displaying the name on the external disk..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Displaying the name on the external disk...
+***
+${NC}
+EOF
+
 lsblk -o NAME,SIZE,LABEL "${SECONDARY_STORAGE}"
 _sleep 2
 # double-check that "${SECONDARY_STORAGE}" exists, and that its storage capacity is what you expected
 
-echo -e "${RED}"
-echo "***"
-echo "Check output for ${SECONDARY_STORAGE} and make sure everything looks ok..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Check output for ${SECONDARY_STORAGE} and make sure everything looks ok...
+***
+${NC}
+EOF
+
 df -h "${SECONDARY_STORAGE}"
 _sleep 2
 # checks disk info
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to return..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
 _pause
+
 bash -c "${RONIN_SYSTEM_STORAGE}"
 # press any key to return to menu-system-storage.sh
