@@ -103,7 +103,7 @@ DOJO
         # upgrades dojo and returns to menu
         ;;
     3)
-        bash -c "${RONIN_UPDATES_MENU}"
+        bash -c "${RONIN_SYSTEM_MENU}"
         # returns to main system menu
         ;;
 esac
