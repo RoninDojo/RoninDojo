@@ -22,7 +22,8 @@ _main() {
 
     _update_01 # Check for bridge-utils version update
     _update_02 # Migrate WST to new location and install method
-    _update_03 # Add password less reboot/shutdown privilages
+    _update_03 # Add password less reboot/shutdown privileges
+    _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then

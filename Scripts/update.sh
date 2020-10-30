@@ -44,11 +44,21 @@ _update_02() {
     fi
 }
 
-# Add password less reboot/shutdown privilages to sudo
+# Add password less reboot/shutdown privileges to sudo
 _update_03() {
-    if ! grep "poweroff" /etc/sudoers.d/21-ronindojo 1>/dev/null; then
+    if ! grep "/usr/bin/systemctl poweroff" /etc/sudoers.d/21-ronindojo 1>/dev/null; then
         sudo bash -c "cat <<EOF >>/etc/sudoers.d/21-ronindojo
 ALL ALL=(root) NOPASSWD: /usr/bin/systemctl reboot, /usr/bin/systemctl poweroff
+EOF"
+    fi
+}
+
+# Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges to sudo
+_update_04() {
+    if ! grep "/usr/bin/test" /etc/sudoers.d/21-ronindojo 1>/dev/null; then
+        sudo bash -c "cat <<EOF >>/etc/sudoers.d/21-ronindojo
+ALL ALL=(root) NOPASSWD: /usr/bin/test, /usr/bin/grep, /usr/bin/cat, /usr/bin/ufw
+ALL ALL=(root) NOPASSWD: /usr/bin/umount, /usr/bin/mount, /usr/bin/mkswap, /usr/bin/swapon, /usr/bin/swapoff
 EOF"
     fi
 }
