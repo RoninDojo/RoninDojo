@@ -13,7 +13,7 @@ Blockchain data not found! Did you forget to install RoninDojo?
 ${NC}
 EOF
     _sleep 5 --msg "Returning to menu in"
-    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
+    bash -c "${RONIN_DOJO_MENU2}"
 fi
 # if data directory is not found then warn and return to menu
 
@@ -46,7 +46,7 @@ else
   echo "***"
   echo -e "${NC}"
   _pause
-  bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
+  bash -c "${RONIN_DOJO_MENU2}"
   # no drive detected, press any key to return to menu
 fi
 
@@ -143,5 +143,5 @@ echo "Press any key to return..."
 echo "***"
 echo -e "${NC}"
 _pause
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
+bash -c "${RONIN_DOJO_MENU2}"
 # return to menu

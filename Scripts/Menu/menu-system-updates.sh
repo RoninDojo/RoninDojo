@@ -6,10 +6,9 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Upgrade RoninDojo"
-         2 "Upgrade Dojo"
-         3 "Update System Packages"
-         4 "Go Back")
+OPTIONS=(1 "Update Operating System"
+         2 "Update RoninDojo"
+         3 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -21,13 +20,58 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
+        cat <<EOF
+${RED}
+***
+Checking for operating system package updates...
+***
+${NC}
+EOF
+        _sleep 2
+
+        sudo pacman -Syyu
+
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
+        # check for system updates, then return to menu
+        ;;
+    2)
+        cat <<EOF
+${RED}
+***
+Updating in 10s...
+***
+${NC}
+
+${RED}
+***
+Use Ctrl+C to exit if needed!
+***
+${NC}
+EOF
+_sleep 10
+
+        if [ ! -d "$HOME"/RoninDojo ]; then
+            cat <<DOJO
+${RED}
+***
+Missing ${HOME}/RoninDojo} directory, skipping! Returning to menu...
+***
+${NC}
+DOJO
+            _sleep 3
+            bash -c "${RONIN_UPDATES_MENU}"
+            exit 1
+
+        fi
+        # is ronindojo directory missing?
+
         test -f "$HOME"/ronin-update.sh || sudo rm -f "$HOME"/ronin-update.sh
         # using -f here to avoid error output if "$HOME"/ronin-update.sh does not exist
 
         cat <<EOF
 ${RED}
 ***
-Upgrading RoninDojo...
+Updating RoninDojo...
 ***
 ${NC}
 EOF
@@ -35,19 +79,21 @@ EOF
 
         _update_ronin
         # see functions.sh
-        ;;
-    2)
+
+        _install_ronin_ui_backend
+        # update ronin ui backend
+
         if ! _dojo_check "$DOJO_PATH"; then
             if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
                 cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
+Missing ${DOJO_PATH%/docker/my-dojo} directory, skipping! Returning to menu...
 ***
 ${NC}
 DOJO
-                _sleep 2
-                bash -c "${RONIN_SYSTEM_MENU}"
+                _sleep 3
+                bash -c "${RONIN_UPDATES_MENU}"
                 exit 1
             fi
         fi
@@ -56,23 +102,8 @@ DOJO
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
         ;;
-
     3)
-        cat <<EOF
-***
-Checking for system updates...
-***
-${NC}
-EOF
-        _sleep 5
-
-        sudo pacman -Syyu
-
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
-        # check for system updates, then return to menu
-        ;;
-    4)
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${RONIN_UPDATES_MENU}"
         # returns to main system menu
         ;;
 esac

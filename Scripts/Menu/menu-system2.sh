@@ -82,30 +82,36 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Uninstalling Dojo in 10s...
+Uninstalling RoninDojo and all features in 10s, use Ctrl+C to exit if needed!
 ***
 ${NC}
+EOF
+_sleep 10 --msg "Uninstalling in"
 
+    cat <<EOF
 ${RED}
 ***
 Users with a fully synced Blockchain should answer yes to salvage!
 ***
 ${NC}
+EOF
+    _sleep 2
 
+    cat <<EOF
 ${RED}
 ***
-WARNING: Data will be lost if you answer no to salvage, use Ctrl+C to exit if needed!
+WARNING: Data will be lost if you answer no to salvage, 
 ***
 ${NC}
 EOF
-        _sleep 10
+    _sleep 2
 
-        cat <<EOF
+    cat <<EOF
 ${RED}
 Do you want to salvage your Blockchain data? [${GREEN}Yes${NC}/${RED}No${NC}]
 ${NC}
 EOF
-        _sleep
+    _sleep
 
         while true; do
             read -r answer
@@ -152,7 +158,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Uninstalling Dojo...
+Uninstalling RoninDojo...
 ***
 ${NC}
 EOF
@@ -163,6 +169,33 @@ EOF
 
         sudo systemctl restart docker
         # restart docker daemon
+
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
+
+        cat <<EOF
+${RED}
+***
+Uninstalling Ronin UI Backend...
+***
+${NC}
+
+${RED}
+***
+Press Ctrl+C to cancel at anytime
+***
+${NC}
+EOF
+        _sleep 10 --msg "Uninstalling in"
+
+        # Delete app from process list
+        pm2 delete "Ronin Backend" &>/dev/null
+
+        # dump all processes for resurrecting them later
+        pm2 save 1>/dev/null
+
+        # Remove ${RONIN_UI_BACKEND_DIR}
+        cd "${HOME}" || exit
+        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
 
         cat <<EOF
 ${RED}

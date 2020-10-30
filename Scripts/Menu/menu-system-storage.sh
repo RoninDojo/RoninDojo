@@ -21,12 +21,14 @@ clear
 
 case $CHOICE in
     1)
-        echo -e "${RED}"
-        echo "***"
-        echo "Showing Disk Space Info..."
-        echo "***"
-        echo -e "${NC}"
-        _sleep 2
+        cat <<EOF
+${RED}
+***
+Showing Disk Space Info...
+***
+${NC}
+EOF
+_sleep 2
 
         sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
         sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")
@@ -36,13 +38,15 @@ case $CHOICE in
         echo "External: ${hdd} remaining"
         # disk space info
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Press any key to return..."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
         _pause
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-storage.sh
+        bash -c "${RONIN_SYSTEM_STORAGE}"
         # press any key to return to menu
         ;;
     2)
