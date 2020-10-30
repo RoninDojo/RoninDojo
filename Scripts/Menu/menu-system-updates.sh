@@ -29,7 +29,7 @@ ${NC}
 EOF
         _sleep 2
 
-        sudo pacman -Syyu
+        sudo pacman -Syyu --noconfirm
 
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
         # check for system updates, then return to menu
