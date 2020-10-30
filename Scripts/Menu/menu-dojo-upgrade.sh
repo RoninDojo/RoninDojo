@@ -294,6 +294,9 @@ EOF
             ;;
         esac
     done
+else
+    # Repopulate mempool/Dockerfile with current credentials
+    _mempool_conf conf
 fi
 # Check if mempool available or not
 
