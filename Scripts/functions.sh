@@ -931,9 +931,6 @@ _dojo_update() {
 
     # Reset to origin master branch
     git reset --hard origin/"${SAMOURAI_COMMITISH}" 1>/dev/null
-
-    # Check for backend updates
-     _install_ronin_ui_backend
 }
 
 #
