@@ -102,23 +102,8 @@ Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 ***
 ${NC}
 MENU
-        else
-                cat <<MENU
-${RED}
-***
-Electrum Rust Server not enabled...
-***
-${NC}
-MENU
         fi
 
-        cat <<MENU
-${RED}
-***
-Press any key to return...
-***
-${NC}
-MENU
         _pause
         bash -c "$RONIN_CREDENTIALS_MENU"
         # return to menu
