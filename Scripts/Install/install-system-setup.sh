@@ -381,7 +381,7 @@ EOF
 
     test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
 
-    sudo mv -v "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"/
+    sudo mv -v "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"/ 1>/dev/null
     # moves blockchain salvage data to ${STORAGE_MOUNT} if found
 
     cat <<EOF

@@ -342,7 +342,7 @@ EOF
     _sleep
 
     sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-    sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+    sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
     # changes to dojo path, otherwise exit
     # websearch "bash Logical OR (||)" for info
     # stops dojo and removes new data directories
