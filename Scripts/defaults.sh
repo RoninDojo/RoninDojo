@@ -69,7 +69,7 @@ DOJO_RESTORE=true
 TOR_RESTORE=true
 
 # Repositories
-RONIN_DOJO_BRANCH="" # defaults to master
+RONIN_DOJO_BRANCH="master" # defaults to master
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 SAMOURAI_COMMITISH="v1.8.0" # empty defaults to master
 BOLTZMANN_REPO='https://code.samourai.io/oxt/boltzmann.git'

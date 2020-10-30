@@ -956,9 +956,8 @@ EOF
         # Fetch remotes
         git fetch --all 1>/dev/null
 
-        # Reset to origin master branch unless variable set by
-        # user.conf override
-        [ -z "${RONIN_DOJO_BRANCH}" ] && git reset --hard origin/"${RONIN_DOJO_BRANCH:-master}"
+        # Reset to origin master branch
+        git reset --hard origin/"${RONIN_DOJO_BRANCH}" 1>/dev/null
 
         # Check for backend updates
         _install_ronin_ui_backend
@@ -967,7 +966,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${RONIN_DOJO_BRANCH:-master}" https://code.samourai.io/ronindojo/RoninDojo 2>/dev/null
+git clone -b "${RONIN_DOJO_BRANCH}" https://code.samourai.io/ronindojo/RoninDojo 2>/dev/null
 ${RED}
 ***
 Upgrade Complete!
