@@ -11,7 +11,7 @@ _check_dojo_perms "${DOJO_PATH}"
 # make sure permissions are properly set for ${DOJO_PATH}
 
 if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
-    sed -i 's/BITCOIND_RPC_EXTERNAL=off/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
+    sed -i 's/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
 fi
 # enable BITCOIND_RPC_EXTERNAL
 
@@ -20,15 +20,6 @@ _dojo_update
 
 cd "${HOME}" || exit
 # return to previous working path
-
-cat <<EOF
-${RED}
-***
-Checking BTC RPC Explorer...
-***
-${NC}
-EOF
-_sleep 1
 
 if grep "EXPLORER_INSTALL=off" "${DOJO_PATH}"/conf/docker-explorer.conf 1>/dev/null; then
     cat <<EOF
