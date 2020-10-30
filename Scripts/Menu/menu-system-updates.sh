@@ -65,8 +65,8 @@ DOJO
         fi
         # is ronindojo directory missing?
 
-        test -f "$HOME"/ronin-update.sh || sudo rm -f "$HOME"/ronin-update.sh
-        # using -f here to avoid error output if "$HOME"/ronin-update.sh does not exist
+        test -f "$HOME"/ronin-update.sh && sudo rm "$HOME"/ronin-update.sh
+        # Remove old update file
 
         cat <<EOF
 ${RED}
