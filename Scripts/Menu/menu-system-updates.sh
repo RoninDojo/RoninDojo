@@ -93,7 +93,7 @@ Missing ${DOJO_PATH%/docker/my-dojo} directory, skipping! Returning to menu...
 ${NC}
 DOJO
                 _sleep 3
-                bash -c "${RONIN_UPDATES_MENU}"
+                bash -c "${RONIN_SYSTEM_MENU}"
                 exit 1
             fi
         fi
