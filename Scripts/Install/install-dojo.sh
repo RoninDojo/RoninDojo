@@ -47,7 +47,7 @@ Running RoninDojo install in 10s...
 ***
 ${NC}
 EOF
-_sleep 2s
+_sleep 2
 
 cat <<EOF
 ${RED}
