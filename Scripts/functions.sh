@@ -929,9 +929,8 @@ _dojo_update() {
     # Fetch remotes
     git fetch --all 1>/dev/null
 
-    # Reset to origin master branch unless variable set by
-    # user.conf override
-    [ -z "${SAMOURAI_COMMITISH}" ] && git reset --hard origin/"${SAMOURAI_COMMITISH}"
+    # Reset to origin master branch
+    git reset --hard origin/"${SAMOURAI_COMMITISH}" 1>/dev/null
 
     # Check for backend updates
      _install_ronin_ui_backend
@@ -958,9 +957,6 @@ EOF
 
         # Reset to origin master branch
         git reset --hard origin/"${RONIN_DOJO_BRANCH}" 1>/dev/null
-
-        # Check for backend updates
-        _install_ronin_ui_backend
     else
         cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
@@ -980,9 +976,6 @@ EOF
         # makes script executable and runs
         # end of script returns to menu
         # script is deleted during next run of update
-
-        # Check for backend updates
-        _install_ronin_ui_backend
     fi
 
     # Check TOR
