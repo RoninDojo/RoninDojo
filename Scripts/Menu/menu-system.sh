@@ -46,7 +46,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl poweroff
+            systemctl poweroff
             # power off machine
         else
             echo -e "${RED}"
@@ -55,7 +55,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl poweroff
+            systemctl poweroff
             # power off machine
         fi
         ;;
@@ -76,7 +76,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl reboot
+            systemctl reboot
             # restart machine
         else
             echo -e "${RED}"
@@ -85,7 +85,7 @@ case $CHOICE in
             echo "***"
             echo -e "${NC}"
             _sleep 5
-            sudo systemctl reboot
+            systemctl reboot
             # restart machine
         fi
         ;;

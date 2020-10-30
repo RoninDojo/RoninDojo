@@ -43,3 +43,12 @@ _update_02() {
         rm -rf "$HOME"/wst
     fi
 }
+
+# Add password less reboot/shutdown privilages to sudo
+_update_03() {
+    if ! grep "poweroff" /etc/sudoers.d/21-ronindojo 1>/dev/null; then
+        sudo bash -c "cat <<EOF >>/etc/sudoers.d/21-ronindojo
+ALL ALL=(root) NOPASSWD: /usr/bin/systemctl reboot, /usr/bin/systemctl poweroff
+EOF"
+    fi
+}
