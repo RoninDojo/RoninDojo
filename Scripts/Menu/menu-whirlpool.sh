@@ -147,7 +147,7 @@ Are you sure you want to re-initiate Whirlpool?
 ${NC}
 EOF
             while true; do
-                read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
+                read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
                 case $answer in
                     [yY][eE][sS]|[yY]|"")
                         cat <<EOF

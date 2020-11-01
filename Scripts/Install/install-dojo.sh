@@ -260,7 +260,7 @@ ${NC}
 EOF
 
     while true; do
-      read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
+      read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
       case $answer in
           [yY][eE][sS]|[yY]|"")
             _mempool_conf conf.tpl

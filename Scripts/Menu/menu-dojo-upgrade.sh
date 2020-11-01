@@ -30,7 +30,7 @@ BTC RPC Explorer not installed, would you like to install it?
 ${NC}
 EOF
     while true; do
-        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
         case $answer in
             [yY][eE][sS]|[yY]|"")
                 sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${DOJO_PATH}"/conf/docker-explorer.conf
@@ -257,7 +257,7 @@ Do you want to install the Mempool Visualizer?
 ***
 ${NC}
 EOF
-    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
+    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
     while true; do
         case $answer in
             [yY][eE][sS]|[yY]|"")
