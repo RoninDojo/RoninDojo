@@ -44,7 +44,7 @@ fi
 cat <<EOF
 ${RED}
 ***
-Running RoninDojo install in 10s...
+Running RoninDojo install...
 ***
 ${NC}
 EOF

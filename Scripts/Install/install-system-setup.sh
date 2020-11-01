@@ -20,7 +20,7 @@ else
     cat <<EOF
 ${RED}
 ***
-Setting up system and installing dependencies in 10s...
+Setting up system and installing dependencies...
 ***
 ${NC}
 EOF

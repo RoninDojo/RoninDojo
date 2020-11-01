@@ -82,7 +82,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Uninstalling RoninDojo and all features in 10s, use Ctrl+C to exit if needed!
+Uninstalling RoninDojo and all features, use Ctrl+C to exit if needed!
 ***
 ${NC}
 EOF

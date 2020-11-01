@@ -38,17 +38,20 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Updating in 10s...
+Updating RoninDojo...
 ***
 ${NC}
+EOF
+        _sleep 2
 
+        cat <<EOF
 ${RED}
 ***
 Use Ctrl+C to exit if needed!
 ***
 ${NC}
 EOF
-_sleep 10
+_sleep 10 --msg "Updating in"
 
         if [ ! -d "$HOME"/RoninDojo ]; then
             cat <<DOJO
