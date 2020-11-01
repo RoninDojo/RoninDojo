@@ -50,13 +50,13 @@ _sleep 3
 cat <<EOF
 ${RED}
 ***
-Are you ready to mount? [${GREEN}Yes${NC}/${RED}No${NC}]
+Are you ready to mount? 
 ***
 ${NC}
 EOF
 
 while true; do
-    read -r answer
+    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
     case $answer in
         [yY][eE][sS]|[yY]|"") break;;
         [nN][oO]|[Nn])

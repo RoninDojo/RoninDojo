@@ -108,13 +108,13 @@ EOF
 
     cat <<EOF
 ${RED}
-Do you want to salvage your Blockchain data? [${GREEN}Yes${NC}/${RED}No${NC}]
+Do you want to salvage your Blockchain data?
 ${NC}
 EOF
     _sleep
 
         while true; do
-            read -r answer
+            read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
             case $answer in
                 [yY][eE][sS]|[yY]|"")
                     cat <<EOF

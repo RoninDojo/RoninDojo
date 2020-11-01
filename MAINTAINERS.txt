@@ -8,7 +8,7 @@ Branch maintainers
 The Core RoninDojo maintainers oversee the development of RoninDojo as a whole.
 The branch maintainers for RoninDojo are:
 
-RoninDojo CLI:
+RoninDojo:
     - @likewhoa             - https://code.samourai.io/likewhoa
     - @BTCxZelko            - https://code.samourai.io/BTCxZelko
     - @s2l1  (GuerraMoneta) - https://code.samourai.io/s2l1
@@ -18,7 +18,7 @@ RoninDojo Website:
     - @likewhoa
     - @pajasevi (Pavel Ševčík)
 
-RoninDojo GUI:
+RoninUI:
     - @pajasevi
 
 RoninDojo Documentation:

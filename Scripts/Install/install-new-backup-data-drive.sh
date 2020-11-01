@@ -60,13 +60,13 @@ _sleep 2
 cat <<EOF
 ${RED}
 ***
-Are you sure? [${GREEN}Yes${NC}/${RED}No${NC}]
+Are you sure?
 ***
 ${NC}
 EOF
 
 while true; do
-    read -r answer
+    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
     case $answer in
         [yY][eE][sS]|[yY]|"") break;;
         [nN][oO]|[Nn])

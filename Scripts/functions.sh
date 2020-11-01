@@ -259,9 +259,19 @@ _tor_restore() {
 ${RED}
 ***
 Tor credentials backup detected and restored...
-If you wish to disable this feature, set TOR_RESTORE=false in
-$HOME/.conf/RoninDojo/user.conf
+***
+${NC}
 EOF
+_sleep 2
+
+        cat <<EOF
+${RED}
+***
+If you wish to disable this feature, set TOR_RESTORE=false in $HOME/.conf/RoninDojo/user.conf file...
+***
+${NC}
+EOF
+_sleep 3
         return 0
     fi
 
@@ -714,8 +724,16 @@ _dojo_check() {
         cat <<EOF
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}! Returning to menu.
-Please contact support for assistance
+Missing drive mount at ${INSTALL_DIR}!
+***
+${NC}
+EOF
+        _sleep 3
+
+        cat <<EOF
+${RED}
+***
+Please contact support for assistance...
 ***
 ${NC}
 EOF
@@ -803,20 +821,16 @@ DOJO
 
     if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
         # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+
+        cd "${DOJO_PATH}" || exit
+    else
         cat <<EOF
 ${RED}
 ***
-Stopping Dojo...
+Dojo is already stopped!
 ***
 ${NC}
 EOF
-        cd "${DOJO_PATH}" || exit
-    else
-        echo -e "${RED}"
-        echo "***"
-        echo "Dojo is already stopped!"
-        echo "***"
-        echo -e "${NC}"
         return 1
     fi
 
@@ -827,6 +841,7 @@ Preparing shutdown of Dojo. Please wait...
 ***
 ${NC}
 EOF
+_sleep
 
     # Source conf files
     _source_dojo_conf
@@ -871,7 +886,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Stopping all Dojo containers...
+Stopping all Docker containers...
 ***
 ${NC}
 EOF
@@ -944,7 +959,7 @@ _update_ronin() {
         cat <<EOF
 ${RED}
 ***
-git repo found! Updating RoninDojo via git fetch
+Git repo found, downloading updates...
 ***
 ${NC}
 EOF

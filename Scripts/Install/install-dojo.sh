@@ -18,6 +18,7 @@ EOF
 _sleep
 
     cat <<EOF
+${RED}
 ***
 Exiting RoninDojo in 5 seconds...
 ***
@@ -81,6 +82,7 @@ Credentials necessary for usernames, passwords, etc. will randomly be generated 
 ***
 ${NC}
 EOF
+_sleep 4
 
 cat <<EOF
 ${RED}
@@ -89,7 +91,7 @@ Credentials are found in RoninDojo menu, ${DOJO_PATH}/conf, or in the ~/RoninDoj
 ***
 ${NC}
 EOF
-_sleep 2
+_sleep 4
 
 cat <<EOF
 ${RED}
@@ -98,7 +100,7 @@ Be aware these credentials are used to login to Dojo Maintenance Tool, Block Exp
 ***
 ${NC}
 EOF
-_sleep 5
+_sleep 4
 
 cat <<EOF
 ${RED}
@@ -114,7 +116,7 @@ if [ -d "${DOJO_BACKUP_DIR}" ]; then
         cat <<EOF
 ${RED}
 ***
-Dojo backup restore disabled!
+Backup restoration disabled!
 ***
 ${NC}
 EOF
@@ -123,7 +125,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Enable in user.conf if you wish to restore credentials on dojo install when available
+Enable in user.conf if you wish to restore credentials on dojo install when available...
 ***
 ${NC}
 EOF
@@ -132,7 +134,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Dojo credentials backup detected and restored...
+Credentials backup detected and restored...
 ***
 ${NC}
 EOF
@@ -141,7 +143,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.conf/RoninDojo/user.conf
+If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.conf/RoninDojo/user.conf file...
 ***
 ${NC}
 EOF
@@ -217,7 +219,7 @@ Samourai Indexer is recommended for most users as it helps with querying balance
 ***
 ${NC}
 EOF
-_sleep 3
+_sleep 4
 
 cat <<EOF
 ${RED}
@@ -226,7 +228,7 @@ Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other El
 ***
 ${NC}
 EOF
-_sleep 3
+_sleep 4
 
 cat <<EOF
 ${RED}
@@ -252,13 +254,13 @@ if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer? [${GREEN}Yes${NC}/${RED}No${NC}]
+Do you want to install the Mempool Visualizer?
 ***
 ${NC}
 EOF
 
     while true; do
-      read -r answer
+      read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
       case $answer in
           [yY][eE][sS]|[yY]|"")
             _mempool_conf conf.tpl
@@ -302,20 +304,29 @@ _sleep 3
 cat <<EOF
 ${RED}
 ***
-Installing Samourai Dojo...
+Installing Samourai Wallet's Dojo...
 ***
 ${NC}
 EOF
 _sleep 2
 
 cd "$DOJO_PATH" || exit
-
 ./dojo.sh install --nolog
 
 # Checks if urls need to be changed for mempool UI
 _mempool_urls_to_local_btc_explorer
 
-cat <<EOF
+if _dojo_check "$DOJO_PATH"; then
+    cat <<EOF
+${RED}
+***
+All RoninDojo feature installations complete...
+***
+${NC}
+EOF
+    _sleep 3
+
+    cat <<EOF
 ${RED}
 ***
 Press any key to continue...
@@ -323,12 +334,12 @@ Press any key to continue...
 ${NC}
 EOF
 
-_pause
-# press to continue is needed because sudo password can be requested for next steps
-# if the user is AFK there may be timeout
+    _pause
+    # press to continue is needed because sudo password can be requested for next steps
+    # if the user is AFK there may be timeout
 
-if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
-    cat <<EOF
+    if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
+        cat <<EOF
 ${RED}
 ***
 Blockchain data salvage starting...
@@ -336,43 +347,54 @@ Blockchain data salvage starting...
 ${NC}
 EOF
 
-    cd "$DOJO_PATH" || exit
-    _stop_dojo
+        cd "$DOJO_PATH" || exit
+        _stop_dojo
 
-    _sleep
+        _sleep
 
-    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-    sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
-    # changes to dojo path, otherwise exit
-    # websearch "bash Logical OR (||)" for info
-    # stops dojo and removes new data directories
-    # then moves salvaged block data
+        sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+        sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
+        # changes to dojo path, otherwise exit
+        # websearch "bash Logical OR (||)" for info
+        # stops dojo and removes new data directories
+        # then moves salvaged block data
 
-    cat <<EOF
+        cat <<EOF
 ${RED}
 ***
 Blockchain data salvage completed...
 ***
 ${NC}
 EOF
-    _sleep 2
-    sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
-    # remove old salvage directories
+        _sleep 2
 
-    cd "$DOJO_PATH" || exit
+        sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
+        # remove old salvage directories
 
-    _source_dojo_conf
+        cd "$DOJO_PATH" || exit
+        _source_dojo_conf
 
-    # Start docker containers
-    yamlFiles=$(_select_yaml_files)
-    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
-    # start dojo
+        # Start docker containers
+        yamlFiles=$(_select_yaml_files)
+        docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+        # start dojo
+    fi
+    # check for IBD data, if not found continue
+
+    if ${TOR_RESTORE}; then
+        _tor_restore
+        docker restart tor 1>/dev/null
+    fi
+    # restore tor credentials backup to container
+else
+        cat <<EOF
+${RED}
+***
+Install failed! Please contact support...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Returning to main menu in"
+        ronin
 fi
-# check for IBD data, if not found continue
 
-if ${TOR_RESTORE}; then
-    _tor_restore
-
-    docker restart tor 1>/dev/null
-fi
-# Restore tor credentials backup to container

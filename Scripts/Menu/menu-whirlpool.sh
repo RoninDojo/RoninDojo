@@ -142,12 +142,12 @@ _sleep 2
             cat <<EOF
 ${RED}
 ***
-Are you sure you want to re-initiate Whirlpool? [${GREEN}Yes${NC}/${RED}No${NC}]
+Are you sure you want to re-initiate Whirlpool?
 ***
 ${NC}
 EOF
             while true; do
-                read -r answer
+                read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
                 case $answer in
                     [yY][eE][sS]|[yY]|"")
                         cat <<EOF

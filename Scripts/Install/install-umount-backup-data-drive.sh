@@ -41,7 +41,7 @@ fi
 cat <<EOF
 ${RED}
 ***
-Preparing to UMount ${SECONDARY_STORAGE}...
+Preparing to Umount ${SECONDARY_STORAGE}...
 ***
 ${NC}
 EOF
@@ -50,13 +50,13 @@ _sleep 3
 cat <<EOF
 ${RED}
 ***
-Are you ready to umount? [${GREEN}Yes${NC}/${RED}No${NC}]
+Are you ready to Umount?
 ***
 ${NC}
 EOF
 
 while true; do
-    read -r answer
+    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: "
     case $answer in
         [yY][eE][sS]|[yY]|"") break;;
         [nN][oO]|[Nn])
