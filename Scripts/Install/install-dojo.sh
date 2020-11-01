@@ -394,6 +394,16 @@ Install failed! Please contact support...
 ***
 ${NC}
 EOF
+
+        cat <<EOF
+${RED}
+***
+Press any key to continue...
+***
+${NC}
+EOF
+
+        _pause
         _sleep 5 --msg "Returning to main menu in"
         ronin
 fi
