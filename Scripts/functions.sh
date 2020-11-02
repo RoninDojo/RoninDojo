@@ -200,12 +200,12 @@ _sleep() {
 
     while [ "$secs" -gt 0 ]; do
         if $verbose; then
-            echo -ne "${msg} $secs\033[0K seconds...\r"
+            printf "%s%s %s\033[0K seconds...%s\r" "${RED}" "${msg}" "${secs}" "${NC}"
         fi
         sleep 1
         : $((secs--))
     done
-    echo -e "\n" # Add new line
+    printf "\n" # Add new line
 }
 
 #
