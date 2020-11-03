@@ -50,7 +50,7 @@ _sleep 3
 cat <<EOF
 ${RED}
 ***
-Are you ready to mount? 
+Are you ready to mount?
 ***
 ${NC}
 EOF
