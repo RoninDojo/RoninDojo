@@ -38,6 +38,7 @@ ${NC}
 EOF
     _sleep 5 --msg "Returning to menu in"
     ronin
+    exit
 fi
 # Makes sure RoninDojo has been uninstalled
 
