@@ -581,7 +581,7 @@ EOF
                         sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
                         sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
                     fi
-                    break
+                    return 0
                     ;;
                     # samourai indexer install enabled in .conf.tpl files using sed
 
@@ -594,9 +594,9 @@ Installing Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
-                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+                    ;;
                     # triggers electrs install script
-
                 "Do Not Install Indexer")
                     cat <<EOF
 ${RED}
@@ -606,18 +606,19 @@ An Indexer will not be installed...
 ${NC}
 EOF
                     _sleep
-                    break
+                    return 0
                     ;;
                     # indexer will not be installed
                 *)
                     cat <<EOF
 ${RED}
 ***
-Invalid Entry! Valid values are 1, 2, 3...
+Invalid Entry! Valid values are 1, 2 & 3...
 ***
 ${NC}
 EOF
                     _sleep
+                    break
                     ;;
                     # invalid data try again
             esac
