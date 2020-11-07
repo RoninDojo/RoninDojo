@@ -253,7 +253,7 @@ _tor_backup() {
 _tor_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    if sudo test -d "${INSTALL_DIR}/${TOR_DATA_DIR}"; then
+    if sudo test -d "${TOR_BACKUP_DIR}"; then
         sudo rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
         cat <<EOF
 ${RED}
