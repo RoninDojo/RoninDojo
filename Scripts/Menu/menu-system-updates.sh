@@ -53,7 +53,7 @@ ${NC}
 EOF
 _sleep 10 --msg "Updating in"
 
-        if [ ! -d "$HOME"/RoninDojo ]; then
+        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d ${DOJO_PATH%/docker/my-dojo} ]; then
             cat <<DOJO
 ${RED}
 ***
