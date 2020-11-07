@@ -62,7 +62,8 @@ NC=$(tput sgr0) # No Color
 #
 # Install Defaults
 #
-DOJO_PATH="$HOME/dojo/docker/my-dojo"
+DOJO_PATH="$HOME/dojo"
+dojo_path_my_dojo="${DOJO_PATH}/docker/my-dojo"
 BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
 DOJO_RESTORE=true

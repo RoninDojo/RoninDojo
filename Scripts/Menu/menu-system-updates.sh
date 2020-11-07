@@ -53,7 +53,7 @@ ${NC}
 EOF
 _sleep 10 --msg "Updating in"
 
-        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d ${DOJO_PATH%/docker/my-dojo} ]; then
+        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d ${DOJO_PATH} ]; then
             cat <<DOJO
 ${RED}
 ***
@@ -86,12 +86,12 @@ EOF
         _install_ronin_ui_backend
         # update ronin ui backend
 
-        if ! _dojo_check "$DOJO_PATH"; then
-            if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+        if ! _dojo_check "$dojo_path_my_dojo"; then
+            if [ ! -d "${DOJO_PATH}" ]; then
                 cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory, skipping! Returning to menu...
+Missing ${DOJO_PATH} directory, skipping! Returning to menu...
 ***
 ${NC}
 DOJO

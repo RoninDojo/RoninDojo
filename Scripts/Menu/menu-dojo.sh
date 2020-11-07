@@ -24,7 +24,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            if _dojo_check "$DOJO_PATH"; then
+            if _dojo_check "$dojo_path_my_dojo"; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Dojo is already started!"
@@ -43,7 +43,7 @@ case $CHOICE in
                 echo -e "${NC}"
                 _sleep 2
 
-                cd "$DOJO_PATH" || exit
+                cd "$dojo_path_my_dojo" || exit
 
                 _source_dojo_conf
 
@@ -78,14 +78,14 @@ case $CHOICE in
             _is_dojo "${RONIN_DOJO_MENU}"
             # is dojo installed?
 
-            if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+            if [ -d "${DOJO_PATH}" ]; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Restarting Dojo..."
                 echo "***"
                 echo -e "${NC}"
                 _sleep 2
-                cd "$DOJO_PATH" || exit
+                cd "$dojo_path_my_dojo" || exit
 
                 cat <<DOJO
 ${RED}
@@ -95,7 +95,7 @@ Stopping Dojo...
 ${NC}
 DOJO
                 # Check if db container running before stopping all containers
-                if _dojo_check "$DOJO_PATH"; then
+                if _dojo_check "$dojo_path_my_dojo"; then
                     _stop_dojo
                 fi
 

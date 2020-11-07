@@ -123,7 +123,7 @@ Press Ctrl+C to exit at anytime...
 ***
 ${NC}
 EOF
-            cd "$DOJO_PATH" || exit
+            cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs whirlpool
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # view logs, return to menu
@@ -157,7 +157,7 @@ Re-initiating Whirlpool...
 ***
 ${NC}
 EOF
-                        cd "$DOJO_PATH" || exit
+                        cd "$dojo_path_my_dojo" || exit
 
                         ./dojo.sh whirlpool reset
                         _sleep

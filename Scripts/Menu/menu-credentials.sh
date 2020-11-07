@@ -227,7 +227,7 @@ Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
 MENU
-        if [ -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
+        if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
                 cat <<MENU
 ${RED}
 ***

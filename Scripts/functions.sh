@@ -239,7 +239,7 @@ _tor_backup() {
 
     test -d "${TOR_BACKUP_DIR}" || sudo mkdir -p "${TOR_BACKUP_DIR}"
 
-    if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+    if [ -d "${DOJO_PATH}" ]; then
         sudo rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
         return 0
     fi
@@ -343,7 +343,7 @@ TOR_CONFIG
 _is_electrs() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ]; then
+    if [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
         cat <<EOF
 ${RED}
 ***
@@ -533,26 +533,26 @@ _mempool_conf() {
     local conf RPC_USER RPC_PASS RPC_IP RPC_PORT MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
 
     conf="$1"
-    RPC_USER=$(grep BITCOIND_RPC_USER "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    RPC_IP=$(grep BITCOIND_IP "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    RPC_PORT=$(grep BITCOIND_RPC_PORT "${DOJO_PATH}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${DOJO_PATH}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
-    MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${DOJO_PATH}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
+    RPC_USER=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
+    MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
+    MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
 
     _load_user_conf
 
     # Enable mempool and set MySQL credentials
     sudo sed -i -e 's/MEMPOOL_INSTALL=off/MEMPOOL_INSTALL=on/' \
     -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
-    -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${DOJO_PATH}"/conf/docker-mempool."${conf}"
+    -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool."${conf}"
 
     # Set environment values for Dockerfile
     sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \
     -e "s/DB_USER .*$/DB_USER ${MEMPOOL_MYSQL_USER}/" -e "s/DB_PASSWORD .*$/DB_PASSWORD ${MEMPOOL_MYSQL_PASSWORD}/" \
     -e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${RPC_IP}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${RPC_PORT}/" \
     -e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${RPC_USER}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${RPC_PASS}/" \
-    "${DOJO_PATH}"/mempool/Dockerfile
+    "${dojo_path_my_dojo}"/mempool/Dockerfile
 }
 
 #
@@ -574,12 +574,12 @@ ${NC}
 EOF
                     _sleep
 
-                    if [ ! -f "${DOJO_PATH}"/conf/docker-indexer.conf ] && [ -f "${DOJO_PATH}"/conf/docker-indexer.conf.tpl ]; then
-                        sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf.tpl
-                        sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf.tpl
+                    if [ ! -f "${dojo_path_my_dojo}"/conf/docker-indexer.conf ] && [ -f "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl ]; then
+                        sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
+                        sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node.conf.tpl
                     else
-                        sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-                        sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf
+                        sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf
+                        sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node.conf
                     fi
                     return 0
                     ;;
@@ -634,11 +634,11 @@ _is_dojo() {
     local menu
     menu="$1"
 
-    if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+    if [ ! -d "${DOJO_PATH}" ]; then
         cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
+Missing ${DOJO_PATH} directory! Returning to menu...
 ***
 ${NC}
 DOJO
@@ -652,15 +652,15 @@ fi
 #
 _is_mempool() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
-    local conf="${DOJO_PATH}/conf/docker-mempool.conf"
+    local conf="${dojo_path_my_dojo}/conf/docker-mempool.conf"
 
     if [ -f "$conf" ]; then
-        if grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}"/conf/docker-mempool.conf 1>/dev/null; then
+        if grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
             return 0
         else
             return 1
         fi
-    elif grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}"/conf/docker-mempool.conf.tpl 1>/dev/null; then
+    elif grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-mempool.conf.tpl 1>/dev/null; then
         return 0
     else
         return 1
@@ -674,10 +674,10 @@ _mempool_urls_to_local_btc_explorer() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 
-    if ! _is_mempool && grep "blockstream" "${DOJO_PATH}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
-        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${DOJO_PATH}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html
-        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${DOJO_PATH}"/mempool/frontend/src/app/blockchain-blocks/block-modal/block-modal.component.html
-        sudo sed -i "s:http\://www.blockstream.info/tx/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/tx/:" "${DOJO_PATH}"/mempool/frontend/src/app/tx-bubble/tx-bubble.component.html
+    if ! _is_mempool && grep "blockstream" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
+        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html
+        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/block-modal/block-modal.component.html
+        sudo sed -i "s:http\://www.blockstream.info/tx/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/tx/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/tx-bubble/tx-bubble.component.html
     fi
 }
 
@@ -689,8 +689,8 @@ _dojo_backup() {
 
     test -d "${DOJO_BACKUP_DIR}" || sudo mkdir -p "${DOJO_BACKUP_DIR}"
 
-    if [ -d "${DOJO_PATH%/docker/my-dojo}" ]; then
-        sudo rsync -ac --quiet "${DOJO_PATH%/docker/my-dojo}"/ "${DOJO_BACKUP_DIR}"
+    if [ -d "${DOJO_PATH}" ]; then
+        sudo rsync -ac --quiet "${DOJO_PATH}"/ "${DOJO_BACKUP_DIR}"
         return 0
     fi
 
@@ -704,7 +704,7 @@ _dojo_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if "${DOJO_RESTORE}"; then
-        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/ "${DOJO_PATH%/docker/my-dojo}"
+        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/ "${DOJO_PATH}"
         return 0
     fi
 
@@ -719,8 +719,8 @@ _dojo_check() {
 
     _load_user_conf
 
-    local DOJO_PATH
-    DOJO_PATH="$1"
+    local dojo_path_my_dojo
+    dojo_path_my_dojo="$1"
 
     # Check that ${INSTALL_DIR} is mounted
     if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
@@ -746,7 +746,7 @@ EOF
 
     _is_active docker
 
-    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
+    if [ -d "${DOJO_PATH}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
         return 0
     else
         return 1
@@ -768,33 +768,33 @@ _source_dojo_conf() {
 # Select YAML files
 #
 _select_yaml_files() {
-    local DOJO_PATH
-    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+    local dojo_path_my_dojo
+    dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
 
-    yamlFiles="-f $DOJO_PATH/docker-compose.yaml"
+    yamlFiles="-f $dojo_path_my_dojo/docker-compose.yaml"
 
     if [ "$BITCOIND_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/bitcoind.install.yaml"
 
         if [ "$BITCOIND_RPC_EXTERNAL" == "on" ]; then
-            yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.rpc.expose.yaml"
+            yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/bitcoind.rpc.expose.yaml"
         fi
     fi
 
     if [ "$EXPLORER_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/explorer.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/explorer.install.yaml"
     fi
 
     if [ "$INDEXER_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/indexer.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/indexer.install.yaml"
     fi
 
     if [ "$WHIRLPOOL_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/whirlpool.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/whirlpool.install.yaml"
     fi
 
     if [ "$MEMPOOL_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/mempool.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/mempool.install.yaml"
     fi
 
     # Return yamlFiles
@@ -805,14 +805,14 @@ _select_yaml_files() {
 # Stop Samourai Dojo containers
 #
 _stop_dojo() {
-    local DOJO_PATH
-    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+    local dojo_path_my_dojo
+    dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
 
-    if [ ! -d "${DOJO_PATH%/docker/my-dojo}" ]; then
+    if [ ! -d "${DOJO_PATH}" ]; then
         cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH%/docker/my-dojo} directory! Returning to menu...
+Missing ${DOJO_PATH} directory! Returning to menu...
 ***
 ${NC}
 DOJO
@@ -822,10 +822,10 @@ DOJO
     fi
     # is dojo installed?
 
-    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+    if [ -d "${DOJO_PATH}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
         # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
 
-        cd "${DOJO_PATH}" || exit
+        cd "${dojo_path_my_dojo}" || exit
     else
         cat <<EOF
 ${RED}
@@ -943,7 +943,7 @@ _dojo_update() {
 
     _load_user_conf
 
-    cd "${DOJO_PATH%/docker/my-dojo}" || exit
+    cd "${DOJO_PATH}" || exit
 
     # Fetch remotes
     git fetch --all 1>/dev/null
@@ -1063,16 +1063,16 @@ EOF
 # from legacy use of `sudo ./dojo.sh`
 #
 _check_dojo_perms() {
-    local DOJO_PATH="${1}"
+    local dojo_path_my_dojo="${1}"
 
-    cd "${DOJO_PATH}" || exit
+    cd "${dojo_path_my_dojo}" || exit
 
-    if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
+    if find "${DOJO_PATH}" -user root | grep -q '.'; then
         _stop_dojo
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
-        sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
+        sudo chown -R "${USER}:${USER}" "${DOJO_PATH}"
     else
         _stop_dojo
     fi

@@ -74,7 +74,7 @@ EOF
         # uses passwd to unlock root user, returns to menu
         ;;
     5)
-        if ! _dojo_check "$DOJO_PATH"; then
+        if ! _dojo_check "$dojo_path_my_dojo"; then
             _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
         fi
             # is dojo installed?
@@ -126,7 +126,7 @@ ${NC}
 EOF
                     _sleep 2
 
-                    cd "$DOJO_PATH" || exit
+                    cd "$dojo_path_my_dojo" || exit
                     _stop_dojo
                     # stop dojo
 
@@ -162,8 +162,8 @@ Uninstalling RoninDojo...
 ***
 ${NC}
 EOF
-        cd "$DOJO_PATH" || exit
-        ./dojo.sh uninstall && sudo rm -rf "${DOJO_PATH%/docker/my-dojo}"
+        cd "$dojo_path_my_dojo" || exit
+        ./dojo.sh uninstall && sudo rm -rf "${DOJO_PATH}"
         cd "${HOME}" || exit
         # uninstall dojo
 

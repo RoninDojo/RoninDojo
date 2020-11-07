@@ -81,7 +81,7 @@ Press Ctrl+C to exit at anytime...
 ***
 ${NC}
 MEMPOOL
-        cd "$DOJO_PATH" || exit
+        cd "$dojo_path_my_dojo" || exit
         ./dojo.sh logs mempool
         bash -c "$RONIN_MEMPOOL_MENU"
         # view logs, return to menu

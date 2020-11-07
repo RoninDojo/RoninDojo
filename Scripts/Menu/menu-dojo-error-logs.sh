@@ -22,7 +22,7 @@ clear
 case $CHOICE in
         1)
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
-            if ! _dojo_check "$DOJO_PATH"; then
+            if ! _dojo_check "$dojo_path_my_dojo"; then
               cat <<DOJO
 ${RED}
 ***
@@ -33,7 +33,7 @@ DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs bitcoind -n 200 | grep -i 'error'
               # shows bitcoind error logs
 
@@ -50,7 +50,7 @@ LOGS
             fi
             ;;
         2)
-            if ! _dojo_check "$DOJO_PATH"; then
+            if ! _dojo_check "$dojo_path_my_dojo"; then
               cat <<DOJO
 ${RED}
 ***
@@ -61,7 +61,7 @@ DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs db -n 500 | grep -i 'error'
               # shows db error logs
             fi
@@ -78,7 +78,7 @@ LOGS
             # press any key to return to menu
 	          ;;
         3)
-            if ! _dojo_check "$DOJO_PATH"; then
+            if ! _dojo_check "$dojo_path_my_dojo"; then
               cat <<DOJO
 ${RED}
 ***
@@ -89,7 +89,7 @@ DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs indexer -n 500 | grep -i 'error'
               # shows indexer error logs
             fi
@@ -106,7 +106,7 @@ LOGS
             # press any key to return to menu
             ;;
         4)
-            if ! _dojo_check "$DOJO_PATH"; then
+            if ! _dojo_check "$dojo_path_my_dojo"; then
               cat <<DOJO
 ${RED}
 ***
@@ -117,7 +117,7 @@ DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs node -n 500 | grep -i 'error'
               # shows nodejs error logs
             fi
@@ -134,7 +134,7 @@ LOGS
             # press any key to return to menu
             ;;
         5)
-            if ! _dojo_check "$DOJO_PATH"; then
+            if ! _dojo_check "$dojo_path_my_dojo"; then
                 cat <<DOJO
 ${RED}
 ***
@@ -145,7 +145,7 @@ DOJO
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs tor -n 500 | grep -i 'error'
               # shows tor error logs
             fi

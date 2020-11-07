@@ -28,7 +28,7 @@ EOF
     exit 1
 fi
 
-if [ -d "${DOJO_PATH}" ]; then
+if [ -d "${dojo_path_my_dojo}" ]; then
     cat <<EOF
 ${RED}
 ***
@@ -88,7 +88,7 @@ _sleep 4
 cat <<EOF
 ${RED}
 ***
-Credentials are found in RoninDojo menu, ${DOJO_PATH}/conf, or in the ~/RoninDojo/user.conf.example file.
+Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or in the ~/RoninDojo/user.conf.example file.
 ***
 ${NC}
 EOF
@@ -164,7 +164,7 @@ EOF
       -e "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}/" \
       -e "s/BITCOIND_MAX_MEMPOOL=.*$/BITCOIND_MAX_MEMPOOL=400/" \
       -e "s/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=${BITCOIND_RPC_EXTERNAL:-on}/" \
-      -e "s/BITCOIND_RPC_EXTERNAL_IP=.*$/BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}/" "${DOJO_PATH}"/conf/docker-bitcoind.conf.tpl
+      -e "s/BITCOIND_RPC_EXTERNAL_IP=.*$/BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl
       # populate docker-bitcoind.conf.tpl template
 
     cat <<EOF
@@ -179,12 +179,12 @@ EOF
     sed -i -e "s/NODE_API_KEY=.*$/NODE_API_KEY=${NODE_API_KEY}/" \
       -e "s/NODE_ADMIN_KEY=.*$/NODE_ADMIN_KEY=${NODE_ADMIN_KEY}/" \
       -e "s/NODE_JWT_SECRET=.*$/NODE_JWT_SECRET=${NODE_JWT_SECRET}/" \
-      -e "s/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=${NODE_ACTIVE_INDEXER:-local_bitcoind}/" "${DOJO_PATH}"/conf/docker-node.conf.tpl
+      -e "s/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=${NODE_ACTIVE_INDEXER:-local_bitcoind}/" "${dojo_path_my_dojo}"/conf/docker-node.conf.tpl
     # populate docker-node.conf.tpl template
 
     sed -i -e "s/MYSQL_ROOT_PASSWORD=.*$/MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}/" \
       -e "s/MYSQL_USER=.*$/MYSQL_USER=${MYSQL_USER}/" \
-      -e "s/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=${MYSQL_PASSWORD}/" "${DOJO_PATH}"/conf/docker-mysql.conf.tpl
+      -e "s/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=${MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mysql.conf.tpl
     # populate docker-mysql.conf.tpl template
 
     cat <<EOF
@@ -197,7 +197,7 @@ EOF
     _sleep
 
     sed -i -e "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}/" \
-      -e "s/EXPLORER_KEY=.*$/EXPLORER_KEY=${EXPLORER_KEY}/" "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
+      -e "s/EXPLORER_KEY=.*$/EXPLORER_KEY=${EXPLORER_KEY}/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf.tpl
     # populate docker-explorer.conf.tpl template
 
     # Backup credentials
@@ -251,7 +251,7 @@ _sleep 3
 _no_indexer_found
 # give user menu for install choices, see functions.sh
 
-if [ ! -f "${DOJO_PATH}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off" "${DOJO_PATH}/conf/docker-mempool.conf" 1>/dev/null; then
+if [ ! -f "${dojo_path_my_dojo}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}/conf/docker-mempool.conf" 1>/dev/null; then
     cat <<EOF
 ${RED}
 ***
@@ -311,13 +311,13 @@ ${NC}
 EOF
 _sleep 2
 
-cd "$DOJO_PATH" || exit
+cd "$dojo_path_my_dojo" || exit
 ./dojo.sh install --nolog
 
 # Checks if urls need to be changed for mempool UI
 _mempool_urls_to_local_btc_explorer
 
-if _dojo_check "$DOJO_PATH"; then
+if _dojo_check "$dojo_path_my_dojo"; then
     cat <<EOF
 ${RED}
 ***
@@ -348,7 +348,7 @@ Blockchain data salvage starting...
 ${NC}
 EOF
 
-        cd "$DOJO_PATH" || exit
+        cd "$dojo_path_my_dojo" || exit
         _stop_dojo
 
         _sleep
@@ -372,7 +372,7 @@ EOF
         sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
         # remove old salvage directories
 
-        cd "$DOJO_PATH" || exit
+        cd "$dojo_path_my_dojo" || exit
         _source_dojo_conf
 
         # Start docker containers

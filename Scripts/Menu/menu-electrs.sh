@@ -89,7 +89,7 @@ case $CHOICE in
         echo "***"
         echo -e "${NC}"
         _sleep 2
-        cd "$DOJO_PATH" || exit
+        cd "$dojo_path_my_dojo" || exit
         ./dojo.sh logs indexer
         bash -c "$RONIN_ELECTRS_MENU"
         # start electrs, return to menu

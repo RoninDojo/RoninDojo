@@ -4,20 +4,20 @@
 #
 # Dojo Existing Configuration Values
 #
-if [ -f "${DOJO_PATH}"/conf/docker-node.conf ]; then
-    NODE_API_KEY=$(grep NODE_API_KEY "${DOJO_PATH}"/conf/docker-node.conf | cut -d '=' -f2)
-    NODE_ADMIN_KEY=$(grep NODE_ADMIN_KEY "${DOJO_PATH}"/conf/docker-node.conf | cut -d '=' -f2)
+if [ -f "${dojo_path_my_dojo}"/conf/docker-node.conf ]; then
+    NODE_API_KEY=$(grep NODE_API_KEY "${dojo_path_my_dojo}"/conf/docker-node.conf | cut -d '=' -f2)
+    NODE_ADMIN_KEY=$(grep NODE_ADMIN_KEY "${dojo_path_my_dojo}"/conf/docker-node.conf | cut -d '=' -f2)
 fi
 
-if [ -f "${DOJO_PATH}"/conf/docker-bitcoind.conf ]; then
-    RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_USER_CONF=$(grep BITCOIND_RPC_USER "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_IP=$(grep BITCOIND_IP "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_PORT=$(grep BITCOIND_RPC_PORT "${DOJO_PATH}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then
+    RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    RPC_USER_CONF=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
 fi
 
-if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ]; then
-    EXPLORER_KEY=$(grep EXPLORER_KEY "${DOJO_PATH}"/conf/docker-explorer.conf | cut -d '=' -f2)
+if [ -f "${dojo_path_my_dojo}"/conf/docker-explorer.conf ]; then
+    EXPLORER_KEY=$(grep EXPLORER_KEY "${dojo_path_my_dojo}"/conf/docker-explorer.conf | cut -d '=' -f2)
 fi
 
 # Whirlpool

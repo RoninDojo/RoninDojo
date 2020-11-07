@@ -7,11 +7,11 @@
 
 _load_user_conf
 
-_check_dojo_perms "${DOJO_PATH}"
-# make sure permissions are properly set for ${DOJO_PATH}
+_check_dojo_perms "${dojo_path_my_dojo}"
+# make sure permissions are properly set for ${dojo_path_my_dojo}
 
-if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
-    sed -i 's/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
+if grep BITCOIND_RPC_EXTERNAL=off "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf 1>/dev/null; then
+    sed -i 's/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=on/' "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
 fi
 # enable BITCOIND_RPC_EXTERNAL
 
@@ -21,7 +21,7 @@ _dojo_update
 cd "${HOME}" || exit
 # return to previous working path
 
-if grep "EXPLORER_INSTALL=off" "${DOJO_PATH}"/conf/docker-explorer.conf 1>/dev/null; then
+if grep "EXPLORER_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-explorer.conf 1>/dev/null; then
     cat <<EOF
 ${RED}
 ***
@@ -33,7 +33,7 @@ EOF
         read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
         case $answer in
             [yY][eE][sS]|[yY]|"")
-                sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${DOJO_PATH}"/conf/docker-explorer.conf
+                sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf
                 break
                 ;;
             [nN][oO]|[Nn])
@@ -53,7 +53,7 @@ EOF
 fi
 # Checks if BTC RPC Explorer is disabled
 
-if grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
+if grep "INDEXER_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
     cat <<EOF
 ${RED}
 ***
@@ -120,7 +120,7 @@ EOF
     _no_indexer_found
     # give user menu for install choices, see functions.sh
 else
-    if grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
+    if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
         cat <<EOF
 ${RED}
 ***
@@ -163,7 +163,7 @@ Replacing with Samourai Indexer...
 ${NC}
 EOF
                     _sleep
-                    cd "${DOJO_PATH}" || exit
+                    cd "${dojo_path_my_dojo}" || exit
 
                     rm indexer/electrs.toml
 
@@ -186,7 +186,7 @@ EOF
                     # invalid data try again
             esac
         done
-    elif grep "INDEXER_INSTALL=on" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
+    elif grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
         cat <<EOF
 ${RED}
 ***
@@ -261,7 +261,7 @@ EOF
     while true; do
         case $answer in
             [yY][eE][sS]|[yY]|"")
-                if [ ! -f "${DOJO_PATH}"/conf/docker-mempool.conf ]; then # New install
+                if [ ! -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then # New install
                     _mempool_conf conf.tpl
                 else # Existing install?
                     _mempool_conf conf
@@ -326,7 +326,7 @@ EOF
 fi
 # stop whirlpool for existing whirlpool users
 
-cd "${DOJO_PATH}" || exit
+cd "${dojo_path_my_dojo}" || exit
 ./dojo.sh upgrade
 # run upgrade
 

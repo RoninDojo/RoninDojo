@@ -36,7 +36,7 @@ case $CHOICE in
             echo "Shutting down Dojo if running..."
             echo "***"
             echo -e "${NC}"
-            cd "${DOJO_PATH}" || exit
+            cd "${dojo_path_my_dojo}" || exit
             _stop_dojo
             # stop dojo
 
@@ -66,7 +66,7 @@ case $CHOICE in
             echo "Shutting down Dojo if running..."
             echo "***"
             echo -e "${NC}"
-            cd "${DOJO_PATH}" || exit
+            cd "${dojo_path_my_dojo}" || exit
             _stop_dojo
             # stop dojo
 
