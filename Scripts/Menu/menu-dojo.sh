@@ -24,7 +24,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            if _dojo_check "$dojo_path_my_dojo"; then
+            if _dojo_check; then
                 echo -e "${RED}"
                 echo "***"
                 echo "Dojo is already started!"
@@ -95,7 +95,7 @@ Stopping Dojo...
 ${NC}
 DOJO
                 # Check if db container running before stopping all containers
-                if _dojo_check "$dojo_path_my_dojo"; then
+                if _dojo_check; then
                     _stop_dojo
                 fi
 

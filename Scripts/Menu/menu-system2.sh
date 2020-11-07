@@ -74,7 +74,7 @@ EOF
         # uses passwd to unlock root user, returns to menu
         ;;
     5)
-        if ! _dojo_check "$dojo_path_my_dojo"; then
+        if ! _dojo_check; then
             _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
         fi
             # is dojo installed?

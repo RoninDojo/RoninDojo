@@ -86,7 +86,7 @@ EOF
         _install_ronin_ui_backend
         # update ronin ui backend
 
-        if ! _dojo_check "$dojo_path_my_dojo"; then
+        if ! _dojo_check; then
             if [ ! -d "${DOJO_PATH}" ]; then
                 cat <<DOJO
 ${RED}

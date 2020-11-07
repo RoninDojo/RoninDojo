@@ -317,7 +317,7 @@ cd "$dojo_path_my_dojo" || exit
 # Checks if urls need to be changed for mempool UI
 _mempool_urls_to_local_btc_explorer
 
-if _dojo_check "$dojo_path_my_dojo"; then
+if _dojo_check; then
     cat <<EOF
 ${RED}
 ***

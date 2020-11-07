@@ -22,7 +22,7 @@ clear
 case $CHOICE in
         1)
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
-            if ! _dojo_check "$dojo_path_my_dojo"; then
+            if ! _dojo_check; then
               cat <<DOJO
 ${RED}
 ***
@@ -50,7 +50,7 @@ LOGS
             fi
             ;;
         2)
-            if ! _dojo_check "$dojo_path_my_dojo"; then
+            if ! _dojo_check; then
               cat <<DOJO
 ${RED}
 ***
@@ -78,7 +78,7 @@ LOGS
             # press any key to return to menu
 	          ;;
         3)
-            if ! _dojo_check "$dojo_path_my_dojo"; then
+            if ! _dojo_check; then
               cat <<DOJO
 ${RED}
 ***
@@ -106,7 +106,7 @@ LOGS
             # press any key to return to menu
             ;;
         4)
-            if ! _dojo_check "$dojo_path_my_dojo"; then
+            if ! _dojo_check; then
               cat <<DOJO
 ${RED}
 ***
@@ -134,7 +134,7 @@ LOGS
             # press any key to return to menu
             ;;
         5)
-            if ! _dojo_check "$dojo_path_my_dojo"; then
+            if ! _dojo_check; then
                 cat <<DOJO
 ${RED}
 ***

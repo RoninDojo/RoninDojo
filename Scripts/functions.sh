@@ -719,9 +719,6 @@ _dojo_check() {
 
     _load_user_conf
 
-    local dojo_path_my_dojo
-    dojo_path_my_dojo="$1"
-
     # Check that ${INSTALL_DIR} is mounted
     if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
         cat <<EOF
