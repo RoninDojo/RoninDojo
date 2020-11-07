@@ -101,6 +101,8 @@ TOR_BACKUP_DIR="${INSTALL_DIR}/backup/tor"
 TOR_DATA_DIR="docker/volumes/my-dojo_data-tor"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
 
+sudoers_file="/etc/sudoers.d/21-ronindojo"
+
 # Workaround when on x86 systems and autologin is enabled for the user account
 if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then
     USER=$(getent group 1000 | cut -d ':' -f4)

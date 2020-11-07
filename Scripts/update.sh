@@ -1,6 +1,8 @@
 #!/bin/bash
 # shellcheck source=/dev/null
 
+. "$HOME"/RoninDojo/Scripts/defaults.sh
+
 _update_01() {
     if ! _check_pkgver bridge-utils 1.7-1; then
         cat <<EOF
@@ -46,19 +48,23 @@ _update_02() {
 
 # Add password less reboot/shutdown privileges to sudo
 _update_03() {
-    if ! grep "/usr/bin/systemctl poweroff" /etc/sudoers.d/21-ronindojo 1>/dev/null; then
-        sudo bash -c "cat <<EOF >>/etc/sudoers.d/21-ronindojo
+    if [ -f "${sudoers_file}" ]; then
+        if ! grep "/usr/bin/systemctl poweroff" "${sudoers_file}" 1>/dev/null; then
+            sudo bash -c "cat <<EOF >>"${sudoers_file}"
 ALL ALL=(root) NOPASSWD: /usr/bin/systemctl reboot, /usr/bin/systemctl poweroff
 EOF"
+        fi
     fi
 }
 
 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges to sudo
 _update_04() {
-    if ! grep "/usr/bin/test" /etc/sudoers.d/21-ronindojo 1>/dev/null; then
-        sudo bash -c "cat <<EOF >>/etc/sudoers.d/21-ronindojo
+    if [ -f "${sudoers_path}" ]; then
+        if ! grep "/usr/bin/test" "${sudoers_file}" 1>/dev/null; then
+            sudo bash -c "cat <<EOF >>"${sudoers_file}"
 ALL ALL=(root) NOPASSWD: /usr/bin/test, /usr/bin/grep, /usr/bin/cat, /usr/bin/ufw
 ALL ALL=(root) NOPASSWD: /usr/bin/umount, /usr/bin/mount, /usr/bin/mkswap, /usr/bin/swapon, /usr/bin/swapoff
 EOF"
+        fi
     fi
 }
