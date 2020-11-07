@@ -58,7 +58,7 @@ EOF
 while true; do
     read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
     case $answer in
-        [yY][eE][sS]|[yY]|"") break;;
+        [yY][eE][sS]|[yY]) break;;
         [nN][oO]|[Nn])
           bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh
           exit

@@ -32,7 +32,7 @@ EOF
     while true; do
         read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
         case $answer in
-            [yY][eE][sS]|[yY]|"")
+            [yY][eE][sS]|[yY])
                 sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf
                 break
                 ;;
@@ -260,7 +260,7 @@ EOF
     read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
     while true; do
         case $answer in
-            [yY][eE][sS]|[yY]|"")
+            [yY][eE][sS]|[yY])
                 if [ ! -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then # New install
                     _mempool_conf conf.tpl
                 else # Existing install?
