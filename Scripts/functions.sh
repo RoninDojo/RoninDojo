@@ -564,7 +564,7 @@ _no_indexer_found() {
     while true; do
         select indexer in "Samourai Indexer (default)" "Electrum Rust Server" "Do Not Install Indexer"; do
             case $indexer in
-                "Samourai Indexer (default)"|"")
+                "Samourai Indexer (default)")
                     cat <<EOF
 ${RED}
 ***
