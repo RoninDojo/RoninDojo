@@ -240,7 +240,7 @@ _tor_backup() {
     test -d "${TOR_BACKUP_DIR}" || sudo mkdir -p "${TOR_BACKUP_DIR}"
 
     if [ -d "${DOJO_PATH}" ]; then
-        sudo rsync -ac --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
+        sudo rsync -ac --delete-before --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
         return 0
     fi
 
@@ -690,7 +690,7 @@ _dojo_backup() {
     test -d "${DOJO_BACKUP_DIR}" || sudo mkdir -p "${DOJO_BACKUP_DIR}"
 
     if [ -d "${DOJO_PATH}" ]; then
-        sudo rsync -ac --quiet "${DOJO_PATH}"/ "${DOJO_BACKUP_DIR}"
+        sudo rsync -ac --delete-before --quiet "${DOJO_PATH}"/ "${DOJO_BACKUP_DIR}"
         return 0
     fi
 
