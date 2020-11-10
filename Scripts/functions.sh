@@ -96,9 +96,6 @@ EOF
     # Force dependency on docker and tor unit files to depend on
     # external drive mount
     _systemd_unit_drop_in_check
-
-    # Checks to see if BackendUI is installed
-    _is_ronin_ui_backend
 }
 
 #
