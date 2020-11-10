@@ -152,6 +152,21 @@ EOF
             esac
         done
 
+        cd "$dojo_path_my_dojo" || exit
+        _stop_dojo
+        # stop dojo
+
+        cat <<EOF
+${RED}
+***
+Uninstalling RoninDojo...
+***
+${NC}
+EOF
+        cd "$dojo_path_my_dojo" || exit
+        ./dojo.sh uninstall
+        # uninstall dojo
+
         # Disable both indexer and mempool before a backup when performing an uninstall
         sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=off/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
         rm "${dojo_path_my_dojo}"/conf/docker-indexer.conf
@@ -162,17 +177,10 @@ EOF
         "${DOJO_RESTORE}" && _dojo_backup
         "${TOR_RESTORE}" && _tor_backup
 
-        cat <<EOF
-${RED}
-***
-Uninstalling RoninDojo...
-***
-${NC}
-EOF
-        cd "$dojo_path_my_dojo" || exit
-        ./dojo.sh uninstall && sudo rm -rf "${DOJO_PATH}"
+        rm -rf "${DOJO_PATH}"
+
+        # Returns HOME since $DOJO_PATH deleted
         cd "${HOME}" || exit
-        # uninstall dojo
 
         sudo systemctl restart docker
         # restart docker daemon
