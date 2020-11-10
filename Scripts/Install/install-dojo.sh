@@ -312,12 +312,11 @@ EOF
 _sleep 2
 
 cd "$dojo_path_my_dojo" || exit
-./dojo.sh install --nolog
 
-# Checks if urls need to be changed for mempool UI
-_mempool_urls_to_local_btc_explorer
+if ./dojo.sh install --nolog; then
+    # Checks if urls need to be changed for mempool UI
+    _mempool_urls_to_local_btc_explorer
 
-if _dojo_check; then
     cat <<EOF
 ${RED}
 ***
