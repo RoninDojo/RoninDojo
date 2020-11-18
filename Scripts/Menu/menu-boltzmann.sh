@@ -6,14 +6,15 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 if [ ! -d "${BOLTZMANN_PATH}" ]; then
-    cat <<BOLTZMANN
+    cat <<EOF
 ${RED}
 ***
-Boltzmann is not installed! Installing now...
+Installing Boltzmann...
 ***
 ${NC}
-BOLTZMANN
-    _sleep 2
+EOF
+    _sleep
+
     bash -c "$HOME"/RoninDojo/Scripts/Install/install-boltzmann.sh
 fi
 

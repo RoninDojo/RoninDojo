@@ -4,13 +4,14 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-cat <<WST
+cat <<EOF
 ${RED}
 ***
-Installing Whirlpool Stat Tool...
+Checking package dependencies...
 ***
 ${NC}
-WST
+EOF
+_sleep
 
 cd "$HOME" || exit
 
@@ -18,13 +19,13 @@ git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
 # download whirlpool stat tool
 
 if ! hash pipenv; then
-  cat <<PIP
+  cat <<EOF
 ${RED}
 ***
 Installing python-pipenv...
 ***
 ${NC}
-PIP
+EOF
   _sleep
   sudo pacman -S --noconfirm python-pipenv &>/dev/null
 fi

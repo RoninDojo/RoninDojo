@@ -748,6 +748,45 @@ EOF
 }
 
 #
+# Checks if mempool.space is enabled
+#
+_mempool_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    # Check that ${INSTALL_DIR} is mounted
+    if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Missing drive mount at ${INSTALL_DIR}!
+***
+${NC}
+EOF
+        _sleep 3
+
+        cat <<EOF
+${RED}
+***
+Please contact support for assistance...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Returning to main menu in"
+        ronin
+    fi
+
+    _is_active docker
+
+    if [ -d "${DOJO_PATH}" ] && [ grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
 # Source DOJO confs
 #
 _source_dojo_conf() {

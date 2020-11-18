@@ -26,23 +26,23 @@ case $CHOICE in
         1)
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl + C to exit at any time.
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs bitcoind
@@ -52,23 +52,23 @@ LOGS
             ;;
         2)
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl + C to exit at any time.
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs db
@@ -78,23 +78,23 @@ LOGS
             ;;
         3)
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl + C to exit at any time.
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs indexer
@@ -104,23 +104,23 @@ LOGS
             ;;
         4)
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl + C to exit at any time.
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs node
@@ -130,23 +130,23 @@ LOGS
             ;;
         5)
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl + C to exit at any time.
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
 
               cd "$dojo_path_my_dojo" || exit
@@ -157,25 +157,25 @@ LOGS
             ;;
         6)
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               _sleep 2
 
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl+C to exit at anytime...
 ***
 ${NC}
-LOGS
+EOF
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs whirlpool
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
@@ -189,25 +189,25 @@ LOGS
             ;;
         8)
             if ! _dojo_check; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               _sleep 2
 
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl+C to exit at anytime...
 ***
 ${NC}
-LOGS
+EOF
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
