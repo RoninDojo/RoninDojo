@@ -104,14 +104,6 @@ ${NC}
 EOF
             fi
 
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
             bash -c "$RONIN_CREDENTIALS_MENU"
             # return to menu
             ;;
