@@ -108,7 +108,26 @@ EOF
             # return to menu
             ;;
         4)
-            cat <<EOF
+            if ! _mempool_check ; then
+                cat <<EOF
+${RED}
+***
+Mempool.space is not installed...
+***
+${NC}
+EOF
+                _sleep 2
+
+                cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+                bash -c "$RONIN_MEMPOOL_MENU"
+            else
+                cat <<EOF
 ${RED}
 ***
 Mempool Credentials
@@ -124,11 +143,12 @@ Press any key to return...
 ${NC}
 EOF
 
-            _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
-            # press any key to return to menu
-            # see defaults.sh
-            ;;
+                _pause
+                bash -c "$RONIN_CREDENTIALS_MENU"
+                # press any key to return to menu
+                # see defaults.sh
+                fi
+                ;;
         5)
             _ui_backend_credentials && cd "$HOME" || exit
 

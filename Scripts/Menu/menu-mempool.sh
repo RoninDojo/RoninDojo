@@ -21,14 +21,24 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        if ! _mempool_check; then
+        if ! _mempool_check ; then
             cat <<EOF
 ${RED}
 ***
-Please install Mempool.space first!
+Mempool.space is not installed...
 ***
 ${NC}
 EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+            bash -c "$RONIN_MEMPOOL_MENU"
         else
             cat <<EOF
 ${RED}
@@ -46,14 +56,24 @@ EOF
         fi
         ;;
     2)
-        if ! _mempool_check; then
+        if ! _mempool_check ; then
             cat <<EOF
 ${RED}
 ***
-Please install Mempool.space first!
+Mempool.space is not installed...
 ***
 ${NC}
 EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+            bash -c "$RONIN_MEMPOOL_MENU"
         else
             cat <<EOF
 ${RED}
@@ -69,14 +89,24 @@ EOF
         fi
         ;;
     3)
-        if ! _mempool_check; then
+        if ! _mempool_check ; then
             cat <<EOF
 ${RED}
 ***
-Please install Mempool.space first!
+Mempool.space is not installed...
 ***
 ${NC}
 EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+            bash -c "$RONIN_MEMPOOL_MENU"
         else
             cat <<EOF
 ${RED}
@@ -95,14 +125,24 @@ EOF
         fi
         ;;
     4)
-        if ! _mempool_check; then
+        if ! _mempool_check ; then
             cat <<EOF
 ${RED}
 ***
-Please install Mempool.space first!
+Mempool.space is not installed...
 ***
 ${NC}
 EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+            bash -c "$RONIN_MEMPOOL_MENU"
         else
             cat <<EOF
 ${RED}
