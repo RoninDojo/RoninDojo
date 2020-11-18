@@ -1050,7 +1050,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-The /etc/docker directory already exists.
+The /etc/docker directory already exists...
 ***
 ${NC}
 EOF

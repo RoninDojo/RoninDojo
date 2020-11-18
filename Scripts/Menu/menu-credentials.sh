@@ -26,7 +26,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Samourai Dojo Credentials
@@ -48,14 +48,14 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-MENU
-            _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
-            # press any key to return to menu
-            # shows samouraio dojo credentials and returns to menu
-            ;;
+EOF
+                _pause
+                bash -c "$RONIN_CREDENTIALS_MENU"
+                # press any key to return to menu
+                # shows samouraio dojo credentials and returns to menu
+                ;;
         2)
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Samourai Whirlpool Credentials
@@ -76,15 +76,15 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-MENU
-        _pause
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # press any key to return to menu
-        # shows whirlpool credentials and returns to menu
-        ;;
+EOF
+            _pause
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # press any key to return to menu
+            # shows whirlpool credentials and returns to menu
+            ;;
         3)
-        if _is_electrs; then
-                cat <<MENU
+            if _is_electrs; then
+                cat <<EOF
 ${RED}
 ***
 Electrs Credentials
@@ -92,24 +92,31 @@ Electrs Credentials
 ${NC}
 
 Electrs Tor URL         = $V3_ADDR_ELECTRS
-MENU
+EOF
                 # displaying electrs tor address to connect to electrum
 
-                cat <<MENU
+                cat <<EOF
 ${RED}
 ***
 Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 ***
 ${NC}
-MENU
-        fi
+EOF
+            fi
 
-        _pause
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # return to menu
-        ;;
+            cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+            _pause
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # return to menu
+            ;;
         4)
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Mempool Credentials
@@ -123,17 +130,17 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-MENU
+EOF
 
-        _pause
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # press any key to return to menu
-        # see defaults.sh
-        ;;
+            _pause
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # press any key to return to menu
+            # see defaults.sh
+            ;;
         5)
-        _ui_backend_credentials && cd "$HOME" || exit
+            _ui_backend_credentials && cd "$HOME" || exit
 
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Ronin UI Backend Credentials
@@ -150,13 +157,13 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-MENU
-        _pause
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # shows Ronin UI Backend credentials, returns to menu
-        ;;
+EOF
+            _pause
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # shows Ronin UI Backend credentials, returns to menu
+            ;;
         6)
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Bitcoin Credentials
@@ -181,24 +188,24 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-MENU
-        _pause
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # press any key to return to menu
-        # shows bitcoind and btc rpc explorer credentials and returns to menu
-        ;;
+EOF
+            _pause
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # press any key to return to menu
+            # shows bitcoind and btc rpc explorer credentials and returns to menu
+            ;;
         7)
-        _ui_backend_credentials && cd "$HOME" || exit
-        cat <<WARNING
+            _ui_backend_credentials && cd "$HOME" || exit
+            cat <<EOF
 ${RED}
 ***
 This is an exhausted list of all available credentials in your RoninDojo...
 ***
 ${NC}
-WARNING
+EOF
+            _sleep 5 --msg "Showing credentials in "
 
-        _sleep 5 --msg "Showing credentials in "
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Samourai Dojo Credentials
@@ -225,10 +232,10 @@ ${NC}
 
 Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+EOF
 
-MENU
-        if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
-                cat <<MENU
+            if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
+                cat <<EOF
 ${RED}
 ***
 Electrs Credentials
@@ -236,11 +243,10 @@ Electrs Credentials
 ${NC}
 
 Electrs Tor URL         = $V3_ADDR_ELECTRS
+EOF
+            fi
 
-MENU
-        fi
-
-        cat <<MENU
+            cat <<EOF
 ${RED}
 ***
 Mempool Credentials
@@ -283,14 +289,14 @@ ${RED}
 Press any key to return...
 ***
 ${NC}
-MENU
-        _pause
-        bash -c "$RONIN_CREDENTIALS_MENU"
-        # press any key to return to menu
-        # shows all credentials and returns to menu
-        ;;
+EOF
+            _pause
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # press any key to return to menu
+            # shows all credentials and returns to menu
+            ;;
         8)
-        ronin
-        # returns to main menu
-        ;;
+            ronin
+            # returns to main menu
+            ;;
 esac
