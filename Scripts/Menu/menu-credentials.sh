@@ -199,11 +199,11 @@ EOF
             cat <<EOF
 ${RED}
 ***
-This is an exhausted list of all available credentials in your RoninDojo...
+Displaying list of all available credentials in your RoninDojo...
 ***
 ${NC}
 EOF
-            _sleep 5 --msg "Showing credentials in "
+            _sleep 5 --msg "Displaying in "
 
             cat <<EOF
 ${RED}

@@ -88,7 +88,7 @@ _sleep 4
 cat <<EOF
 ${RED}
 ***
-Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or in the ~/RoninDojo/user.conf.example file.
+Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or the ~/RoninDojo/user.conf.example file...
 ***
 ${NC}
 EOF

@@ -39,7 +39,7 @@ EOF
               cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
 EOF
@@ -65,7 +65,7 @@ EOF
               cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
 EOF
@@ -91,7 +91,7 @@ EOF
               cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
 EOF
@@ -117,7 +117,7 @@ EOF
               cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
 EOF
@@ -143,7 +143,7 @@ EOF
               cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
 EOF
