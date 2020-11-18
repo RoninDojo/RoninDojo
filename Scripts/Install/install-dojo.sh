@@ -144,7 +144,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.conf/RoninDojo/user.conf file...
+If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.config/RoninDojo/user.conf file...
 ***
 ${NC}
 EOF
