@@ -163,6 +163,9 @@ Uninstalling RoninDojo...
 ***
 ${NC}
 EOF
+        "${TOR_RESTORE}" && _tor_backup
+        # tor backup must happen prior to dojo uninstall
+
         cd "$dojo_path_my_dojo" || exit
         ./dojo.sh uninstall
         # uninstall dojo
@@ -175,7 +178,6 @@ EOF
         rm "${dojo_path_my_dojo}"/conf/docker-mempool.conf
 
         "${DOJO_RESTORE}" && _dojo_backup
-        "${TOR_RESTORE}" && _tor_backup
 
         rm -rf "${DOJO_PATH}"
 

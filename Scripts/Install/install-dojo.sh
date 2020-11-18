@@ -88,7 +88,7 @@ _sleep 4
 cat <<EOF
 ${RED}
 ***
-Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or in the ~/RoninDojo/user.conf.example file.
+Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or the ~/RoninDojo/user.conf.example file...
 ***
 ${NC}
 EOF
@@ -144,7 +144,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.conf/RoninDojo/user.conf file...
+If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.config/RoninDojo/user.conf file...
 ***
 ${NC}
 EOF
@@ -314,9 +314,6 @@ _sleep 2
 cd "$dojo_path_my_dojo" || exit
 
 if ./dojo.sh install --nolog; then
-    # Checks if urls need to be changed for mempool UI
-    _mempool_urls_to_local_btc_explorer
-
     cat <<EOF
 ${RED}
 ***
@@ -337,6 +334,9 @@ EOF
     _pause
     # press to continue is needed because sudo password can be requested for next steps
     # if the user is AFK there may be timeout
+
+    _mempool_urls_to_local_btc_explorer
+    # checks if urls need to be changed for mempool UI
 
     if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
         cat <<EOF

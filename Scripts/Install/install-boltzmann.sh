@@ -4,60 +4,43 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-cat <<BOLTZMANN
-${RED}
-***
-Pulling Boltzmann from Gitlab...
-***
-${NC}
-BOLTZMANN
-_sleep
-
 cd "$HOME" || exit
 git clone "$BOLTZMANN_REPO" &>/dev/null
 cd boltzmann || exit
 # pull Boltzmann
 
-cat <<BOLTZMANN
+cat <<EOF
 ${RED}
 ***
 Checking package dependencies...
 ***
 ${NC}
-BOLTZMANN
+EOF
+_sleep
 
 if ! hash pipenv; then
-    cat <<BOLTZMANN
+    cat <<EOF
 ${RED}
 ***
 Installing pipenv...
 ***
 ${NC}
-BOLTZMANN
+EOF
     sudo pacman -S --noconfirm python-pipenv &>/dev/null
 fi
-
-cat <<BOLTZMANN
-${RED}
-***
-Installing Boltzmann...
-***
-${NC}
-BOLTZMANN
-_sleep 3
 
 # Setup a virtual environment to hold boltzmann dependencies. We should use this
 # with all future packages that ship a requirements.txt.
 pipenv install -r requirements.txt &>/dev/null
 
-cat <<BOLTZMANN
+cat <<EOF
 ${RED}
 ***
 Press any key to continue...
 ***
 ${NC}
-BOLTZMANN
-
+EOF
 _pause
-# will return to menu
+
+# will return to boltzmann menu option script
 bash -c "$RONIN_BOLTZMANN_MENU"
