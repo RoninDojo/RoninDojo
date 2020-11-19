@@ -213,6 +213,20 @@ _pause() {
 }
 
 #
+# Check if unit file exist
+#
+_systemd_unit_exist() {
+    local service
+    service="$1"
+
+    if systemctl cat -- "$service" &>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
 # is systemd unit service active?
 #
 _is_active() {
@@ -1141,13 +1155,13 @@ EOF'
 # Disable Bluetooth
 #
 _disable_bluetooth() {
+    _systemd_unit_exist bluetooth || return 1
+
     if _is_active bluetooth; then
         sudo systemctl disable bluetooth 2>/dev/null
         sudo systemctl stop bluetooth
         return 0
     fi
-
-    return 1
 }
 
 #
