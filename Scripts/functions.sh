@@ -24,6 +24,7 @@ _main() {
     _update_02 # Migrate WST to new location and install method
     _update_03 # Add password less reboot/shutdown privileges
     _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
+    _update_05 # Fix tor unit file
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then

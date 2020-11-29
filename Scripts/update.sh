@@ -68,3 +68,12 @@ EOF"
         fi
     fi
 }
+
+# fix tor unit file
+_update_05() {
+    if ! systemctl is-active --quiet tor; then
+        sudo sed -i 's:ReadWriteDirectories=-/var/lib/tor:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
+        sudo systemctl daemon-reload
+        sudo systemctl restart tor
+    fi
+}
