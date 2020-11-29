@@ -345,7 +345,7 @@ TOR_CONFIG
         sudo systemctl enable tor 2>/dev/null
     fi
 
-    _is_active tor || sudo systemctl restart tor
+    _is_active tor
 }
 
 #
