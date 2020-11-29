@@ -806,7 +806,7 @@ EOF
 #
 _source_dojo_conf() {
     for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer,mempool}.conf .env; do
-        . "${conf}"
+        test -f "${conf}" && . "${conf}"
     done
 
     export BITCOIND_RPC_EXTERNAL_IP
