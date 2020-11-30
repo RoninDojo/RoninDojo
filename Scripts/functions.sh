@@ -607,6 +607,7 @@ ${NC}
 EOF
                     _sleep
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+                    return 0
                     ;;
                     # triggers electrs install script
                 "Do Not Install Indexer")
