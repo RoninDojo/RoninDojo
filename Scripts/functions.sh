@@ -606,7 +606,7 @@ Installing Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
-                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     return 0
                     ;;
                     # triggers electrs install script

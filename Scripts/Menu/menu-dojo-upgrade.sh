@@ -229,7 +229,7 @@ Replacing with Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
-                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     break
                     ;;
                     # triggers electrs install script
