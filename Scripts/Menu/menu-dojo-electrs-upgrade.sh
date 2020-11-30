@@ -5,8 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 
-sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
-sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node.conf
+sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
+sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node.conf
 # modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer
 
 cat > "${dojo_path_my_dojo}"/indexer/electrs.toml <<EOF

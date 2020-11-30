@@ -9,8 +9,8 @@ _load_user_conf
 RPC_USER=$(sudo grep BITCOIND_RPC_USER= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
 RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
 
-sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
-sudo sed -i 's/NODE_ACTIVE_INDEXER=bitcoind/NODE_ACTIVE_INDEXER=local_indexer/'  "${dojo_path_my_dojo}"/conf/docker-node.conf.tpl
+sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
+sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/'  "${dojo_path_my_dojo}"/conf/docker-node.conf.tpl
 # modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer
 
 cat > "${dojo_path_my_dojo}"/indexer/electrs.toml <<EOF
