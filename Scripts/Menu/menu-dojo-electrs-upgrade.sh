@@ -5,8 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 
-sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
-sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node.conf
+sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf
+sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node.conf
 # modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer
 
 cat > "${dojo_path_my_dojo}"/indexer/electrs.toml <<EOF
@@ -18,7 +18,7 @@ chmod 600 "${dojo_path_my_dojo}"/indexer/electrs.toml || exit 1
 # use EOF to put lines one after another
 
 
-sudo sed -i '/\if \[ "\$EXPLORER_INSTALL\" \=\= \"on\" \]\; then/i\
+sed -i '/\if \[ "\$EXPLORER_INSTALL\" \=\= \"on\" \]\; then/i\
 if [ "$INDEXER_INSTALL" == "on" ]; then\
 \  tor_options+=(--HiddenServiceDir /var/lib/tor/hsv3electrs)\
 \  tor_options+=(--HiddenServiceVersion 3)\
@@ -34,7 +34,7 @@ sed -i '/docker-tor.conf/i\      - ./conf/docker-indexer.conf' "${dojo_path_my_d
 # add indexer to tor section of docker-compose.yaml
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 
-sudo sed -i '/onion() {/a\
+sed -i '/onion() {/a\
 \  if [ "$INDEXER_INSTALL" == "on" ]; then\
 \    V3_ADDR_ELECTRS=$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\
 \    echo "Electrs hidden service address (v3) = $V3_ADDR_ELECTRS"\
@@ -43,7 +43,7 @@ sudo sed -i '/onion() {/a\
 # modify dojo.sh for electrs
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 
-sudo sed -i \
+sed -i \
 -e 's/--indexer-rpc-addr=.*$/--electrum-rpc-addr="172.28.1.6:50001"/' \
 -e '/--cookie=.*$/d' \
 -e 's/^addrindexrs .*$/electrs "${indexer_options[@]}"/' "${dojo_path_my_dojo}"/indexer/restart.sh
