@@ -269,7 +269,7 @@ case $CHOICE in
             # go to next menu page
             ;;
         9)
-            ronin
-            # return to main menu
+            bash -c "${RONIN_SYSTEM_MENU2}"
+            # return system menu page 2
             ;;
 esac
