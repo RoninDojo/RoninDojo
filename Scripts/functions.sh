@@ -703,7 +703,7 @@ _dojo_backup() {
     test -d "${DOJO_BACKUP_DIR}" || sudo mkdir -p "${DOJO_BACKUP_DIR}"
 
     if [ -d "${DOJO_PATH}" ]; then
-        sudo rsync -ac --delete-before --quiet "${DOJO_PATH}"/ "${DOJO_BACKUP_DIR}"
+        sudo rsync -ac --delete-before --quiet "${dojo_path_my_dojo}"/conf "${DOJO_BACKUP_DIR}"
         return 0
     fi
 
@@ -717,7 +717,7 @@ _dojo_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if "${DOJO_RESTORE}"; then
-        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/ "${DOJO_PATH}"
+        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/conf "${dojo_path_my_dojo}"
         return 0
     fi
 
