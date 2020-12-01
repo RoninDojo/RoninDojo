@@ -257,8 +257,8 @@ Do you want to install the Mempool Visualizer?
 ***
 ${NC}
 EOF
-    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
     while true; do
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
         case $answer in
             [yY][eE][sS]|[yY])
                 if [ ! -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then # New install
