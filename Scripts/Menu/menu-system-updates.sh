@@ -6,9 +6,9 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Update Operating System"
-         2 "Update RoninDojo"
-         3 "Go Back")
+OPTIONS=(#1 "Update Operating System"
+         1 "Update RoninDojo"
+         2 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -19,22 +19,22 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
+#     1)
+#         cat <<EOF
+# ${RED}
+# ***
+# Checking for operating system package updates...
+# ***
+# ${NC}
+# EOF
+#         _sleep 2
+
+#         sudo pacman -Syyu --noconfirm
+
+#         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
+#         # check for system updates, then return to menu
+#         ;;
     1)
-        cat <<EOF
-${RED}
-***
-Checking for operating system package updates...
-***
-${NC}
-EOF
-        _sleep 2
-
-        sudo pacman -Syyu --noconfirm
-
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
-        # check for system updates, then return to menu
-        ;;
-    2)
         cat <<EOF
 ${RED}
 ***
@@ -105,7 +105,7 @@ DOJO
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
         ;;
-    3)
+    2)
         bash -c "${RONIN_SYSTEM_MENU}"
         # returns to main system menu
         ;;
