@@ -199,9 +199,6 @@ EOF
     sed -i -e "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}/" \
       -e "s/EXPLORER_KEY=.*$/EXPLORER_KEY=${EXPLORER_KEY}/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf.tpl
     # populate docker-explorer.conf.tpl template
-
-    # Backup credentials
-    _dojo_backup
 fi
 
 cat <<EOF
@@ -338,6 +335,9 @@ EOF
     _mempool_urls_to_local_btc_explorer
     # checks if urls need to be changed for mempool UI
 
+    # Backup credentials
+    _dojo_backup
+
     if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
         cat <<EOF
 ${RED}
@@ -407,4 +407,3 @@ EOF
         _sleep 5 --msg "Returning to main menu in"
         ronin
 fi
-
