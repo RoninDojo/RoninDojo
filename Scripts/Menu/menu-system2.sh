@@ -170,13 +170,6 @@ EOF
         ./dojo.sh uninstall
         # uninstall dojo
 
-        # Disable both indexer and mempool before a backup when performing an uninstall
-        sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=off/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
-        rm "${dojo_path_my_dojo}"/conf/docker-indexer.conf
-
-        sudo sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "${dojo_path_my_dojo}"/conf/docker-mempool.conf.tpl
-        rm "${dojo_path_my_dojo}"/conf/docker-mempool.conf
-
         "${DOJO_RESTORE}" && _dojo_backup
 
         rm -rf "${DOJO_PATH}"
