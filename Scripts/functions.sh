@@ -544,20 +544,39 @@ EOF
 _mempool_conf() {
     local conf RPC_USER RPC_PASS RPC_IP RPC_PORT MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
 
-    conf="$1"
-    RPC_USER=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind."${conf}" | cut -d '=' -f2)
-    MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
-    MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool."${conf}" | cut -d '=' -f2)
+    if [ -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then # Existing install
+        MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+        MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+    else
+        # Generate mempool MySQL credentials for a fresh install
+        . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
+    fi
+
+    # Pull values for bitcoind
+    if [ ! -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then # New install
+        RPC_USER=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
+        RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind.tpl | cut -d '=' -f2)
+        RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind.tpl | cut -d '=' -f2)
+        RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind.tpl | cut -d '=' -f2)
+    else
+        RPC_USER=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+        RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+        RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+        RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    fi
 
     _load_user_conf
 
     # Enable mempool and set MySQL credentials
-    sudo sed -i -e 's/MEMPOOL_INSTALL=off/MEMPOOL_INSTALL=on/' \
-    -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
-    -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool."${conf}"
+    if [ -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then
+        sudo sed -i -e 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=on/' \
+        -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
+        -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool.conf
+    else
+        sudo sed -i -e 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=on/' \
+        -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
+        -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool.conf.tpl
+    fi
 
     # Set environment values for Dockerfile
     sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \

@@ -261,11 +261,7 @@ EOF
         read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
         case $answer in
             [yY][eE][sS]|[yY])
-                if [ ! -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then # New install
-                    _mempool_conf conf.tpl
-                else # Existing install?
-                    _mempool_conf conf
-                fi
+                _mempool_conf
 
                 # Checks if urls need to be changed for mempool UI
                 _mempool_urls_to_local_btc_explorer
@@ -287,7 +283,7 @@ EOF
     done
 else
     # Repopulate mempool/Dockerfile with current credentials
-    _mempool_conf conf
+    _mempool_conf
 fi
 # Check if mempool available or not
 

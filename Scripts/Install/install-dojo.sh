@@ -248,7 +248,7 @@ _sleep 3
 _no_indexer_found
 # give user menu for install choices, see functions.sh
 
-if [ ! -f "${dojo_path_my_dojo}/conf/docker-mempool.conf" ] || grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}/conf/docker-mempool.conf" 1>/dev/null; then
+if _is_mempool; then
     cat <<EOF
 ${RED}
 ***
@@ -256,12 +256,11 @@ Do you want to install the Mempool Visualizer?
 ***
 ${NC}
 EOF
-
     while true; do
       read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
       case $answer in
           [yY][eE][sS]|[yY])
-            _mempool_conf conf.tpl
+            _mempool_conf
             break
             ;;
           [nN][oO]|[Nn])
@@ -279,6 +278,9 @@ EOF
       esac
     done
     # install mempool prompt
+else
+    # Repopulate mempool/Dockerfile with current credentials
+    _mempool_conf
 fi
 
 cat <<EOF
