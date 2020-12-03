@@ -552,7 +552,7 @@ _mempool_conf() {
     mempool_conf="conf"
     test -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf || mempool_conf="conf.tpl"
 
-    if [ -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf ]; then # Existing install
+    if [ "${mempool_conf}" = "conf" ]; then # Existing install
         MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
         MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
     else
