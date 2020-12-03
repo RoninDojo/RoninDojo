@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Add New IP Range for Whirlpool GUI"
+OPTIONS=(1 "Add IP Range for Whirlpool GUI"
          2 "Add Specific IP for Whirlpool GUI"
          3 "Go Back")
 
@@ -68,11 +68,11 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
+            _pause
+            bash -c "${RONIN_FIREWALL_MENU2}"
             # press any key to return to menu
             ;;
         2)
@@ -126,14 +126,14 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
+            _pause
+            bash -c "${RONIN_FIREWALL_MENU2}"
             # press any key to return to menu
             ;;
         3)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             ;;
 esac

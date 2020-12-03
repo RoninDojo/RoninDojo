@@ -20,7 +20,7 @@ if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ];
   if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
     echo "Failed to correct corrupted/missing whirlpool binary.";
     _sleep 5 --msg "Returning to main menu in"
-    bash -c ronin;
+    ronin;
   fi;
 fi;
 # if the sha256 hash does not match then warn corrupted/missing

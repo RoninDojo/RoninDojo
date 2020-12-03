@@ -25,158 +25,158 @@ clear
 case $CHOICE in
         1)
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs bitcoind
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for bitcoind
             fi
             ;;
         2)
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs db
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for db
             fi
             ;;
         3)
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs indexer
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for nginx
             fi
             ;;
         4)
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs node
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for nodejs
             fi
             ;;
         5)
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
-Press Ctrl + C to exit at any time.
+Press Ctrl + C to exit at any time...
 ***
 ${NC}
-LOGS
+EOF
               _sleep 2
 
-              cd "$DOJO_PATH" || exit
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs tor
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for tor
             fi
             ;;
         6)
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               _sleep 2
 
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl+C to exit at anytime...
 ***
 ${NC}
-LOGS
-              cd "$DOJO_PATH" || exit
+EOF
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs whirlpool
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # view logs, return to menu
@@ -188,27 +188,27 @@ LOGS
             # goes to error logs menu
             ;;
         8)
-            if ! _dojo_check "$DOJO_PATH"; then
-                cat <<DOJO
+            if ! _dojo_check; then
+                cat <<EOF
 ${RED}
 ***
 Please start Dojo first!
 ***
 ${NC}
-DOJO
+EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               _sleep 2
 
-              cat <<LOGS
+              cat <<EOF
 ${RED}
 ***
 Press Ctrl+C to exit at anytime...
 ***
 ${NC}
-LOGS
-              cd "$DOJO_PATH" || exit
+EOF
+              cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # view logs, return to menu
