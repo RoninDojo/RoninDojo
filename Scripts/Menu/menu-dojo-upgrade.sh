@@ -150,6 +150,7 @@ Keeping Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     break
                     ;;
                     # keep the samourai indexer
@@ -163,13 +164,13 @@ Replacing with Samourai Indexer...
 ${NC}
 EOF
                     _sleep
+
                     cd "${dojo_path_my_dojo}" || exit
 
                     rm indexer/electrs.toml
 
-                    for file in tor/restart.sh dojo.sh docker-compose.yaml indexer/{restart.sh,Dockerfile}; do
-                        git checkout "${file}" 2>/dev/null
-                    done
+                    _set_addrindexer
+
                     break
                     ;;
                     # remove electrs toml file, checkout to revert changes made in files, and trigger samourai indexer install
@@ -216,6 +217,9 @@ Keeping Samourai Indexer...
 ${NC}
 EOF
                     _sleep
+
+                    _set_addrindexer
+
                     break
                     ;;
                     # keep electrum rust server
@@ -229,7 +233,9 @@ Replacing with Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
+
                     bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+
                     break
                     ;;
                     # triggers electrs install script
