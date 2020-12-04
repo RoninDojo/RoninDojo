@@ -1035,7 +1035,7 @@ _dojo_update() {
     cd "${DOJO_PATH}" || exit
 
     # Fetch remotes
-    git fetch --all &>/dev/null
+    git fetch --all --tags --force &>/dev/null
 
     # Reset to origin master branch
     git reset --hard "${SAMOURAI_COMMITISH}" 1>/dev/null
@@ -1058,7 +1058,7 @@ EOF
         cd "$HOME/RoninDojo" || exit
 
         # Fetch remotes
-        git fetch --all 1>/dev/null
+        git fetch --all --tags --force 1>/dev/null
 
         # Reset to origin master branch
         git reset --hard "${RONIN_DOJO_BRANCH}" 1>/dev/null
