@@ -95,6 +95,18 @@ ${NC}
 EOF
 _sleep 2
 
+# Check for sgdisk dependency
+if ! hash sgdisk 2>/dev/null; then
+    cat <<EOF
+${RED}
+***
+Installing gptfdisk...
+***
+${NC}
+EOF
+    sudo pacman -S gptfdisk --noconfirm
+fi
+
 if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
     echo -e "${RED}Filesystem creation failed! Exiting${NC}"
     exit

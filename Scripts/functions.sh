@@ -1035,10 +1035,10 @@ _dojo_update() {
     cd "${DOJO_PATH}" || exit
 
     # Fetch remotes
-    git fetch --all 1>/dev/null
+    git fetch --all &>/dev/null
 
     # Reset to origin master branch
-    git reset --hard origin/"${SAMOURAI_COMMITISH}" 1>/dev/null
+    git reset --hard "${SAMOURAI_COMMITISH}" 1>/dev/null
 }
 
 #
