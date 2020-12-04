@@ -1061,7 +1061,7 @@ EOF
         git fetch --all 1>/dev/null
 
         # Reset to origin master branch
-        git reset --hard origin/"${RONIN_DOJO_BRANCH}" 1>/dev/null
+        git reset --hard "${RONIN_DOJO_BRANCH}" 1>/dev/null
     else
         cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
