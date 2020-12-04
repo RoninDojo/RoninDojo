@@ -63,7 +63,7 @@ Installing go language dependency
 ***
 ${NC}
 EOF
-            sudo pacman -S go --noconfirm
+            sudo pacman -S go glibc --noconfirm
         fi
 
         if [ ! -f /etc/systemd/system/bbbfancontrol.service ]; then
