@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2034
 
+# RoninDojo Version tag
+VERSION=$(git describe --tags)
+
 #
 # Package dependencies associative array
 #
@@ -32,7 +35,7 @@ declare -A package_dependencies=(
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="RoninDojo"
+TITLE="RoninDojo ${VERSION}"
 MENU="Choose one of the following menu options:"
 
 # RoninDojo Menu Paths
