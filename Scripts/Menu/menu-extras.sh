@@ -7,7 +7,8 @@
 OPTIONS=(1 "Boltzmann"
          2 "Whirlpool Stats Tool"
          3 "Mempool Visualizer"
-         4 "Go Back")
+         4 "Fan Control"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -33,7 +34,80 @@ case $CHOICE in
         # Mempool menu
         ;;
     4)
-        bash ronin
+        cd "$HOME" || exit 1
+
+        if ! which_sbc rockpro64; then
+            cat <<EOF
+${RED}
+***
+No supported SBC detected for fan control management.
+Supported devices are Rockpro64 and Rockpi4 boards ONLY
+***
+
+***
+Press any key to return...
+***
+${NC}
+EOF
+            _pause
+
+            ronin
+
+        fi
+
+        if ! hash go 2>/dev/null; then
+            cat <<EOF
+${RED}
+***
+Installing go language dependency
+***
+${NC}
+EOF
+            sudo pacman -S go glibc --noconfirm
+        fi
+
+        if [ ! -f /etc/systemd/system/bbbfancontrol.service ]; then
+            git clone https://github.com/digitalbitbox/bitbox-base.git
+            cd bitbox-base/tools/bbbfancontrol || exit
+            go build
+            sudo cp bbbfancontrol /usr/local/sbin/
+
+            sudo bash -c "cat <<EOF >/etc/systemd/system/bbbfancontrol.service
+[Unit]
+Description=BitBoxBase fancontrol
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/bbbfancontrol --tmin 60 --tmax 75 --cooldown 55 -fan /sys/class/hwmon/hwmon3/pwm1
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF"
+            sudo systemctl enable bbbfancontrol 2>/dev/null
+            sudo systemctl start bbbfancontrol
+        else
+            cat <<EOF
+${RED}
+***
+Fan control already installed!
+***
+
+***
+Press any key to return...
+***
+${NC}
+EOF
+        fi
+
+        _pause
+
+        ronin
+        ;;
+    5)
+        ronin
         # returns to main menu
         ;;
 esac

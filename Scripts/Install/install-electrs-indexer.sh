@@ -14,7 +14,7 @@ if [ ! -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then # new install
     sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/'  "${dojo_path_my_dojo}"/conf/docker-node.conf.tpl
 else # existing install so load
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
-
+    RPC_USER="${RPC_USER_CONF}"; RPC_PASS="${RPC_PASS_CONF}"
     sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf
     sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/'  "${dojo_path_my_dojo}"/conf/docker-node.conf
 fi
