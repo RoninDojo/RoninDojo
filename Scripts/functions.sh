@@ -539,6 +539,22 @@ EOF
 }
 
 #
+# Identify which SBC is being run on the system.
+# For now we are just looking for Rockpro64 boards
+#
+which_sbc() {
+    case $1 in
+        rockpro64)
+            if grep 'rockpro64' /etc/manjaro-arm-version &>/dev/null && [ -f /sys/class/hwmon/hwmon3/pwm1 ]; then
+                return 0
+            else
+                return 1
+            fi
+            ;;
+    esac
+}
+
+#
 # Setup mempool docker variables
 #
 _mempool_conf() {
