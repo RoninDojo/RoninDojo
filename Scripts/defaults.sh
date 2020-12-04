@@ -22,6 +22,8 @@ declare -A package_dependencies=(
     [npm]=npm
     [node]=nodejs
     [jq]=jq
+    [pipenv]=python-pipenv
+    [sgdisk]=gptfdisk
 )
 
 #
@@ -36,32 +38,52 @@ MENU="Choose one of the following menu options:"
 # RoninDojo Menu Paths
 RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
 RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
+RONIN_FIREWALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-firewall.sh"
+RONIN_FIREWALL_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-firewall2.sh"
+RONIN_MEMPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-mempool.sh"
 RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
+RONIN_WHIRLPOOL_STAT_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh"
+RONIN_ELECTRS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-electrs.sh"
 RONIN_UI_BACKEND_MENU="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh"
+RONIN_SYSTEM_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system.sh"
+RONIN_SYSTEM_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
+RONIN_SYSTEM_STORAGE="$HOME/RoninDojo/Scripts/Menu/menu-system-storage.sh"
+RONIN_UPDATES_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
+RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
+RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
 
 #
 # Terminal Colors
 #
 RED=$(tput setaf 1)
-YELLOW=$(tput setaf 3)
+GREEN=$(tput setaf 2)
 NC=$(tput sgr0) # No Color
 
 #
 # Install Defaults
 #
-DOJO_PATH="$HOME/dojo/docker/my-dojo"
-RONIN_DOJO_BRANCH="" # defaults to master
+DOJO_PATH="$HOME/dojo"
+dojo_path_my_dojo="${DOJO_PATH}/docker/my-dojo"
+BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
+DOJO_RESTORE=true
+TOR_RESTORE=true
+
+# Repositories
+RONIN_DOJO_BRANCH="master" # defaults to master
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
-SAMOURAI_COMMITISH="v1.8.0" # empty defaults to master
+SAMOURAI_COMMITISH="v1.8.1" # empty defaults to master
+BOLTZMANN_REPO='https://code.samourai.io/oxt/boltzmann.git'
+WHIRLPOOL_STATS_REPO='https://code.samourai.io/whirlpool/whirlpool_stats.git'
 
 #
 # Filesystem Defaults
 #
 PRIMARY_STORAGE="/dev/sda1"
 SECONDARY_STORAGE="/dev/sdb1"
-SECONDARY_STORAGE_MOUNT="/mnt/backup"
+STORAGE_MOUNT="/mnt/backup"
 
+BITCOIN_IBD_BACKUP_DIR="${STORAGE_MOUNT}/bitcoin"
 INSTALL_DIR="/mnt/usb"
 INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
@@ -73,9 +95,13 @@ DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
 DOCKER_VOLUME_WP="${DOCKER_VOLUMES}/my-dojo_data-whirlpool"
 DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
 
-SALVAGE_MOUNT="${SECONDARY_STORAGE_MOUNT}"
-SALVAGE_BITCOIN_IBD_DATA="${SALVAGE_MOUNT}/bitcoin"
+DOJO_BACKUP_DIR="${INSTALL_DIR}/backup/dojo"
+TOR_BACKUP_DIR="${INSTALL_DIR}/backup/tor"
+
+TOR_DATA_DIR="docker/volumes/my-dojo_data-tor"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
+
+sudoers_file="/etc/sudoers.d/21-ronindojo"
 
 # Workaround when on x86 systems and autologin is enabled for the user account
 if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then

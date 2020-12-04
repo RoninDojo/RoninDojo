@@ -21,6 +21,10 @@ _main() {
     . "$HOME"/RoninDojo/Scripts/update.sh
 
     _update_01 # Check for bridge-utils version update
+    _update_02 # Migrate WST to new location and install method
+    _update_03 # Add password less reboot/shutdown privileges
+    _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
+    _update_05 # Fix tor unit file
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -93,9 +97,13 @@ EOF
     # Force dependency on docker and tor unit files to depend on
     # external drive mount
     _systemd_unit_drop_in_check
+}
 
-    # Checks to see if BackendUI is installed
-    _is_ronin_ui_backend
+#
+# Random Password
+#
+_rand_passwd() {
+    tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1
 }
 
 #
@@ -190,12 +198,96 @@ _sleep() {
 
     while [ "$secs" -gt 0 ]; do
         if $verbose; then
-            echo -ne "${msg} $secs\033[0K seconds...\r"
+            printf "%s%s %s\033[0K seconds...%s\r" "${RED}" "${msg}" "${secs}" "${NC}"
         fi
         sleep 1
         : $((secs--))
     done
-    echo -e "\n" # Add new line
+    printf "\n" # Add new line
+}
+
+#
+# Pause script
+#
+_pause() {
+    read -n 1 -r -s
+}
+
+#
+# Check if unit file exist
+#
+_systemd_unit_exist() {
+    local service
+    service="$1"
+
+    if systemctl cat -- "$service" &>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# is systemd unit service active?
+#
+_is_active() {
+    local service
+    service="$1"
+
+    # Check that docker service is running
+    if ! systemctl is-active --quiet "$service"; then
+        sudo systemctl start "$service"
+        return 0
+    fi
+
+    return 1
+}
+
+#
+# Tor credentials backup
+#
+_tor_backup() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    test -d "${TOR_BACKUP_DIR}" || sudo mkdir -p "${TOR_BACKUP_DIR}"
+
+    if [ -d "${DOJO_PATH}" ]; then
+        sudo rsync -ac --delete-before --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
+        return 0
+    fi
+
+    return 1
+}
+
+#
+# Tor credentials restore
+#
+_tor_restore() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if sudo test -d "${TOR_BACKUP_DIR}"; then
+        sudo rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
+        cat <<EOF
+${RED}
+***
+Tor credentials backup detected and restored...
+***
+${NC}
+EOF
+_sleep 2
+
+        cat <<EOF
+${RED}
+***
+If you wish to disable this feature, set TOR_RESTORE=false in $HOME/.conf/RoninDojo/user.conf file...
+***
+${NC}
+EOF
+_sleep 3
+        return 0
+    fi
+
+    return 1
 }
 
 #
@@ -254,12 +346,36 @@ TOR_CONFIG
         sudo systemctl enable tor 2>/dev/null
     fi
 
-    # Start Tor if needed
-    if ! systemctl is-active tor 1>/dev/null; then
-        sudo systemctl start tor
-    else
-        sudo systemctl restart tor
+    _is_active tor
+}
+
+#
+# Is Electrum Rust Server Installed
+#
+_is_electrs() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
+        cat <<EOF
+${RED}
+***
+Electrum Rust Server is not installed...
+***
+${NC}
+EOF
+        _sleep 2
+
+        cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+        return 1
     fi
+
+    return 0
 }
 
 #
@@ -286,6 +402,20 @@ HiddenServicePort 80 127.0.0.1:8470\
 }
 
 #
+# UI Backend get credentials
+#
+_ui_backend_credentials() {
+    cd "${RONIN_UI_BACKEND_DIR}" || exit
+
+    API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
+    JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
+    BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
+    BACKEND_TOR=$(sudo cat /var/lib/tor/hidden_service_ronin_backend/hostname)
+
+    export API_KEY JWT_SECRET BACKEND_PORT BACKEND_TOR
+}
+
+#
 # Check Backend Installation
 #
 _is_ronin_ui_backend() {
@@ -294,17 +424,17 @@ _is_ronin_ui_backend() {
     _load_user_conf
 
     if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-        cat << EOF
+        cat <<EOF
 ${RED}
 ***
-Ronin UI Backend is not installed, installing now...
+RoninUI Backend is not installed, installing now...
 ***
 ${NC}
 EOF
         _install_ronin_ui_backend
         _sleep 2 --msg "Returning to menu in"
 
-        bash -c ronin
+        ronin
     fi
     # check if Ronin UI Backend is already installed
 }
@@ -326,7 +456,7 @@ _install_ronin_ui_backend() {
     cat <<BACKEND
 ${RED}
 ***
-Checking for package dependencies for Ronin UI Backend
+Checking package dependencies for RoninUI Backend...
 ***
 ${NC}
 BACKEND
@@ -409,6 +539,232 @@ EOF
 }
 
 #
+# Identify which SBC is being run on the system.
+# For now we are just looking for Rockpro64 boards
+#
+which_sbc() {
+    case $1 in
+        rockpro64)
+            if grep 'rockpro64' /etc/manjaro-arm-version &>/dev/null && [ -f /sys/class/hwmon/hwmon3/pwm1 ]; then
+                return 0
+            else
+                return 1
+            fi
+            ;;
+    esac
+}
+
+#
+# Setup mempool docker variables
+#
+_mempool_conf() {
+    local mempool_conf bitcoind_conf RPC_USER RPC_PASS RPC_IP RPC_PORT MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
+
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    bitcoind_conf="conf"
+    test -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf || bitcoind_conf="conf.tpl"
+
+    mempool_conf="conf"
+    test -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf || mempool_conf="conf.tpl"
+
+    if [ "${mempool_conf}" = "conf" ]; then # Existing install
+        MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+        MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+    else
+        # Generate mempool MySQL credentials for a fresh install
+        . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
+    fi
+
+    # Pull values for bitcoind
+    RPC_USER=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
+    RPC_PASS=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
+    RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
+    RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
+
+    _load_user_conf
+
+    # Enable mempool and set MySQL credentials
+    sudo sed -i -e 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=on/' \
+    -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
+    -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool."${mempool_conf}"
+
+    # Set environment values for Dockerfile
+    sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \
+    -e "s/DB_USER .*$/DB_USER ${MEMPOOL_MYSQL_USER}/" -e "s/DB_PASSWORD .*$/DB_PASSWORD ${MEMPOOL_MYSQL_PASSWORD}/" \
+    -e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${RPC_IP}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${RPC_PORT}/" \
+    -e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${RPC_USER}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${RPC_PASS}/" \
+    "${dojo_path_my_dojo}"/mempool/Dockerfile
+}
+
+#
+# Installs the Samourai local indexer
+#
+_set_addrindexer() {
+    local conf
+
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    conf="conf"
+    test -f "${dojo_path_my_dojo}"/conf/docker-indexer.conf || conf="conf.tpl"
+
+    sudo sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer."${conf}"
+    sudo sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/' "${dojo_path_my_dojo}"/conf/docker-node."${conf}"
+
+    return 0
+}
+
+#
+# No indexer was found so offer user choice of SW indexer, electrs, or none
+#
+_no_indexer_found() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    # indexer names here are used as data source
+    while true; do
+        select indexer in "Samourai Indexer (default)" "Electrum Rust Server" "Do Not Install Indexer"; do
+            case $indexer in
+                "Samourai Indexer (default)")
+                    cat <<EOF
+${RED}
+***
+Installing Samourai Indexer...
+***
+${NC}
+EOF
+                    _sleep
+
+                    _set_addrindexrs
+                    ;;
+                    # samourai indexer install enabled in .conf.tpl files using sed
+
+                "Electrum Rust Server")
+                    cat <<EOF
+${RED}
+***
+Installing Electrum Rust Server...
+***
+${NC}
+EOF
+                    _sleep
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+                    return 0
+                    ;;
+                    # triggers electrs install script
+                "Do Not Install Indexer")
+                    cat <<EOF
+${RED}
+***
+An Indexer will not be installed...
+***
+${NC}
+EOF
+                    _sleep
+                    return 0
+                    ;;
+                    # indexer will not be installed
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid Entry! Valid values are 1, 2 & 3...
+***
+${NC}
+EOF
+                    _sleep
+                    break
+                    ;;
+                    # invalid data try again
+            esac
+        done
+    done
+}
+
+#
+# Check if my-dojo directory is missing
+#
+_is_dojo() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    local menu
+    menu="$1"
+
+    if [ ! -d "${DOJO_PATH}" ]; then
+        cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH} directory! Returning to menu...
+***
+${NC}
+DOJO
+        bash -c "$menu"
+        exit 1
+fi
+}
+
+#
+# Check if mempool enabled
+#
+_is_mempool() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    local conf="${dojo_path_my_dojo}/conf/docker-mempool.conf"
+
+    if [ -f "$conf" ]; then
+        if grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
+            return 0
+        else
+            return 1
+        fi
+    elif grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-mempool.conf.tpl 1>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# Mempool url rewrites
+#
+_mempool_urls_to_local_btc_explorer() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+    . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
+
+    if ! _is_mempool && grep "blockstream" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
+        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html
+        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/block-modal/block-modal.component.html
+        sudo sed -i "s:http\://www.blockstream.info/tx/:http\://ronindojo\:${EXPLORER_KEY}@${V3_ADDR_EXPLORER}/tx/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/tx-bubble/tx-bubble.component.html
+    fi
+}
+
+#
+# Dojo Credentials Backup
+#
+_dojo_backup() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    test -d "${DOJO_BACKUP_DIR}" || sudo mkdir -p "${DOJO_BACKUP_DIR}"
+
+    if [ -d "${DOJO_PATH}" ]; then
+        sudo rsync -ac --delete-before --quiet "${dojo_path_my_dojo}"/conf "${DOJO_BACKUP_DIR}"
+        return 0
+    fi
+
+    return 1
+}
+
+#
+# Dojo Credentials Restore
+#
+_dojo_restore() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if "${DOJO_RESTORE}"; then
+        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/conf "${dojo_path_my_dojo}"
+        return 0
+    fi
+
+    return 1
+}
+
+#
 # Checks if dojo db container.
 #
 _dojo_check() {
@@ -416,29 +772,70 @@ _dojo_check() {
 
     _load_user_conf
 
-    local DOJO_PATH
-    DOJO_PATH="$1"
+    # Check that ${INSTALL_DIR} is mounted
+    if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Missing drive mount at ${INSTALL_DIR}!
+***
+${NC}
+EOF
+        _sleep 3
+
+        cat <<EOF
+${RED}
+***
+Please contact support for assistance...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Returning to main menu in"
+        ronin
+    fi
+
+    _is_active docker
+
+    if [ -d "${DOJO_PATH}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
+# Checks if mempool.space is enabled
+#
+_mempool_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
 
     # Check that ${INSTALL_DIR} is mounted
     if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}! Returning to menu.
-Please contact support for assistance
+Missing drive mount at ${INSTALL_DIR}!
+***
+${NC}
+EOF
+        _sleep 3
+
+        cat <<EOF
+${RED}
+***
+Please contact support for assistance...
 ***
 ${NC}
 EOF
         _sleep 5 --msg "Returning to main menu in"
-        bash -c ronin
+        ronin
     fi
 
-    # Check that docker service is running
-    if ! sudo systemctl is-active docker 1>/dev/null; then
-        sudo systemctl start docker
-    fi
+    _is_active docker
 
-    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
+    if [ -d "${DOJO_PATH}" ] && grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null ; then
         return 0
     else
         return 1
@@ -449,8 +846,8 @@ EOF
 # Source DOJO confs
 #
 _source_dojo_conf() {
-    for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer}.conf .env; do
-        . "${conf}"
+    for conf in conf/docker-{whirlpool,indexer,bitcoind,explorer,mempool}.conf .env; do
+        test -f "${conf}" && . "${conf}"
     done
 
     export BITCOIND_RPC_EXTERNAL_IP
@@ -460,29 +857,33 @@ _source_dojo_conf() {
 # Select YAML files
 #
 _select_yaml_files() {
-    local DOJO_PATH
-    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+    local dojo_path_my_dojo
+    dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
 
-    yamlFiles="-f $DOJO_PATH/docker-compose.yaml"
+    yamlFiles="-f $dojo_path_my_dojo/docker-compose.yaml"
 
     if [ "$BITCOIND_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/bitcoind.install.yaml"
 
         if [ "$BITCOIND_RPC_EXTERNAL" == "on" ]; then
-            yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/bitcoind.rpc.expose.yaml"
+            yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/bitcoind.rpc.expose.yaml"
         fi
     fi
 
     if [ "$EXPLORER_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/explorer.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/explorer.install.yaml"
     fi
 
     if [ "$INDEXER_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/indexer.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/indexer.install.yaml"
     fi
 
     if [ "$WHIRLPOOL_INSTALL" == "on" ]; then
-        yamlFiles="$yamlFiles -f $DOJO_PATH/overrides/whirlpool.install.yaml"
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/whirlpool.install.yaml"
+    fi
+
+    if [ "$MEMPOOL_INSTALL" == "on" ]; then
+        yamlFiles="$yamlFiles -f $dojo_path_my_dojo/overrides/mempool.install.yaml"
     fi
 
     # Return yamlFiles
@@ -493,25 +894,35 @@ _select_yaml_files() {
 # Stop Samourai Dojo containers
 #
 _stop_dojo() {
-    local DOJO_PATH
-    DOJO_PATH="$HOME/dojo/docker/my-dojo"
+    local dojo_path_my_dojo
+    dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
 
-    if [ -d "${DOJO_PATH%/docker/my-dojo}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+    if [ ! -d "${DOJO_PATH}" ]; then
+        cat <<DOJO
+${RED}
+***
+Missing ${DOJO_PATH} directory! Returning to menu...
+***
+${NC}
+DOJO
+        _sleep 2
+        bash -c "$RONIN_DOJO_MENU"
+        exit 1
+    fi
+    # is dojo installed?
+
+    if [ -d "${DOJO_PATH}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
         # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+
+        cd "${dojo_path_my_dojo}" || exit
+    else
         cat <<EOF
 ${RED}
 ***
-Stopping Dojo...
+Dojo is already stopped!
 ***
 ${NC}
 EOF
-        cd "${DOJO_PATH}" || exit
-    else
-        echo -e "${RED}"
-        echo "***"
-        echo "Dojo is already stopped!"
-        echo "***"
-        echo -e "${NC}"
         return 1
     fi
 
@@ -522,6 +933,7 @@ Preparing shutdown of Dojo. Please wait...
 ***
 ${NC}
 EOF
+_sleep
 
     # Source conf files
     _source_dojo_conf
@@ -566,7 +978,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Stopping all Dojo containers...
+Stopping all Docker containers...
 ***
 ${NC}
 EOF
@@ -613,36 +1025,49 @@ _remove_ipv6() {
 }
 
 #
+# Update Samourai Dojo
+#
+_dojo_update() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    cd "${DOJO_PATH}" || exit
+
+    # Fetch remotes
+    git fetch --all 1>/dev/null
+
+    # Reset to origin master branch
+    git reset --hard origin/"${SAMOURAI_COMMITISH}" 1>/dev/null
+}
+
+#
 # Update RoninDojo
 #
 _update_ronin() {
+    _load_user_conf
+
     if [ -d "$HOME"/RoninDojo/.git ]; then
         cat <<EOF
 ${RED}
 ***
-git repo found! Updating RoninDojo via git fetch
+Git repo found, downloading updates...
 ***
 ${NC}
 EOF
         cd "$HOME/RoninDojo" || exit
 
-        # Checkout master branch
-        git checkout master
-
         # Fetch remotes
-        git fetch --all
+        git fetch --all 1>/dev/null
 
         # Reset to origin master branch
-        git reset --hard origin/master
-
-        # Check for backend updates
-        _install_ronin_ui_backend
+        git reset --hard origin/"${RONIN_DOJO_BRANCH}" 1>/dev/null
     else
         cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${RONIN_DOJO_BRANCH:-master}" https://code.samourai.io/ronindojo/RoninDojo 2>/dev/null
+git clone -b "${RONIN_DOJO_BRANCH}" https://code.samourai.io/ronindojo/RoninDojo 2>/dev/null
 ${RED}
 ***
 Upgrade Complete!
@@ -656,10 +1081,10 @@ EOF
         # makes script executable and runs
         # end of script returns to menu
         # script is deleted during next run of update
-
-        # Check for backend updates
-        _install_ronin_ui_backend
     fi
+
+    # Check TOR
+    _setup_tor
 }
 
 #
@@ -681,7 +1106,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-The /etc/docker directory already exists.
+The /etc/docker directory already exists...
 ***
 ${NC}
 EOF
@@ -709,10 +1134,9 @@ Starting docker daemon.
 ***
 ${NC}
 EOF
-        sudo systemctl start docker || return 1
-    elif ! systemctl is-active docker 1>/dev/null; then # is docker started?
-        sudo systemctl start docker || return 1
     fi
+
+    _is_active docker
 
     # Enable service on startup
     if ! sudo systemctl is-enabled docker 1>/dev/null; then
@@ -728,16 +1152,16 @@ EOF
 # from legacy use of `sudo ./dojo.sh`
 #
 _check_dojo_perms() {
-    local DOJO_PATH="${1}"
+    local dojo_path_my_dojo="${1}"
 
-    cd "${DOJO_PATH}" || exit
+    cd "${dojo_path_my_dojo}" || exit
 
-    if find "${DOJO_PATH%/docker/my-dojo}" -user root | grep -q '.'; then
+    if find "${DOJO_PATH}" -user root | grep -q '.'; then
         _stop_dojo
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
-        sudo chown -R "${USER}:${USER}" "${DOJO_PATH%/docker/my-dojo}"
+        sudo chown -R "${USER}:${USER}" "${DOJO_PATH}"
     else
         _stop_dojo
     fi
@@ -773,13 +1197,13 @@ EOF'
 # Disable Bluetooth
 #
 _disable_bluetooth() {
-    if sudo systemctl is-active --quiet bluetooth; then
+    _systemd_unit_exist bluetooth || return 1
+
+    if _is_active bluetooth; then
         sudo systemctl disable bluetooth 2>/dev/null
         sudo systemctl stop bluetooth
         return 0
     fi
-
-    return 1
 }
 
 #
@@ -858,8 +1282,8 @@ EOF
             done
 
             # Stop swap on mount point
-            if ! check_swap "${INSTALL_DIR_SWAP}"; then
-                sudo swapoff "${INSTALL_DIR_SWAP}"
+            if check_swap "${INSTALL_DIR_SWAP}"; then
+                test -f "${INSTALL_DIR_SWAP}" && sudo swapoff "${INSTALL_DIR_SWAP}"
             fi
         fi
 
@@ -869,21 +1293,11 @@ EOF
     # This quick hack checks if device is either a SSD device or a NVMe device
     [[ "${device}" =~ "sd" ]] && _device="${device%?}" || _device="${device%??}"
 
-    if [ ! -b "${device}" ]; then
-        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
-    else
-        sudo sfdisk --quiet --wipe always --delete "${_device}" &>/dev/null
-        # if device exists, use sfdisk to erase filesystem and partition table
+    # wipe labels
+    sudo wipefs -a --force "${_device}" 1>/dev/null
 
-        # wipe labels
-        sudo wipefs -a --force "${_device}" &>/dev/null
-
-        # reload partition table
-        partprobe
-
-        # Create a partition table with a single partition that takes the whole disk
-        echo 'type=83' | sudo sfdisk -q "${_device}" 2>/dev/null
-    fi
+    # Create a partition table with a single partition that takes the whole disk
+    sudo sgdisk -Zo -n 1 -t 1:8300 "${_device}" 1>/dev/null
 
     cat <<EOF
 ${RED}
@@ -965,10 +1379,10 @@ check_swap() {
     swapfile="$1"
 
     if ! grep "$swapfile" /proc/swaps 1>/dev/null; then # no swap currently
-        return 0
+        return 1
     fi
 
-    return 1
+    return 0
 }
 
 #
@@ -994,7 +1408,7 @@ create_swap() {
         esac
     done
 
-    if check_swap "${file}"; then
+    if ! check_swap "${file}"; then
         cat <<EOF
 ${RED}
 ***

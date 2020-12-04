@@ -138,6 +138,13 @@
 # Type: alphanumeric
 #EXPLORER_KEY=""
 
+##############################
+# Bitcoin Explorer           #
+##############################
+
+#MEMPOOL_MYSQL_USER=""
+#MEMPOOL_MYSQL_PASSWORD=""
+
 #
 # Custom variable not working? We currently only support variables in the ~/RoninDojo/user.conf.example file.
 #
