@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 # RoninDojo Version tag
-VERSION=$(git describe --tags)
+cd "$HOME"/RoninDojo && VERSION=$(git describe --tags)
 
 #
 # Package dependencies associative array
