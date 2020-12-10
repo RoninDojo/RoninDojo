@@ -14,13 +14,18 @@ cd /home/$USER
 
 if [ ! -d specter* ]; then
    echo "Installing Specter $SPECTER_VERSION";
-   sleep 2s
+   _sleep
    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
-   sudo pacman -S --noconfirm gcc
+   if hash gcc 2>/dev/null;
+      then echo "gcc Already installed"
+   else
+      echo "Installing gcc"
+      sudo pacman -S --noconfirm gcc
+   fi
 else
    if [ "$HOME"/specter* != "$HOME"/specter-$SPECTER_VERSION ]; then
       echo "Proceeding to upgrade to $SPECTER_VERSION";
-      sleep 2s
+      _sleep
       sudo systemctl stop specter
       sudo rm -rf /etc/systemd/system/specter.service
       sudo systemctl daemon-reload
@@ -37,7 +42,11 @@ fi
 wget --quiet $SPECTER_SIGN_KEY_URL && gpg --import $SPECTER_SIGN_KEY && rm -rf $SPECTER_SIGN_KEY
 wget --quiet $SPECTER_URL/v$SPECTER_VERSION/sha256.signed.txt && gpg --verify sha256.signed.txt
 wget --quiet $SPECTER_URL/v$SPECTER_VERSION/cryptoadvance.specter-$SPECTER_VERSION.tar.gz
-sha256sum -c cryptoadvance.specter-$SPECTER_VERSION.tar.gz sha256.signed.txt
+if grep cryptoadvance.specter-$SPECTER_VERSION.tar.gz sha256.signed.txt | sha256sum -c -;
+   then echo "Good verification... Installing now";
+   else
+      exit;
+fi
 mkdir "$HOME"/specter-$SPECTER_VERSION && tar -zxf cryptoadvance.specter-$SPECTER_VERSION.tar.gz -C "$HOME"/specter-$SPECTER_VERSION --strip-components 1
 rm -rf sha256.signed.txt *.tar.gz
 cd "$HOME"/specter-$SPECTER_VERSION && sudo python setup.py install
@@ -83,3 +92,7 @@ cd "${dojo_path_my_dojo}"
 sudo systemctl enable specter
 sudo systemctl start specter
 #start specter server
+
+echo "Specter v$SPECTER_VERSION as been installed"
+_sleep
+ronin
