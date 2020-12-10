@@ -58,3 +58,9 @@ fi
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool; then
     V3_ADDR_MEMPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool/hostname)
 fi
+
+# Specter
+if [ -d "$HOME"/specter* ]; then
+   V3_ADDR_SPECTER=$(cat "$HOME"/.specter/onion.txt)
+fi
+
