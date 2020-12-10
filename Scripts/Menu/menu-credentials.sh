@@ -298,6 +298,13 @@ Password                = $EXPLORER_KEY
 
 ${RED}
 ***
+Specter Credentials
+***
+
+Specter Onion           = http://$V3_ADDR_SPECTER
+
+${RED}
+***
 Press any key to return...
 ***
 ${NC}
