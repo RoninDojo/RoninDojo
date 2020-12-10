@@ -54,6 +54,8 @@ RONIN_SYSTEM_STORAGE="$HOME/RoninDojo/Scripts/Menu/menu-system-storage.sh"
 RONIN_UPDATES_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
 RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
 RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
+RONIN_EXTRAS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-extras.sh"
+RONIN_SPECTER_MENU="$HOME/RoninDojo/Scripts/Menu/menu-specter.sh"
 
 #
 # Terminal Colors
