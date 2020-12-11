@@ -59,7 +59,7 @@ do
   read -r txids
 
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
-    python ludwig.py --rpc --txids="${txids}"
+    pipenv run python ludwig.py --rpc --txids="${txids}"
   else
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
   fi
