@@ -49,7 +49,10 @@ if grep cryptoadvance.specter-$SPECTER_VERSION.tar.gz sha256.signed.txt | sha256
 fi
 mkdir "$HOME"/specter-$SPECTER_VERSION && tar -zxf cryptoadvance.specter-$SPECTER_VERSION.tar.gz -C "$HOME"/specter-$SPECTER_VERSION --strip-components 1
 rm -rf sha256.signed.txt *.tar.gz
-cd "$HOME"/specter-$SPECTER_VERSION && sudo python setup.py install
+rm -rf "$HOME"/.venv_specter
+python3 -m venv "$HOME"/.venv_specter
+cd "$HOME"/specter-$SPECTER_VERSION
+"$HOME"/.venv_specter/bin/python3 -m setup.py install
 
 #create file .flaskenv
 
@@ -74,8 +77,8 @@ After=multi-user.target
 User=$USER
 Group=$USER
 Type=simple
-ExecStart=/usr/bin/python3.8 -m cryptoadvance.specter server --tor
-WorkingDirectory="$HOME"/specter-$SPECTER_VERSION/src/
+ExecStart="$HOME"/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+Environment="PATH="$HOME"/.venv_specter/bin"
 Restart=always
 RestartSec=60
 
