@@ -16,8 +16,10 @@ if [ ! -d specter* ]; then
    echo "Installing Specter $SPECTER_VERSION";
    _sleep
    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+   sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
+   sudo systemctl restart tor
    if hash gcc 2>/dev/null;
-      then echo "gcc Already installed"
+      then echo "gcc already installed"
    else
       echo "Installing gcc"
       sudo pacman -S --noconfirm gcc
@@ -49,10 +51,13 @@ if grep cryptoadvance.specter-$SPECTER_VERSION.tar.gz sha256.signed.txt | sha256
 fi
 mkdir "$HOME"/specter-$SPECTER_VERSION && tar -zxf cryptoadvance.specter-$SPECTER_VERSION.tar.gz -C "$HOME"/specter-$SPECTER_VERSION --strip-components 1
 rm -rf sha256.signed.txt *.tar.gz
-rm -rf "$HOME"/.venv_specter
-python3 -m venv "$HOME"/.venv_specter
+if [ -d .venv_specter ]; then
+   echo "venv set"
+else
+   python3 -m venv "$HOME"/.venv_specter
+fi
 cd "$HOME"/specter-$SPECTER_VERSION
-"$HOME"/.venv_specter/bin/python3 -m setup.py install
+"$HOME"/.venv_specter/bin/python3 setup.py install
 
 #create file .flaskenv
 
