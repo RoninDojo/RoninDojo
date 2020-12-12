@@ -52,7 +52,7 @@ fi
 mkdir "$HOME"/specter-$SPECTER_VERSION && tar -zxf cryptoadvance.specter-$SPECTER_VERSION.tar.gz -C "$HOME"/specter-$SPECTER_VERSION --strip-components 1
 rm -rf sha256.signed.txt *.tar.gz
 if [ -d .venv_specter ]; then
-   echo "venv set"
+   echo "venv is already set."
 else
    python3 -m venv "$HOME"/.venv_specter
 fi
@@ -83,7 +83,8 @@ User=$USER
 Group=$USER
 Type=simple
 ExecStart="$HOME"/.venv_specter/bin/python -m cryptoadvance.specter server --tor
-Environment="PATH="$HOME"/.venv_specter/bin"
+Environment=""PATH="$HOME"/.venv_specter/bin""
+WorkingDirectory="$HOME"/specter-$SPECTER_VERSION/src
 Restart=always
 RestartSec=60
 
