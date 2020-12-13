@@ -329,8 +329,10 @@ fi
 # stop whirlpool for existing whirlpool users
 
 cd "${dojo_path_my_dojo}" || exit
-./dojo.sh upgrade
+./dojo.sh upgrade --nolog
 # run upgrade
+
+_create_credentials
 
 bash -c "$RONIN_UPDATES_MENU"
 # return to menu

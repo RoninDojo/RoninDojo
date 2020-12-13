@@ -80,6 +80,7 @@ SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
 SAMOURAI_COMMITISH="v1.8.1" # empty defaults to master
 BOLTZMANN_REPO='https://code.samourai.io/oxt/boltzmann.git'
 WHIRLPOOL_STATS_REPO='https://code.samourai.io/whirlpool/whirlpool_stats.git'
+SPECTER_URL="https://github.com/cryptoadvance/specter-desktop/releases/download"
 
 #
 # Filesystem Defaults
@@ -114,3 +115,12 @@ if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then
 else
     USER=$(getent group 1000 | cut -d ':' -f1)
 fi
+
+# Versions
+SPECTER_VERSION="0.10.4"
+BITCOIND_VERSION="0.20.1"
+INDEXER_VERSION="0.4.0"
+ELECTRS_VERSION="0.3.8"
+MEMPOOL_VERSION="1.0.1"
+WHIRLPOOL_VERSION="0.10.9"
+EXPLORER_VERSION="2.0.2"

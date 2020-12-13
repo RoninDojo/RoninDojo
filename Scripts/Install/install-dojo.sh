@@ -340,6 +340,9 @@ EOF
     # Backup credentials
     _dojo_backup
 
+    # create credentials.json file
+    _create_credentials
+
     if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
         cat <<EOF
 ${RED}

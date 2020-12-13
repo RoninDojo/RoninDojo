@@ -1444,3 +1444,53 @@ ${file} swap swap defaults,pri=0 0 0
 EOF"
     fi
 }
+
+create_credentials(){
+  if sudo test ! -d /mnt/usb/.ronin; then
+    mkdir /mnt/usb/.ronindojo
+  fi
+  bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+{
+  ""name"":""RoninDojo"";
+  ""version"":""$RONIN_DOJO_BRANCH"";
+  ""url"":""N/A"";
+  ""username"":""N/A"";
+  ""password"":""N/A"";
+}
+{
+  ""name"":""Dojo"";
+  ""version"":""$SAMOURAI_COMMITISH"";
+  ""url"":""$V3_ADDR_API"";
+  ""username"":""N/A"";
+  ""password"":""$NODE_ADMIN_KEY"";
+}
+{
+  ""name"":""Bitcoin Core"";
+  ""version"":""$BITCOIND_VERSION"";
+  ""url"":""$V2_ADDR_BITCOIN"";
+  ""username"":""$RPC_USER_CONF"";
+  ""password"":""$RPC_PASS_CONF"";
+}
+{
+  ""name"":""BTC RPC Explorer"";
+  ""version"":""$EXPLORER_VERSION"";
+  ""url"":""$V3_ADDR_EXPLORER"";
+  ""username"":""N/A"";
+  ""password"":""$EXPLORER_KEY"";
+}
+{
+  ""name"":""Specter"";
+  ""version"":""$SPECTER_VERSION"";
+  ""url"":""$V3_ADDR_SPECTER"";
+  ""username"":""N/A"";
+  ""password"":""N/A"";
+}
+{
+  ""name"":""Whirlpool Cli"";
+  ""version"":""$WHIRLPOOL_VERSION"";
+  ""url"":""$V3_ADDR_WHIRLPOOL"";
+  ""username"":""N/A"";
+  ""password"":""$WHIRLPOOL_API_KEY"";
+}
+EOF"
+}

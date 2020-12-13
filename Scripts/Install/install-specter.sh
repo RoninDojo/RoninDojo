@@ -7,8 +7,6 @@
 
 SPECTER_SIGN_KEY_URL="https://stepansnigirev.com/ss-specter-release.asc"
 SPECTER_SIGN_KEY="ss-specter-release.asc"
-SPECTER_URL="https://github.com/cryptoadvance/specter-desktop/releases/download"
-SPECTER_VERSION="0.10.4"
 
 cd /home/$USER
 
@@ -102,6 +100,8 @@ sudo systemctl enable specter
 sudo systemctl start specter
 #start specter server
 
-echo "Specter v$SPECTER_VERSION as been installed"
-_sleep
+_create_credentials
+
+echo "Specter v$SPECTER_VERSION as been installed!
+_sleep 3 --msg "Going back to Main menu in"
 ronin
