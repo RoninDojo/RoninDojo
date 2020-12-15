@@ -13,8 +13,9 @@ OPTIONS=(1 "Dojo"
          4 "Mempool"
          5 "UI Backend"
          6 "Bitcoind"
-         7 "All Credentials"
-         8 "Go Back")
+         7 "Specter Server"
+         8 "All Credentials"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -207,6 +208,28 @@ EOF
             # shows bitcoind and btc rpc explorer credentials and returns to menu
             ;;
         7)
+            cat <<EOF
+${RED}
+***
+Specter Server Credentials
+***
+${NC}
+
+Tor URL                 = http://$V3_ADDR_SPECTER
+
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+            _pause
+
+            bash -c "$RONIN_CREDENTIALS_MENU"
+            # press any key to return to menu
+            # shows specter server credentials and returns to menu
+            ;;
+        8)
             _ui_backend_credentials && cd "$HOME" || exit
             cat <<EOF
 ${RED}
@@ -298,10 +321,10 @@ Password                = $EXPLORER_KEY
 
 ${RED}
 ***
-Specter Credentials
+Specter Server Credentials
 ***
 
-Specter Onion           = http://$V3_ADDR_SPECTER
+Tor URL                 = http://$V3_ADDR_SPECTER
 
 ${RED}
 ***
@@ -314,7 +337,7 @@ EOF
             # press any key to return to menu
             # shows all credentials and returns to menu
             ;;
-        8)
+        9)
             ronin
             # returns to main menu
             ;;

@@ -35,14 +35,26 @@ case $CHOICE in
         # Mempool menu
         ;;
     4)
-        if [ -d specter* ]; then
-           bash -c "$RONIN_SPECTER_MENU"
-        else
-           echo "Specter not installed"
-           _sleep 2
-           bash -c "$RONIN_MENU_EXTRAS"
-        fi
-        # Specter menu
+        shopt -s nullglob
+        cd "${HOME}" || exit
+
+        for dir in specter*; do
+            if [[ -d "${dir}" ]]; then
+                bash -c "$RONIN_SPECTER_MENU"
+            else
+                cat <<EOF
+${RED}
+***
+Specter not installed! Installing now ....
+***
+${NC}
+EOF
+            _sleep 2
+
+            "${HOME}"/RoninDojo/Scripts/Install/install-specter.sh
+            fi
+            # Specter menu
+        done
         ;;
     5)
         cd "$HOME" || exit 1
@@ -117,7 +129,7 @@ EOF
 
         ronin
         ;;
-    5)
+    6)
         ronin
         # returns to main menu
         ;;
