@@ -63,8 +63,13 @@ EOF
    fi
 done
 
-wget --quiet "$SPECTER_SIGN_KEY_URL" && gpg --import "$SPECTER_SIGN_KEY" && rm "$SPECTER_SIGN_KEY"
-wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt && gpg --verify sha256.signed.txt
+wget --quiet "$SPECTER_SIGN_KEY_URL"
+gpg --import "$SPECTER_SIGN_KEY"
+rm "$SPECTER_SIGN_KEY"
+
+wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
+gpg --verify sha256.signed.txt
+
 wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
 
 if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
@@ -135,6 +140,9 @@ EOF
 "
 
 sudo systemctl daemon-reload
+
+# Make sure dojo is stopped by us before upgrade
+_stop_dojo
 
 cd "${dojo_path_my_dojo}" || exit
 
