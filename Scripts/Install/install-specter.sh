@@ -58,7 +58,7 @@ On latest version of Specter ...
 ${NC}
 EOF
          _sleep 2
-         ronin
+         exit
       fi
    fi
 done
