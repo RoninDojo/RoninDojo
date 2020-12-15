@@ -237,7 +237,7 @@ _is_active() {
     local service
     service="$1"
 
-    # Check that docker service is running
+    # Check that service is running
     if ! systemctl is-active --quiet "$service"; then
         sudo systemctl start "$service"
         return 0
