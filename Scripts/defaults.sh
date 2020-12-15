@@ -114,3 +114,9 @@ if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then
 else
     USER=$(getent group 1000 | cut -d ':' -f1)
 fi
+
+# Specter defaults
+SPECTER_SIGN_KEY_URL="https://stepansnigirev.com/ss-specter-release.asc"
+SPECTER_SIGN_KEY="ss-specter-release.asc"
+SPECTER_URL="https://github.com/cryptoadvance/specter-desktop/releases/download"
+SPECTER_VERSION="0.10.4"
