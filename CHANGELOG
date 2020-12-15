@@ -1,3 +1,21 @@
+RoninDojo v1.8 Change Log
+
+- Boltzmann Calculator v1.0
+- Mempool v1.0 (external links set to OXT via Tor Browser)
+- Electrs 0.8.6
+- Whirlpool 0.10.9
+- SW Indexer/Electrs Swap Capability
+- Tor Hidden Service Backup
+- Tor bug fixes
+- Credentials backup during install
+- Menu consolidation and restructure
+- General UX enhancement
+
+RoninDojo v1.7 Change Log
+
+- Dojo 1.8.0
+- minor patch to Tor setup
+
 RoninDojo v1.6 Change Log
 
 - Integration of Ronin UI Backend
