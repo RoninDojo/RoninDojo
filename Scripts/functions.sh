@@ -633,7 +633,8 @@ ${NC}
 EOF
                     _sleep
 
-                    _set_addrindexrs
+                    _set_addrindexer
+                    return 0
                     ;;
                     # samourai indexer install enabled in .conf.tpl files using sed
 
