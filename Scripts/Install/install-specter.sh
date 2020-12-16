@@ -112,7 +112,7 @@ fi
 cd "$HOME"/specter-"$SPECTER_VERSION" || exit
 "$HOME"/.venv_specter/bin/python3 setup.py install
 
-#create file .flaskenv
+# Create file .flaskenv
 
 cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
 CONNECT_TOR=True
