@@ -1455,3 +1455,200 @@ ${file} swap swap defaults,pri=0 0 0
 EOF"
     fi
 }
+
+#_is_specter(){
+#    
+#}
+####CHECK IF SPECTER IS INSTALLED ON SYSTEM###
+
+_specter_install(){
+    wget --quiet "$SPECTER_SIGN_KEY_URL"
+    gpg --import "$SPECTER_SIGN_KEY"
+    rm "$SPECTER_SIGN_KEY"
+
+    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
+    gpg --verify sha256.signed.txt
+
+    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
+
+    if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
+    cat <<EOF
+${RED}
+***
+Good verification... Installing now
+***
+${NC}
+EOF
+    else
+        cat <<EOF
+${RED}
+***
+Verification failed...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Returning to main menu in"
+        ronin
+    fi
+
+    cat <<EOF
+${RED}
+***
+Installing Specter $SPECTER_VERSION ...
+***
+${NC}
+EOF
+    _sleep
+    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+    sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
+    sudo systemctl restart tor
+
+    if ! hash gcc 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Installing gcc
+***
+${NC}
+EOF
+        sudo pacman -S --noconfirm gcc
+    fi
+
+    mkdir "$HOME"/specter-"$SPECTER_VERSION"
+    tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
+    rm sha256.signed.txt ./*.tar.gz
+    if [ -d .venv_specter ]; then
+        cat <<EOF
+${RED}
+***
+venv is already set ...
+***
+${NC}
+EOF
+    else
+        python3 -m venv "$HOME"/.venv_specter
+    fi
+    cd "$HOME"/specter-"$SPECTER_VERSION" || exit
+    "$HOME"/.venv_specter/bin/python3 setup.py install
+    #create file .flaskenv
+
+    cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
+CONNECT_TOR=True
+
+FLASK_ENV=production
+EOF
+
+    sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
+[Unit]
+Description=Specter Desktop Service
+After=multi-user.target
+
+[Service]
+User=$USER
+Type=simple
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+Environment=PATH=$HOME/.venv_specter/bin
+WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+EOF
+"
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now specter 2>/dev/null
+
+    return 0
+}
+
+_specter_upgrade(){
+    wget --quiet "$SPECTER_SIGN_KEY_URL"
+    gpg --import "$SPECTER_SIGN_KEY"
+    rm "$SPECTER_SIGN_KEY"
+
+    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
+    gpg --verify sha256.signed.txt
+
+    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
+
+    if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
+        cat <<EOF
+${RED}
+***
+Good verification... Installing now
+***
+${NC}
+EOF
+    else
+        cat <<EOF
+${RED}
+***
+Verification failed...
+***
+${NC}
+EOF
+        _sleep 5 --msg "Returning to main menu in"
+        ronin
+    fi
+   
+    cat <<EOF
+${RED}
+***
+Proceeding to upgrade to $SPECTER_VERSION ...
+***
+${NC}
+EOF
+    _sleep
+    sudo systemctl stop specter
+    sudo rm /etc/systemd/system/specter.service
+    sudo rm -rf "${dir}"
+    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
+    mkdir "$HOME"/specter-"$SPECTER_VERSION"
+    tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
+    rm sha256.signed.txt ./*.tar.gz
+    if [ -d .venv_specter ]; then
+        cat <<EOF
+${RED}
+***
+venv is already set ...
+***
+${NC}
+EOF
+    else
+        python3 -m venv "$HOME"/.venv_specter
+    fi
+    cd "$HOME"/specter-"$SPECTER_VERSION" || exit
+    "$HOME"/.venv_specter/bin/python3 setup.py install
+    #create file .flaskenv
+
+    cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
+CONNECT_TOR=True
+
+FLASK_ENV=production
+EOF
+
+    sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
+[Unit]
+Description=Specter Desktop Service
+After=multi-user.target
+
+[Service]
+User=$USER
+Type=simple
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+Environment=PATH=$HOME/.venv_specter/bin
+WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
+EOF
+"
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now specter 2>/dev/null
+
+    return 0
+}
