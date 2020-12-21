@@ -130,3 +130,11 @@ declare -A backup_dojo_data=(
     [indexer]=indexer
     [bitcoind]=bitcoind
 )
+# Versions
+SPECTER_VERSION="0.10.4"
+BITCOIND_VERSION="0.20.1"
+INDEXER_VERSION="0.4.0"
+ELECTRS_VERSION="0.3.8"
+MEMPOOL_VERSION="1.0.1"
+WHIRLPOOL_VERSION="0.10.9"
+EXPLORER_VERSION="2.0.2"
