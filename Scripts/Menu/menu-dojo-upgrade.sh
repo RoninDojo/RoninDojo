@@ -328,6 +328,41 @@ EOF
 fi
 # stop whirlpool for existing whirlpool users
 
+_is_specter
+#### ADD THIS FUNCTION CHECK IF SPECTER IS ALREADY INSTALLED ####
+
+cat <<EOF
+${RED}
+***
+Do you want to install the Specter Server for a Hardware Wallet Interface?
+***
+${NC}
+EOF
+    while true; do
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+        case $answer in
+            [yY][eE][sS]|[yY])
+                _specter_install
+                break
+                ;;
+            [Nn][oO]|[nN])
+                break
+                ;;
+            *)
+                cat <<EOF
+${RED}
+***
+Please answer Yes or No.
+***
+${NC}
+EOF
+            ;;
+        esac
+    done
+else
+    _specter_upgrade
+fi            
+
 cd "${dojo_path_my_dojo}" || exit
 ./dojo.sh upgrade
 # run upgrade
