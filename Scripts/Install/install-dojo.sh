@@ -283,6 +283,49 @@ else
     _mempool_conf
 fi
 
+### SPECTER INSTALL ###
+
+if [ -d "$HOME"/.specter ]; then
+    cat <<EOF
+${RED}
+***
+Specter install detected. Upgrading Specter!
+***
+${NC}
+EOF
+    _upgrade_specter
+else
+    cat <<EOF
+${RED}
+***
+Do you want to install the Specter Server?
+***
+${NC}
+EOF
+    while true; do
+    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+    case $answer in
+        [yY][eE][sS]|[yY])
+            _install_specter
+            break
+            ;;
+        [nN][oO]|[Nn])
+            break
+            ;;
+        *)
+            cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+            ;;
+        esac
+    done
+fi
+#specter check, install or upgrade if ~/.specter exists.
+
 cat <<EOF
 ${RED}
 ***
