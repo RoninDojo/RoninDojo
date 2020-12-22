@@ -1447,11 +1447,16 @@ EOF"
 }
 
 #_is_specter(){
-#    
+#    if [ -d "$HOME"/.specter ]; then
+#        _specter_upgrade
+#        return 0
+#    else
+#        return 0
+#    fi
 #}
 ####CHECK IF SPECTER IS INSTALLED ON SYSTEM###
 
-_specter_install(){
+_install_specter(){
     wget --quiet "$SPECTER_SIGN_KEY_URL"
     gpg --import "$SPECTER_SIGN_KEY"
     rm "$SPECTER_SIGN_KEY"
@@ -1552,7 +1557,7 @@ EOF
     return 0
 }
 
-_specter_upgrade(){
+_upgrade_specter(){
     wget --quiet "$SPECTER_SIGN_KEY_URL"
     gpg --import "$SPECTER_SIGN_KEY"
     rm "$SPECTER_SIGN_KEY"
