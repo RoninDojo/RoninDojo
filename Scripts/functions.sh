@@ -1712,7 +1712,7 @@ create_credentials(){
         sudo mkdir /mnt/usb/.ronin
         sud chown -R $USER:$USER /mnt/usb/.ronin
     fi
-bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+    bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
 {
     ""name"":""RoninDojo"";
     ""version"":""$RONIN_DOJO_BRANCH"";
@@ -1742,18 +1742,61 @@ bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
     ""password"":""$EXPLORER_KEY"";
 }
 {
-    ""name"":""Specter"";
-    ""version"":""$SPECTER_VERSION"";
-    ""url"":""$V3_ADDR_SPECTER"";
-    ""username"":""N/A"";
-    ""password"":""N/A"";
-}
-{
-    ""name"":""Whirlpool Cli"";
+    ""name"":""Whirlpool CLI"";
     ""version"":""$WHIRLPOOL_VERSION"";
     ""url"":""$V3_ADDR_WHIRLPOOL"";
     ""username"":""N/A"";
     ""password"":""$WHIRLPOOL_API_KEY"";
 }
 EOF"
+
+    if [ -d "$HOME"/.specter ]; then
+        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+{
+    ""name"":""Specter"";
+    ""version"":""$SPECTER_VERSION"";
+    ""url"":""$V3_ADDR_SPECTER"";
+    ""username"":""N/A"";
+    ""password"":""N/A"";
+}
+EOF"
+    fi
+    # Check for specter
+
+    if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+{
+    ""name"":""ELECTRS"";
+    ""version"":""$ELECTRS_VERSION"";
+    ""url"":""$V3_ADDR_ELECTRS"";
+    ""username"":""N/A"";
+    ""password"":""N/A"";
+}
+EOF"
+    elif
+        grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+
+{
+    ""name"":""ELECTRS"";
+    ""version"":""$INDEXER_VERSION"";
+    ""url"":""N/A"";
+    ""username"":""N/A"";
+    ""password"":""N/A"";
+}
+EOF"
+    fi
+    # Check for Electrs or Indexer
+
+    if grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
+        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+{
+    ""name"":""Mempool Visualiser"";
+    ""version"":""$MEMPOOL_VERSION"";
+    ""url"":""$V3_ADDR_MEMPOOL"";
+    ""username"":""N/A"";
+    ""password"":""N/A"";
+}
+EOF"
+    ## add check for boltzmann calculator
 }
