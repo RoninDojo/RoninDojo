@@ -1456,17 +1456,25 @@ EOF"
     fi
 }
 
-#_is_specter(){
-#    if [ -d "$HOME"/.specter ]; then
-#        _specter_upgrade
-#        return 0
-#    else
-#        return 0
-#    fi
-#}
+_is_specter(){
+    if [ -d "$HOME"/.specter ]; then
+        return 0
+    else
+        return 1
+    fi
+}
 ####CHECK IF SPECTER IS INSTALLED ON SYSTEM###
 
 _install_specter(){
+    cd "${HOME}" || exit
+    cat <<EOF
+${RED}
+***
+Installing Specter $SPECTER_VERSION ...
+***
+${NC}
+EOF
+
     wget --quiet "$SPECTER_SIGN_KEY_URL"
     gpg --import "$SPECTER_SIGN_KEY"
     rm "$SPECTER_SIGN_KEY"
@@ -1477,14 +1485,14 @@ _install_specter(){
     wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
 
     if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
-    cat <<EOF
+        cat <<EOF
 ${RED}
 ***
 Good verification... Installing now
 ***
 ${NC}
 EOF
-    else
+    else   
         cat <<EOF
 ${RED}
 ***
@@ -1516,12 +1524,14 @@ Installing gcc
 ***
 ${NC}
 EOF
+        sudo pacman -Syy
         sudo pacman -S --noconfirm gcc
     fi
 
     mkdir "$HOME"/specter-"$SPECTER_VERSION"
     tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
     rm sha256.signed.txt ./*.tar.gz
+
     if [ -d .venv_specter ]; then
         cat <<EOF
 ${RED}
@@ -1568,47 +1578,72 @@ EOF
 }
 
 _upgrade_specter(){
-    wget --quiet "$SPECTER_SIGN_KEY_URL"
-    gpg --import "$SPECTER_SIGN_KEY"
-    rm "$SPECTER_SIGN_KEY"
+    shopt -s nullglob
 
-    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
-    gpg --verify sha256.signed.txt
-
-    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
-
-    if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
-        cat <<EOF
-${RED}
-***
-Good verification... Installing now
-***
-${NC}
-EOF
-    else
-        cat <<EOF
-${RED}
-***
-Verification failed...
-***
-${NC}
-EOF
-        _sleep 5 --msg "Returning to main menu in"
-        ronin
-    fi
-   
-    cat <<EOF
+    cd "${HOME}" || exit
+    for dir in specter*; do
+        if [[ "${dir}" != specter-$SPECTER_VERSION ]]; then
+            cat <<EOF
 ${RED}
 ***
 Proceeding to upgrade to $SPECTER_VERSION ...
 ***
 ${NC}
 EOF
-    _sleep
-    sudo systemctl stop specter
-    sudo rm /etc/systemd/system/specter.service
-    sudo rm -rf "${dir}"
-    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+            wget --quiet "$SPECTER_SIGN_KEY_URL"
+            gpg --import "$SPECTER_SIGN_KEY"
+            rm "$SPECTER_SIGN_KEY"
+
+            wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
+            gpg --verify sha256.signed.txt
+
+            wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
+
+            if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
+                cat <<EOF
+${RED}
+***
+Good verification... Installing now
+***
+${NC}
+EOF
+            else
+                cat <<EOF
+${RED}
+***
+Verification failed...
+***
+${NC}
+EOF
+                _sleep 5 --msg "Returning to main menu in"
+                ronin
+            fi
+   
+            cat <<EOF
+${RED}
+***
+Proceeding to upgrade to $SPECTER_VERSION ...
+***
+${NC}
+EOF
+            _sleep
+            sudo systemctl stop specter
+            sudo rm /etc/systemd/system/specter.service
+            sudo rm -rf "${dir}"
+            sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+        else
+            cat <<EOF
+${RED}
+***
+On latest version of Specter ...
+***
+${NC}
+EOF
+            _sleep 2
+            sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+            return 0
+        fi
+    done
 
     mkdir "$HOME"/specter-"$SPECTER_VERSION"
     tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
