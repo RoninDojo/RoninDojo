@@ -77,3 +77,8 @@ _update_05() {
         sudo systemctl restart tor
     fi
 }
+
+# modify pacman.conf
+_update_06() {
+    sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+}
