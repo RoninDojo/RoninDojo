@@ -35,6 +35,12 @@ case $CHOICE in
 #         # check for system updates, then return to menu
 #         ;;
     1)
+        # Add selected packages to irnore during an upgrade
+        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+
+        # Update Mirrors
+        sudo pacman -Syy
+
         cat <<EOF
 ${RED}
 ***
