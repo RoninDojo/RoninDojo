@@ -328,16 +328,7 @@ EOF
 fi
 # stop whirlpool for existing whirlpool users
 
-if [ -d "$HOME"/.specter ]; then
-    cat <<EOF
-${RED}
-***
-Specter install detected. Upgrading Specter!
-***
-${NC}
-EOF
-    _upgrade_specter
-else
+if ! _is_specter ; then
     cat <<EOF
 ${RED}
 ***
@@ -366,6 +357,15 @@ EOF
             ;;
         esac
     done
+else
+    cat <<EOF
+${RED}
+***
+Specter install detected. Upgrading Specter!
+***
+${NC}
+EOF
+    _upgrade_specter
 fi
 
 cd "${dojo_path_my_dojo}" || exit
