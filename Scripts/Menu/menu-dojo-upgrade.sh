@@ -366,7 +366,7 @@ EOF
             ;;
         esac
     done
-fi            
+fi
 
 cd "${dojo_path_my_dojo}" || exit
 ./dojo.sh upgrade
