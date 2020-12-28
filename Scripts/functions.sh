@@ -1483,7 +1483,7 @@ Good verification... Installing now
 ***
 ${NC}
 EOF
-    else   
+    else
         cat <<EOF
 ${RED}
 ***
