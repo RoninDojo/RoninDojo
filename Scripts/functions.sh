@@ -1519,6 +1519,17 @@ EOF
         sudo pacman -S --noconfirm gcc
     fi
 
+    if ! hash libusb 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Installing libusb
+***
+${NC}
+EOF
+        sudo pacman -S --noconfirm libusb
+    fi
+
     mkdir "$HOME"/specter-"$SPECTER_VERSION"
     tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
     rm sha256.signed.txt ./*.tar.gz

@@ -27,6 +27,8 @@ declare -A package_dependencies=(
     [jq]=jq
     [pipenv]=python-pipenv
     [sgdisk]=gptfdisk
+    [gcc]=gcc
+    [libusb]=libusb
 )
 
 #
