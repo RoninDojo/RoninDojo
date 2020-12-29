@@ -1677,10 +1677,7 @@ Description=Specter Desktop Service
 After=multi-user.target
 
 [Service]
-User=$USER
-Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
-Environment=PATH=$HOME/.venv_specter/bin
+User=$USER    ## add check for boltzmann calculatorME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
 RestartSec=60
@@ -1710,93 +1707,95 @@ _backup_dojo_data_dir(){
 create_credentials(){
     if sudo test ! -d /mnt/usb/.ronin; then
         sudo mkdir /mnt/usb/.ronin
-        sud chown -R $USER:$USER /mnt/usb/.ronin
+        sudo chown -R $USER:$USER /mnt/usb/.ronin
     fi
-    bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+    cat <<EOF > /mnt/usb/.ronin/credentials.json
 {
-    ""name"":""RoninDojo"";
-    ""version"":""$RONIN_DOJO_BRANCH"";
-    ""url"":""N/A"";
-    ""username"":""N/A"";
-    ""password"":""N/A"";
+    "name": "RoninDojo",
+    "version": "$RONIN_DOJO_BRANCH",
+    "url": "N/A",
+    "username": "N/A",
+    "password": "N/A",
 }
 {
-    ""name"":""Dojo"";
-    ""version"":""$SAMOURAI_COMMITISH"";
-    ""url"":""$V3_ADDR_API"";
-    ""username"":""N/A"";
-    ""password"":""$NODE_ADMIN_KEY"";
+    "name": "Dojo",
+    "version": "$SAMOURAI_COMMITISH",
+    "url": "http://$V3_ADDR_API",
+    "username": "N/A",
+    "password": "$NODE_ADMIN_KEY",
 }
 {
-    ""name"":""Bitcoin Core"";
-    ""version"":""$BITCOIND_VERSION"";
-    ""url"":""$V2_ADDR_BITCOIN"";
-    ""username"":""$RPC_USER_CONF"";
-    ""password"":""$RPC_PASS_CONF"";
+    "name": "Bitcoin Core",
+    "version": "$BITCOIND_VERSION",
+    "url": "$V2_ADDR_BITCOIN",
+    "username": "$RPC_USER_CONF",
+    "password": "$RPC_PASS_CONF",
 }
 {
-    ""name"":""BTC RPC Explorer"";
-    ""version"":""$EXPLORER_VERSION"";
-    ""url"":""$V3_ADDR_EXPLORER"";
-    ""username"":""N/A"";
-    ""password"":""$EXPLORER_KEY"";
+    "name": "BTC RPC Explorer",
+    "version": "$EXPLORER_VERSION",
+    "url": "http://${V3_ADDR_EXPLORER}",
+    "username": "N/A",
+    "password": "${EXPLORER_KEY}",
 }
 {
-    ""name"":""Whirlpool CLI"";
-    ""version"":""$WHIRLPOOL_VERSION"";
-    ""url"":""$V3_ADDR_WHIRLPOOL"";
-    ""username"":""N/A"";
-    ""password"":""$WHIRLPOOL_API_KEY"";
+    "name": "Whirlpool CLI",
+    "version": "$WHIRLPOOL_VERSION",
+    "url": "http://$V3_ADDR_WHIRLPOOL",
+    "username": "N/A",
+    "password": "$WHIRLPOOL_API_KEY",
 }
-EOF"
-
-    if [ -d "$HOME"/.specter ]; then
-        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
-{
-    ""name"":""Specter"";
-    ""version"":""$SPECTER_VERSION"";
-    ""url"":""$V3_ADDR_SPECTER"";
-    ""username"":""N/A"";
-    ""password"":""N/A"";
-}
-EOF"
-    fi
-    # Check for specter
+EOF
 
     if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
-        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+        cat <<EOF >> /mnt/usb/.ronin/credentials.json
 {
-    ""name"":""ELECTRS"";
-    ""version"":""$ELECTRS_VERSION"";
-    ""url"":""$V3_ADDR_ELECTRS"";
-    ""username"":""N/A"";
-    ""password"":""N/A"";
+    "name": "Electrum Rust Server";
+    "version": "$ELECTRS_VERSION",
+    "url": "http://$V3_ADDR_ELECTRS",
+    "username": "N/A",
+    "password": "N/A",
 }
-EOF"
-    elif
-        grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
-        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+EOF
 
+    elif
+        grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        cat <<EOF >> /mnt/usb/.ronin/credentials.json
 {
-    ""name"":""ELECTRS"";
-    ""version"":""$INDEXER_VERSION"";
-    ""url"":""N/A"";
-    ""username"":""N/A"";
-    ""password"":""N/A"";
+    "name": "SW Addrindexr",
+    "version": "$INDEXER_VERSION",
+    "url"":"N/A",
+    "username": "N/A",
+    "password": "N/A",
 }
-EOF"
+EOF
     fi
     # Check for Electrs or Indexer
 
     if grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
-        bash -c "cat <<EOF > /mnt/usb/.ronin/credentials.json
+        cat <<EOF >> /mnt/usb/.ronin/credentials.json
 {
-    ""name"":""Mempool Visualiser"";
-    ""version"":""$MEMPOOL_VERSION"";
-    ""url"":""$V3_ADDR_MEMPOOL"";
-    ""username"":""N/A"";
-    ""password"":""N/A"";
+    "name": "Mempool Visualiser",
+    "version": "$MEMPOOL_VERSION",
+    "url": "http://$V3_ADDR_MEMPOOL",
+    "username": "N/A",
+    "password": "N/A",
 }
-EOF"
+EOF
+    fi
+    # Check for Mempool
+
+    if [ -d "$HOME"/.specter ]; then
+        cat <<EOF >> /mnt/usb/.ronin/credentials.json
+{
+    "name": "Specter",
+    "version": "$SPECTER_VERSION",
+    "url": "http://$V3_ADDR_SPECTER",
+    "username": "N/A",
+    "password": "N/A",
+}
+EOF
+    fi
+    # Check for specter
     ## add check for boltzmann calculator
 }
