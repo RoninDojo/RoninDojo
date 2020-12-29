@@ -1711,88 +1711,102 @@ create_credentials(){
     fi
     cat <<EOF > /mnt/usb/.ronin/credentials.json
 {
-    "name": "RoninDojo",
-    "version": "$RONIN_DOJO_BRANCH",
-    "url": "N/A",
-    "username": "N/A",
-    "password": "N/A",
-}
-{
-    "name": "Dojo",
-    "version": "$SAMOURAI_COMMITISH",
-    "url": "http://$V3_ADDR_API",
-    "username": "N/A",
-    "password": "$NODE_ADMIN_KEY",
-}
-{
-    "name": "Bitcoin Core",
-    "version": "$BITCOIND_VERSION",
-    "url": "$V2_ADDR_BITCOIN",
-    "username": "$RPC_USER_CONF",
-    "password": "$RPC_PASS_CONF",
-}
-{
-    "name": "BTC RPC Explorer",
-    "version": "$EXPLORER_VERSION",
-    "url": "http://${V3_ADDR_EXPLORER}",
-    "username": "N/A",
-    "password": "${EXPLORER_KEY}",
-}
-{
-    "name": "Whirlpool CLI",
-    "version": "$WHIRLPOOL_VERSION",
-    "url": "http://$V3_ADDR_WHIRLPOOL",
-    "username": "N/A",
-    "password": "$WHIRLPOOL_API_KEY",
+    "ronindojo": {
+        "name": "RoninDojo",
+        "version": "$RONIN_DOJO_BRANCH",
+        "url": "N/A",
+        "username": "N/A",
+        "password": "N/A"
+    },
+    "dojo": {
+        "name": "Dojo",
+        "version": "$SAMOURAI_COMMITISH",
+        "url": "http://$V3_ADDR_API",
+        "username": "N/A",
+        "password": "$NODE_ADMIN_KEY"
+    },
+    "bitcoincore": {
+        "name": "Bitcoin Core",
+        "version": "$BITCOIND_VERSION",
+        "url": "$V2_ADDR_BITCOIN",
+        "username": "$RPC_USER_CONF",
+        "password": "$RPC_PASS_CONF"
+    },
+    "btcrpcexplorer": {
+        "name": "BTC RPC Explorer",
+        "version": "$EXPLORER_VERSION",
+        "url": "http://${V3_ADDR_EXPLORER}",
+        "username": "N/A",
+        "password": "${EXPLORER_KEY}"
+    },
+    "whirlpoolcli": {
+        "name": "Whirlpool CLI",
+        "version": "$WHIRLPOOL_VERSION",
+        "url": "http://$V3_ADDR_WHIRLPOOL",
+        "username": "N/A",
+        "password": "$WHIRLPOOL_API_KEY"
+    }
 }
 EOF
 
     if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
         cat <<EOF >> /mnt/usb/.ronin/credentials.json
-{
-    "name": "Electrum Rust Server";
-    "version": "$ELECTRS_VERSION",
-    "url": "http://$V3_ADDR_ELECTRS",
-    "username": "N/A",
-    "password": "N/A",
+    },
+    "electrs": {
+        "name": "Electrum Rust Server";
+        "version": "$ELECTRS_VERSION",
+        "url": "http://$V3_ADDR_ELECTRS",
+        "username": "N/A",
+        "password": "N/A"
+    }
 }
 EOF
 
     elif
         grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
         cat <<EOF >> /mnt/usb/.ronin/credentials.json
-{
-    "name": "SW Addrindexr",
-    "version": "$INDEXER_VERSION",
-    "url"":"N/A",
-    "username": "N/A",
-    "password": "N/A",
+    },
+    "addrindexer": {
+        "name": "SW Addrindexr",
+        "version": "$INDEXER_VERSION",
+        "url":"N/A",
+        "username": "N/A",
+        "password": "N/A"
+    }
 }
 EOF
     fi
     # Check for Electrs or Indexer
 
     if grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
+        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
         cat <<EOF >> /mnt/usb/.ronin/credentials.json
-{
-    "name": "Mempool Visualiser",
-    "version": "$MEMPOOL_VERSION",
-    "url": "http://$V3_ADDR_MEMPOOL",
-    "username": "N/A",
-    "password": "N/A",
+    },
+    "mempool": {
+        "name": "Mempool Visualiser",
+        "version": "$MEMPOOL_VERSION",
+        "url": "http://$V3_ADDR_MEMPOOL",
+        "username": "N/A",
+        "password": "N/A"
+    }
 }
 EOF
     fi
     # Check for Mempool
 
     if [ -d "$HOME"/.specter ]; then
+        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
         cat <<EOF >> /mnt/usb/.ronin/credentials.json
-{
-    "name": "Specter",
-    "version": "$SPECTER_VERSION",
-    "url": "http://$V3_ADDR_SPECTER",
-    "username": "N/A",
-    "password": "N/A",
+    },
+    "specter": {    
+        "name": "Specter",
+        "version": "$SPECTER_VERSION",
+        "url": "http://$V3_ADDR_SPECTER",
+        "username": "N/A",
+        "password": "N/A"
+    }
 }
 EOF
     fi
