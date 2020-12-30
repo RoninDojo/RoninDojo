@@ -27,6 +27,8 @@ declare -A package_dependencies=(
     [jq]=jq
     [pipenv]=python-pipenv
     [sgdisk]=gptfdisk
+    [gcc]=gcc
+    [libusb]=libusb
 )
 
 #
@@ -122,3 +124,9 @@ SPECTER_SIGN_KEY_URL="https://stepansnigirev.com/ss-specter-release.asc"
 SPECTER_SIGN_KEY="ss-specter-release.asc"
 SPECTER_URL="https://github.com/cryptoadvance/specter-desktop/releases/download"
 SPECTER_VERSION="0.10.4"
+
+declare -A backup_dojo_data=(
+    [tor]=tor
+    [indexer]=indexer
+    [bitcoind]=bitcoind
+)
