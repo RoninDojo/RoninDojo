@@ -541,6 +541,41 @@ _docker_datadir_setup
 cat <<EOF
 ${RED}
 ***
+Installing SW Toolkit...
+***
+${NC}
+EOF
+_sleep 2
+
+cat <<EOF
+${RED}
+***
+Installing Boltzmann Calculator...
+***
+${NC}
+EOF
+_sleep 2
+
+_install_boltzmann
+# install Boltzmann
+
+cat <<EOF
+${RED}
+***
+Installing Whirlpool Stat Tool...
+***
+${NC}
+EOF
+_sleep 2
+
+_install_wst
+
+sudo mkdir "$INSTALL_DIR_USER" && sudo chown -R $USER:$USER "$INSTALL_DIR_USER"
+# make /mnt/usb/.ronin and give user permissions
+
+cat <<EOF
+${RED}
+***
 Dojo is ready to be installed!
 ***
 ${NC}

@@ -40,7 +40,7 @@ fi\n\
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 # we append everything above the EXPLORER if statement
 
-sed -i '/docker-tor.conf/i\      - ./conf/docker-indexer.conf' "${dojo_path_my_dojo}"/docker-compose.yaml
+#sed -i '/docker-tor.conf/i\      - ./conf/docker-indexer.conf' "${dojo_path_my_dojo}"/docker-compose.yaml
 # add indexer to tor section of docker-compose.yaml
 # using the backslash \ along with sed insert command so that the spaces are not ignored
 

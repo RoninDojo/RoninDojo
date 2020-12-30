@@ -15,6 +15,7 @@ _main() {
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
         _sleep 5 --msg "Welcome to RoninDojo. Loading in"
         touch "$HOME/.config/RoninDojo/.run"
+        cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.config
     fi
 
     # Source update script
@@ -1463,7 +1464,7 @@ _is_specter(){
         return 1
     fi
 }
-####CHECK IF SPECTER IS INSTALLED ON SYSTEM###
+# check if specter is installed
 
 _install_specter(){
     cd "${HOME}" || exit
@@ -1500,7 +1501,15 @@ Verification failed...
 ***
 ${NC}
 EOF
-        _sleep 5 --msg "Returning to main menu in"
+        _sleep 5 --msg "Returning to main menu in"else
+    cat <<EOF
+${RED}
+***
+Specter install detected. Upgrading Specter!
+***
+${NC}
+EOF
+    _upgrade_specter
         ronin
     fi
 
@@ -1709,10 +1718,91 @@ _backup_dojo_data_dir(){
         test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
 
         if [-d "${DOJO_PATH}" ]; then
-            sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"{$data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
+            sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
             return 0
         fi
 
         return 1
     done
+}
+
+_install_wst(){
+    cd "$HOME" || exit
+    git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
+    # download whirlpool stat tool
+
+    if ! hash pipenv; then
+        cat <<EOF
+${RED}
+***
+Installing python-pipenv...
+***
+${NC}
+EOF
+        _sleep 1
+        sudo pacman -S --noconfirm python-pipenv &>/dev/null
+    fi
+    # check for python-pip and install if not found
+
+    cd Whirlpool-Stats-Tool || exit
+    pipenv install -r requirements.txt &>/dev/null
+    # change to whirlpool stats directory, otherwise exit
+    # install whirlpool stat tool
+    # install WST
+}
+
+_install_boltzmann(){
+    cd "$HOME" || exit
+    git clone "$BOLTZMANN_REPO" &>/dev/null
+    cd boltzmann || exit
+    # pull Boltzmann
+
+    cat <<EOF
+${RED}
+***
+Checking package dependencies...
+***
+${NC}
+EOF
+    _sleep
+
+    if ! hash pipenv; then
+        cat <<EOF
+${RED}
+***
+Installing pipenv...
+***
+${NC}
+EOF
+        sudo pacman -S --noconfirm python-pipenv &>/dev/null
+    fi
+
+    # Setup a virtual environment to hold boltzmann dependencies. We should use this
+    # with all future packages that ship a requirements.txt.
+    pipenv install -r requirements.txt &>/dev/null
+    pipenv install sympy numpy &>/dev/null
+}
+
+_is_bisq(){
+    if [ -f "${INSTALL_DIR_USER}"/bisq.txt ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+_install_bisq(){
+    if test ! -d "$INSTALL_DIR_USER"; then
+        sudo mkdir "$INSTALL_DIR_USER"
+        sudo chown -R $USER:$USER "$INSTALL_DIR_USER"
+    fi
+    if [ ! -f "$INSTALL_DIR_USER"/ip.txt] ; then
+        ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$INSTALL_DIR_USER"/ip.txt
+    fi
+    IP_ADDRESS_RANGE=$(grep "192.168" "${INSTALL_DIR_USER}"/ip.txt)
+    sed -i '/  -txindex=1/i\  -peerbloomfilters=1' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+    sed -i "/  -txindex=1/i\  -whitelist=bloomfilter@$IP_ADDRESS_RANGE" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+    cat <<EOF > "${INSTALL_DIR_USER}"/bisq.txt
+peerbloomfilters=1
+EOF
 }

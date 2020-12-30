@@ -255,11 +255,11 @@ EOF
     fi
 fi
 
-if _is_mempool; then
+if ! _is_mempool; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Mempool Visualizer?
+Do you want to Re-install the Mempool Visualizer?
 ***
 ${NC}
 EOF
@@ -284,12 +284,9 @@ Please answer Yes or No.
 ***
 ${NC}
 EOF
-            ;;
+                ;;
         esac
     done
-else
-    # Repopulate mempool/Dockerfile with current credentials
-    _mempool_conf
 fi
 # Check if mempool available or not
 
@@ -328,48 +325,39 @@ EOF
 fi
 # stop whirlpool for existing whirlpool users
 
-if ! _is_specter ; then
+if _is_specter ; then
     cat <<EOF
 ${RED}
 ***
-Do you want to install the Specter Server?
+Do you want to re-install the Specter Server?
 ***
 ${NC}
 EOF
     while true; do
-    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-    case $answer in
-        [yY][eE][sS]|[yY])
-            _install_specter
-            break
-            ;;
-        [nN][oO]|[Nn])
-            break
-            ;;
-        *)
-            cat <<EOF
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+        case $answer in
+            [yY][eE][sS]|[yY])
+                _upgrade_specter
+                break
+                ;;
+            [nN][oO]|[Nn])
+                break
+                ;;
+            *)
+                cat <<EOF
 ${RED}
 ***
 Invalid answer! Enter Y or N
 ***
 ${NC}
 EOF
-            ;;
+                ;;
         esac
     done
-else
-    cat <<EOF
-${RED}
-***
-Specter install detected. Upgrading Specter!
-***
-${NC}
-EOF
-    _upgrade_specter
 fi
 
 cd "${dojo_path_my_dojo}" || exit
-./dojo.sh upgrade
+./dojo.sh upgrade --nologs
 # run upgrade
 
 bash -c "$RONIN_UPDATES_MENU"

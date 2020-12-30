@@ -4,12 +4,13 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Boltzmann"
-         2 "Whirlpool Stats Tool"
-         3 "Mempool Visualizer"
-         4 "Specter Server"
+OPTIONS=(1 "Install Extras Menu"
+         2 "Mempool Visualizer"
+         3 "Specter Server"
+         4 "Bisq Connect Status"
          5 "Fan Control"
-         6 "Go Back")
+         6 "Uninstall Extras Menu"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -22,39 +23,67 @@ clear
 
 case $CHOICE in
     1)
-        bash -c "$RONIN_BOLTZMANN_MENU"
-        # Boltzmann menu
+        bash -c "$RONIN_EXTRAS_INSTALL_MENU"
+        # Extras Install menu
         ;;
     2)
-        bash -c "$RONIN_WHIRLPOOL_STAT_MENU"
-        # check for wst install and/or launch wst, return to menu
-        # see defaults.sh
-        ;;
-    3)
         bash -c "$RONIN_MEMPOOL_MENU"
         # Mempool menu
-        ;;
-    4)
-        shopt -s nullglob
-        cd "${HOME}" || exit
-
-        for dir in specter*; do
-            if [[ -d "${dir}" ]]; then
-                bash -c "$RONIN_SPECTER_MENU"
-            else
-                cat <<EOF
+        ;; 
+    3)
+        if ! _is_specter ; then
+            cat <<EOF
 ${RED}
 ***
-Specter not installed! Installing now ....
+Specter not installed! Install from Extras Install Menu.
 ***
 ${NC}
 EOF
-            _sleep 2
-
-            "${HOME}"/RoninDojo/Scripts/Install/install-specter.sh
-            fi
-            # Specter menu
-        done
+            sleep 3 msg--"returning to Extras menu in..."
+            bash -c "$RONIN_EXTRAS_MENU"
+        else
+            bash -c "$RONIN_SPECTER_MENU"
+        fi
+        # Specter menu
+        ;;
+    4)
+        cat <<EOF
+${RED}
+***
+Checking your Dojo's Compatibility with Bisq
+***
+${NC}
+EOF
+        if ! _is_bisq ; then
+            cat <<EOF
+${RED}
+***
+Your Dojo NOT currently compatibility with Bisq!
+***
+${NC}
+EOF
+            sleep 2
+            cat <<EOF
+${RED}
+***
+Install option from Extras Install Menu. See wiki for more details.
+***
+${NC}
+EOF
+            sleep 3 --"returning to Extras menu in..."
+            bash -c "$RONIN_EXTRAS_MENU"
+        else
+            cat <<EOF
+${RED}
+***
+Your Dojo IS currently Compatibility with Bisq!
+***
+${NC}
+EOF
+            sleep 5 --msg "Enjoy those no-KYC sats! Returning to Extras Menu in..."
+            bash -c "$RONIN_EXTRAS_MENU"
+        fi
+        # Bisq check
         ;;
     5)
         cd "$HOME" || exit 1
@@ -127,9 +156,13 @@ EOF
 
         _pause
 
-        ronin
+        bash -c "$RONIN_EXTRAS_MENU"
         ;;
     6)
+        bash -c "$RONIN_EXTRAS_UNINSTALL_MENU"
+        # Extras Uninstall menu
+        ;;
+    7)
         ronin
         # returns to main menu
         ;;

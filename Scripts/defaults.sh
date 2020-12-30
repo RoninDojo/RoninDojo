@@ -57,6 +57,8 @@ RONIN_UPDATES_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
 RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
 RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
 RONIN_EXTRAS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-extras.sh"
+RONIN_EXTRAS_INSTALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-extras-install.sh"
+RONIN_EXTRAS_UNINSTALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-extras-uninstall.sh"
 RONIN_SPECTER_MENU="$HOME/RoninDojo/Scripts/Menu/menu-specter.sh"
 
 #
@@ -96,6 +98,7 @@ INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
 INSTALL_DIR_UNINSTALL="${INSTALL_DIR}/bitcoin"
 INSTALL_DIR_DOCKER="${INSTALL_DIR}/docker"
+INSTALL_DIR_USER="${INSTALL_DIR}/.ronin"
 
 DOCKER_VOLUMES="${INSTALL_DIR_DOCKER}/volumes"
 DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
