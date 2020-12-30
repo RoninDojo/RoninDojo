@@ -1800,7 +1800,7 @@ EOF
         for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
         cat <<EOF >> /mnt/usb/.ronin/credentials.json
     },
-    "specter": {    
+    "specter": {
         "name": "Specter",
         "version": "$SPECTER_VERSION",
         "url": "http://$V3_ADDR_SPECTER",
