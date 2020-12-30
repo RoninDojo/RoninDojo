@@ -25,6 +25,7 @@ _main() {
     _update_03 # Add password less reboot/shutdown privileges
     _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
     _update_05 # Fix tor unit file
+    _update_06 # Modify pacman to Ignore specific packages
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -1518,6 +1519,17 @@ EOF
         sudo pacman -S --noconfirm gcc
     fi
 
+    if ! hash libusb 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Installing libusb
+***
+${NC}
+EOF
+        sudo pacman -S --noconfirm libusb
+    fi
+
     mkdir "$HOME"/specter-"$SPECTER_VERSION"
     tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
     rm sha256.signed.txt ./*.tar.gz
@@ -1681,4 +1693,17 @@ EOF
     sudo systemctl enable --now specter 2>/dev/null
 
     return 0
+}
+
+_backup_dojo_data_dir(){
+    for data in "${!backup_dojo_data[@]}"; do
+        test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
+
+        if [-d "${DOJO_PATH}" ]; then
+            sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"{$data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
+            return 0
+        fi
+
+        return 1
+    done
 }
