@@ -341,6 +341,38 @@ EOF
                 break
                 ;;
             [nN][oO]|[Nn])
+                sudo rm -rf "$HOME"/.specter "$HOME"/specter-* /etc/systemd/system/specter.service
+                break
+                ;;
+            *)
+                cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+                ;;
+        esac
+    done
+fi
+
+if _is_bisq ; then
+    cat <<EOF
+${RED}
+***
+Do you want to re-install Bisq Connectivity?
+***
+${NC}
+EOF
+    while true; do
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+        case $answer in
+            [yY][eE][sS]|[yY])
+                _install_bisq
+                break
+                ;;
+            [nN][oO]|[Nn])
                 break
                 ;;
             *)

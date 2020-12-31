@@ -7,8 +7,10 @@
 _load_user_conf
 
 OPTIONS=(#1 "Update Operating System"
-         1 "Update RoninDojo"
-         2 "Go Back")
+         1 "Update Mirrors"
+         2 "Check for RoninDojo Update"
+         3 "Update RoninDojo"
+         4 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -19,22 +21,46 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
-#     1)
-#         cat <<EOF
-# ${RED}
-# ***
-# Checking for operating system package updates...
-# ***
-# ${NC}
-# EOF
-#         _sleep 2
-
-#         sudo pacman -Syyu --noconfirm
-
-#         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-updates.sh
-#         # check for system updates, then return to menu
-#         ;;
     1)
+        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+        # Add selected packages to irnore during an upgrade
+
+        sudo pacman -Syy
+        # Update Mirrors and continue.
+        ;;
+
+    2)
+        if [ -f "${INSTALL_DIR_USER}"/ronin-latest.txt ] ; then
+            rm -rf "${INSTALL_DIR_USER}"/ronin-latest.txt
+        fi
+        wget --quiet https://ronindojo.io/downloads/ronindojo-version.txt -O "${INSTALL_DIR_USER}"/ronin-latest.txt
+        LATEST_RONIN=$(cat ronindojo-latest.txt)
+        
+        if [[ "${VERSION}" != "${LATEST_RONIN}" ]] ; then
+            cat <<EOF
+${RED}
+***
+RoninDojo update available!
+***
+${NC}
+EOF
+            _sleep --msg 5 "Select Update RoninDojo from Menu. Returning in..."
+        else
+            cat <<EOF
+${RED}
+***
+No Update available!
+***
+${NC}
+EOF
+            _sleep --msg "Returning to menu in ..."
+        fi
+        # check for Ronin update from site
+
+        bash -c "${RONIN_SYSTEM_MENU}"
+        ;;
+
+    3)
         # Add selected packages to irnore during an upgrade
         sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
 
@@ -111,7 +137,8 @@ DOJO
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
         ;;
-    2)
+
+    4)
         bash -c "${RONIN_SYSTEM_MENU}"
         # returns to main system menu
         ;;

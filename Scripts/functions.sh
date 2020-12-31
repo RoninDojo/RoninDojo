@@ -401,11 +401,11 @@ Configuring RoninDojo Backend Tor Address...
 ***
 ${NC}
 BACKEND_TOR_CONFIG
-        sudo sed -i '/################ This section is just for relays/i\
-HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
+        sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir ${INSTALL_DIR_TOR}/hidden_service_ronin_backend/\
 HiddenServiceVersion 3\
 HiddenServicePort 80 127.0.0.1:8470\
-' /etc/tor/torrc
+" /etc/tor/torrc
 
         # restart tor service
         sudo systemctl restart tor
@@ -421,7 +421,7 @@ _ui_backend_credentials() {
     API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
     JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
     BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
-    BACKEND_TOR=$(sudo cat /var/lib/tor/hidden_service_ronin_backend/hostname)
+    BACKEND_TOR=$(sudo cat "${INSTALL_DIR_TOR}"/hidden_service_ronin_backend/hostname)
 
     export API_KEY JWT_SECRET BACKEND_PORT BACKEND_TOR
 }
@@ -1717,12 +1717,33 @@ _backup_dojo_data_dir(){
     for data in "${!backup_dojo_data[@]}"; do
         test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
 
-        if [-d "${DOJO_PATH}" ]; then
-            sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
+        if [ -d "${DOJO_PATH}" ]; then
+            if ${data} == "bitcoind" ; then
+                sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR}"/backup/"${data}"
+            else
+                sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
             return 0
+        else
+            return 1
         fi
+    done
+}
 
-        return 1
+_recover_dojo_data_dir(){
+    for data in "${!backup_dojo_data[@]}"; do
+        test -d "${INSTALL_DIR}"/backup/"${data}" || exit
+        if [ -d "${DOJO_PATH}" ]; then
+                if ${data} == "bitcoind" ; then
+                    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+                    sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
+                else
+                    sudo rm -rf "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/
+                    sudo rsync -ac -delete-before --quiet "${INSTALL_DIR}"/backup/"${data}" "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/
+                fi
+            return 0
+        else
+            return 1
+        fi
     done
 }
 

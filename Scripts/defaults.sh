@@ -108,6 +108,7 @@ DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
 DOJO_BACKUP_DIR="${INSTALL_DIR}/backup/dojo"
 TOR_BACKUP_DIR="${INSTALL_DIR}/backup/tor"
 INDEXER_BACKUP_DIR="${INSTALL_DIR}/backup/indexer"
+BITCOIN_BACKUP_DIR="${INSTALL_DIR}/backup/bitcoin"
 
 TOR_DATA_DIR="docker/volumes/my-dojo_data-tor"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
