@@ -44,7 +44,7 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
               _sleep 2
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs bitcoind
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for bitcoind
@@ -70,7 +70,7 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
               _sleep 2
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs db
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for db
@@ -96,7 +96,7 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
               _sleep 2
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs indexer
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for nginx
@@ -122,7 +122,7 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
               _sleep 2
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs node
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for nodejs
@@ -149,7 +149,7 @@ ${NC}
 EOF
               _sleep 2
 
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs tor
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for tor
@@ -176,7 +176,7 @@ Press Ctrl+C to exit at anytime...
 ***
 ${NC}
 EOF
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs whirlpool
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # view logs, return to menu
@@ -208,7 +208,7 @@ Press Ctrl+C to exit at anytime...
 ***
 ${NC}
 EOF
-              cd "$dojo_path_my_dojo" || exit
+              cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # view logs, return to menu
@@ -216,7 +216,7 @@ EOF
             fi
             ;;
         9)
-            bash -c "$RONIN_DOJO_MENU"
+            bash -c "${RONIN_DOJO_MENU}"
             # goes back to ronin dojo menu
             ;;
 esac

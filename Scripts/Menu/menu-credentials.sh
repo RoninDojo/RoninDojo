@@ -51,7 +51,7 @@ Press any key to return...
 ${NC}
 EOF
                 _pause
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
                 # press any key to return to menu
                 # shows samouraio dojo credentials and returns to menu
                 ;;
@@ -79,7 +79,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows whirlpool credentials and returns to menu
             ;;
@@ -105,7 +105,7 @@ ${NC}
 EOF
             fi
 
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # return to menu
             ;;
         4)
@@ -126,7 +126,7 @@ Returning to menu...
 ***
 ${NC}
 EOF
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
             else
                 cat <<EOF
 ${RED}
@@ -145,7 +145,7 @@ ${NC}
 EOF
 
                 _pause
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
                 # press any key to return to menu
                 # see defaults.sh
                 fi
@@ -172,7 +172,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # shows Ronin UI Backend credentials, returns to menu
             ;;
         6)
@@ -203,7 +203,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows bitcoind and btc rpc explorer credentials and returns to menu
             ;;
@@ -217,7 +217,7 @@ Specter Server is not installed...
 ${NC}
 EOF
                 _sleep 3 --msg "Returning to menu..."
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
             else
                 cat <<EOF
 ${RED}
@@ -237,7 +237,7 @@ EOF
             fi
             _pause
 
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows specter server credentials and returns to menu
             ;;
@@ -349,7 +349,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows all credentials and returns to menu
             ;;

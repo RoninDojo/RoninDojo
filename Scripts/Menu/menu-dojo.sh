@@ -31,7 +31,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep 5
-                bash -c "$RONIN_DOJO_MENU"
+                bash -c "${RONIN_DOJO_MENU}"
             else
                 _is_dojo "${RONIN_DOJO_MENU}"
                 # is dojo installed?
@@ -43,7 +43,7 @@ case $CHOICE in
                 echo -e "${NC}"
                 _sleep 2
 
-                cd "$dojo_path_my_dojo" || exit
+                cd "${dojo_path_my_dojo}" || exit
 
                 _source_dojo_conf
 
@@ -85,7 +85,7 @@ case $CHOICE in
                 echo "***"
                 echo -e "${NC}"
                 _sleep 2
-                cd "$dojo_path_my_dojo" || exit
+                cd "${dojo_path_my_dojo}" || exit
 
                 cat <<DOJO
 ${RED}

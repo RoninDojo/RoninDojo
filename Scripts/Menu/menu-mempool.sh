@@ -38,7 +38,7 @@ Returning to menu...
 ***
 ${NC}
 EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
 ${RED}
@@ -50,7 +50,7 @@ EOF
             docker start mempool 1>/dev/null
 
             _sleep 5
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
             # see defaults.sh
             # start mempool, return to menu
         fi
@@ -73,7 +73,7 @@ Returning to menu...
 ***
 ${NC}
 EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
 ${RED}
@@ -83,7 +83,7 @@ Stopping Mempool...
 ${NC}
 EOF
             docker stop mempool 1>/dev/null
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
             # stop mempool, return to menu
             # see defaults.sh
         fi
@@ -106,7 +106,7 @@ Returning to menu...
 ***
 ${NC}
 EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
 ${RED}
@@ -119,7 +119,7 @@ EOF
             _sleep 5
             docker start mempool 1>/dev/null
             _sleep 2
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
             # start mempool, return to menu
             # see defaults.sh
         fi
@@ -142,7 +142,7 @@ Returning to menu...
 ***
 ${NC}
 EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
 ${RED}
@@ -162,7 +162,7 @@ ${NC}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs mempool
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${RONIN_MEMPOOL_MENU}"
             # view logs, return to menu
             # see defaults.sh
         fi

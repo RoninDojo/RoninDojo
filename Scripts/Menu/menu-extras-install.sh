@@ -63,7 +63,7 @@ EOF
             fi
             # check for which indexer, if no indexer ask if they want to install
             ;;
-        5) 
+        5)
             cat <<EOF
 ${RED}
 ***
@@ -77,7 +77,7 @@ EOF
             # upgrade dojo. default to on.
             ;;
         6)
-            bash -c "$RONIN_EXTRAS_MENU"
+            bash -c "${RONIN_EXTRAS_MENU}"
             # return to extras menu
             ;;
     esac

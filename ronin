@@ -47,7 +47,7 @@ case $CHOICE in
         # runs Ronin UI Backend menu script
         ;;
     5)
-        bash "$RONIN_CREDENTIALS_MENU"
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-credentials.sh
         # runs credentials menu script
         ;;
     6)

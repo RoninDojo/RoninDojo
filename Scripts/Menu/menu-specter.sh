@@ -33,7 +33,7 @@ EOF
 
         _sleep
 
-        bash -c "$RONIN_SPECTER_MENU"
+        bash -c "${RONIN_SPECTER_MENU}"
         # Start specter.service and return to same menu
         ;;
     2)
@@ -50,7 +50,7 @@ EOF
 
         _sleep
 
-        bash -c "$RONIN_SPECTER_MENU"
+        bash -c "${RONIN_SPECTER_MENU}"
         # Stop specter.service and return to same menu
         ;;
     3)
@@ -64,15 +64,14 @@ EOF
         sudo systemctl restart specter
 
         _sleep
-        bash -c "$RONIN_SPECTER_MENU"
+        bash -c "${RONIN_SPECTER_MENU}"
         # Restart specter.service and return to same menu
         ;;
     4)
-        bash -c "$HOME"/RoninDojo/Scripts/Install/install-specter.sh
-
-        _sleep
-
-        bash -c "$RONIN_SPECTER_MENU"
+        _upgrade_specter
+            cd "${dojo_path_my_dojo}" || exit
+            ./dojo.sh upgrade --nologs
+        bash -c "${RONIN_SPECTER_MENU}"
         # Upgrade specter.service and return to same menu
         ;;
     5)

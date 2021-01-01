@@ -23,13 +23,26 @@ clear
 
 case $CHOICE in
     1)
-        bash -c "$RONIN_EXTRAS_INSTALL_MENU"
+        bash -c "${RONIN_EXTRAS_INSTALL_MENU}"
         # Extras Install menu
         ;;
     2)
-        bash -c "$RONIN_MEMPOOL_MENU"
+        if ! _mempool_check ; then
+            cat <<EOF
+${RED}
+***
+Mempool not installed! Install from Extras Install Menu.
+***
+${NC}
+EOF
+            sleep 3 msg--"returning to Extras menu in..."
+            bash -c "${RONIN_EXTRAS_MENU}"
+
+        else
+            bash -c "${RONIN_MEMPOOL_MENU}"
         # Mempool menu
-        ;; 
+        fi
+        ;;
     3)
         if ! _is_specter ; then
             cat <<EOF
@@ -40,9 +53,9 @@ Specter not installed! Install from Extras Install Menu.
 ${NC}
 EOF
             sleep 3 msg--"returning to Extras menu in..."
-            bash -c "$RONIN_EXTRAS_MENU"
+            bash -c "${RONIN_EXTRAS_MENU}"
         else
-            bash -c "$RONIN_SPECTER_MENU"
+            bash -c "${RONIN_SPECTER_MENU}"
         fi
         # Specter menu
         ;;
@@ -156,10 +169,10 @@ EOF
 
         _pause
 
-        bash -c "$RONIN_EXTRAS_MENU"
+        bash -c "${RONIN_EXTRAS_MENU}"
         ;;
     6)
-        bash -c "$RONIN_EXTRAS_UNINSTALL_MENU"
+        bash -c "${RONIN_EXTRAS_UNINSTALL_MENU}"
         # Extras Uninstall menu
         ;;
     7)

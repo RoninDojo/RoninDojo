@@ -22,7 +22,7 @@ clear
 case $CHOICE in
 	1)
         if ! _is_electrs; then
-            bash -c "$RONIN_ELECTRS_MENU"
+            bash -c "${RONIN_ELECTRS_MENU}"
             exit 1
         fi
         # check if electrs is already installed
@@ -34,12 +34,12 @@ case $CHOICE in
         echo -e "${NC}"
         _sleep 2
         docker start indexer 1>/dev/null
-        bash -c "$RONIN_ELECTRS_MENU"
+        bash -c "${RONIN_ELECTRS_MENU}"
         # start electrs, return to menu
         ;;
     2)
         if ! _is_electrs; then
-            bash -c "$RONIN_ELECTRS_MENU"
+            bash -c "${RONIN_ELECTRS_MENU}"
             exit 1
         fi
         # check if electrs is already installed
@@ -51,12 +51,12 @@ case $CHOICE in
         echo -e "${NC}"
         _sleep 2
         docker stop indexer 1>/dev/null
-        bash -c "$RONIN_ELECTRS_MENU"
+        bash -c "${RONIN_ELECTRS_MENU}"
         # stop electrs, return to menu
         ;;
     3)
         if ! _is_electrs; then
-            bash -c "$RONIN_ELECTRS_MENU"
+            bash -c "${RONIN_ELECTRS_MENU}"
             exit 1
         fi
         # check if electrs is already installed
@@ -68,12 +68,12 @@ case $CHOICE in
         echo -e "${NC}"
         _sleep 2
         docker restart indexer 1>/dev/null
-        bash -c "$RONIN_ELECTRS_MENU"
+        bash -c "${RONIN_ELECTRS_MENU}"
         # restart electrs, return to menu
         ;;
     4)
         if ! _is_electrs; then
-            bash -c "$RONIN_ELECTRS_MENU"
+            bash -c "${RONIN_ELECTRS_MENU}"
             exit 1
         fi
         # check if electrs is already installed
@@ -91,7 +91,7 @@ case $CHOICE in
         _sleep 2
         cd "$dojo_path_my_dojo" || exit
         ./dojo.sh logs indexer
-        bash -c "$RONIN_ELECTRS_MENU"
+        bash -c "${RONIN_ELECTRS_MENU}"
         # start electrs, return to menu
         ;;
 	5)
