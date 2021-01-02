@@ -1620,7 +1620,7 @@ EOF
                 _sleep 5 --msg "Returning to main menu in"
                 ronin
             fi
-   
+
             cat <<EOF
 ${RED}
 ***
@@ -1705,11 +1705,11 @@ _backup_dojo_data_dir(){
     done
 }
 create_credentials(){
-    if sudo test ! -d /mnt/usb/.ronin; then
-        sudo mkdir /mnt/usb/.ronin
-        sudo chown -R $USER:$USER /mnt/usb/.ronin
+    if sudo test ! -d "${INSTALL_DIR_USER}"; then
+        sudo mkdir "${INSTALL_DIR_USER}"
+        sudo chown -R $USER:$USER "${INSTALL_DIR_USER}"
     fi
-    cat <<EOF > /mnt/usb/.ronin/credentials.json
+    cat <<EOF > "${INSTALL_DIR_USER}"/credentials.json
 {
     "ronindojo": {
         "name": "RoninDojo",
@@ -1750,8 +1750,8 @@ create_credentials(){
 EOF
 
     if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
-        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
-        cat <<EOF >> /mnt/usb/.ronin/credentials.json
+        for i in {1..2}; do sed -i '$d' "${INSTALL_DIR_USER}"/credentials.json; done
+        cat <<EOF >> "${INSTALL_DIR_USER}"/credentials.json
     },
     "electrs": {
         "name": "Electrum Rust Server";
@@ -1765,8 +1765,8 @@ EOF
 
     elif
         grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
-        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
-        cat <<EOF >> /mnt/usb/.ronin/credentials.json
+        for i in {1..2}; do sed -i '$d' "${INSTALL_DIR_USER}"/credentials.json; done
+        cat <<EOF >> "${INSTALL_DIR_USER}"/credentials.json
     },
     "addrindexer": {
         "name": "SW Addrindexr",
@@ -1781,8 +1781,8 @@ EOF
     # Check for Electrs or Indexer
 
     if grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
-        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
-        cat <<EOF >> /mnt/usb/.ronin/credentials.json
+        for i in {1..2}; do sed -i '$d' "${INSTALL_DIR_USER}"/credentials.json; done
+        cat <<EOF >> "${INSTALL_DIR_USER}"/credentials.json
     },
     "mempool": {
         "name": "Mempool Visualiser",
@@ -1797,8 +1797,8 @@ EOF
     # Check for Mempool
 
     if [ -d "$HOME"/.specter ]; then
-        for i in {1..2}; do sed -i '$d' /mnt/usb/.ronin/credentials.json; done
-        cat <<EOF >> /mnt/usb/.ronin/credentials.json
+        for i in {1..2}; do sed -i '$d' "${INSTALL_DIR_USER}"/credentials.json; done
+        cat <<EOF >> "${INSTALL_DIR_USER}"/credentials.json
     },
     "specter": {
         "name": "Specter",
@@ -1811,5 +1811,18 @@ EOF
 EOF
     fi
     # Check for specter
-    ## add check for boltzmann calculator
+    if [ -f "${INSTALL_DIR_USER}"/bisq.txt ]; then
+        for i in {1..2}; do sed -i '$d' "${INSTALL_DIR_USER}"/credentials.json; done
+        cat <<EOF >> "${INSTALL_DIR_USER}"/credentials.json
+    },
+    "bisq": {
+        "name": "Bisq Connectivity",
+        "version": "N/A",
+        "url": "http://$V2_ADDR_BITCOIND",
+        "username": "$RPC_USER_CONF",
+        "password": "$RPC_PASS_CONF"
+    }
+}
+EOF
+    fi
 }
