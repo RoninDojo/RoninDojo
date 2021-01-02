@@ -82,3 +82,18 @@ _update_05() {
 _update_06() {
     sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
 }
+
+# add INSTALL_DIR_USER to store user info
+_update_07() {
+    if sudo test ! -d "${INSTALL_DIR_USER}"; then
+        sudo mkdir "${INSTALL_DIR_USER}"
+        sudo chown -R $USER:$USER "${INSTALL_DIR_USER}"
+    fi
+}
+
+# copy user.conf.example to correct location
+_update_08() {
+    if [ ! -f "$HOME"/.config/RoninDojo/user.conf] ; then
+        cp -rv "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
+    fi
+}

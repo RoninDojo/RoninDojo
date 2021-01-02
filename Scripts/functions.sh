@@ -26,6 +26,9 @@ _main() {
     _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
     _update_05 # Fix tor unit file
     _update_06 # Modify pacman to Ignore specific packages
+    _update_07 # Add INSTALL_DIR_USER check
+    _update_08 # Copy the user.conf.example to the appropriate location if not there
+    create_credentials # Generate credentials.json for webUI to read
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -1810,7 +1813,7 @@ EOF
 }
 EOF
     fi
-    # Check for specter
+    # Check for Specter
     if [ -f "${INSTALL_DIR_USER}"/bisq.txt ]; then
         for i in {1..2}; do sed -i '$d' "${INSTALL_DIR_USER}"/credentials.json; done
         cat <<EOF >> "${INSTALL_DIR_USER}"/credentials.json
@@ -1825,4 +1828,5 @@ EOF
 }
 EOF
     fi
+    # Check for Bisq
 }
