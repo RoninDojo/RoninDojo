@@ -1493,7 +1493,7 @@ Good verification... Installing now
 ***
 ${NC}
 EOF
-    else   
+    else
         cat <<EOF
 ${RED}
 ***
@@ -1503,8 +1503,8 @@ ${NC}
 EOF
         _sleep 5 --msg "Returning to main menu in"
         ronin
-    fi    
- 
+    fi
+
     cat <<EOF
 ${RED}
 ***
@@ -1630,7 +1630,7 @@ EOF
                 _sleep 5 --msg "Returning to main menu in"
                 ronin
             fi
-   
+
             cat <<EOF
 ${RED}
 ***

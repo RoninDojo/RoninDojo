@@ -35,7 +35,7 @@ Mempool not installed! Install from Extras Install Menu.
 ***
 ${NC}
 EOF
-            sleep 3 msg--"returning to Extras menu in..."
+            sleep 3 --msg "returning to Extras menu in..."
             bash -c "${RONIN_EXTRAS_MENU}"
 
         else
@@ -52,7 +52,7 @@ Specter not installed! Install from Extras Install Menu.
 ***
 ${NC}
 EOF
-            sleep 3 msg--"returning to Extras menu in..."
+            sleep 3 --msg "returning to Extras menu in..."
             bash -c "${RONIN_EXTRAS_MENU}"
         else
             bash -c "${RONIN_SPECTER_MENU}"
@@ -83,7 +83,7 @@ Install option from Extras Install Menu. See wiki for more details.
 ***
 ${NC}
 EOF
-            sleep 3 --"returning to Extras menu in..."
+            sleep 3 --msg "Returning to Extras menu in..."
             bash -c "$RONIN_EXTRAS_MENU"
         else
             cat <<EOF

@@ -37,7 +37,7 @@ ${NC}
 EOF
             _sleep 5 --msg "Press Ctrl+C to exit...otherwise, upgrading Dojo in..."
             cd "${dojo_path_my_dojo}" || exit
-            ./dojo.sh upgrade --nologs
+            ./dojo.sh upgrade --nolog
             # upgrade dojo. default to on.
             ;;
         5)
