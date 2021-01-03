@@ -1501,18 +1501,10 @@ Verification failed...
 ***
 ${NC}
 EOF
-        _sleep 5 --msg "Returning to main menu in"else
-    cat <<EOF
-${RED}
-***
-Specter install detected. Upgrading Specter!
-***
-${NC}
-EOF
-    _upgrade_specter
+        _sleep 5 --msg "Returning to main menu in"
         ronin
-    fi
-
+    fi    
+ 
     cat <<EOF
 ${RED}
 ***

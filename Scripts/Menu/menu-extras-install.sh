@@ -26,6 +26,15 @@ do
         2)
             if ! _is_specter ; then
                 _install_specter
+            else
+                cat <<EOF
+${RED}
+***
+Specter install dected! Attempting to upgrade to latest.
+***
+${NC}
+EOF
+                _upgrade_specter
             fi
             # runs dojo install script
             ;;
