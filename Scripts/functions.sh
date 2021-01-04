@@ -1528,7 +1528,7 @@ EOF
         sudo pacman -Syy
         sudo pacman -S --noconfirm gcc
     fi
-
+sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.shno
     if ! hash libusb 2>/dev/null; then
         cat <<EOF
 ${RED}
@@ -1559,11 +1559,12 @@ EOF
     "$HOME"/.venv_specter/bin/python3 setup.py install
     #create file .flaskenv
 
-    cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
-CONNECT_TOR=True
-
-FLASK_ENV=production
-EOF
+    sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
+HiddenServiceVersion 3\
+HiddenServicePort 443 127.0.0.1:25441\
+" /etc/tor/torrc
+    # create hiddenservice for https
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1573,7 +1574,7 @@ After=multi-user.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=/home/specter/.specter/cert.pem --key=/home/specter/.specter/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
@@ -1583,6 +1584,27 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 "
+    cat <<EOF
+${RED}
+***
+Creating Self-Signed Certs for local LAN use
+***
+${NC}
+EOF
+    cd "$HOME"/"$SPECTER_VERSION" && "$HOME"/.venv_specter/bin/python3 -m cryptoadance.specter server --ssl
+    #openssl req -x509 -newkey rsa:4096 -nodes -out /tmp/cert.pem -keyout /tmp/key.pem -days 365 -subj "/C=US/ST=Nooneknows/L=Springfield/O=Dis/CN=www.fakeurl.com"
+    #sudo mv /tmp/cert.pem "$HOME"/.specter
+    #sudo chown -R $USER:$USER "$HOME"/.specter/cert.pem
+    #sudo mv /tmp/key.pem "$HOME"/.specter
+    #sudo chown -R $USER:$USER "$HOME"/.specter/key.pem
+    # Create SSL cert and key for Specter. Required for Desktop camera use.
+
+    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
+        sudo cp "$HOME"/"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+    fi
+    # check if udev rules for HWW are installed if not install them.
+    # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
+    _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
     sudo systemctl daemon-reload
     sudo systemctl enable --now specter 2>/dev/null
 
@@ -1674,12 +1696,14 @@ EOF
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install
     #create file .flaskenv
-
-    cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
-CONNECT_TOR=True
-
-FLASK_ENV=production
-EOF
+    if [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] ; then
+        sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
+HiddenServiceVersion 3\
+HiddenServicePort 443 127.0.0.1:25441\
+" /etc/tor/torrc
+    fi
+    # Set tor hiddenservice for https specter server
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1689,7 +1713,7 @@ After=multi-user.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.specter/cert.pem --key=$HOME/.specter/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
@@ -1699,6 +1723,37 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 "
+    if [ ! -f "$HOME"/.specter/cert.pm ] ; then
+        cat <<EOF
+${RED}
+***
+Creating Self-Signed Certs for local LAN use
+***
+${NC}
+EOF
+        cd "$HOME"/"$SPECTER_VERSION" && "$HOME"/.venv_specter/bin/python3 -m cryptoadance.specter server --ssl
+        #openssl req -x509 -newkey rsa:4096 -nodes -out /tmp/cert.pem -keyout /tmp/key.pem -days 365 -subj "/C=US/ST=Nooneknows/L=Springfield/O=Dis/CN=www.fakeurl.com"
+        #sudo mv /tmp/cert.pem "$HOME"/.specter
+        #sudo chown -R $USER:$USER "$HOME"/.specter/cert.pem
+        #sudo mv /tmp/key.pem "$HOME"/.specter
+        #sudo chown -R $USER:$USER "$HOME"/.specter/key.pem
+    fi
+    # check for certs. if not there create them
+    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
+        bash "$HOME"/RoninDojo/Scripts/Install/install-udev-rules.sh
+    fi
+    # check if udev rules are present if not install them.
+    if sudo ufw status | grep 25441 > /dev/null ; then
+        cat <<EOF
+${RED}
+***
+UFW already set for Specter on local LAN
+***
+${NC}
+EOF
+    else
+        _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
+    fi
     sudo systemctl daemon-reload
     sudo systemctl enable --now specter 2>/dev/null
 
@@ -1818,4 +1873,13 @@ _install_bisq(){
     cat <<EOF > "${INSTALL_DIR_USER}"/bisq.txt
 peerbloomfilters=1
 EOF
+}
+
+_ufw_rule_add(){
+    ip=$1
+    port=$2
+    service=$3
+
+    sudo ufw allow to $ip from any $port '$service'
+    sudo ufw reload
 }
