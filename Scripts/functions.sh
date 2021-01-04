@@ -1601,6 +1601,10 @@ EOF
 
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
         sudo cp "$HOME"/"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo udevadm trigger
+        sudo udevadm control --reload-rules
+        sudo groupadd plugdev
+        sudo usermod -aG plugdev $USER
     fi
     # check if udev rules for HWW are installed if not install them.
     # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
@@ -1740,7 +1744,11 @@ EOF
     fi
     # check for certs. if not there create them
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
-        bash "$HOME"/RoninDojo/Scripts/Install/install-udev-rules.sh
+        sudo cp "$HOME"/"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo udevadm trigger
+        sudo udevadm control --reload-rules
+        sudo groupadd plugdev
+        sudo usermod -aG plugdev $USER
     fi
     # check if udev rules are present if not install them.
     if sudo ufw status | grep 25441 > /dev/null ; then
