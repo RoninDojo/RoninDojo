@@ -1778,6 +1778,7 @@ _backup_dojo_data_dir(){
             else
                 sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
             return 0
+            fi
         else
             return 1
         fi
