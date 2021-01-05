@@ -52,8 +52,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Looks like you don't belong in the docker group
-so we will add you then reload the RoninDojo CLI.
+Adding user to the docker group and loading RoninDojo CLI...
 ***
 ${NC}
 EOF
@@ -73,8 +72,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Removing legacy fstab entries in favor of the
-systemd mount service...
+Removing legacy fstab entries and replacing with systemd mount service...
 ***
 ${NC}
 EOF
@@ -88,8 +86,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Removing ipv6 disable setting in kernel line favor of
-sysctl...
+Removing ipv6 disable setting in kernel line favor of sysctl...
 ***
 ${NC}
 EOF

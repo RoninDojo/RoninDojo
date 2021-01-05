@@ -1,12 +1,11 @@
 #!/bin/bash
-
 # shellcheck source=/dev/null
+
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 # Run system checks
 _main
-
-. "$HOME"/RoninDojo/Scripts/defaults.sh
 
 test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dialogrc
 # config file for dialog color
