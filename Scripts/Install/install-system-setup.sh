@@ -342,6 +342,9 @@ EOF
     _docker_datadir_setup
     # docker data directory setup, see functions.sh
 
+    _create_install_dir_user
+    # create directory to store user info, see functions.sh
+
     cat <<EOF
 ${RED}
 ***

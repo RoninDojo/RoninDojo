@@ -103,6 +103,15 @@ EOF
     _systemd_unit_drop_in_check
 }
 
+# add INSTALL_DIR_USER to store user info
+_create_install_dir_user() {
+    if sudo test ! -d "${INSTALL_DIR_USER}"; then
+        sudo mkdir "${INSTALL_DIR_USER}"
+        sudo chown -R $USER:$USER "${INSTALL_DIR_USER}"
+        ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "${INSTALL_DIR_USER}"/ip.txt
+    fi
+}
+
 #
 # Random Password
 #
