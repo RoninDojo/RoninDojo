@@ -8,12 +8,11 @@ _update_01() {
         cat <<EOF
 ${RED}
 ***
-Outdated and known broken version of bridge-utils found on your system
-RoninDojo will upgade your package to latest version available
+Outdated and bridge-utils found...
 ***
 ${NC}
 EOF
-        sleep 2
+        _sleep 2
         cat <<EOF
 ${RED}
 ***
@@ -28,12 +27,19 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Existing dojo found! We will perform a reboot after 10secs.
-Press Ctrl+C if you wish to skip this update now
+Existing dojo found! Rebooting system to apply changes...
 ***
 ${NC}
 EOF
-            _sleep 5 --msg "Rebooting in"
+            _sleep 2
+            cat <<EOF
+${RED}
+***
+Press Ctrl+C now if you wish to skip...
+***
+${NC}
+EOF
+            _sleep 10 --msg "Rebooting in"
             sudo systemctl reboot
         fi
     fi

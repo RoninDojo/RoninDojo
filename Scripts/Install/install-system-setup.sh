@@ -229,7 +229,7 @@ _sleep
 cat <<EOF
 ${RED}
 ***
-Creating "${INSTALL_DIR}" directory...
+Creating ${INSTALL_DIR} directory...
 ***
 ${NC}
 EOF
@@ -502,7 +502,8 @@ EOF
 _sleep 2
 
 if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
-    echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+    printf "\n ${RED}Filesystem creation failed! Exiting now...${NC}"
+    _sleep 3
     exit 1
 fi
 # create a partition table with a single partition that takes the whole disk

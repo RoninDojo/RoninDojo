@@ -210,7 +210,7 @@ _sleep() {
         if $verbose; then
             printf "%s%s %s\033[0K seconds...%s\r" "${RED}" "${msg}" "${secs}" "${NC}"
         fi
-        sleep 1
+        _sleep 1
         : $((secs--))
     done
     printf "\n" # Add new line
@@ -978,7 +978,7 @@ EOF
         i=0
         while ((i<21)); do
             if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
-                sleep 1
+                _sleep 1
                 ((i++))
             else
                 break
@@ -1443,7 +1443,7 @@ EOF
 ${RED}
 ***
 Swapfile already created...
-***"
+***
 ${NC}
 EOF
     fi
