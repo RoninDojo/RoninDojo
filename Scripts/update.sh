@@ -72,8 +72,26 @@ EOF"
 # fix tor unit file
 _update_05() {
     if ! systemctl is-active --quiet tor; then
-        sudo sed -i 's:ReadWriteDirectories=-/var/lib/tor:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
+        sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor/:' /usr/lib/systemd/system/tor.service
+        #sudo sed -i '/Type=notify/i\User=tor' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
         sudo systemctl restart tor
     fi
+}
+
+# modify pacman.conf
+_update_06() {
+    sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+}
+
+# copy user.conf.example to correct location
+_update_07() {
+    if [ ! -f "$HOME"/.config/RoninDojo/user.conf ] ; then
+        cp -rv "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
+    fi
+}
+
+# store ip address range in ~/.config/RoninDojo/ip.txt
+_update_08() {
+    ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/.config/RoninDojo/ip.txt
 }
