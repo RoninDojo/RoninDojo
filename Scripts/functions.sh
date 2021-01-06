@@ -25,6 +25,9 @@ _main() {
     _update_03 # Add password less reboot/shutdown privileges
     _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
     _update_05 # Fix tor unit file
+    _update_06 # Modify pacman to Ignore specific packages
+    _update_07 # Set user.conf in appropriate place
+    _update_08 # Store ip address range in ~/.config/RoninDojo/ip.txt
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -331,6 +334,13 @@ TOR_DIR
     # Check for ownership
     if ! [ "$(stat -c "%U" "${INSTALL_DIR_TOR}")" = "tor" ]; then
         sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
+    fi
+
+    if ! systemctl is-active --quiet tor; then
+        sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor/:' /usr/lib/systemd/system/tor.service
+        #sudo sed -i '/Type=notify/i\User=tor' /usr/lib/systemd/system/tor.service
+        sudo systemctl daemon-reload
+        sudo systemctl restart tor
     fi
 
     cat <<TOR_CONFIG
