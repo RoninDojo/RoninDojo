@@ -706,13 +706,20 @@ _is_dojo() {
     menu="$1"
 
     if [ ! -d "${DOJO_PATH}" ]; then
-        cat <<DOJO
+        cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory! Returning to menu...
+Missing ${DOJO_PATH} directory!
+${NC}
+EOF
+        cat <<EOF
+${RED}
+***
+Press any key to return...
 ***
 ${NC}
-DOJO
+EOF
+        _pause
         bash -c "$menu"
         exit 1
 fi
@@ -919,11 +926,19 @@ _stop_dojo() {
         cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH} directory! Returning to menu...
+Missing ${DOJO_PATH} directory!
 ***
 ${NC}
 DOJO
         _sleep 2
+        cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+        _pause
         bash -c "$RONIN_DOJO_MENU"
         exit 1
     fi

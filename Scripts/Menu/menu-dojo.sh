@@ -25,26 +25,37 @@ clear
 case $CHOICE in
         1)
             if _dojo_check; then
-                echo -e "${RED}"
-                echo "***"
-                echo "Dojo is already started!"
-                echo "***"
-                echo -e "${NC}"
-                _sleep 5
+                cat <<EOF
+${RED}
+***
+Dojo is already started!
+***
+${NC}
+EOF
+                _sleep 2         
+                cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+                _pause
                 bash -c "${RONIN_DOJO_MENU}"
             else
                 _is_dojo "${RONIN_DOJO_MENU}"
                 # is dojo installed?
 
-                echo -e "${RED}"
-                echo "***"
-                echo "Starting Dojo..."
-                echo "***"
-                echo -e "${NC}"
+                cat <<EOF
+${RED}
+***
+Starting Dojo...
+***
+${NC}
+EOF
                 _sleep 2
 
                 cd "${dojo_path_my_dojo}" || exit
-
                 _source_dojo_conf
 
                 # Start docker containers
@@ -53,23 +64,26 @@ case $CHOICE in
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
-            _pause
-            bash -c "${RONIN_DOJO_MENU}"
-            # press any key to return to menu
-            ;;
+                cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+                _pause
+                bash -c "${RONIN_DOJO_MENU}"
+                # press any key to return to menu
+                ;;
         2)
             _stop_dojo
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
             _pause
             bash -c "${RONIN_DOJO_MENU}"
             # press any key to return to menu
@@ -79,11 +93,13 @@ case $CHOICE in
             # is dojo installed?
 
             if [ -d "${DOJO_PATH}" ]; then
-                echo -e "${RED}"
-                echo "***"
-                echo "Restarting Dojo..."
-                echo "***"
-                echo -e "${NC}"
+                cat <<EOF
+${RED}
+***
+Restarting Dojo...
+***
+${NC}
+EOF
                 _sleep 2
                 cd "${dojo_path_my_dojo}" || exit
 
@@ -112,11 +128,13 @@ DOJO
                 docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
                 # restart dojo
 
-                echo -e "${RED}"
-                echo "***"
-                echo "Press any key to return..."
-                echo "***"
-                echo -e "${NC}"
+                cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
                 _pause
                 bash -c "${RONIN_DOJO_MENU}"
                 # press any key to return to menu
