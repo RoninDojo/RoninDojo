@@ -381,14 +381,22 @@ Electrum Rust Server is not installed...
 ${NC}
 EOF
         _sleep 2
-
         cat <<EOF
 ${RED}
 ***
-Returning to menu...
+Install or swap Indexer & Electrs using the applications install menu...
 ***
 ${NC}
 EOF
+        _sleep 2
+        cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+        _pause
         return 1
     fi
 

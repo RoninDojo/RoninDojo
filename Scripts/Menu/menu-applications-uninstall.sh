@@ -7,7 +7,7 @@
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
 options=(1 "Uninstall Mempool Visualizer" off    # any option can be set to default to "on"
          2 "Uninstall Specter" off
-         3 "Remove Bisq Connetivity" off
+         3 "Disable Bisq Connection" off
          4 "Finalize Changes" on
          3 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -31,18 +31,26 @@ do
             cat <<EOF
 ${RED}
 ***
-Performing Local "upgrade" of Dojo to complete install process...
+Running RoninDojo update to complete the install process...
 ***
 ${NC}
 EOF
-            _sleep 5 --msg "Press Ctrl+C to exit...otherwise, upgrading Dojo in..."
+            _sleep 3
+            cat <<EOF
+${RED}
+***
+Press Ctrl + C to exit now if needed...
+***
+${NC}
+EOF
+            _sleep 5
             cd "${dojo_path_my_dojo}" || exit
             ./dojo.sh upgrade --nolog
-            # upgrade dojo. default to on.
+            # upgrade dojo
             ;;
         5)
-            bash -c "$RONIN_EXTRAS_MENU"
-            # return to extras menu
+            bash -c "$RONIN_APPLICATIONS_MENU"
+            # return to application menu
             ;;
     esac
 done

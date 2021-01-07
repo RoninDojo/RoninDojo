@@ -7,9 +7,9 @@
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
 options=(1 "Install Mempool Space Visualizer" off    # any option can be set to default to "on"
          2 "Install Specter" off
-         3 "Install Bisq Compatibility" off
+         3 "Enable Bisq Connection" off
          4 "Swap Electrs/Indexer" off
-         5 "Finalize Changes" on
+         5 "Finalize Changes" off
          5 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -21,7 +21,7 @@ do
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
             fi
-            # checks for mempool... then installs
+            # checks for mempool, then installs
             ;;
         2)
             if ! _is_specter ; then
@@ -30,10 +30,19 @@ do
                 cat <<EOF
 ${RED}
 ***
-Specter install dected! Attempting to upgrade to latest.
+Specter install detected...
 ***
 ${NC}
 EOF
+                _sleep 2
+                cat <<EOF
+${RED}
+***
+Updating to latestest version... 
+***
+${NC}
+EOF
+                _sleep 2
                 _upgrade_specter
             fi
             # runs dojo install script
@@ -49,11 +58,11 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Switching to SW Addrindexer
+Switching to Samourai indexer...
 ***
 ${NC}
 EOF
-                _sleep 5 --msg "Press Ctrl+C to exit...otherwise, switching in..."
+                _sleep 2
                 rm "${dojo_path_my_dojo}"/indexer/electrs.toml
                 _set_addrindexer
             elif
@@ -61,11 +70,11 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Switching to Electrs
+Switching to Electrum Rust Server...
 ***
 ${NC}
 EOF
-                _sleep 5 --msg "Press Ctrl+C to exit...otherwise, switching in..."
+                _sleep 2
                 bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
             else
                 _no_indexer_found
@@ -76,18 +85,27 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Performing Local "upgrade" of Dojo to complete install process...
+Running RoninDojo update to complete the install process...
 ***
 ${NC}
 EOF
-            _sleep 5 --msg "Press Ctrl+C to exit...otherwise, upgrading Dojo in..."
+            _sleep 3
+            cat <<EOF
+${RED}
+***
+Press Ctrl + C to exit now if needed...
+***
+${NC}
+EOF
+            _sleep 5
             cd "${dojo_path_my_dojo}" || exit
             ./dojo.sh upgrade --nolog
-            # upgrade dojo. default to on.
+            # upgrade dojo
             ;;
         6)
-            bash -c "${RONIN_EXTRAS_MENU}"
-            # return to extras menu
+            bash -c "${RONIN_APPLICATIONS_MENU}"
+            # return to application menu
             ;;
     esac
 done
+7
