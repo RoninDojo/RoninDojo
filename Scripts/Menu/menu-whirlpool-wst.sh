@@ -92,4 +92,4 @@ pipenv run python wst.py -w=/tmp
 # run wst.py using python3
 
 _sleep 3 --msg "Returning to menu in"
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-sw-toolkit.sh

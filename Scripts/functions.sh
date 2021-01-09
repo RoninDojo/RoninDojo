@@ -15,6 +15,7 @@ _main() {
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
         _sleep 5 --msg "Welcome to RoninDojo. Loading in"
         touch "$HOME/.config/RoninDojo/.run"
+        cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.config
     fi
 
     # Source update script
@@ -51,8 +52,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Looks like you don't belong in the docker group
-so we will add you then reload the RoninDojo CLI.
+Adding user to the docker group and loading RoninDojo CLI...
 ***
 ${NC}
 EOF
@@ -72,8 +72,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Removing legacy fstab entries in favor of the
-systemd mount service...
+Removing legacy fstab entries and replacing with systemd mount service...
 ***
 ${NC}
 EOF
@@ -87,8 +86,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Removing ipv6 disable setting in kernel line favor of
-sysctl...
+Removing ipv6 disable setting in kernel line favor of sysctl...
 ***
 ${NC}
 EOF
@@ -100,6 +98,15 @@ EOF
     # Force dependency on docker and tor unit files to depend on
     # external drive mount
     _systemd_unit_drop_in_check
+}
+
+# add INSTALL_DIR_USER to store user info
+_create_install_dir_user() {
+    if sudo test ! -d "${INSTALL_DIR_USER}"; then
+        sudo mkdir "${INSTALL_DIR_USER}"
+        sudo chown -R $USER:$USER "${INSTALL_DIR_USER}"
+        ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "${INSTALL_DIR_USER}"/ip.txt
+    fi
 }
 
 #
@@ -203,7 +210,7 @@ _sleep() {
         if $verbose; then
             printf "%s%s %s\033[0K seconds...%s\r" "${RED}" "${msg}" "${secs}" "${NC}"
         fi
-        sleep 1
+        _sleep 1
         : $((secs--))
     done
     printf "\n" # Add new line
@@ -337,7 +344,7 @@ TOR_DIR
     fi
 
     if ! systemctl is-active --quiet tor; then
-        sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor/:' /usr/lib/systemd/system/tor.service
+        sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
         #sudo sed -i '/Type=notify/i\User=tor' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
         sudo systemctl restart tor
@@ -374,14 +381,22 @@ Electrum Rust Server is not installed...
 ${NC}
 EOF
         _sleep 2
-
         cat <<EOF
 ${RED}
 ***
-Returning to menu...
+Install or swap Indexer & Electrs using the applications install menu...
 ***
 ${NC}
 EOF
+        _sleep 2
+        cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+        _pause
         return 1
     fi
 
@@ -400,11 +415,11 @@ Configuring RoninDojo Backend Tor Address...
 ***
 ${NC}
 BACKEND_TOR_CONFIG
-        sudo sed -i '/################ This section is just for relays/i\
-HiddenServiceDir /var/lib/tor/hidden_service_ronin_backend/\
+        sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir ${INSTALL_DIR_TOR}/hidden_service_ronin_backend/\
 HiddenServiceVersion 3\
 HiddenServicePort 80 127.0.0.1:8470\
-' /etc/tor/torrc
+" /etc/tor/torrc
 
         # restart tor service
         sudo systemctl restart tor
@@ -420,7 +435,7 @@ _ui_backend_credentials() {
     API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
     JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
     BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
-    BACKEND_TOR=$(sudo cat /var/lib/tor/hidden_service_ronin_backend/hostname)
+    BACKEND_TOR=$(sudo cat "${INSTALL_DIR_TOR}"/hidden_service_ronin_backend/hostname)
 
     export API_KEY JWT_SECRET BACKEND_PORT BACKEND_TOR
 }
@@ -699,13 +714,20 @@ _is_dojo() {
     menu="$1"
 
     if [ ! -d "${DOJO_PATH}" ]; then
-        cat <<DOJO
+        cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory! Returning to menu...
+Missing ${DOJO_PATH} directory!
+${NC}
+EOF
+        cat <<EOF
+${RED}
+***
+Press any key to return...
 ***
 ${NC}
-DOJO
+EOF
+        _pause
         bash -c "$menu"
         exit 1
 fi
@@ -912,11 +934,19 @@ _stop_dojo() {
         cat <<DOJO
 ${RED}
 ***
-Missing ${DOJO_PATH} directory! Returning to menu...
+Missing ${DOJO_PATH} directory!
 ***
 ${NC}
 DOJO
         _sleep 2
+        cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+        _pause
         bash -c "$RONIN_DOJO_MENU"
         exit 1
     fi
@@ -971,7 +1001,7 @@ EOF
         i=0
         while ((i<21)); do
             if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
-                sleep 1
+                _sleep 1
                 ((i++))
             else
                 break
@@ -1436,7 +1466,7 @@ EOF
 ${RED}
 ***
 Swapfile already created...
-***"
+***
 ${NC}
 EOF
     fi
@@ -1463,7 +1493,7 @@ _is_specter(){
         return 1
     fi
 }
-####CHECK IF SPECTER IS INSTALLED ON SYSTEM###
+# check if specter is installed
 
 _install_specter(){
     cd "${HOME}" || exit
@@ -1475,43 +1505,9 @@ Installing Specter $SPECTER_VERSION ...
 ${NC}
 EOF
 
-    wget --quiet "$SPECTER_SIGN_KEY_URL"
-    gpg --import "$SPECTER_SIGN_KEY"
-    rm "$SPECTER_SIGN_KEY"
+    git clone -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION"
 
-    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
-    gpg --verify sha256.signed.txt
-
-    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
-
-    if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
-        cat <<EOF
-${RED}
-***
-Good verification... Installing now
-***
-${NC}
-EOF
-    else   
-        cat <<EOF
-${RED}
-***
-Verification failed...
-***
-${NC}
-EOF
-        _sleep 5 --msg "Returning to main menu in"
-        ronin
-    fi
-
-    cat <<EOF
-${RED}
-***
-Installing Specter $SPECTER_VERSION ...
-***
-${NC}
-EOF
-    _sleep
+#    _sleep
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
     sudo systemctl restart tor
@@ -1527,7 +1523,6 @@ EOF
         sudo pacman -Syy
         sudo pacman -S --noconfirm gcc
     fi
-
     if ! hash libusb 2>/dev/null; then
         cat <<EOF
 ${RED}
@@ -1536,13 +1531,8 @@ Installing libusb
 ***
 ${NC}
 EOF
-        sudo pacman -S --noconfirm libusb
+     sudo pacman -S --noconfirm libusb
     fi
-
-    mkdir "$HOME"/specter-"$SPECTER_VERSION"
-    tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
-    rm sha256.signed.txt ./*.tar.gz
-
     if [ -d .venv_specter ]; then
         cat <<EOF
 ${RED}
@@ -1556,13 +1546,13 @@ EOF
     fi
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install
-    #create file .flaskenv
 
-    cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
-CONNECT_TOR=True
-
-FLASK_ENV=production
-EOF
+    sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
+HiddenServiceVersion 3\
+HiddenServicePort 443 127.0.0.1:25441\
+" /etc/tor/torrc
+    # create hiddenservice for https
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1572,7 +1562,7 @@ After=multi-user.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
@@ -1582,9 +1572,33 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 "
-    sudo systemctl daemon-reload
-    sudo systemctl enable --now specter 2>/dev/null
+    cat <<EOF
+${RED}
+***
+Creating Self-Signed Certs for local LAN use
+***
+${NC}
+EOF
+    cd "$HOME"/specter-"$SPECTER_VERSION"/docs/
+    ./gen-certificate.sh "${IP_ADDRESS}"
+    cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
+    cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
 
+    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
+        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo udevadm trigger
+        sudo udevadm control --reload-rules
+        sudo groupadd plugdev
+        sudo usermod -aG plugdev $USER
+    fi
+    # check if udev rules for HWW are installed if not install them.
+    # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
+
+    _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
+    sudo systemctl daemon-reload
+    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl start specter 2>/dev/null
+    #using enable and start to ensure the startup creates the .specter dir
     return 0
 }
 
@@ -1629,7 +1643,7 @@ EOF
                 _sleep 5 --msg "Returning to main menu in"
                 ronin
             fi
-   
+
             cat <<EOF
 ${RED}
 ***
@@ -1673,12 +1687,14 @@ EOF
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install
     #create file .flaskenv
-
-    cat <<EOF > "${HOME}"/specter-"$SPECTER_VERSION"/.flaskenv
-CONNECT_TOR=True
-
-FLASK_ENV=production
-EOF
+    if [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] ; then
+        sudo sed -i "/################ This section is just for relays/i\
+HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
+HiddenServiceVersion 3\
+HiddenServicePort 443 127.0.0.1:25441\
+" /etc/tor/torrc
+    fi
+    # Set tor hiddenservice for https specter server
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1688,7 +1704,7 @@ After=multi-user.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --tor
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
@@ -1698,8 +1714,47 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 "
+    if [ ! -f "$HOME"/.specter/cert.pm ] ; then
+        cat <<EOF
+${RED}
+***
+Creating Self-Signed Certs for local LAN use
+***
+${NC}
+EOF
+        cd "$HOME"/specter-"$SPECTER_VERSION"/docs/
+        ./gen-certificate.sh "${IP_ADDRESS}"
+        cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
+        cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
+        #openssl req -x509 -newkey rsa:4096 -nodes -out /tmp/cert.pem -keyout /tmp/key.pem -days 365 -subj "/C=US/ST=Nooneknows/L=Springfield/O=Dis/CN=www.fakeurl.com"
+        #sudo mv /tmp/cert.pem "$HOME"/.specter
+        #sudo chown -R $USER:$USER "$HOME"/.specter/cert.pem
+        #sudo mv /tmp/key.pem "$HOME"/.specter
+        #sudo chown -R $USER:$USER "$HOME"/.specter/key.pem
+    fi
+    # check for certs. if not there create them
+    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
+        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo udevadm trigger
+        sudo udevadm control --reload-rules
+        sudo groupadd plugdev
+        sudo usermod -aG plugdev $USER
+    fi
+    # check if udev rules are present if not install them.
+    if sudo ufw status | grep 25441 > /dev/null ; then
+        cat <<EOF
+${RED}
+***
+UFW already set for Specter on local LAN
+***
+${NC}
+EOF
+    else
+        _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
+    fi
     sudo systemctl daemon-reload
-    sudo systemctl enable --now specter 2>/dev/null
+    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl start specter 2>/dev/null
 
     return 0
 }
@@ -1708,11 +1763,123 @@ _backup_dojo_data_dir(){
     for data in "${!backup_dojo_data[@]}"; do
         test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
 
-        if [-d "${DOJO_PATH}" ]; then
-            sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"{$data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
+        if [ -d "${DOJO_PATH}" ]; then
+            if ${data} == "bitcoind" ; then
+                sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR}"/backup/"${data}"
+            else
+                sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
             return 0
+            fi
+        else
+            return 1
         fi
-
-        return 1
     done
+}
+
+_recover_dojo_data_dir(){
+    for data in "${!backup_dojo_data[@]}"; do
+        test -d "${INSTALL_DIR}"/backup/"${data}" || exit
+        if [ -d "${DOJO_PATH}" ]; then
+                if ${data} == "bitcoind" ; then
+                    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+                    sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
+                else
+                    sudo rm -rf "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/
+                    sudo rsync -ac -delete-before --quiet "${INSTALL_DIR}"/backup/"${data}" "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/
+                fi
+            return 0
+        else
+            return 1
+        fi
+    done
+}
+
+_install_wst(){
+    cd "$HOME" || exit
+    git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
+    # download whirlpool stat tool
+
+    if ! hash pipenv; then
+        cat <<EOF
+${RED}
+***
+Installing python-pipenv...
+***
+${NC}
+EOF
+        _sleep 1
+        sudo pacman -S --noconfirm python-pipenv &>/dev/null
+    fi
+    # check for python-pip and install if not found
+
+    cd Whirlpool-Stats-Tool || exit
+    pipenv install -r requirements.txt &>/dev/null
+    # change to whirlpool stats directory, otherwise exit
+    # install whirlpool stat tool
+    # install WST
+}
+
+_install_boltzmann(){
+    cd "$HOME" || exit
+    git clone "$BOLTZMANN_REPO" &>/dev/null
+    cd boltzmann || exit
+    # pull Boltzmann
+
+    cat <<EOF
+${RED}
+***
+Checking package dependencies...
+***
+${NC}
+EOF
+    _sleep
+
+    if ! hash pipenv; then
+        cat <<EOF
+${RED}
+***
+Installing pipenv...
+***
+${NC}
+EOF
+        sudo pacman -S --noconfirm python-pipenv &>/dev/null
+    fi
+
+    # Setup a virtual environment to hold boltzmann dependencies. We should use this
+    # with all future packages that ship a requirements.txt.
+    pipenv install -r requirements.txt &>/dev/null
+    pipenv install sympy numpy &>/dev/null
+}
+
+_is_bisq(){
+    if [ -f "${INSTALL_DIR_USER}"/bisq.txt ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+_install_bisq(){
+    if test ! -d "$INSTALL_DIR_USER"; then
+        sudo mkdir "$INSTALL_DIR_USER"
+        sudo chown -R $USER:$USER "$INSTALL_DIR_USER"
+    fi
+    if [ ! -f "$INSTALL_DIR_USER"/ip.txt] ; then
+        ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$INSTALL_DIR_USER"/ip.txt
+    fi
+    IP_ADDRESS_RANGE=$(grep "192.168" "${INSTALL_DIR_USER}"/ip.txt)
+    sed -i '/  -txindex=1/i\  -peerbloomfilters=1' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+    sed -i "/  -txindex=1/i\  -whitelist=bloomfilter@$IP_ADDRESS_RANGE" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+    cat <<EOF > "${INSTALL_DIR_USER}"/bisq.txt
+peerbloomfilters=1
+EOF
+}
+
+_ufw_rule_add(){
+    ip=$1
+    port=$2
+    service=$3
+
+    sudo ufw allow to $ip from any $port '$service'
+    sudo ufw reload
 }

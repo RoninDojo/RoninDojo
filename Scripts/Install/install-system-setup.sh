@@ -229,7 +229,7 @@ _sleep
 cat <<EOF
 ${RED}
 ***
-Creating "${INSTALL_DIR}" directory...
+Creating ${INSTALL_DIR} directory...
 ***
 ${NC}
 EOF
@@ -341,6 +341,9 @@ EOF
 
     _docker_datadir_setup
     # docker data directory setup, see functions.sh
+
+    _create_install_dir_user
+    # create directory to store user info, see functions.sh
 
     cat <<EOF
 ${RED}
@@ -499,7 +502,8 @@ EOF
 _sleep 2
 
 if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
-    echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+    printf "\n ${RED}Filesystem creation failed! Exiting now...${NC}"
+    _sleep 3
     exit 1
 fi
 # create a partition table with a single partition that takes the whole disk
@@ -537,6 +541,41 @@ _setup_tor
 
 _docker_datadir_setup
 # docker data directory setup, see functions.sh
+
+cat <<EOF
+${RED}
+***
+Installing SW Toolkit...
+***
+${NC}
+EOF
+_sleep 2
+
+cat <<EOF
+${RED}
+***
+Installing Boltzmann Calculator...
+***
+${NC}
+EOF
+_sleep 2
+
+_install_boltzmann
+# install Boltzmann
+
+cat <<EOF
+${RED}
+***
+Installing Whirlpool Stat Tool...
+***
+${NC}
+EOF
+_sleep 2
+
+_install_wst
+
+sudo mkdir "$INSTALL_DIR_USER" && sudo chown -R $USER:$USER "$INSTALL_DIR_USER"
+# make /mnt/usb/.ronin and give user permissions
 
 cat <<EOF
 ${RED}

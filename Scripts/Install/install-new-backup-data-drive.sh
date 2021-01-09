@@ -108,8 +108,9 @@ EOF
 fi
 
 if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
-    echo -e "${RED}Filesystem creation failed! Exiting${NC}"
-    exit
+    printf "\n ${RED}Filesystem creation failed! Exiting now...${NC}"
+    _sleep 3
+    exit 1
 fi
 # format partition, see create_fs in functions.sh
 

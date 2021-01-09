@@ -91,7 +91,7 @@ case $CHOICE in
         ;;
 
     4)
-        bash -c "$RONIN_UPDATES_MENU"
+        bash -c "${RONIN_UPDATES_MENU}"
         # System updates menu
         ;;
     5)

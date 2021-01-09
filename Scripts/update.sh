@@ -8,12 +8,11 @@ _update_01() {
         cat <<EOF
 ${RED}
 ***
-Outdated and known broken version of bridge-utils found on your system
-RoninDojo will upgade your package to latest version available
+Outdated and bridge-utils found...
 ***
 ${NC}
 EOF
-        sleep 2
+        _sleep 2
         cat <<EOF
 ${RED}
 ***
@@ -28,12 +27,19 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Existing dojo found! We will perform a reboot after 10secs.
-Press Ctrl+C if you wish to skip this update now
+Existing dojo found! Rebooting system to apply changes...
 ***
 ${NC}
 EOF
-            _sleep 5 --msg "Rebooting in"
+            _sleep 2
+            cat <<EOF
+${RED}
+***
+Press Ctrl+C now if you wish to skip...
+***
+${NC}
+EOF
+            _sleep 10 --msg "Rebooting in"
             sudo systemctl reboot
         fi
     fi
@@ -72,7 +78,7 @@ EOF"
 # fix tor unit file
 _update_05() {
     if ! systemctl is-active --quiet tor; then
-        sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor/:' /usr/lib/systemd/system/tor.service
+        sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
         #sudo sed -i '/Type=notify/i\User=tor' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
         sudo systemctl restart tor
@@ -91,7 +97,8 @@ _update_07() {
     fi
 }
 
-# store ip address range in ~/.config/RoninDojo/ip.txt
+# store ip address range and exact ipaddress in ~/.config/RoninDojo
 _update_08() {
-    ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/.config/RoninDojo/ip.txt
+    ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/.config/RoninDojo/ip-range.txt
+    ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1 > "$HOME"/.config/RoninDojo/ip.txt
 }

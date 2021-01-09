@@ -133,8 +133,8 @@ EOF
                     test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
                     # check if salvage directory exist
 
-                    sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
-                    # copies blockchain data to uninstall-salvage to be used by the dojo install script
+                    sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
+                    # moves blockchain data to uninstall-salvage to be used by the dojo install script
                     break
                     ;;
                 [nN][oO]|[Nn])

@@ -61,6 +61,6 @@ do
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
     pipenv run python ludwig.py --rpc --txids="${txids}"
   else
-    bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-sw-toolkit.sh
   fi
 done

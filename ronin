@@ -1,24 +1,22 @@
 #!/bin/bash
-
 # shellcheck source=/dev/null
+
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 # Run system checks
 _main
 
-. "$HOME"/RoninDojo/Scripts/defaults.sh
-
 test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dialogrc
 # config file for dialog color
 
 OPTIONS=(1 "Dojo"
-         2 "Whirlpool"
-         3 "Electrs"
-         4 "UI Backend"
-         5 "Credentials"
-         6 "Extras"
-         7 "System"
-         8 "Exit RoninDojo")
+         2 "UI Backend"
+         3 "Credentials"
+         4 "Applications"
+         5 "Samourai Toolkit"
+         6 "System"
+         7 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -34,30 +32,26 @@ case $CHOICE in
         # runs dojo management menu script
         ;;
     2)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-        # runs the whirlpool menu script
-        ;;
-    3)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
-        # runs electrs menu script
-        ;;
-    4)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         # runs Ronin UI Backend menu script
         ;;
-    5)
-        bash "$RONIN_CREDENTIALS_MENU"
+    3)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-credentials.sh
         # runs credentials menu script
         ;;
-    6)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
+    4)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-applications.sh
         # runs extras menu script
         ;;
-    7)
+    5)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-samourai-toolkit.sh
+        # runs extras menu script
+        ;;
+    6)
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
         # runs system menu script
         ;;
-    255|8)
+    255|9)
         _sleep 5 --msg "RoninDojo Exiting in"
         exit 0
         # exits Ronin

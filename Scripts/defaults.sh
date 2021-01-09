@@ -41,23 +41,25 @@ TITLE="RoninDojo ${VERSION}"
 MENU="Choose one of the following menu options:"
 
 # RoninDojo Menu Paths
+RONIN_APPLICATIONS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications.sh"
+RONIN_APPLICATIONS_INSTALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications-install.sh"
+RONIN_APPLICATIONS_UNINSTALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications-uninstall.sh"
+RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
+RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
 RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
 RONIN_DOJO_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-dojo2.sh"
+RONIN_ELECTRS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-electrs.sh"
 RONIN_FIREWALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-firewall.sh"
 RONIN_FIREWALL_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-firewall2.sh"
 RONIN_MEMPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-mempool.sh"
-RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
-RONIN_WHIRLPOOL_STAT_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh"
-RONIN_ELECTRS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-electrs.sh"
-RONIN_UI_BACKEND_MENU="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh"
+RONIN_SPECTER_MENU="$HOME/RoninDojo/Scripts/Menu/menu-specter.sh"
 RONIN_SYSTEM_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system.sh"
 RONIN_SYSTEM_MENU2="$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 RONIN_SYSTEM_STORAGE="$HOME/RoninDojo/Scripts/Menu/menu-system-storage.sh"
+RONIN_UI_BACKEND_MENU="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh"
 RONIN_UPDATES_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
-RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
-RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
-RONIN_EXTRAS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-extras.sh"
-RONIN_SPECTER_MENU="$HOME/RoninDojo/Scripts/Menu/menu-specter.sh"
+RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
+RONIN_WHIRLPOOL_STAT_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh"
 
 #
 # Terminal Colors
@@ -96,6 +98,8 @@ INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
 INSTALL_DIR_UNINSTALL="${INSTALL_DIR}/bitcoin"
 INSTALL_DIR_DOCKER="${INSTALL_DIR}/docker"
+INSTALL_DIR_USER="${INSTALL_DIR}/.ronin"
+IP_ADDRESS_RANGE="$HOME/.config/RoninDojo/ip.txt"
 
 DOCKER_VOLUMES="${INSTALL_DIR_DOCKER}/volumes"
 DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
@@ -105,6 +109,7 @@ DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
 DOJO_BACKUP_DIR="${INSTALL_DIR}/backup/dojo"
 TOR_BACKUP_DIR="${INSTALL_DIR}/backup/tor"
 INDEXER_BACKUP_DIR="${INSTALL_DIR}/backup/indexer"
+BITCOIN_BACKUP_DIR="${INSTALL_DIR}/backup/bitcoin"
 
 TOR_DATA_DIR="docker/volumes/my-dojo_data-tor"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
@@ -122,8 +127,8 @@ fi
 # Specter defaults
 SPECTER_SIGN_KEY_URL="https://stepansnigirev.com/ss-specter-release.asc"
 SPECTER_SIGN_KEY="ss-specter-release.asc"
-SPECTER_URL="https://github.com/cryptoadvance/specter-desktop/releases/download"
-SPECTER_VERSION="0.10.4"
+SPECTER_URL="https://github.com/cryptoadvance/specter-desktop.git"
+SPECTER_VERSION="1.0.0"
 
 declare -A backup_dojo_data=(
     [tor]=tor

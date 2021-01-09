@@ -51,7 +51,7 @@ Press any key to return...
 ${NC}
 EOF
                 _pause
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
                 # press any key to return to menu
                 # shows samouraio dojo credentials and returns to menu
                 ;;
@@ -79,7 +79,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows whirlpool credentials and returns to menu
             ;;
@@ -105,7 +105,7 @@ ${NC}
 EOF
             fi
 
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # return to menu
             ;;
         4)
@@ -126,7 +126,7 @@ Returning to menu...
 ***
 ${NC}
 EOF
-                bash -c "$RONIN_MEMPOOL_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
             else
                 cat <<EOF
 ${RED}
@@ -145,7 +145,7 @@ ${NC}
 EOF
 
                 _pause
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                bash -c "${RONIN_CREDENTIALS_MENU}"
                 # press any key to return to menu
                 # see defaults.sh
                 fi
@@ -172,7 +172,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # shows Ronin UI Backend credentials, returns to menu
             ;;
         6)
@@ -203,12 +203,23 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows bitcoind and btc rpc explorer credentials and returns to menu
             ;;
         7)
-            cat <<EOF
+            if ! _is_specter ; then
+                cat <<EOF
+${RED}
+***
+Specter Server is not installed...
+***
+${NC}
+EOF
+                _sleep 3 --msg "Returning to menu..."
+                bash -c "${RONIN_CREDENTIALS_MENU}"
+            else
+                cat <<EOF
 ${RED}
 ***
 Specter Server Credentials
@@ -223,9 +234,10 @@ Press any key to return...
 ***
 ${NC}
 EOF
+            fi
             _pause
 
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows specter server credentials and returns to menu
             ;;
@@ -267,27 +279,6 @@ ${NC}
 
 Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
-EOF
-
-            if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
-                cat <<EOF
-${RED}
-***
-Electrs Credentials
-***
-${NC}
-
-Electrs Tor URL         = $V3_ADDR_ELECTRS
-EOF
-            fi
-
-            cat <<EOF
-${RED}
-***
-Mempool Credentials
-***
-${NC}
-Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
 
 ${RED}
 ***
@@ -318,14 +309,39 @@ Bitcoin RPC Explorer:
 
 Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
 Password                = $EXPLORER_KEY
+EOF
+            if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
+                cat <<EOF
+${RED}
+***
+Electrs Credentials
+***
+${NC}
 
+Electrs Tor URL         = $V3_ADDR_ELECTRS
+EOF
+            fi
+            if _mempool_check ; then
+                cat <<EOF
+${RED}
+***
+Mempool Credentials
+***
+${NC}
+Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
+EOF
+            fi
+            if _is_specter ; then
+                cat <<EOF
 ${RED}
 ***
 Specter Server Credentials
 ***
-
+${NC}
 Tor URL                 = http://$V3_ADDR_SPECTER
-
+EOF
+            fi
+            cat <<EOF
 ${RED}
 ***
 Press any key to return...
@@ -333,7 +349,7 @@ Press any key to return...
 ${NC}
 EOF
             _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows all credentials and returns to menu
             ;;

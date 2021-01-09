@@ -8,7 +8,7 @@
 OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
-         4 "Upgrade"
+         4 "Onion Address"
          5 "Go Back")
 
 CHOICE=$(dialog --clear \
@@ -33,7 +33,7 @@ EOF
 
         _sleep
 
-        bash -c "$RONIN_SPECTER_MENU"
+        bash -c "${RONIN_SPECTER_MENU}"
         # Start specter.service and return to same menu
         ;;
     2)
@@ -50,7 +50,7 @@ EOF
 
         _sleep
 
-        bash -c "$RONIN_SPECTER_MENU"
+        bash -c "${RONIN_SPECTER_MENU}"
         # Stop specter.service and return to same menu
         ;;
     3)
@@ -64,16 +64,23 @@ EOF
         sudo systemctl restart specter
 
         _sleep
-        bash -c "$RONIN_SPECTER_MENU"
+        bash -c "${RONIN_SPECTER_MENU}"
         # Restart specter.service and return to same menu
         ;;
     4)
-        bash -c "$HOME"/RoninDojo/Scripts/Install/install-specter.sh
+        cat <<EOF
+${RED}
+***
+Attempting to Upgrade Specter...
+***
+${NC}
+EOF
+        _upgrade_specter
+        cd "${dojo_path_my_dojo}" || exit
+        ./dojo.sh upgrade --nolog
 
-        _sleep
-
-        bash -c "$RONIN_SPECTER_MENU"
-        # Upgrade specter.service and return to same menu
+        bash -c "${RONIN_SPECTER_MENU}"
+        # Display onion and return to same menu
         ;;
     5)
         ronin
