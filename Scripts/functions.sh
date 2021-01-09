@@ -1505,43 +1505,9 @@ Installing Specter $SPECTER_VERSION ...
 ${NC}
 EOF
 
-    wget --quiet "$SPECTER_SIGN_KEY_URL"
-    gpg --import "$SPECTER_SIGN_KEY"
-    rm "$SPECTER_SIGN_KEY"
+    git clone -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION"
 
-    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
-    gpg --verify sha256.signed.txt
-
-    wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
-
-    if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
-        cat <<EOF
-${RED}
-***
-Good verification... Installing now
-***
-${NC}
-EOF
-    else
-        cat <<EOF
-${RED}
-***
-Verification failed...
-***
-${NC}
-EOF
-        _sleep 5 --msg "Returning to main menu in"
-        ronin
-    fi
-
-    cat <<EOF
-${RED}
-***
-Installing Specter $SPECTER_VERSION ...
-***
-${NC}
-EOF
-    _sleep
+#    _sleep
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
     sudo systemctl restart tor
@@ -1557,7 +1523,6 @@ EOF
         sudo pacman -Syy
         sudo pacman -S --noconfirm gcc
     fi
-sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.shno
     if ! hash libusb 2>/dev/null; then
         cat <<EOF
 ${RED}
@@ -1566,13 +1531,8 @@ Installing libusb
 ***
 ${NC}
 EOF
-        sudo pacman -S --noconfirm libusb
+     sudo pacman -S --noconfirm libusb
     fi
-
-    mkdir "$HOME"/specter-"$SPECTER_VERSION"
-    tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
-    rm sha256.signed.txt ./*.tar.gz
-
     if [ -d .venv_specter ]; then
         cat <<EOF
 ${RED}
@@ -1586,7 +1546,6 @@ EOF
     fi
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install
-    #create file .flaskenv
 
     sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
@@ -1603,7 +1562,7 @@ After=multi-user.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=/home/specter/.specter/cert.pem --key=/home/specter/.specter/key.pem
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
@@ -1620,16 +1579,13 @@ Creating Self-Signed Certs for local LAN use
 ***
 ${NC}
 EOF
-    cd "$HOME"/"$SPECTER_VERSION" && "$HOME"/.venv_specter/bin/python3 -m cryptoadance.specter server --ssl
-    #openssl req -x509 -newkey rsa:4096 -nodes -out /tmp/cert.pem -keyout /tmp/key.pem -days 365 -subj "/C=US/ST=Nooneknows/L=Springfield/O=Dis/CN=www.fakeurl.com"
-    #sudo mv /tmp/cert.pem "$HOME"/.specter
-    #sudo chown -R $USER:$USER "$HOME"/.specter/cert.pem
-    #sudo mv /tmp/key.pem "$HOME"/.specter
-    #sudo chown -R $USER:$USER "$HOME"/.specter/key.pem
-    # Create SSL cert and key for Specter. Required for Desktop camera use.
+    cd "$HOME"/specter-"$SPECTER_VERSION"/docs/
+    ./gen-certificate.sh "${IP_ADDRESS}"
+    cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
+    cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
 
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
-        sudo cp "$HOME"/"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
         sudo udevadm trigger
         sudo udevadm control --reload-rules
         sudo groupadd plugdev
@@ -1637,10 +1593,12 @@ EOF
     fi
     # check if udev rules for HWW are installed if not install them.
     # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
+
     _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
     sudo systemctl daemon-reload
-    sudo systemctl enable --now specter 2>/dev/null
-
+    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl start specter 2>/dev/null
+    #using enable and start to ensure the startup creates the .specter dir
     return 0
 }
 
@@ -1746,7 +1704,7 @@ After=multi-user.target
 [Service]
 User=$USER
 Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.specter/cert.pem --key=$HOME/.specter/key.pem
+ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
 WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
 Restart=always
@@ -1764,7 +1722,10 @@ Creating Self-Signed Certs for local LAN use
 ***
 ${NC}
 EOF
-        cd "$HOME"/"$SPECTER_VERSION" && "$HOME"/.venv_specter/bin/python3 -m cryptoadance.specter server --ssl
+        cd "$HOME"/specter-"$SPECTER_VERSION"/docs/
+        ./gen-certificate.sh "${IP_ADDRESS}"
+        cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
+        cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
         #openssl req -x509 -newkey rsa:4096 -nodes -out /tmp/cert.pem -keyout /tmp/key.pem -days 365 -subj "/C=US/ST=Nooneknows/L=Springfield/O=Dis/CN=www.fakeurl.com"
         #sudo mv /tmp/cert.pem "$HOME"/.specter
         #sudo chown -R $USER:$USER "$HOME"/.specter/cert.pem
@@ -1773,7 +1734,7 @@ EOF
     fi
     # check for certs. if not there create them
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
-        sudo cp "$HOME"/"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
         sudo udevadm trigger
         sudo udevadm control --reload-rules
         sudo groupadd plugdev
@@ -1792,7 +1753,8 @@ EOF
         _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
     fi
     sudo systemctl daemon-reload
-    sudo systemctl enable --now specter 2>/dev/null
+    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl start specter 2>/dev/null
 
     return 0
 }

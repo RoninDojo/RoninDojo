@@ -127,8 +127,8 @@ fi
 # Specter defaults
 SPECTER_SIGN_KEY_URL="https://stepansnigirev.com/ss-specter-release.asc"
 SPECTER_SIGN_KEY="ss-specter-release.asc"
-SPECTER_URL="https://github.com/cryptoadvance/specter-desktop/releases/download"
-SPECTER_VERSION="0.10.4"
+SPECTER_URL="https://github.com/cryptoadvance/specter-desktop.git"
+SPECTER_VERSION="1.0.0"
 
 declare -A backup_dojo_data=(
     [tor]=tor
