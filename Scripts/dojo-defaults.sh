@@ -62,6 +62,6 @@ fi
 # Specter
 for dir in "${HOME}"/specter*; do
     if [[ -d "${dir}" ]]; then
-        V3_ADDR_SPECTER=$(<"$HOME"/.specter/onion.txt)
+        V3_ADDR_SPECTER=$(sudo cat "${INSTALL_DIR_TOR}"/specter_server/hostname)
     fi
 done
