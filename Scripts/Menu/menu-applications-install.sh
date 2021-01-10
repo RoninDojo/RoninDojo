@@ -9,7 +9,7 @@ options=(1 "Install Mempool Space Visualizer" off    # any option can be set to 
          2 "Install Specter" off
          3 "Enable Bisq Connection" off
          4 "Swap Electrs/Indexer" off
-         5 "Finalize Changes" off
+         5 "Finalize Changes" on
          5 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -31,14 +31,6 @@ do
 ${RED}
 ***
 Specter install detected...
-***
-${NC}
-EOF
-                _sleep 2
-                cat <<EOF
-${RED}
-***
-Updating to latestest version... 
 ***
 ${NC}
 EOF
