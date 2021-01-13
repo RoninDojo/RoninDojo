@@ -1579,7 +1579,7 @@ Creating Self-Signed Certs for local LAN use
 ***
 ${NC}
 EOF
-    cd "$HOME"/specter-"$SPECTER_VERSION"/docs/
+    cd "$HOME"/specter-"$SPECTER_VERSION"/docs/ || exit
     ./gen-certificate.sh "${IP_ADDRESS}"
     cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
     cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
@@ -1722,7 +1722,7 @@ Creating Self-Signed Certs for local LAN use
 ***
 ${NC}
 EOF
-        cd "$HOME"/specter-"$SPECTER_VERSION"/docs/
+        cd "$HOME"/specter-"$SPECTER_VERSION"/docs/ || exit
         ./gen-certificate.sh "${IP_ADDRESS}"
         cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
         cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
@@ -1760,7 +1760,9 @@ EOF
 }
 
 _backup_dojo_data_dir(){
-    for data in "${!backup_dojo_data[@]}"; do
+    . "${HOME}"RoninDojo/Scripts/defaults.sh
+
+    for data in "${backup_dojo_data}"; do
         test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
 
         if [ -d "${DOJO_PATH}" ]; then
@@ -1862,14 +1864,16 @@ _is_bisq(){
 _install_bisq(){
     if test ! -d "$INSTALL_DIR_USER"; then
         sudo mkdir "$INSTALL_DIR_USER"
-        sudo chown -R $USER:$USER "$INSTALL_DIR_USER"
+        sudo chown -R "$USER:$USER" "$INSTALL_DIR_USER"
     fi
-    if [ ! -f "$INSTALL_DIR_USER"/ip.txt] ; then
-        ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$INSTALL_DIR_USER"/ip.txt
+
+    if [ ! -f "$INSTALL_DIR_USER"/ip.txt ] ; then
+        IP=$(ip route get 1| awk '{print $7}')
     fi
-    IP_ADDRESS_RANGE=$(grep "192.168" "${INSTALL_DIR_USER}"/ip.txt)
-    sed -i '/  -txindex=1/i\  -peerbloomfilters=1' "${dojo_path_my_dojo}"/bitcoin/restart.sh
-    sed -i "/  -txindex=1/i\  -whitelist=bloomfilter@$IP_ADDRESS_RANGE" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
+    sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
+        -e "/  -txindex=1/i\  -whitelist=bloomfilter@$IP" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
     cat <<EOF > "${INSTALL_DIR_USER}"/bisq.txt
 peerbloomfilters=1
 EOF
