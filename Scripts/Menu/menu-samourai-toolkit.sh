@@ -26,14 +26,13 @@ case $CHOICE in
         2)
             bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-boltzmann.sh
             # sent to Boltzmann Calculator
-            break;;
-        
+            ;;
         3)
             bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh
             # send to WST menu
-            break;;
+            ;;
         4)
             ronin
             # returns to main menu
-            break;;
+            ;;
 esac
