@@ -56,7 +56,7 @@ _update_02() {
 _update_03() {
     if [ -f "${sudoers_file}" ]; then
         if ! grep "/usr/bin/systemctl poweroff" "${sudoers_file}" 1>/dev/null; then
-            sudo bash -c "cat <<EOF >>"${sudoers_file}"
+            sudo bash -c "cat <<EOF >>${sudoers_file}
 ALL ALL=(root) NOPASSWD: /usr/bin/systemctl reboot, /usr/bin/systemctl poweroff
 EOF"
         fi
@@ -67,7 +67,7 @@ EOF"
 _update_04() {
     if [ -f "${sudoers_path}" ]; then
         if ! grep "/usr/bin/test" "${sudoers_file}" 1>/dev/null; then
-            sudo bash -c "cat <<EOF >>"${sudoers_file}"
+            sudo bash -c "cat <<EOF >>${sudoers_file}
 ALL ALL=(root) NOPASSWD: /usr/bin/test, /usr/bin/grep, /usr/bin/cat, /usr/bin/ufw
 ALL ALL=(root) NOPASSWD: /usr/bin/umount, /usr/bin/mount, /usr/bin/mkswap, /usr/bin/swapon, /usr/bin/swapoff
 EOF"
