@@ -104,7 +104,7 @@ EOF
 _create_install_dir_user() {
     if sudo test ! -d "${INSTALL_DIR_USER}"; then
         sudo mkdir "${INSTALL_DIR_USER}"
-        sudo chown -R $USER:$USER "${INSTALL_DIR_USER}"
+        sudo chown -R "$USER:$USER" "${INSTALL_DIR_USER}"
         ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "${INSTALL_DIR_USER}"/ip.txt
     fi
 }
@@ -1589,7 +1589,7 @@ EOF
         sudo udevadm trigger
         sudo udevadm control --reload-rules
         sudo groupadd plugdev
-        sudo usermod -aG plugdev $USER
+        sudo usermod -aG plugdev "$USER"
     fi
     # check if udev rules for HWW are installed if not install them.
     # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
@@ -1738,7 +1738,7 @@ EOF
         sudo udevadm trigger
         sudo udevadm control --reload-rules
         sudo groupadd plugdev
-        sudo usermod -aG plugdev $USER
+        sudo usermod -aG plugdev "$USER"
     fi
     # check if udev rules are present if not install them.
     if sudo ufw status | grep 25441 > /dev/null ; then
@@ -1762,7 +1762,7 @@ EOF
 _backup_dojo_data_dir(){
     . "${HOME}"RoninDojo/Scripts/defaults.sh
 
-    for data in "${backup_dojo_data}"; do
+    for data in ${backup_dojo_data}; do
         test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
 
         if [ -d "${DOJO_PATH}" ]; then
@@ -1884,6 +1884,6 @@ _ufw_rule_add(){
     port=$2
     service=$3
 
-    sudo ufw allow to $ip from any $port '$service'
+    sudo ufw allow to "$ip" from any "$port" "$service"
     sudo ufw reload
 }
