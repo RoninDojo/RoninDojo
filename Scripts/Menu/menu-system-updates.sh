@@ -85,7 +85,7 @@ ${NC}
 EOF
 _sleep 10 --msg "Updating in"
 
-        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d ${DOJO_PATH} ]; then
+        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d "${DOJO_PATH}" ]; then
             cat <<DOJO
 ${RED}
 ***
