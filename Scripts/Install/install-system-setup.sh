@@ -502,7 +502,7 @@ EOF
 _sleep 2
 
 if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
-    printf "\n ${RED}Filesystem creation failed! Exiting now...${NC}"
+    printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
     _sleep 3
     exit 1
 fi
@@ -574,7 +574,7 @@ _sleep 2
 
 _install_wst
 
-sudo mkdir "$INSTALL_DIR_USER" && sudo chown -R $USER:$USER "$INSTALL_DIR_USER"
+sudo test -d "$INSTALL_DIR_USER" || { sudo mkdir "$INSTALL_DIR_USER" && sudo chown -R "$USER:$USER" "$INSTALL_DIR_USER";}
 # make /mnt/usb/.ronin and give user permissions
 
 cat <<EOF
