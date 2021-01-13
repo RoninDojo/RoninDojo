@@ -108,7 +108,7 @@ EOF
 fi
 
 if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
-    printf "\n ${RED}Filesystem creation failed! Exiting now...${NC}"
+    printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
     _sleep 3
     exit 1
 fi
