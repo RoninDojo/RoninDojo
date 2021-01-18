@@ -210,7 +210,7 @@ _sleep() {
         if $verbose; then
             printf "%s%s %s\033[0K seconds...%s\r" "${RED}" "${msg}" "${secs}" "${NC}"
         fi
-        _sleep 1
+        sleep 1
         : $((secs--))
     done
     printf "\n" # Add new line
