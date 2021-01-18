@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -72,7 +72,7 @@ Install Specter Server using the applications install menu...
 ***
 ${NC}
 EOF
-            _sleep 2            
+            _sleep 2
             cat <<EOF
 ${RED}
 ***

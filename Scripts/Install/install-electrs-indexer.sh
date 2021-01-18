@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null disable=1004
+# shellcheck source=/dev/null disable=1004,SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh

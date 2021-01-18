@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null disable=SC2086
+# shellcheck source=/dev/null disable=SC2086,SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -32,7 +32,7 @@ Dojo is already started!
 ***
 ${NC}
 EOF
-                _sleep 2         
+                _sleep 2
                 cat <<EOF
 ${RED}
 ***

@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -100,7 +100,7 @@ Press any key to return...
 ***
 ${NC}
 EOF
-            _pause            
+            _pause
             bash -c "$RONIN_WHIRLPOOL_MENU"
             # enable whirlpool at startup, press to return to menu
             # see defaults.sh

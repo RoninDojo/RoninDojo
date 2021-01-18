@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -100,7 +100,7 @@ EOF
     cat <<EOF
 ${RED}
 ***
-WARNING: Data will be lost if you answer no to salvage, 
+WARNING: Data will be lost if you answer no to salvage
 ***
 ${NC}
 EOF
