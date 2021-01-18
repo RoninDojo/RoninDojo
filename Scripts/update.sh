@@ -75,29 +75,37 @@ EOF"
     fi
 }
 
-# fix tor unit file
+# Fix tor unit file
 _update_05() {
-    if ! systemctl is-active --quiet tor; then
+    if findmnt /mnt/usb 1>/dev/null && ! systemctl is-active --quiet tor; then
         sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
-        #sudo sed -i '/Type=notify/i\User=tor' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
-        sudo systemctl restart tor
+
+        _is_active tor
+
+        # Some systems have issue with tor not starting unless User=tor is enabled.
+        if ! systemctl is-active --quiet tor && ! grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
+            sudo sed -i '/Type=notify/a\User=tor' /usr/lib/systemd/system/tor.service
+            _is_active tor
+        fi
     fi
 }
 
-# modify pacman.conf
+# Modify pacman.conf and add ignore packages
 _update_06() {
-    sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+    if ! grep "tor" /etc/pacman.conf 1>/dev/null; then
+        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+    fi
 }
 
-# copy user.conf.example to correct location
+# Copy user.conf.example to correct location
 _update_07() {
     if [ ! -f "$HOME"/.config/RoninDojo/user.conf ] ; then
         cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
     fi
 }
 
-# store ip address range and exact ipaddress in ~/.config/RoninDojo
+# Store ip address range and exact ipaddress in ~/.config/RoninDojo
 _update_08() {
     ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/.config/RoninDojo/ip-range.txt
     ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1 > "$HOME"/.config/RoninDojo/ip.txt
