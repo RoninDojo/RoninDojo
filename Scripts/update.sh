@@ -93,7 +93,7 @@ _update_06() {
 # copy user.conf.example to correct location
 _update_07() {
     if [ ! -f "$HOME"/.config/RoninDojo/user.conf ] ; then
-        cp -rv "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
+        cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
     fi
 }
 
