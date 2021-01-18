@@ -416,9 +416,9 @@ Configuring RoninDojo Backend Tor Address...
 ${NC}
 BACKEND_TOR_CONFIG
         sudo sed -i "/################ This section is just for relays/i\
-HiddenServiceDir ${INSTALL_DIR_TOR}/hidden_service_ronin_backend/\
-HiddenServiceVersion 3\
-HiddenServicePort 80 127.0.0.1:8470\
+HiddenServiceDir ${INSTALL_DIR_TOR}/hidden_service_ronin_backend/\n\
+HiddenServiceVersion 3\n\
+HiddenServicePort 80 127.0.0.1:8470\n\
 " /etc/tor/torrc
 
         # restart tor service
@@ -1548,9 +1548,9 @@ EOF
     "$HOME"/.venv_specter/bin/python3 setup.py install
 
     sudo sed -i "/################ This section is just for relays/i\
-HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
-HiddenServiceVersion 3\
-HiddenServicePort 443 127.0.0.1:25441\
+HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
+HiddenServiceVersion 3\n\
+HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
     # create hiddenservice for https
 
@@ -1689,9 +1689,9 @@ EOF
     #create file .flaskenv
     if [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] ; then
         sudo sed -i "/################ This section is just for relays/i\
-HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\
-HiddenServiceVersion 3\
-HiddenServicePort 443 127.0.0.1:25441\
+HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
+HiddenServiceVersion 3\n\
+HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
     fi
     # Set tor hiddenservice for https specter server
