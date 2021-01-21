@@ -95,7 +95,7 @@ fi
 mkdir "$HOME"/specter-"$SPECTER_VERSION"
 tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
 
-rm sha256.signed.txt ./*.tar.gz
+rm sha256.signed.txt "*.tar.gz"
 
 if [ -d .venv_specter ]; then
    cat <<EOF
@@ -163,4 +163,5 @@ EOF
 
 _sleep
 
+# Return to main menu
 ronin

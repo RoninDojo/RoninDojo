@@ -104,9 +104,3 @@ _update_07() {
         cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
     fi
 }
-
-# Store ip address range and exact ipaddress in ~/.config/RoninDojo
-_update_08() {
-    ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/.config/RoninDojo/ip-range.txt
-    ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1 > "$HOME"/.config/RoninDojo/ip.txt
-}

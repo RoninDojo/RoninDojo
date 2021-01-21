@@ -21,7 +21,7 @@ do
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
             fi
-            # checks for mempool, then installs
+            # Checks for mempool, then installs
             ;;
         2)
             if ! _is_specter ; then
@@ -38,20 +38,20 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Updating to latestest version...
+Updating to latest version...
 ***
 ${NC}
 EOF
                 _sleep 2
                 _upgrade_specter
             fi
-            # runs dojo install script
+            # Runs dojo install script
             ;;
         3)
             if ! _is_bisq ; then
                 _install_bisq
             fi
-            # checks for bisq file and modifies restart.sh and creates file
+            # Checks for bisq file and modifies restart.sh and creates file
             ;;
         4)
             if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then

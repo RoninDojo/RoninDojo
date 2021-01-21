@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2221,SC2222,1004 source=/dev/null
+# shellcheck disable=SC2221,SC2222,1004,SC2154 source=/dev/null
 
 RED=$(tput setaf 1)
 NC=$(tput sgr0)
@@ -28,7 +28,6 @@ _main() {
     _update_05 # Fix tor unit file
     _update_06 # Modify pacman to Ignore specific packages
     _update_07 # Set user.conf in appropriate place
-    _update_08 # Store ip address range in ~/.config/RoninDojo/ip.txt
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -1486,6 +1485,9 @@ EOF"
     fi
 }
 
+#
+# Check if specter is installed
+#
 _is_specter(){
     if [ -d "$HOME"/.specter ]; then
         return 0
@@ -1493,66 +1495,90 @@ _is_specter(){
         return 1
     fi
 }
-# check if specter is installed
 
-_install_specter(){
-    cd "${HOME}" || exit
-    cat <<EOF
+#
+# Check if udev rules for HWW are installed if not install them.
+# Allows for users to plug HWW straight into their Ronin and then connect to their Specter
+#
+_specter_hww_udev_rules() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
+        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo udevadm trigger
+        sudo udevadm control --reload-rules
+
+        # _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker if not add it
+        if getent group plugdev 1>/dev/null; then
+            sudo groupadd plugdev
+        fi
+
+        if ! getent group plugdev | grep -q "${USER}"; then
+            cat <<EOF
 ${RED}
 ***
-Installing Specter $SPECTER_VERSION ...
+Adding user to plugdev group...
 ***
 ${NC}
 EOF
+            sudo usermod -a plugdev "${USER}"
+            _sleep 5 --msg "Reloading RoninDojo in" && newgrp plugdev
+        fi
+    fi
+}
 
-    git clone -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION"
+#
+# Specter check cert
+#
+_specter_cert_check() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-#    _sleep
-    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
-    sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
-    sudo systemctl restart tor
-
-    if ! hash gcc 2>/dev/null; then
+    if [ ! -f "$HOME"/.specter/cert.pm ] ; then
         cat <<EOF
 ${RED}
 ***
-Installing gcc
+Creating Self-Signed Certs for local LAN use
 ***
 ${NC}
 EOF
-        sudo pacman -Syy
-        sudo pacman -S --noconfirm gcc
-    fi
-    if ! hash libusb 2>/dev/null; then
-        cat <<EOF
-${RED}
-***
-Installing libusb
-***
-${NC}
-EOF
-     sudo pacman -S --noconfirm libusb
-    fi
-    if [ -d .venv_specter ]; then
-        cat <<EOF
-${RED}
-***
-venv is already set ...
-***
-${NC}
-EOF
-    else
-        python3 -m venv "$HOME"/.venv_specter
-    fi
-    cd "$HOME"/specter-"$SPECTER_VERSION" || exit
-    "$HOME"/.venv_specter/bin/python3 setup.py install
+        cd "$HOME"/specter-"$SPECTER_VERSION"/docs || exit
+        ./gen-certificate.sh "${ip}"
 
-    sudo sed -i "/################ This section is just for relays/i\
+        cp key.pem "$HOME"/.config/RoninDojo/specter-key.pem
+        cp cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
+
+    fi
+
+    return 0
+}
+
+#
+# Specter systemd unit file creation
+#
+_specter_create_systemd_unit_file() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    local upgrade
+    upgrade=false
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --upgrade)
+                upgrade=true
+                break
+                ;;
+        esac
+    done
+
+    if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] || "${upgrade}" ; then
+        sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
-    # create hiddenservice for https
+    fi
+    # Set tor hiddenservice for https specter server
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1572,40 +1598,89 @@ RestartSec=60
 WantedBy=multi-user.target
 EOF
 "
+    return 0
+}
+
+_install_specter(){
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    cd "${HOME}" || exit
+
     cat <<EOF
 ${RED}
 ***
-Creating Self-Signed Certs for local LAN use
+Installing Specter $SPECTER_VERSION ...
 ***
 ${NC}
 EOF
-    cd "$HOME"/specter-"$SPECTER_VERSION"/docs/ || exit
-    ./gen-certificate.sh "${IP_ADDRESS}"
-    cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
-    cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
 
-    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
-        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
-        sudo udevadm trigger
-        sudo udevadm control --reload-rules
-        sudo groupadd plugdev
-        sudo usermod -aG plugdev "$USER"
+    git clone -q -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION"
+
+    sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
+    sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
+    sudo systemctl restart tor
+
+    if ! hash gcc 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Installing gcc
+***
+${NC}
+EOF
+        sudo pacman -Syy
+        sudo pacman -S --noconfirm gcc
     fi
-    # check if udev rules for HWW are installed if not install them.
-    # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
 
-    _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
+    if ! hash libusb 2>/dev/null; then
+        cat <<EOF
+${RED}
+***
+Installing libusb
+***
+${NC}
+EOF
+     sudo pacman -S --noconfirm libusb
+    fi
+
+    if [ -d .venv_specter ]; then
+        cat <<EOF
+${RED}
+***
+venv is already set ...
+***
+${NC}
+EOF
+    else
+        python3 -m venv "$HOME"/.venv_specter
+    fi
+
+    cd "$HOME"/specter-"$SPECTER_VERSION" || exit
+    "$HOME"/.venv_specter/bin/python3 setup.py install
+
+    _specter_create_systemd_unit_file
+
+    _specter_cert_check
+
+    _specter_hww_udev_rules
+
+    _ufw_rule_add "${ip-range}" 25441 specter
+
     sudo systemctl daemon-reload
-    sudo systemctl enable specter 2>/dev/null
-    sudo systemctl start specter 2>/dev/null
-    #using enable and start to ensure the startup creates the .specter dir
+    sudo systemctl {enable,start} specter 2>/dev/null
+    # Using enable and start to ensure the startup creates the .specter dir
+
     return 0
 }
 
 _upgrade_specter(){
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
     shopt -s nullglob
 
     cd "${HOME}" || exit
+
     for dir in specter*; do
         if [[ "${dir}" != specter-$SPECTER_VERSION ]]; then
             cat <<EOF
@@ -1652,9 +1727,12 @@ Proceeding to upgrade to $SPECTER_VERSION ...
 ${NC}
 EOF
             _sleep
+
             sudo systemctl stop specter
             sudo rm /etc/systemd/system/specter.service
+
             sudo rm -rf "${dir}"
+
             sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
         else
             cat <<EOF
@@ -1671,8 +1749,10 @@ EOF
     done
 
     mkdir "$HOME"/specter-"$SPECTER_VERSION"
+
     tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
     rm sha256.signed.txt ./*.tar.gz
+
     if [ -d .venv_specter ]; then
         cat <<EOF
 ${RED}
@@ -1684,62 +1764,17 @@ EOF
     else
         python3 -m venv "$HOME"/.venv_specter
     fi
+
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install
-    #create file .flaskenv
-    if [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] ; then
-        sudo sed -i "/################ This section is just for relays/i\
-HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
-HiddenServiceVersion 3\n\
-HiddenServicePort 443 127.0.0.1:25441\n\
-" /etc/tor/torrc
-    fi
-    # Set tor hiddenservice for https specter server
+    # Create file .flaskenv
 
-    sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
-[Unit]
-Description=Specter Desktop Service
-After=multi-user.target
+    _specter_create_systemd_unit_file --upgrade
 
-[Service]
-User=$USER
-Type=simple
-ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
-Environment=PATH=$HOME/.venv_specter/bin
-WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
-Restart=always
-RestartSec=60
+    _specter_cert_check
 
-[Install]
-WantedBy=multi-user.target
-EOF
-"
-    if [ ! -f "$HOME"/.specter/cert.pm ] ; then
-        cat <<EOF
-${RED}
-***
-Creating Self-Signed Certs for local LAN use
-***
-${NC}
-EOF
-        cd "$HOME"/specter-"$SPECTER_VERSION"/docs/ || exit
-        ./gen-certificate.sh "${IP_ADDRESS}"
-        cp -rv key.pem "$HOME"/.config/RoninDojo/specter-key.pem
-        cp -rv cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
-        #openssl req -x509 -newkey rsa:4096 -nodes -out /tmp/cert.pem -keyout /tmp/key.pem -days 365 -subj "/C=US/ST=Nooneknows/L=Springfield/O=Dis/CN=www.fakeurl.com"
-        #sudo mv /tmp/cert.pem "$HOME"/.specter
-        #sudo chown -R $USER:$USER "$HOME"/.specter/cert.pem
-        #sudo mv /tmp/key.pem "$HOME"/.specter
-        #sudo chown -R $USER:$USER "$HOME"/.specter/key.pem
-    fi
-    # check for certs. if not there create them
-    if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
-        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
-        sudo udevadm trigger
-        sudo udevadm control --reload-rules
-        sudo groupadd plugdev
-        sudo usermod -aG plugdev "$USER"
-    fi
+    _specter_hww_udev_rules
+
     # check if udev rules are present if not install them.
     if sudo ufw status | grep 25441 > /dev/null ; then
         cat <<EOF
@@ -1750,10 +1785,11 @@ UFW already set for Specter on local LAN
 ${NC}
 EOF
     else
-        _ufw_rule_add "${IP_ADDRESS_RANGE}" 25441 specter
+        _ufw_rule_add "${ip-range}" 25441 specter
     fi
+
     sudo systemctl daemon-reload
-    sudo systemctl enable specter 2>/dev/null
+    systemctl is-enabled specter 1>/dev/null || sudo systemctl enable specter 2>/dev/null
     sudo systemctl start specter 2>/dev/null
 
     return 0
@@ -1879,6 +1915,9 @@ peerbloomfilters=1
 EOF
 }
 
+#
+# UFW rule add
+#
 _ufw_rule_add(){
     ip=$1
     port=$2
