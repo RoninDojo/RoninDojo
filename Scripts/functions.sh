@@ -57,7 +57,7 @@ ${NC}
 EOF
         # Create the docker group if not available
         if ! getent group docker 1>/dev/null; then
-            sudo groupadd docker
+            sudo groupadd docker 1>/dev/null
         fi
 
         sudo gpasswd -a "${USER}" docker
