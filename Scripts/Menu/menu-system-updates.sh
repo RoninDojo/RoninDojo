@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -30,13 +30,15 @@ case $CHOICE in
         ;;
 
     2)
-        if [ -f "${INSTALL_DIR_USER}"/ronin-latest.txt ] ; then
-            rm -rf "${INSTALL_DIR_USER}"/ronin-latest.txt
+        if [ -f "${ronin_data_dir}"/ronin-latest.txt ] ; then
+            rm "${ronin_data_dir}"/ronin-latest.txt
         fi
-        wget --quiet https://ronindojo.io/downloads/ronindojo-version.txt -O "${INSTALL_DIR_USER}"/ronin-latest.txt
-        LATEST_RONIN=$(cat ronindojo-latest.txt)
-        
-        if [[ "${VERSION}" != "${LATEST_RONIN}" ]] ; then
+
+        wget --quiet https://ronindojo.io/downloads/ronindojo-version.txt -O "${ronin_data_dir}"/ronin-latest.txt
+
+        ronindojo_version=$(<"${ronin_data_dir}"/ronindojo-latest.txt)
+
+        if [[ "${VERSION}" != "${ronindojo_version}" ]] ; then
             cat <<EOF
 ${RED}
 ***
@@ -61,7 +63,7 @@ EOF
         ;;
 
     3)
-        # Add selected packages to irnore during an upgrade
+        # Add selected packages to ignorepkg variable during an upgrade
         sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
 
         # Update Mirrors

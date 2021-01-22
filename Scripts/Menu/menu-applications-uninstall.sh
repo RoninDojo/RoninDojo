@@ -28,7 +28,7 @@ do
             # Deletes the .specter dir, source dir, and specter.service file
             ;;
         3)
-            rm "${INSTALL_DIR_USER}"/bisq.txt
+            rm "${ronin_data_dir}"/bisq.txt
             # Deletes bisq.txt file
             ;;
         4)

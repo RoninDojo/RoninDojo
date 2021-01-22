@@ -99,12 +99,10 @@ EOF
     _systemd_unit_drop_in_check
 }
 
-# add INSTALL_DIR_USER to store user info
-_create_install_dir_user() {
-    if sudo test ! -d "${INSTALL_DIR_USER}"; then
-        sudo mkdir "${INSTALL_DIR_USER}"
-        sudo chown -R "$USER:$USER" "${INSTALL_DIR_USER}"
-        ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "${INSTALL_DIR_USER}"/ip.txt
+# Add ronin_data_dir to store user info
+_create_ronin_data_dir() {
+    if test ! -d "${ronin_data_dir}"; then
+        mkdir -p "${ronin_data_dir}"
     fi
 }
 
@@ -1834,8 +1832,9 @@ _recover_dojo_data_dir(){
 
 _install_wst(){
     cd "$HOME" || exit
-    git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
-    # download whirlpool stat tool
+
+    git clone -q "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
+    # Download whirlpool stat tool
 
     if ! hash pipenv; then
         cat <<EOF
@@ -1848,20 +1847,25 @@ EOF
         _sleep 1
         sudo pacman -S --noconfirm python-pipenv &>/dev/null
     fi
-    # check for python-pip and install if not found
+    # Check for python-pip and install if not found
 
     cd Whirlpool-Stats-Tool || exit
+
     pipenv install -r requirements.txt &>/dev/null
-    # change to whirlpool stats directory, otherwise exit
+    # Change to whirlpool stats directory, otherwise exit
     # install whirlpool stat tool
     # install WST
 }
 
 _install_boltzmann(){
+    . "${HOME}"RoninDojo/Scripts/defaults.sh
+
     cd "$HOME" || exit
-    git clone "$BOLTZMANN_REPO" &>/dev/null
+
+    git clone -q "$BOLTZMANN_REPO"
+
     cd boltzmann || exit
-    # pull Boltzmann
+    # Pull Boltzmann
 
     cat <<EOF
 ${RED}
@@ -1890,7 +1894,9 @@ EOF
 }
 
 _is_bisq(){
-    if [ -f "${INSTALL_DIR_USER}"/bisq.txt ]; then
+    . "${HOME}"RoninDojo/Scripts/defaults.sh
+
+    if [ -f "${ronin_data_dir}"/bisq.txt ]; then
         return 0
     else
         return 1
@@ -1898,21 +1904,14 @@ _is_bisq(){
 }
 
 _install_bisq(){
-    if test ! -d "$INSTALL_DIR_USER"; then
-        sudo mkdir "$INSTALL_DIR_USER"
-        sudo chown -R "$USER:$USER" "$INSTALL_DIR_USER"
-    fi
+    . "${HOME}"RoninDojo/Scripts/defaults.sh
 
-    if [ ! -f "$INSTALL_DIR_USER"/ip.txt ] ; then
-        IP=$(ip route get 1| awk '{print $7}')
-    fi
+    _create_ronin_data_dir
 
     sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
-        -e "/  -txindex=1/i\  -whitelist=bloomfilter@$IP" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+        -e "/  -txindex=1/i\  -whitelist=bloomfilter@${ip}" "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
-    cat <<EOF > "${INSTALL_DIR_USER}"/bisq.txt
-peerbloomfilters=1
-EOF
+    echo "peerbloomfilters=1" > "${ronin_data_dir}"/bisq.txt
 }
 
 #

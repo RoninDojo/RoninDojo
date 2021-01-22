@@ -342,7 +342,7 @@ EOF
     _docker_datadir_setup
     # docker data directory setup, see functions.sh
 
-    _create_install_dir_user
+    _create_ronin_data_dir
     # create directory to store user info, see functions.sh
 
     cat <<EOF
@@ -573,9 +573,6 @@ EOF
 _sleep 2
 
 _install_wst
-
-sudo test -d "$INSTALL_DIR_USER" || { sudo mkdir "$INSTALL_DIR_USER" && sudo chown -R "$USER:$USER" "$INSTALL_DIR_USER";}
-# make /mnt/usb/.ronin and give user permissions
 
 cat <<EOF
 ${RED}

@@ -9,7 +9,6 @@ options=(1 "Install Mempool Space Visualizer" off    # any option can be set to 
          2 "Install Specter" off
          3 "Enable Bisq Connection" off
          4 "Swap Electrs/Indexer" off
-         5 "Finalize Changes" off
          5 "Go Back" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -82,27 +81,6 @@ EOF
             # check for which indexer, if no indexer ask if they want to install
             ;;
         5)
-            cat <<EOF
-${RED}
-***
-Running RoninDojo update to complete the install process...
-***
-${NC}
-EOF
-            _sleep 3
-            cat <<EOF
-${RED}
-***
-Press Ctrl + C to exit now if needed...
-***
-${NC}
-EOF
-            _sleep 5
-            cd "${dojo_path_my_dojo}" || exit
-            ./dojo.sh upgrade --nolog
-            # upgrade dojo
-            ;;
-        6)
             bash -c "${RONIN_APPLICATIONS_MENU}"
             # return to application menu
             ;;

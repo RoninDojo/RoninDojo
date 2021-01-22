@@ -73,6 +73,7 @@ NC=$(tput sgr0) # No Color
 #
 DOJO_PATH="$HOME/dojo"
 dojo_path_my_dojo="${DOJO_PATH}/docker/my-dojo"
+ronin_data_dir="$HOME/.config/RoninDojo/data"
 BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
 DOJO_RESTORE=true
@@ -98,8 +99,6 @@ INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
 INSTALL_DIR_UNINSTALL="${INSTALL_DIR}/bitcoin"
 INSTALL_DIR_DOCKER="${INSTALL_DIR}/docker"
-INSTALL_DIR_USER="${INSTALL_DIR}/.ronin"
-IP_ADDRESS_RANGE="$HOME/.config/RoninDojo/ip.txt"
 
 DOCKER_VOLUMES="${INSTALL_DIR_DOCKER}/volumes"
 DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
