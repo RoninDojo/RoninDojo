@@ -182,6 +182,7 @@ ${NC}
 EOF
                 _sleep 2
                 _pause return
+
                 bash -c "${RONIN_CREDENTIALS_MENU}"
             else
                 cat <<EOF
@@ -280,6 +281,7 @@ ${NC}
 Electrs Tor URL         = $V3_ADDR_ELECTRS
 EOF
             fi
+
             if _mempool_check ; then
                 cat <<EOF
 ${RED}
@@ -290,6 +292,7 @@ ${NC}
 Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
 EOF
             fi
+
             if _is_specter ; then
                 cat <<EOF
 ${RED}
@@ -300,6 +303,7 @@ ${NC}
 Tor URL                 = http://$V3_ADDR_SPECTER
 EOF
             fi
+
             _pause return
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
