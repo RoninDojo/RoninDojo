@@ -20,9 +20,20 @@ do
             upgrade=true
             ;;
         2)
-            _specter_uninstall
-
-            upgrade=true
+            if _is_specter; then
+                _specter_uninstall
+                upgrade=true
+            else
+                cat <<EOF
+${RED}
+***
+Specter Server is not available to uninstall...
+***
+${NC}
+EOF
+            _pause return
+            ronin
+            fi
             ;;
         3)
             rm "${ronin_data_dir}"/bisq.txt
