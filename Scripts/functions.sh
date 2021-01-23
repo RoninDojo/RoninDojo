@@ -1591,7 +1591,7 @@ _install_specter(){
     cat <<EOF
 ${RED}
 ***
-Installing Specter $SPECTER_VERSION ...
+Installing Specter $SPECTER_VERSION...
 ***
 ${NC}
 EOF
@@ -1630,7 +1630,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-venv is already set ...
+venv is already set...
 ***
 ${NC}
 EOF
@@ -1668,7 +1668,7 @@ _upgrade_specter(){
             cat <<EOF
 ${RED}
 ***
-Proceeding to upgrade to $SPECTER_VERSION ...
+Proceeding to upgrade to $SPECTER_VERSION...
 ***
 ${NC}
 EOF
@@ -1704,7 +1704,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Proceeding to upgrade to $SPECTER_VERSION ...
+Proceeding to upgrade to $SPECTER_VERSION...
 ***
 ${NC}
 EOF
@@ -1720,7 +1720,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-On latest version of Specter ...
+On latest version of Specter...
 ***
 ${NC}
 EOF
@@ -1739,7 +1739,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-venv is already set ...
+venv is already set...
 ***
 ${NC}
 EOF

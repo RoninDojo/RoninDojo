@@ -24,7 +24,7 @@ case $CHOICE in
             cat <<EOF
 ${RED}
 ***
-Starting Specter Service ...
+Starting Specter Service...
 ***
 ${NC}
 EOF
@@ -40,7 +40,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Stopping Specter Service ...
+Stopping Specter Service...
 ***
 ${NC}
 EOF
@@ -56,7 +56,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Restarting Specter Service ...
+Restarting Specter Service...
 ***
 ${NC}
 EOF
