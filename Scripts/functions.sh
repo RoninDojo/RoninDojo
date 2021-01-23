@@ -1022,7 +1022,7 @@ EOF
         i=0
         while ((i<21)); do
             if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
-                _sleep 1
+                sleep 1
                 ((i++))
             else
                 break
