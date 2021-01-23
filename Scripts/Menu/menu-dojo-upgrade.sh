@@ -337,7 +337,7 @@ EOF
         read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
         case $answer in
             [yY][eE][sS]|[yY])
-                _upgrade_specter
+                _specter_upgrade
                 break
                 ;;
             [nN][oO]|[Nn])

@@ -25,7 +25,7 @@ do
             ;;
         2)
             if ! _is_specter ; then
-                _install_specter
+                _specter_install
                 upgrade=true
             else
                 cat <<EOF
@@ -44,7 +44,7 @@ Updating to latest version...
 ${NC}
 EOF
                 _sleep 2
-                _upgrade_specter
+                _specter_upgrade
                 upgrade=true
             fi
             # Runs dojo install script

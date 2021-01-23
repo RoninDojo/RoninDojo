@@ -20,13 +20,7 @@ do
             upgrade=true
             ;;
         2)
-            if systemctl is-active specter; then
-                sudo systemctl stop specter
-                sudo systemctl disable specter 1>/dev/null
-            fi
-
-            sudo rm -rf "$HOME"/.specter "$HOME"/specter-* /etc/systemd/system/specter.service
-            # Deletes the .specter dir, source dir, and specter.service file
+            _specter_uninstall
 
             upgrade=true
             ;;

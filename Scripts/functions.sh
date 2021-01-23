@@ -1605,7 +1605,40 @@ EOF
     return 0
 }
 
-_install_specter(){
+_specter_uninstall() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    if systemctl is-active --quiet specter; then
+        sudo systemctl stop specter
+        sudo systemctl disable specter 1>/dev/null
+    fi
+
+    sudo rm /etc/systemd/system/specter.service
+    rm -rf "$HOME"/.specter "$HOME"/specter-*
+    rm "$HOME"/.config/RoninDojo/specter*
+    # Deletes the .specter dir, source dir, certificate files and specter.service file
+
+    cd "${dojo_path_my_dojo}"/bitcoin || exit
+    git checkout restart.sh &>/dev/null && cd - || exit
+    # Resets to defaults
+
+    if [ -f /etc/udev/rules.d/51-coinkite.rules ]; then
+        cd "$HOME"/specter-"$SPECTER_VERSION"/udev || exit
+
+        for file in *.rules; do
+            sudo rm /etc/udev/rules.d/"${file}"
+        done
+
+        sudo udevadm trigger
+        sudo udevadm control --reload-rules
+    fi
+    # Delete udev rules
+
+    sudo gpasswd -d "${USER}" plugdev
+    # Remove user from plugdev group
+}
+
+_specter_install(){
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     cd "${HOME}" || exit
@@ -1678,7 +1711,7 @@ EOF
     return 0
 }
 
-_upgrade_specter(){
+_specter_upgrade(){
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     shopt -s nullglob
