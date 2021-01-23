@@ -1647,7 +1647,7 @@ EOF
 
     _specter_hww_udev_rules
 
-    _ufw_rule_add "${ip-range}" 25441 specter
+    _ufw_rule_add "${ip_range}" 25441 specter
 
     sudo systemctl daemon-reload
     sudo systemctl {enable,start} specter 2>/dev/null
@@ -1767,7 +1767,7 @@ UFW already set for Specter on local LAN
 ${NC}
 EOF
     else
-        _ufw_rule_add "${ip-range}" 25441 specter
+        _ufw_rule_add "${ip_range}" 25441 specter
     fi
 
     sudo systemctl daemon-reload

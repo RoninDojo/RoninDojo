@@ -131,7 +131,7 @@ SPECTER_VERSION="1.0.0"
 
 # Network info
 ip=$(ip route get 1 | awk '{print $7}')
-ip-range="$(echo "${ip}" | cut -d. -f1-3).0/24"
+ip_range="$(echo "${ip}" | cut -d. -f1-3).0/24"
 
 declare -a backup_dojo_data=(
     tor
