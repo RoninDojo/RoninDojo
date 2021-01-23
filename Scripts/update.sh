@@ -132,7 +132,7 @@ Description=Mount External SSD Drive ${PRIMARY_STORAGE}
 
 [Mount]
 What=/dev/disk/by-uuid/${uuid}
-Where=${systemd_mountpoint}
+Where=${INSTALL_DIR}
 Type=${fstype}
 Options=defaults
 
