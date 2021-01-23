@@ -28,6 +28,7 @@ _main() {
     _update_05 # Fix tor unit file
     _update_06 # Modify pacman to Ignore specific packages
     _update_07 # Set user.conf in appropriate place
+    _update_08 # Make sure mnt-usb.mount is available
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -1080,7 +1081,7 @@ EOF
         cd "$HOME/RoninDojo" || exit
 
         # Fetch remotes
-        git fetch --all --tags --force 1>/dev/null
+        git fetch --all --tags --force &>/dev/null
 
         # Reset to origin master branch
         git reset --hard "${RONIN_DOJO_BRANCH}" 1>/dev/null
@@ -1089,7 +1090,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${RONIN_DOJO_BRANCH}" https://code.samourai.io/ronindojo/RoninDojo 2>/dev/null
+git clone -b "${RONIN_DOJO_BRANCH}" "${RONIN_DOJO_REPO}" 2>/dev/null
 ${RED}
 ***
 Upgrade Complete!

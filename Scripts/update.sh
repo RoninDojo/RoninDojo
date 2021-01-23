@@ -104,3 +104,45 @@ _update_07() {
         cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
     fi
 }
+
+# Create mnt-usb.mount if missing and system is already mounted.
+_update_08() {
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    local uuid tmp systemd_mountpoint fstype
+
+    if findmnt /mnt/usb  1>/dev/null && [ ! -f /etc/systemd/system/mnt-usb.mount ]; then
+        uuid=$(lsblk -no UUID "${PRIMARY_STORAGE}")
+        tmp=${INSTALL_DIR:1}                                    # Remove leading '/'
+        systemd_mountpoint=${tmp////-}                          # Replace / with -
+        fstype=$(blkid -o value -s TYPE "${PRIMARY_STORAGE}")
+
+        cat <<EOF
+${RED}
+***
+Adding missing systemd mount unit file for device ${PRIMARY_STORAGE}...
+***
+${NC}
+EOF
+        sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
+[Unit]
+Description=Mount External SSD Drive ${PRIMARY_STORAGE}
+
+[Mount]
+What=/dev/disk/by-uuid/${uuid}
+Where=${systemd_mountpoint}
+Type=${fstype}
+Options=defaults
+
+[Install]
+WantedBy=multi-user.target
+EOF"
+        sudo systemctl enable mnt-usb.mount 2>/dev/null
+
+        _sleep 4 --msg "Restarting RoninDojo in"
+
+        ronin
+    fi
+}
