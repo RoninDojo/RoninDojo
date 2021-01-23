@@ -23,7 +23,7 @@ case $CHOICE in
         cat <<EOF
 ${RED}
 ***
-Use Ctrl+C at any time to exit Task Manager.
+Use Ctrl+C at any time to exit Task Manager...
 ***
 ${NC}
 EOF
@@ -33,32 +33,31 @@ EOF
         # returns to menu
         ;;
     2)
-        echo -e "${RED}"
-        echo "***"
-        echo "Showing CPU temp..."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Showing CPU temp...
+***
+${NC}
+EOF
         _sleep
         cpu=$(cat /sys/class/thermal/thermal_zone0/temp)
         tempC=$((cpu/1000))
         echo $tempC $'\xc2\xb0'C
         # cpu temp info
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Press any key to return..."
-        echo "***"
-        echo -e "${NC}"
-        _pause
+        _pause return
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # press any key to return to menu
         ;;
     3)
-        echo -e "${RED}"
-        echo "***"
-        echo "Showing network stats..."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Showing network stats...
+***
+${NC}
+EOF
         _sleep
         ifconfig eth0 | grep 'inet'
         network_rx=$(ifconfig eth0 | grep 'RX packets' | awk '{ print $6$7 }' | sed 's/[()]//g')
@@ -67,12 +66,7 @@ EOF
         echo "        Transmit: $network_tx"
         # network info, use wlan0 for wireless
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Press any key to return..."
-        echo "***"
-        echo -e "${NC}"
-        _pause
+        _pause return
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # press any key to return to menu
         ;;

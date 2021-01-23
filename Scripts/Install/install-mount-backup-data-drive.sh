@@ -25,15 +25,7 @@ No backup drive partition detected! Please make sure it is plugged in and has po
 ${NC}
 EOF
     _sleep 5
-
-    cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-    _pause
+    _pause return
     bash -c "${RONIN_SYSTEM_STORAGE}"
     # no drive detected, press any key to return to menu
 fi
@@ -91,14 +83,6 @@ _sleep 2
 sudo mount "${SECONDARY_STORAGE}" "${STORAGE_MOUNT}"
 # mount backup drive to ${STORAGE_MOUNT} directory
 
-cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-_pause
-
+_pause return
 bash -c "${RONIN_SYSTEM_STORAGE}"
 # press any key to return to menu-system-storage.sh

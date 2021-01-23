@@ -14,7 +14,9 @@ Dojo directory found, please uninstall Dojo first!
 ***
 ${NC}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+
+    _pause return
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 else
     cat <<EOF

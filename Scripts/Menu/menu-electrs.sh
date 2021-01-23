@@ -27,11 +27,13 @@ case $CHOICE in
         fi
         # check if electrs is already installed
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Starting Electrs..."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Starting Electrs...
+***
+${NC}
+EOF
         _sleep 2
         docker start indexer 1>/dev/null
         bash -c "${RONIN_ELECTRS_MENU}"
@@ -44,11 +46,13 @@ case $CHOICE in
         fi
         # check if electrs is already installed
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Stopping Electrs..."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Stopping Electrs...
+***
+${NC}
+EOF
         _sleep 2
         docker stop indexer 1>/dev/null
         bash -c "${RONIN_ELECTRS_MENU}"
@@ -61,11 +65,13 @@ case $CHOICE in
         fi
         # check if electrs is already installed
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Restarting Electrs..."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Restarting Electrs...
+***
+${NC}
+EOF
         _sleep 2
         docker restart indexer 1>/dev/null
         bash -c "${RONIN_ELECTRS_MENU}"
@@ -78,16 +84,22 @@ case $CHOICE in
         fi
         # check if electrs is already installed
 
-        echo -e "${RED}"
-        echo "***"
-        echo "Showing Electrs Logs..."
-        echo "***"
+        cat <<EOF
+${RED}
+***
+Showing Electrs Logs...
+***
+${NC}
+EOF
         _sleep
 
-        echo "***"
-        echo "Press Ctrl + C to exit at any time."
-        echo "***"
-        echo -e "${NC}"
+        cat <<EOF
+${RED}
+***
+Press Ctrl + C to exit at any time...
+***
+${NC}
+EOF
         _sleep 2
         cd "$dojo_path_my_dojo" || exit
         ./dojo.sh logs indexer

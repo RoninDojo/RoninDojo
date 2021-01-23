@@ -25,21 +25,18 @@ case $CHOICE in
             fi
             # is dojo installed?
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Deleting docker dangling images and images of previous versions in 5s..."
-            echo "***"
-            echo -e "${NC}"
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Use Ctrl+C to exit if needed!"
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${RED}
+***
+Deleting docker dangling images and images of previous versions...
+***
+${NC}
+EOF
+            _sleep 2
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh clean
 
+            _pause return
             bash -c "${RONIN_DOJO_MENU2}"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
@@ -49,22 +46,19 @@ case $CHOICE in
             fi
             # is dojo installed?
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Displaying the version info..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${RED}
+***
+Displaying the version info...
+***
+${NC}
+EOF
             _sleep 2
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh version
             # display dojo version info
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
-            _pause
+            _pause return
             bash -c "${RONIN_DOJO_MENU2}"
             # press any key to return
             ;;

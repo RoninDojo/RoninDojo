@@ -11,20 +11,20 @@ if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
     cat <<EOF
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}! Please contact support for assistance.
+Missing drive mount at ${INSTALL_DIR}! Please contact support for assistance...
 ***
 ${NC}
 EOF
-_sleep
-
+    _sleep 2
     cat <<EOF
 ${RED}
 ***
-Exiting RoninDojo in 5 seconds...
+Exiting RoninDojo...
 ***
 ${NC}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+    _pause return
     exit 1
 fi
 
@@ -36,7 +36,8 @@ RoninDojo is already installed...
 ***
 ${NC}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+    _pause return
     ronin
     exit
 fi
@@ -287,25 +288,7 @@ ${NC}
 EOF
     _sleep
 
-    cat <<EOF
-${RED}
-***
-To install features like Mempool Visualizer and Specter, head to Extras Install Menu.
-***
-${NC}
-EOF
-
-    _sleep
-
-    cat <<EOF
-${RED}
-***
-Press any key to continue...
-***
-${NC}
-EOF
-
-    _pause
+    _pause continue
     # press to continue is needed because sudo password can be requested for next steps
     # if the user is AFK there may be timeout
 
@@ -371,15 +354,6 @@ Install failed! Please contact support...
 ${NC}
 EOF
 
-        cat <<EOF
-${RED}
-***
-Press any key to continue...
-***
-${NC}
-EOF
-
-        _pause
-        _sleep 5 --msg "Returning to main menu in"
+        _pause return
         ronin
 fi

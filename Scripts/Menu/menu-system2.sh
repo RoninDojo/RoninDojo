@@ -35,15 +35,7 @@ ${NC}
 EOF
         _sleep 2
         sudo passwd
-
-        cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-        _sleep 2
+        _pause return
         bash -c "${RONIN_SYSTEM_MENU2}"
         # user change password, returns to menu
         ;;
@@ -82,7 +74,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Uninstalling RoninDojo and all features, use Ctrl+C to exit if needed!
+Uninstalling RoninDojo and all features, press Ctrl+C to exit if needed!
 ***
 ${NC}
 EOF
@@ -188,14 +180,8 @@ ${RED}
 Uninstalling Ronin UI Backend...
 ***
 ${NC}
-
-${RED}
-***
-Press Ctrl+C to cancel at anytime
-***
-${NC}
 EOF
-        _sleep 10 --msg "Uninstalling in"
+        _sleep 2
 
         # Delete app from process list
         pm2 delete "Ronin Backend" &>/dev/null
@@ -214,8 +200,8 @@ Complete!
 ***
 ${NC}
 EOF
-        _sleep 5 --msg "Returning to menu in"
-
+        _sleep 2
+        _pause return
         bash -c "${RONIN_SYSTEM_MENU2}"
         # return to menu
         ;;

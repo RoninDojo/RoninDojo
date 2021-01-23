@@ -43,14 +43,8 @@ ${NC}
 Maintenance Tool        = http://$V3_ADDR_API/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-                _pause
+                _pause return
                 bash -c "${RONIN_CREDENTIALS_MENU}"
                 # press any key to return to menu
                 # shows samouraio dojo credentials and returns to menu
@@ -71,14 +65,8 @@ ${NC}
 
 Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-            _pause
+            _pause return
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows whirlpool credentials and returns to menu
@@ -118,14 +106,7 @@ Mempool.space is not installed...
 ${NC}
 EOF
                 _sleep 2
-
-                cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
+                _pause return
                 bash -c "${RONIN_CREDENTIALS_MENU}"
             else
                 cat <<EOF
@@ -137,14 +118,9 @@ Mempool Credentials
 ***
 ${NC}
 Mempool Tor URL         =  http://${V3_ADDR_MEMPOOL}
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
 
-                _pause
+                _pause return
                 bash -c "${RONIN_CREDENTIALS_MENU}"
                 # press any key to return to menu
                 # see defaults.sh
@@ -164,14 +140,8 @@ Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
 Port                    =   ${BACKEND_PORT}
 Ronin URL               =   http://${BACKEND_TOR}
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-            _pause
+            _pause return
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # shows Ronin UI Backend credentials, returns to menu
             ;;
@@ -195,14 +165,8 @@ Bitcoin RPC Explorer:
 
 Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
 Password                = $EXPLORER_KEY
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-            _pause
+            _pause return
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows bitcoind and btc rpc explorer credentials and returns to menu
@@ -216,7 +180,8 @@ Specter Server is not installed...
 ***
 ${NC}
 EOF
-                _sleep 3 --msg "Returning to menu..."
+                _sleep 2
+                _pause return
                 bash -c "${RONIN_CREDENTIALS_MENU}"
             else
                 cat <<EOF
@@ -227,16 +192,10 @@ Specter Server Credentials
 ${NC}
 
 Tor URL                 = http://$V3_ADDR_SPECTER
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
             fi
-            _pause
 
+            _pause return
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows specter server credentials and returns to menu
@@ -341,14 +300,7 @@ ${NC}
 Tor URL                 = http://$V3_ADDR_SPECTER
 EOF
             fi
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # press any key to return to menu
             # shows all credentials and returns to menu

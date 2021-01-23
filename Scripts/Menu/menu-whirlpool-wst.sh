@@ -78,18 +78,13 @@ ${RED}
 ***
 Type: 'quit' at anytime to exit the Whirlpool Statitics Tool.
 ***
-
-***
-Press any key to continue...
-***
-${NC}
 EOF
 
-read -n 1 -r -s
-# press any key to return
+_pause continue
+# press any key to continue
 
 pipenv run python wst.py -w=/tmp
 # run wst.py using python3
 
-_sleep 3 --msg "Returning to menu in"
+_pause return
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-sw-toolkit.sh

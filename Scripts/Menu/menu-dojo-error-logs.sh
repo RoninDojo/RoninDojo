@@ -37,14 +37,7 @@ DOJO
               ./dojo.sh logs bitcoind -n 200 | grep -i 'error'
               # shows bitcoind error logs
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-              _pause
+              _pause return
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               # press any key to return to menu
             fi
@@ -61,19 +54,32 @@ DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
+                if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+                    cat <<EOF
+${RED}
+***
+Electrum Rust Server is your current Indexer...
+***
+${NC}
+EOF
+                    _sleep 2
+                    cat <<EOF
+${RED}
+***
+Please check Electrum Rust Server logs instead...
+***
+${NC}
+EOF
+                    _sleep 2
+                    _pause return
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              fi
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs db -n 500 | grep -i 'error'
               # shows db error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
 	          ;;
@@ -94,14 +100,7 @@ DOJO
               # shows indexer error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
@@ -122,14 +121,7 @@ DOJO
               # shows nodejs error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
@@ -150,14 +142,7 @@ DOJO
               # shows tor error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;

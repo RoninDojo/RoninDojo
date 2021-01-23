@@ -47,14 +47,7 @@ EOF
             _sleep 2
         fi
 
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-        _pause
+        _pause return
         # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
@@ -84,14 +77,7 @@ ${NC}
 EOF
         fi
 
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-        _pause
+        _pause return
         # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
@@ -111,15 +97,7 @@ EOF
         pm2 restart "Ronin Backend" 1>/dev/null
         # restart service
 
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-
-        _pause
+        _pause return
         # press to return is needed so the user has time to see outputs
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
@@ -136,7 +114,7 @@ EOF
 #         cd "${RONIN_UI_BACKEND_DIR}" || exit
 #         pm2 status
 
-#         _pause
+#         _pause return
 #         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
 #         ;;
     4)
@@ -158,7 +136,7 @@ EOF
         cd "${RONIN_UI_BACKEND_DIR}" || exit
         pm2 status
 
-        _pause
+        _pause return
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)

@@ -31,60 +31,108 @@ case $CHOICE in
         ;;
     2)
         if [ -d "$HOME"/dojo ]; then
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${RED}
+***
+Shutting down Dojo if running...
+***
+${NC}
+EOF
             cd "${dojo_path_my_dojo}" || exit
             _stop_dojo
             # stop dojo
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${RED}
+***
+Powering off machine, or press Ctrl + C to cancel...
+***
+${NC}
+EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Press any key to power off machine now...
+***
+${NC}
+EOF
+            _pause return
             sudo systemctl poweroff
             # power off machine
         else
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${RED}
+***
+Powering off machine, or press Ctrl + C to cancel...
+***
+${NC}
+EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Press any key to power off machine now...
+***
+${NC}
+EOF
+            _pause return
             sudo systemctl poweroff
             # power off machine
         fi
         ;;
     3)
         if [ -d "$HOME"/dojo ]; then
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${RED}
+***
+Shutting down Dojo if running...
+***
+${NC}
+EOF
             cd "${dojo_path_my_dojo}" || exit
             _stop_dojo
             # stop dojo
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${RED}
+***
+Restarting machine, or press Ctrl + C to cancel...
+***
+${NC}
+EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Press any key to restart machine now...
+***
+${NC}
+EOF
+            _pause return
             sudo systemctl reboot
             # restart machine
         else
-            echo -e "${RED}"
-            echo "***"
-            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${RED}
+***
+Restarting machine, or press Ctrl + C to cancel...
+***
+${NC}
+EOF
+            _sleep 2
+
+            cat <<EOF
+${RED}
+***
+Press any key to restart machine now...
+***
+${NC}
+EOF
+            _pause return
             sudo systemctl reboot
             # restart machine
         fi

@@ -26,15 +26,7 @@ ${NC}
 EOF
     _sleep 5
 
-    cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-    _pause
-
+    _pause return
     bash -c "${RONIN_SYSTEM_STORAGE}"
     # no drive detected, press any key to return to menu
 fi
@@ -138,14 +130,6 @@ df -h "${SECONDARY_STORAGE}"
 _sleep 2
 # checks disk info
 
-cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-_pause
-
+_pause return
 bash -c "${RONIN_SYSTEM_STORAGE}"
 # press any key to return to menu-system-storage.sh
