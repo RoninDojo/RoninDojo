@@ -1491,12 +1491,11 @@ _specter_hww_udev_rules() {
         sudo udevadm trigger
         sudo udevadm control --reload-rules
 
-        # _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker if not add it
         if getent group plugdev 1>/dev/null; then
             sudo groupadd plugdev
         fi
 
-        if ! getent group plugdev | grep -q "${USER}"; then
+        if ! getent group plugdev | grep -q "${USER}" &>/dev/null; then
             cat <<EOF
 ${RED}
 ***
@@ -1504,7 +1503,7 @@ Adding user to plugdev group...
 ***
 ${NC}
 EOF
-            sudo usermod -a plugdev "${USER}"
+            sudo gpasswd -a "${USER}" plugdev
             _sleep 5 --msg "Reloading RoninDojo in" && newgrp plugdev
         fi
     fi
@@ -1525,7 +1524,7 @@ Creating Self-Signed Certs for local LAN use
 ${NC}
 EOF
         cd "$HOME"/specter-"$SPECTER_VERSION"/docs || exit
-        ./gen-certificate.sh "${ip}"
+        ./gen-certificate.sh "${ip}" &>/dev/null
 
         cp key.pem "$HOME"/.config/RoninDojo/specter-key.pem
         cp cert.pem "$HOME"/.config/RoninDojo/specter-cert.pem
@@ -1636,7 +1635,7 @@ venv is already set...
 ${NC}
 EOF
     else
-        python3 -m venv "$HOME"/.venv_specter
+        python3 -m venv "$HOME"/.venv_specter &>/dev/null
     fi
 
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
@@ -1648,7 +1647,7 @@ EOF
 
     _specter_hww_udev_rules
 
-    _ufw_rule_add "${ip_range}" 25441 specter
+    _ufw_rule_add "${ip_range}" 25441
 
     sudo systemctl daemon-reload
     sudo systemctl {enable,start} specter 2>/dev/null
@@ -1768,7 +1767,7 @@ UFW already set for Specter on local LAN
 ${NC}
 EOF
     else
-        _ufw_rule_add "${ip_range}" 25441 specter
+        _ufw_rule_add "${ip_range}" "25441"
     fi
 
     sudo systemctl daemon-reload
@@ -1909,8 +1908,7 @@ _install_bisq(){
 _ufw_rule_add(){
     ip=$1
     port=$2
-    service=$3
 
-    sudo ufw allow to "$ip" from any "$port" "$service"
+    sudo ufw allow from "$ip" to any port "$port"
     sudo ufw reload
 }
