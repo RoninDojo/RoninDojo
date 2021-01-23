@@ -66,6 +66,8 @@ EOF
         # uses passwd to unlock root user, returns to menu
         ;;
     5)
+        dojo_stop=false
+
         if ! _dojo_check; then
             _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
         fi
@@ -127,6 +129,8 @@ EOF
 
                     sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
                     # moves blockchain data to uninstall-salvage to be used by the dojo install script
+
+                    dojo_stop=true
                     break
                     ;;
                 [nN][oO]|[Nn])
@@ -145,8 +149,9 @@ EOF
         done
 
         cd "$dojo_path_my_dojo" || exit
-        _stop_dojo
-        # stop dojo
+
+        $dojo_stop || _stop_dojo
+        # stop dojo only when salvage data was not initiated
 
         cat <<EOF
 ${RED}
