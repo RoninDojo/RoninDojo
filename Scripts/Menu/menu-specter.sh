@@ -8,8 +8,7 @@
 OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
-         4 "Onion Address"
-         5 "Go Back")
+         4 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -64,25 +63,11 @@ EOF
         sudo systemctl restart specter
 
         _sleep
+
         bash -c "${RONIN_SPECTER_MENU}"
         # Restart specter.service and return to same menu
         ;;
     4)
-        cat <<EOF
-${RED}
-***
-Attempting to Upgrade Specter...
-***
-${NC}
-EOF
-        _upgrade_specter
-        cd "${dojo_path_my_dojo}" || exit
-        ./dojo.sh upgrade --nolog
-
-        bash -c "${RONIN_SPECTER_MENU}"
-        # Display onion and return to same menu
-        ;;
-    5)
         ronin
         # Return to main menu
         ;;
