@@ -42,20 +42,22 @@ case $CHOICE in
             cat <<EOF
 ${RED}
 ***
-RoninDojo update available!
+RoninDojo update is available!
 ***
 ${NC}
 EOF
-            _sleep --msg 5 "Select Update RoninDojo from Menu. Returning in..."
+            _sleep 2
+            _pause return
         else
             cat <<EOF
 ${RED}
 ***
-No Update available!
+No update is available!
 ***
 ${NC}
 EOF
-            _sleep --msg "Returning to menu in ..."
+            _sleep 2
+            _pause return
         fi
         # check for Ronin update from site
 
@@ -87,15 +89,16 @@ ${NC}
 EOF
 _sleep 10 --msg "Updating in"
 
-        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d "${DOJO_PATH}" ]; then
-            cat <<DOJO
+        if [ ! -d "$HOME"/RoninDojo ] || [ ! -d ${DOJO_PATH} ]; then
+            cat <<EOF
 ${RED}
 ***
-Missing ${HOME}/RoninDojo} directory, skipping! Returning to menu...
+Missing ${HOME}/RoninDojo} directory, skipping!
 ***
 ${NC}
-DOJO
-            _sleep 3
+EOF
+            _sleep 2
+            _pause return
             bash -c "${RONIN_UPDATES_MENU}"
             exit 1
 
@@ -122,14 +125,15 @@ EOF
 
         if ! _dojo_check; then
             if [ ! -d "${DOJO_PATH}" ]; then
-                cat <<DOJO
+                cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory, skipping! Returning to menu...
+Missing ${DOJO_PATH} directory, skipping! 
 ***
 ${NC}
-DOJO
-                _sleep 3
+EOF
+                _sleep 2
+                _pause return
                 bash -c "${RONIN_SYSTEM_MENU}"
                 exit 1
             fi

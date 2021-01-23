@@ -34,14 +34,7 @@ fi
 pipenv install -r requirements.txt &>/dev/null
 pipenv install sympy numpy &>/dev/null
 
-cat <<EOF
-${RED}
-***
-Press any key to continue...
-***
-${NC}
-EOF
-_pause
+_pause continue
 
 # will return to boltzmann menu option script
 bash -c "$RONIN_BOLTZMANN_MENU"

@@ -26,14 +26,7 @@ ${NC}
 EOF
     _sleep 5
 
-    cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-    _pause
+    _pause return
     bash -c "${RONIN_SYSTEM_STORAGE}"
     # no drive detected, press any key to return to menu
 fi
@@ -88,13 +81,6 @@ _sleep 2
 sudo umount "${STORAGE_MOUNT}"
 # umount backup drive ${SECONDARY_STORAGE}
 
-cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-_pause
+_pause return
 bash -c "${RONIN_SYSTEM_STORAGE}"
 # press any key to return to menu-system-storage.sh

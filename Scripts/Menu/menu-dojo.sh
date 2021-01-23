@@ -33,14 +33,7 @@ Dojo is already started!
 ${NC}
 EOF
                 _sleep 2
-                cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-                _pause
+                _pause return
                 bash -c "${RONIN_DOJO_MENU}"
             else
                 _is_dojo "${RONIN_DOJO_MENU}"
@@ -64,27 +57,13 @@ EOF
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
 
-                cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-                _pause
+                _pause return
                 bash -c "${RONIN_DOJO_MENU}"
                 # press any key to return to menu
                 ;;
         2)
             _stop_dojo
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "${RONIN_DOJO_MENU}"
             # press any key to return to menu
             ;;
@@ -128,14 +107,7 @@ DOJO
                 docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
                 # restart dojo
 
-                cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-                _pause
+                _pause return
                 bash -c "${RONIN_DOJO_MENU}"
                 # press any key to return to menu
             fi

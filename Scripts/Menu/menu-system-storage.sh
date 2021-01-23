@@ -38,14 +38,7 @@ _sleep 2
         echo "External: ${hdd} remaining"
         # disk space info
 
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-        _pause
+        _pause return
         bash -c "${RONIN_SYSTEM_STORAGE}"
         # press any key to return to menu
         ;;

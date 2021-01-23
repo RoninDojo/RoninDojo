@@ -12,60 +12,67 @@ Blockchain data not found! Did you forget to install RoninDojo?
 ***
 ${NC}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+
+    _pause return
     bash -c "${RONIN_DOJO_MENU2}"
 fi
 # if data directory is not found then warn and return to menu
 
-echo -e "${RED}"
-echo "***"
-echo "Preparing to copy data to your Backup Data Drive now..."
-echo "***"
-echo -e "${NC}"
+    cat <<EOF
+${RED}
+***
+Preparing to copy data to your Backup Data Drive now...
+***
+${NC}
+EOF
 _sleep 3
 
 if [ -b "${SECONDARY_STORAGE}" ]; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Your backup drive partition has been detected..."
-  echo "***"
-  echo -e "${NC}"
+      cat <<EOF
+${RED}
+***
+Your backup drive partition has been detected...
+***
+${NC}
+EOF
   _sleep 2
   # checks for ${SECONDARY_STORAGE}
 else
-  echo -e "${RED}"
-  echo "***"
-  echo "No backup drive partition detected! Please make sure it is plugged in and has power if needed."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 5
+    cat <<EOF
+${RED}
+***
+No backup drive partition detected! Please make sure it is plugged in and has power if needed...
+***
+${NC}
+EOF
+    _sleep 2
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any key to return..."
-  echo "***"
-  echo -e "${NC}"
-  _pause
+  _pause return
   bash -c "${RONIN_DOJO_MENU2}"
   # no drive detected, press any key to return to menu
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Making sure Dojo is stopped..."
-echo "***"
-echo -e "${NC}"
+    cat <<EOF
+${RED}
+***
+Making sure Dojo is stopped...
+***
+${NC}
+EOF
 _sleep 2
 
 cd "${dojo_path_my_dojo}" || exit
 _stop_dojo
 # stop dojo
 
-echo -e "${RED}"
-echo "***"
-echo "Copying..."
-echo "***"
-echo -e "${NC}"
+    cat <<EOF
+${RED}
+***
+Copying...
+***
+${NC}
+EOF
 _sleep 2
 
 sudo test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
@@ -77,7 +84,7 @@ if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
         cat <<EOF
 ${RED}
 ***
-rsync package missing...
+Rsync package missing...
 ***
 ${NC}
 EOF
@@ -91,34 +98,32 @@ elif sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
     # use cp for initial fresh IBD copy
 else
     sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
-    cat <<BACKUP
+    cat <<EOF
 ${RED}
 ***
 No backup data available to send! Umounting drive now...
 ***
 ${NC}
-BACKUP
-    _sleep 5 "Returning to menu in"
+EOF
+    _sleep 2
 
+    _pause return
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
-echo -e "${RED}"
-echo "***"
-echo "Transfer Complete!"
-echo "***"
-echo -e "${NC}"
+    cat <<EOF
+${RED}
+***
+Transfer Complete!
+***
+${NC}
+EOF
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to continue..."
-echo "***"
-echo -e "${NC}"
-_pause
+_pause continue
 
-cat <<EOF
+    cat <<EOF
 ${RED}
 ***
 Unmounting...
@@ -130,18 +135,31 @@ _sleep 2
 sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
 # unmount backup drive and remove directory
 
-echo -e "${RED}"
-echo "***"
-echo "You can now safely unplug your backup drive!"
-echo "***"
-echo -e "${NC}"
+    cat <<EOF
+${RED}
+***
+You can now safely unplug your backup drive!
+***
+${NC}
+EOF
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to return..."
-echo "***"
-echo -e "${NC}"
-_pause
+    cat <<EOF
+${RED}
+***
+Starting Dojo...
+***
+${NC}
+EOF
+    _sleep 2
+
+    cd "${dojo_path_my_dojo}" || exit
+    _source_dojo_conf
+
+    # Start docker containers
+    yamlFiles=$(_select_yaml_files)
+    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+
+_pause return
 bash -c "${RONIN_DOJO_MENU2}"
 # return to menu

@@ -41,14 +41,7 @@ Install Mempool using the applications install menu...
 ${NC}
 EOF
             _sleep 2
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "${RONIN_APPLICATIONS_MENU}"
         else
             bash -c "${RONIN_MEMPOOL_MENU}"
@@ -73,14 +66,7 @@ Install Specter Server using the applications install menu...
 ${NC}
 EOF
             _sleep 2
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "${RONIN_APPLICATIONS_MENU}"
         else
             bash -c "${RONIN_SPECTER_MENU}"
@@ -123,14 +109,7 @@ Enable Bisq connections using the applications install menu...
 ${NC}
 EOF
             _sleep 2
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "$RONIN_APPLICATIONS_MENU"
         else
             cat <<EOF
@@ -149,14 +128,7 @@ Enjoy those no-KYC sats...
 ${NC}
 EOF
             _sleep 2
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "$RONIN_APPLICATIONS_MENU"
         fi
         # Bisq check
@@ -180,14 +152,7 @@ Supported devices are Rockpro64 and Rockpi4...
 ${NC}
 EOF
             _sleep 2
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
+            _pause return
             bash -c "$RONIN_APPLICATIONS_MENU"
         fi
 
@@ -231,14 +196,7 @@ Fan control already installed!
 ***
 ${NC}
 EOF
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-        _pause
+        _pause return
         bash -c "${RONIN_APPLICATIONS_MENU}"
         fi
         ;;

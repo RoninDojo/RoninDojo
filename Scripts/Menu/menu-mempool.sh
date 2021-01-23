@@ -30,14 +30,7 @@ Mempool.space is not installed...
 ${NC}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
@@ -65,14 +58,7 @@ Mempool.space is not installed...
 ${NC}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
@@ -98,14 +84,7 @@ Mempool.space is not installed...
 ${NC}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF
@@ -134,14 +113,7 @@ Mempool.space is not installed...
 ${NC}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
         else
             cat <<EOF

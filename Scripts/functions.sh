@@ -214,9 +214,16 @@ _sleep() {
 }
 
 #
-# Pause script
+# Pause & return or continue
 #
 _pause() {
+    cat <<EOF
+${RED}
+***
+Press any key to ${1}...
+***
+${NC}
+EOF
     read -n 1 -r -s
 }
 
@@ -386,14 +393,7 @@ Install or swap Indexer & Electrs using the applications install menu...
 ${NC}
 EOF
         _sleep 2
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-        _pause
+        _pause return
         return 1
     fi
 
@@ -454,8 +454,7 @@ RoninUI Backend is not installed, installing now...
 ${NC}
 EOF
         _install_ronin_ui_backend
-        _sleep 2 --msg "Returning to menu in"
-
+        _pause return
         ronin
     fi
     # check if Ronin UI Backend is already installed
@@ -649,7 +648,7 @@ _no_indexer_found() {
                     cat <<EOF
 ${RED}
 ***
-Installing Samourai Indexer...
+Selected Samourai Indexer...
 ***
 ${NC}
 EOF
@@ -664,7 +663,7 @@ EOF
                     cat <<EOF
 ${RED}
 ***
-Installing Electrum Rust Server...
+Selected Electrum Rust Server...
 ***
 ${NC}
 EOF
@@ -717,14 +716,7 @@ ${RED}
 Missing ${DOJO_PATH} directory!
 ${NC}
 EOF
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-        _pause
+        _pause return
         bash -c "$menu"
         exit 1
 fi
@@ -928,22 +920,14 @@ _stop_dojo() {
     dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
 
     if [ ! -d "${DOJO_PATH}" ]; then
-        cat <<DOJO
+        cat <<EOF
 ${RED}
 ***
 Missing ${DOJO_PATH} directory!
 ***
 ${NC}
-DOJO
-        _sleep 2
-        cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-        _pause
+        _pause return
         bash -c "$RONIN_DOJO_MENU"
         exit 1
     fi
