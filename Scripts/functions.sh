@@ -545,10 +545,10 @@ EOF
             npm run start &>/dev/null
 
             # pm2 save process list
-            pm2 save 1>/dev/null
+            pm2 save &>/dev/null
 
             # pm2 system startup
-            pm2 startup 1>/dev/null
+            pm2 startup &>/dev/null
 
             sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "$USER" --hp "$HOME" 1>/dev/null
 
