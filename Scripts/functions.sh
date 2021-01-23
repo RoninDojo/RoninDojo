@@ -758,6 +758,45 @@ _mempool_urls_to_local_btc_explorer() {
 }
 
 #
+# Update Samourai Dojo Repository
+#
+_dojo_update() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    cd "${DOJO_PATH}" || exit
+
+    # Fetch remotes
+    git fetch --all --tags --force &>/dev/null
+
+    # Reset to origin master branch
+    git reset --hard "${SAMOURAI_COMMITISH}" 1>/dev/null
+}
+
+#
+# Upgrade Samourai Dojo containers
+#
+_dojo_upgrade() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    cat <<EOF
+${RED}
+***
+Performing Samourai Dojo upgrade...
+${NC}
+EOF
+
+    _stop_dojo
+    cd "${dojo_path_my_dojo}" || exit
+
+    . dojo.sh upgrade --nolog
+    _pause return
+
+    bash -c "${RONIN_APPLICATIONS_MENU}"
+}
+
+#
 # Dojo Credentials Backup
 #
 _dojo_backup() {
@@ -1045,23 +1084,6 @@ _remove_ipv6() {
     fi
 
     return 0
-}
-
-#
-# Update Samourai Dojo
-#
-_dojo_update() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
-    _load_user_conf
-
-    cd "${DOJO_PATH}" || exit
-
-    # Fetch remotes
-    git fetch --all --tags --force &>/dev/null
-
-    # Reset to origin master branch
-    git reset --hard "${SAMOURAI_COMMITISH}" 1>/dev/null
 }
 
 #

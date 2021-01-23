@@ -4,12 +4,12 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+upgrade=false
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
 options=(1 "Install Mempool Space Visualizer" off    # any option can be set to default to "on"
          2 "Install Specter" off
          3 "Enable Bisq Connection" off
-         4 "Swap Electrs/Indexer" off
-         5 "Go Back" off)
+         4 "Swap Electrs/Indexer" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices
@@ -19,12 +19,14 @@ do
             if _is_mempool ; then
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
+                upgrade=true
             fi
             # Checks for mempool, then installs
             ;;
         2)
             if ! _is_specter ; then
                 _install_specter
+                upgrade=true
             else
                 cat <<EOF
 ${RED}
@@ -43,12 +45,14 @@ ${NC}
 EOF
                 _sleep 2
                 _upgrade_specter
+                upgrade=true
             fi
             # Runs dojo install script
             ;;
         3)
             if ! _is_bisq ; then
                 _install_bisq
+                upgrade=true
             fi
             # Checks for bisq file and modifies restart.sh and creates file
             ;;
@@ -79,10 +83,11 @@ EOF
                 _no_indexer_found
             fi
             # check for which indexer, if no indexer ask if they want to install
-            ;;
-        5)
-            bash -c "${RONIN_APPLICATIONS_MENU}"
-            # return to application menu
+            upgrade=true
             ;;
     esac
 done
+
+if $upgrade; then
+    _dojo_upgrade
+fi
