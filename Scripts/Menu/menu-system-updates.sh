@@ -128,7 +128,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory, skipping! 
+Missing ${DOJO_PATH} directory, skipping!
 ***
 ${NC}
 EOF
