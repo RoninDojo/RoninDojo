@@ -1509,7 +1509,7 @@ _specter_hww_udev_rules() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
-        sudo cp "$HOME"/specter-"$SPECTER_VERSION"/udev/*.rules /etc/udev/rules.d/
+        sudo cp "$HOME"/specter-"$specter_version"/udev/*.rules /etc/udev/rules.d/
         sudo udevadm trigger
         sudo udevadm control --reload-rules
 
@@ -1545,7 +1545,7 @@ Creating Self-Signed Certs for local LAN use
 ***
 ${NC}
 EOF
-        cd "$HOME"/specter-"$SPECTER_VERSION"/docs || exit
+        cd "$HOME"/specter-"$specter_version"/docs || exit
         ./gen-certificate.sh "${ip}" &>/dev/null
 
         cp key.pem "$HOME"/.config/RoninDojo/specter-key.pem
@@ -1594,7 +1594,7 @@ User=$USER
 Type=simple
 ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
-WorkingDirectory=$HOME/specter-$SPECTER_VERSION/src
+WorkingDirectory=$HOME/specter-$specter_version/src
 Restart=always
 RestartSec=60
 
@@ -1623,7 +1623,7 @@ _specter_uninstall() {
     # Resets to defaults
 
     if [ -f /etc/udev/rules.d/51-coinkite.rules ]; then
-        cd "$HOME"/specter-"$SPECTER_VERSION"/udev || exit
+        cd "$HOME"/specter-"$specter_version"/udev || exit
 
         for file in *.rules; do
             sudo rm /etc/udev/rules.d/"${file}"
@@ -1646,12 +1646,12 @@ _specter_install(){
     cat <<EOF
 ${RED}
 ***
-Installing Specter $SPECTER_VERSION...
+Installing Specter $specter_version...
 ***
 ${NC}
 EOF
 
-    git clone -q -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION" &>/dev/null || exit
+    git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
@@ -1670,7 +1670,7 @@ EOF
         sudo pacman -S --noconfirm gcc
     fi
 
-    if ! hash libusb 2>/dev/null; then
+    if ! pacman -Q libusb 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
@@ -1693,7 +1693,7 @@ EOF
         python3 -m venv "$HOME"/.venv_specter &>/dev/null
     fi
 
-    cd "$HOME"/specter-"$SPECTER_VERSION" || exit
+    cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
 
     _specter_create_systemd_unit_file
@@ -1705,7 +1705,8 @@ EOF
     _ufw_rule_add "${ip_range}" 25441
 
     sudo systemctl daemon-reload
-    sudo systemctl {enable,start} specter 2>/dev/null
+    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl start specter 2>/dev/null
     # Using enable and start to ensure the startup creates the .specter dir
 
     return 0
@@ -1719,24 +1720,24 @@ _specter_upgrade(){
     cd "${HOME}" || exit
 
     for dir in specter*; do
-        if [[ "${dir}" != specter-$SPECTER_VERSION ]]; then
+        if [[ "${dir}" != specter-$specter_version ]]; then
             cat <<EOF
 ${RED}
 ***
-Proceeding to upgrade to $SPECTER_VERSION...
+Proceeding to upgrade to $specter_version...
 ***
 ${NC}
 EOF
-            wget --quiet "$SPECTER_SIGN_KEY_URL"
-            gpg --import "$SPECTER_SIGN_KEY"
-            rm "$SPECTER_SIGN_KEY"
+            wget --quiet "$specter_sign_key_url"
+            gpg --import "$specter_sign_key"
+            rm "$specter_sign_key"
 
-            wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/sha256.signed.txt
+            wget --quiet "$specter_url"/v"$specter_version"/sha256.signed.txt
             gpg --verify sha256.signed.txt
 
-            wget --quiet "$SPECTER_URL"/v"$SPECTER_VERSION"/cryptoadvance.specter-"$SPECTER_VERSION".tar.gz
+            wget --quiet "$specter_url"/v"$specter_version"/cryptoadvance.specter-"$specter_version".tar.gz
 
-            if grep cryptoadvance.specter-"$SPECTER_VERSION".tar.gz sha256.signed.txt | sha256sum -c -; then
+            if grep cryptoadvance.specter-"$specter_version".tar.gz sha256.signed.txt | sha256sum -c -; then
                 cat <<EOF
 ${RED}
 ***
@@ -1759,7 +1760,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Proceeding to upgrade to $SPECTER_VERSION...
+Proceeding to upgrade to $specter_version...
 ***
 ${NC}
 EOF
@@ -1785,9 +1786,9 @@ EOF
         fi
     done
 
-    mkdir "$HOME"/specter-"$SPECTER_VERSION"
+    mkdir "$HOME"/specter-"$specter_version"
 
-    tar -zxf cryptoadvance.specter-"$SPECTER_VERSION".tar.gz -C "$HOME"/specter-"$SPECTER_VERSION" --strip-components 1
+    tar -zxf cryptoadvance.specter-"$specter_version".tar.gz -C "$HOME"/specter-"$specter_version" --strip-components 1
     rm sha256.signed.txt ./*.tar.gz
 
     if [ -d .venv_specter ]; then
@@ -1802,7 +1803,7 @@ EOF
         python3 -m venv "$HOME"/.venv_specter &>/dev/null
     fi
 
-    cd "$HOME"/specter-"$SPECTER_VERSION" || exit
+    cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
     # Create file .flaskenv
 
