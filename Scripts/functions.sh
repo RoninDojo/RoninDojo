@@ -1596,7 +1596,7 @@ Installing Specter $SPECTER_VERSION ...
 ${NC}
 EOF
 
-    git clone -q -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION"
+    git clone -q -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION" || exit
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
@@ -1778,7 +1778,7 @@ EOF
 }
 
 _backup_dojo_data_dir(){
-    . "${HOME}"RoninDojo/Scripts/defaults.sh
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
     for data in ${backup_dojo_data}; do
         test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
@@ -1797,6 +1797,8 @@ _backup_dojo_data_dir(){
 }
 
 _recover_dojo_data_dir(){
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
     for data in "${!backup_dojo_data[@]}"; do
         test -d "${INSTALL_DIR}"/backup/"${data}" || exit
         if [ -d "${DOJO_PATH}" ]; then
@@ -1815,6 +1817,8 @@ _recover_dojo_data_dir(){
 }
 
 _install_wst(){
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
     cd "$HOME" || exit
 
     git clone -q "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
@@ -1842,7 +1846,7 @@ EOF
 }
 
 _install_boltzmann(){
-    . "${HOME}"RoninDojo/Scripts/defaults.sh
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
     cd "$HOME" || exit
 
@@ -1878,7 +1882,7 @@ EOF
 }
 
 _is_bisq(){
-    . "${HOME}"RoninDojo/Scripts/defaults.sh
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
     if [ -f "${ronin_data_dir}"/bisq.txt ]; then
         return 0
@@ -1888,7 +1892,7 @@ _is_bisq(){
 }
 
 _install_bisq(){
-    . "${HOME}"RoninDojo/Scripts/defaults.sh
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
     _create_ronin_data_dir
 

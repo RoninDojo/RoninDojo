@@ -127,7 +127,7 @@ fi
 SPECTER_SIGN_KEY_URL="https://stepansnigirev.com/ss-specter-release.asc"
 SPECTER_SIGN_KEY="ss-specter-release.asc"
 SPECTER_URL="https://github.com/cryptoadvance/specter-desktop.git"
-SPECTER_VERSION="1.0.0"
+SPECTER_VERSION="v1.0.0"
 
 # Network info
 ip=$(ip route get 1 | awk '{print $7}')
