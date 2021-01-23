@@ -1596,7 +1596,7 @@ Installing Specter $SPECTER_VERSION...
 ${NC}
 EOF
 
-    git clone -q -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION" || exit
+    git clone -q -b "$SPECTER_VERSION" "$SPECTER_URL" "$HOME"/specter-"$SPECTER_VERSION" &>/dev/null || exit
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
@@ -1639,7 +1639,7 @@ EOF
     fi
 
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
-    "$HOME"/.venv_specter/bin/python3 setup.py install
+    "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
 
     _specter_create_systemd_unit_file
 
@@ -1744,11 +1744,11 @@ venv is already set...
 ${NC}
 EOF
     else
-        python3 -m venv "$HOME"/.venv_specter
+        python3 -m venv "$HOME"/.venv_specter &>/dev/null
     fi
 
     cd "$HOME"/specter-"$SPECTER_VERSION" || exit
-    "$HOME"/.venv_specter/bin/python3 setup.py install
+    "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
     # Create file .flaskenv
 
     _specter_create_systemd_unit_file --upgrade
