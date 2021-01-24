@@ -784,6 +784,7 @@ _dojo_upgrade() {
 ${RED}
 ***
 Performing Samourai Dojo upgrade...
+***
 ${NC}
 EOF
 
