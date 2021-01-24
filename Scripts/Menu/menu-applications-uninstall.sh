@@ -46,4 +46,13 @@ done
 
 if $upgrade; then
     _dojo_upgrade
+else
+    cat <<EOF
+${RED}
+Nothing to install...
+***
+${NC}
+EOF
+    _pause return
+    ronin
 fi
