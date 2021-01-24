@@ -1246,7 +1246,7 @@ _disable_bluetooth() {
     _systemd_unit_exist bluetooth || return 1
 
     if _is_active bluetooth; then
-        sudo systemctl disable bluetooth 2>/dev/null
+        sudo systemctl --quiet disable bluetooth 2>/dev/null
         sudo systemctl stop bluetooth
         return 0
     fi
@@ -1611,13 +1611,10 @@ _specter_uninstall() {
 
     if systemctl is-active --quiet specter; then
         sudo systemctl stop specter
-        sudo systemctl disable specter 1>/dev/null
+        sudo systemctl --quiet disable specter 1>/dev/null
+        sudo rm /etc/systemd/system/specter.service
     fi
-
-    sudo rm /etc/systemd/system/specter.service
-    rm -rf "$HOME"/.specter "$HOME"/specter-*
-    rm "$HOME"/.config/RoninDojo/specter*
-    # Deletes the .specter dir, source dir, certificate files and specter.service file
+    # Remove systemd unit
 
     cd "${dojo_path_my_dojo}"/bitcoin || exit
     git checkout restart.sh &>/dev/null && cd - || exit
@@ -1634,6 +1631,10 @@ _specter_uninstall() {
         sudo udevadm control --reload-rules
     fi
     # Delete udev rules
+
+    rm -rf "$HOME"/.specter "$HOME"/specter-*
+    rm "$HOME"/.config/RoninDojo/specter*
+    # Deletes the .specter dir, source dir, certificate files and specter.service file
 
     sudo sed -i "s:^ControlPort .*$:#ControlPort 9051:" /etc/tor/torrc
     sudo systemctl reload tor
