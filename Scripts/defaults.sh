@@ -60,6 +60,7 @@ RONIN_UI_BACKEND_MENU="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh"
 RONIN_UPDATES_MENU="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
 RONIN_WHIRLPOOL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
 RONIN_WHIRLPOOL_STAT_MENU="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh"
+ronin_samourai_toolkit_menu="$HOME/RoninDojo/Scripts/Menu/menu-samourai-toolkit.sh"
 
 #
 # Terminal Colors

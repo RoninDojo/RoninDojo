@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -61,6 +61,6 @@ do
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
     pipenv run python ludwig.py --rpc --txids="${txids}"
   else
-    bash "$HOME"/RoninDojo/Scripts/Menu/menu-sw-toolkit.sh
+    bash -c "${ronin_samourai_toolkit_menu}"
   fi
 done
