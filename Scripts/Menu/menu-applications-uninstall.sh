@@ -49,6 +49,7 @@ if $upgrade; then
 else
     cat <<EOF
 ${RED}
+***
 Nothing to install...
 ***
 ${NC}

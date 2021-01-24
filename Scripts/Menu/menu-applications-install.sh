@@ -25,8 +25,7 @@ do
             ;;
         2)
             if ! _is_specter ; then
-                _specter_install
-                upgrade=true
+                _specter_install && upgrade=true
             else
                 cat <<EOF
 ${RED}
@@ -44,15 +43,13 @@ Updating to latest version...
 ${NC}
 EOF
                 _sleep 2
-                _specter_upgrade
-                upgrade=true
+                _specter_upgrade && upgrade=true
             fi
             # Runs dojo install script
             ;;
         3)
             if ! _is_bisq ; then
-                _install_bisq
-                upgrade=true
+                _install_bisq && upgrade=true
             fi
             # Checks for bisq file and modifies restart.sh and creates file
             ;;
@@ -93,6 +90,7 @@ if $upgrade; then
 else
     cat <<EOF
 ${RED}
+***
 Nothing to install...
 ***
 ${NC}

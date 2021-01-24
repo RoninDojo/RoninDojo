@@ -1634,6 +1634,10 @@ _specter_uninstall() {
     fi
     # Delete udev rules
 
+    sudo sed -i "s:^ControlPort .*$:#ControlPort 9051:" /etc/tor/torrc
+    sudo systemctl reload tor
+    # Disable tor control port then restart daemon
+
     sudo gpasswd -d "${USER}" plugdev
     # Remove user from plugdev group
 }
@@ -1694,7 +1698,7 @@ EOF
     fi
 
     cd "$HOME"/specter-"$specter_version" || exit
-    "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
+    "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
 
     _specter_create_systemd_unit_file
 
@@ -1782,7 +1786,7 @@ ${NC}
 EOF
             _sleep 2
             sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
-            return 0
+            return 1
         fi
     done
 
