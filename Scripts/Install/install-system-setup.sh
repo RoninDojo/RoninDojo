@@ -93,9 +93,6 @@ done
 # install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
 
-sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
-# add packages to Ignore durink upgrades if user runs pacman -Syyu to prevent breaking changes
-
 if sudo ufw status | grep 22 > /dev/null ; then
     cat <<EOF
 ${RED}

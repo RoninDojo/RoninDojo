@@ -22,9 +22,6 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
-        # Add selected packages to irnore during an upgrade
-
         sudo pacman -Syy
         # Update Mirrors and continue.
 
@@ -66,9 +63,6 @@ EOF
         ;;
 
     3)
-        # Add selected packages to ignorepkg variable during an upgrade
-        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
-
         # Update Mirrors
         sudo pacman -Syy
 

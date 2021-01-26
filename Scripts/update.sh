@@ -93,8 +93,8 @@ _update_05() {
 
 # Modify pacman.conf and add ignore packages
 _update_06() {
-    if ! grep "tor" /etc/pacman.conf 1>/dev/null; then
-        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = tor docker docker-compose bridge-utils:" /etc/pacman.conf
+    if ! grep "${pkg_ignore[0]}" /etc/pacman.conf 1>/dev/null; then
+        sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = ${pkg_ignore[*]}:" /etc/pacman.conf
     fi
 }
 

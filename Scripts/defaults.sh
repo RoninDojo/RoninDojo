@@ -32,6 +32,16 @@ declare -A package_dependencies=(
 )
 
 #
+# OS package ignore list
+#
+declare -a pkg_ignore=(
+    tor
+    docker
+    docker-compose
+    bridge-utils
+)
+
+#
 # Dialog Variables
 #
 HEIGHT=22
