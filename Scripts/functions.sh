@@ -482,12 +482,10 @@ _ronin_ui_update_check() {
         # Check if update is needed
         if [[ "${ver}" != "${current_ver}" ]]; then
             return 0
-        else
-            return 1
         fi
     fi
 
-    return 1
+    return 0
 }
 
 #
