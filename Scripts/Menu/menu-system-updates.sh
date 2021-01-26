@@ -27,8 +27,10 @@ case $CHOICE in
 
         sudo pacman -Syy
         # Update Mirrors and continue.
-        ;;
 
+        _pause return
+        bash -c "${RONIN_SYSTEM_MENU}"
+        ;;
     2)
         if [ -f "${ronin_data_dir}"/ronin-latest.txt ] ; then
             rm "${ronin_data_dir}"/ronin-latest.txt
@@ -47,7 +49,6 @@ RoninDojo update is available!
 ${NC}
 EOF
             _sleep 2
-            _pause return
         else
             cat <<EOF
 ${RED}
@@ -57,10 +58,10 @@ No update is available!
 ${NC}
 EOF
             _sleep 2
-            _pause return
         fi
         # check for Ronin update from site
 
+        _pause return
         bash -c "${RONIN_SYSTEM_MENU}"
         ;;
 
@@ -143,7 +144,6 @@ EOF
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
         ;;
-
     4)
         bash -c "${RONIN_SYSTEM_MENU}"
         # returns to main system menu
