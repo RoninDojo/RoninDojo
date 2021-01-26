@@ -455,26 +455,45 @@ _is_ronin_ui_backend() {
     _load_user_conf
 
     if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-        cat <<EOF
-${RED}
-***
-RoninUI Backend is not installed, installing now...
-***
-${NC}
-EOF
-        _install_ronin_ui_backend
-        _pause return
-        ronin
+        return 1
     fi
     # check if Ronin UI Backend is already installed
+
+    return 0
+}
+
+#
+# UI check for update
+#
+_ronin_ui_update_check() {
+    if _is_ronin_ui_backend; then
+        # Fetch Ronin UI Backend archive
+        wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
+
+        # Extract latest tar archive filename and latest version
+        pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
+        ver=$( cut -d ' ' -f2 </tmp/latest.txt )
+
+        # Get latest version of current RoninBackend if available
+        if [ -f "${RONIN_UI_BACKEND_DIR}"/package.json ]; then
+            current_ver=$(jq --raw-output '.version' "${RONIN_UI_BACKEND_DIR}"/package.json)
+        fi
+
+        # Check if update is needed
+        if [[ "${ver}" != "${current_ver}" ]]; then
+            return 0
+        else
+            return 1
+        fi
+    fi
+
+    return 1
 }
 
 #
 # Install Ronin UI Backend
 #
 _install_ronin_ui_backend() {
-    local ver current_ver pkg
-
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
 
@@ -483,13 +502,13 @@ _install_ronin_ui_backend() {
     # Import PGP keys for backend archive
     #curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
 
-    cat <<BACKEND
+    cat <<EOF
 ${RED}
 ***
-Checking package dependencies for RoninUI Backend...
+Checking package dependencies for Ronin UI Backend...
 ***
 ${NC}
-BACKEND
+EOF
     _sleep 2
 
     # Check for nodejs
@@ -512,59 +531,41 @@ BACKEND
         sudo pacman --quiet -S --noconfirm jq
     fi
 
-    # Fetch Ronin UI Backend archive
-    wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
+    # cd into RoninBackend dir
+    cd "${RONIN_UI_BACKEND_DIR}" || exit
 
-    # Extract latest tar archive filename and latest version
-    pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
-    ver=$( cut -d ' ' -f2 </tmp/latest.txt )
+    # Fetch tar archive
+    wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"
 
-    # Create RoninBackend directory if missing
-    test -d "${RONIN_UI_BACKEND_DIR}" || mkdir "${RONIN_UI_BACKEND_DIR}"
+    # Extract all file from package directory inside tar archive into current directory
+    tar xf "${pkg}" package/ --strip-components=1 || exit
 
-    # Get latest version of current RoninBackend if available
-    if [ -f "${RONIN_UI_BACKEND_DIR}"/package.json ]; then
-        current_ver=$(jq --raw-output '.version' "${RONIN_UI_BACKEND_DIR}"/package.json)
-    fi
+    # Remove tar archive
+    rm "${pkg}"
 
-    # Start Backend installation procedure
-    if [[ "${ver}" != "${current_ver}" ]]; then
-        # cd into RoninBackend dir
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
-
-        # Fetch tar archive
-        wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"
-
-        # Extract all file from package directory inside tar archive into current directory
-        tar xf "${pkg}" package/ --strip-components=1 || exit
-
-        # Remove tar archive
-        rm "${pkg}"
-
-        # Generate .env file
-        if [ ! -f .env ]; then
-            cat << EOF >.env
+    # Generate .env file
+    if [ ! -f .env ]; then
+        cat << EOF >.env
 API_KEY=$GUI_API
 JWT_SECRET=$GUI_JWT
 PORT=3000
 ACCESS_TOKEN_EXPIRATION=8h
 EOF
 
-            # NPM run
-            npm run start &>/dev/null
+        # NPM run
+        npm run start &>/dev/null
 
-            # pm2 save process list
-            pm2 save &>/dev/null
+        # pm2 save process list
+        pm2 save &>/dev/null
 
-            # pm2 system startup
-            pm2 startup &>/dev/null
+        # pm2 system startup
+        pm2 startup &>/dev/null
 
-            sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "$USER" --hp "$HOME" 1>/dev/null
+        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "$USER" --hp "$HOME" 1>/dev/null
 
-            _setup_backend_tor
-        else # Restart process after updating
-            pm2 restart "Ronin Backend" 1>/dev/null
-        fi
+        _setup_backend_tor
+    else # Restart process after updating
+        pm2 restart "Ronin Backend" 1>/dev/null
     fi
 }
 

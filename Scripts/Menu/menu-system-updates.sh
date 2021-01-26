@@ -115,8 +115,17 @@ EOF
         _update_ronin
         # see functions.sh
 
-        _install_ronin_ui_backend
-        # update ronin ui backend
+        if _ronin_ui_update_check; then
+            cat <<EOF
+${RED}
+***
+Updating Ronin UI Backend...
+***
+${NC}
+EOF
+            _install_ronin_ui_backend
+        fi
+        # Check if UI Backend needs an update
 
         if ! _dojo_check; then
             if [ ! -d "${DOJO_PATH}" ]; then

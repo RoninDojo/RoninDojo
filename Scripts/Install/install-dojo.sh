@@ -72,10 +72,19 @@ EOF
 cd "$HOME" || exit
 git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
 
-if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-  _install_ronin_ui_backend
-  # Install Ronin UI Backend service
+if _ronin_ui_update_check; then
+    cat <<EOF
+${RED}
+***
+Installing Ronin UI Backend...
+***
+${NC}
+EOF
+    _install_ronin_ui_backend
 fi
+
+# Check if UI Backend needs installing
+
 
 cat <<EOF
 ${RED}
