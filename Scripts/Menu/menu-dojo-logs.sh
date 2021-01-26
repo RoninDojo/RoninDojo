@@ -36,27 +36,6 @@ EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-                if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
-                    cat <<EOF
-${RED}
-***
-Electrum Rust Server is your current Indexer...
-***
-${NC}
-EOF
-                    _sleep 2
-                    cat <<EOF
-${RED}
-***
-Please check Electrum Rust Server logs instead...
-***
-${NC}
-EOF
-                    _sleep 2
-                    _pause return
-                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-                fi
-
                 cat <<EOF
 ${RED}
 ***
@@ -65,8 +44,11 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
               _sleep 2
+
               cd "${dojo_path_my_dojo}" || exit
+
               ./dojo.sh logs bitcoind
+
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for bitcoind
             fi
@@ -109,6 +91,29 @@ EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
+                if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+                    cat <<EOF
+${RED}
+***
+Electrum Rust Server is your current Indexer...
+***
+${NC}
+EOF
+                    _sleep 2
+                    cat <<EOF
+${RED}
+***
+Please check Electrum Rust Server logs instead...
+***
+${NC}
+EOF
+                    _sleep 2
+
+                    _pause return
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+                    exit 1
+                fi
+
               cat <<EOF
 ${RED}
 ***
@@ -117,8 +122,11 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
               _sleep 2
+
               cd "${dojo_path_my_dojo}" || exit
+
               ./dojo.sh logs indexer
+
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for nginx
             fi
