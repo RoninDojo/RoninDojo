@@ -20,7 +20,7 @@ Starting bridge-utils upgrade...
 ***
 ${NC}
 EOF
-        sudo pacman -U --noconfirm http://mirror.archlinuxarm.org/aarch64/extra/bridge-utils-1.7-1-aarch64.pkg.tar.xz &>/dev/null
+        sudo pacman --quiet -U --noconfirm http://mirror.archlinuxarm.org/aarch64/extra/bridge-utils-1.7-1-aarch64.pkg.tar.xz &>/dev/null
 
         # If existing dojo found, then reboot system to apply changes
         if [ -d "${HOME}/dojo" ]; then

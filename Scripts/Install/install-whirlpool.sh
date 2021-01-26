@@ -37,6 +37,8 @@ ${NC}
 EOF
 
 if hash tor; then
+    _pacman_update_mirrors
+
     cat <<EOF
 ${RED}
 ***
@@ -52,7 +54,7 @@ The Tor package will be installed now...
 ***
 ${NC}
 EOF
-    sudo pacman -S --noconfirm tor
+    sudo pacman --quiet -S --noconfirm tor
     _sleep
 
     # Torrc setup

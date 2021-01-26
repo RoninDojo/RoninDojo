@@ -100,6 +100,14 @@ EOF
     _systemd_unit_drop_in_check
 }
 
+#
+# Update pacman mirrors
+#
+_pacman_update_mirrors() {
+    sudo pacman --quiet -Syy
+    return 0
+}
+
 # Add ronin_data_dir to store user info
 _create_ronin_data_dir() {
     if test ! -d "${ronin_data_dir}"; then
@@ -486,12 +494,12 @@ BACKEND
 
     # Check for nodejs
     if ! hash node 2>/dev/null; then
-        sudo pacman -S --noconfirm nodejs
+        sudo pacman --quiet -S --noconfirm nodejs
     fi
 
     # Check for npm
     if ! hash npm 2>/dev/null; then
-        sudo pacman -S --noconfirm npm
+        sudo pacman --quiet -S --noconfirm npm
     fi
 
     # Check for pm2 package
@@ -501,7 +509,7 @@ BACKEND
 
     # Check for jq package
     if ! hash jq 2>/dev/null; then
-        sudo pacman -S --noconfirm jq
+        sudo pacman --quiet -S --noconfirm jq
     fi
 
     # Fetch Ronin UI Backend archive
@@ -1664,7 +1672,9 @@ EOF
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
     sudo systemctl restart tor
 
-    if ! hash gcc 2>/dev/null; then
+    if ! pacman -Q gcc 2>/dev/null; then
+        _pacman_update_mirrors
+
         cat <<EOF
 ${RED}
 ***
@@ -1672,11 +1682,12 @@ Installing gcc
 ***
 ${NC}
 EOF
-        sudo pacman -Syy
-        sudo pacman -S --noconfirm gcc
+        sudo pacman --quiet -S --noconfirm gcc
     fi
 
     if ! pacman -Q libusb 1>/dev/null; then
+        _pacman_update_mirrors
+
         cat <<EOF
 ${RED}
 ***
@@ -1684,7 +1695,7 @@ Installing libusb
 ***
 ${NC}
 EOF
-     sudo pacman -S --noconfirm libusb
+     sudo pacman --quiet -S --noconfirm libusb
     fi
 
     if [ -d .venv_specter ]; then
@@ -1895,7 +1906,7 @@ Installing python-pipenv...
 ${NC}
 EOF
         _sleep 1
-        sudo pacman -S --noconfirm python-pipenv &>/dev/null
+        sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
     fi
     # Check for python-pip and install if not found
 
@@ -1934,7 +1945,7 @@ Installing pipenv...
 ***
 ${NC}
 EOF
-        sudo pacman -S --noconfirm python-pipenv &>/dev/null
+        sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
     fi
 
     # Setup a virtual environment to hold boltzmann dependencies. We should use this

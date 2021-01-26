@@ -67,6 +67,9 @@ EOF
 fi
 # disable ipv6, see functions.sh
 
+# Update mirrors
+_pacman_update_mirrors
+
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
   if hash "${pkg}" 2>/dev/null; then
@@ -87,7 +90,7 @@ Installing ${package_dependencies[$pkg]}...
 ${NC}
 EOF
       _sleep
-      sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
+      sudo pacman --quiet -S --noconfirm "${package_dependencies[$pkg]}"
   fi
 done
 # install system dependencies, see defaults.sh

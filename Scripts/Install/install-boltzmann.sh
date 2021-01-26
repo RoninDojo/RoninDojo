@@ -26,7 +26,7 @@ Installing pipenv...
 ***
 ${NC}
 EOF
-    sudo pacman -S --noconfirm python-pipenv &>/dev/null
+    sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
 fi
 
 # Setup a virtual environment to hold boltzmann dependencies. We should use this

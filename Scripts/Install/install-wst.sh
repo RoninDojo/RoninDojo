@@ -27,7 +27,11 @@ Installing python-pipenv...
 ${NC}
 EOF
   _sleep
-  sudo pacman -S --noconfirm python-pipenv &>/dev/null
+
+  # Update mirrors
+  _pacman_update_mirrors
+
+  sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
 fi
 # check for python-pip and install if not found
 

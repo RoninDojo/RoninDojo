@@ -22,7 +22,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        sudo pacman -Syy
+        _pacman_update_mirrors
         # Update Mirrors and continue.
 
         _pause return
@@ -64,7 +64,7 @@ EOF
 
     3)
         # Update Mirrors
-        sudo pacman -Syy
+        _pacman_update_mirrors
 
         cat <<EOF
 ${RED}
