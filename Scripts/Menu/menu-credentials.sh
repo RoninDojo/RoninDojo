@@ -155,7 +155,7 @@ ${NC}
 
 Bitcoin Daemon:
 
-Tor URL                 = http://$V2_ADDR_BITCOIN
+Tor URL                 = http://$V3_ADDR_BITCOIN
 RPC User                = $RPC_USER_CONF
 RPC Password            = $RPC_PASS_CONF
 RPC IP                  = $RPC_IP
@@ -259,7 +259,7 @@ ${NC}
 
 Bitcoin Daemon:
 
-Tor URL                 = http://$V2_ADDR_BITCOIN
+Tor URL                 = http://$V3_ADDR_BITCOIN
 RPC User                = $RPC_USER_CONF
 RPC Password            = $RPC_PASS_CONF
 RPC IP                  = $RPC_IP
