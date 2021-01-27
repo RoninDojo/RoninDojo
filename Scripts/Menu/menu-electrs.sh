@@ -5,11 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start"
-         2 "Stop"
-         3 "Restart"
-         4 "Logs"
-         5 "Go Back")
+OPTIONS=(1 "Logs"
+         2 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -20,70 +17,7 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
-	1)
-        if ! _is_electrs; then
-            bash -c "${RONIN_ELECTRS_MENU}"
-            exit 1
-        fi
-        # check if electrs is already installed
-
-        cat <<EOF
-${RED}
-***
-Starting Electrs...
-***
-${NC}
-EOF
-        _sleep 2
-        docker start indexer 1>/dev/null
-        bash -c "${RONIN_ELECTRS_MENU}"
-        # start electrs, return to menu
-        ;;
-    2)
-        if ! _is_electrs; then
-            bash -c "${RONIN_ELECTRS_MENU}"
-            exit 1
-        fi
-        # check if electrs is already installed
-
-        cat <<EOF
-${RED}
-***
-Stopping Electrs...
-***
-${NC}
-EOF
-        _sleep 2
-        docker stop indexer 1>/dev/null
-        bash -c "${RONIN_ELECTRS_MENU}"
-        # stop electrs, return to menu
-        ;;
-    3)
-        if ! _is_electrs; then
-            bash -c "${RONIN_ELECTRS_MENU}"
-            exit 1
-        fi
-        # check if electrs is already installed
-
-        cat <<EOF
-${RED}
-***
-Restarting Electrs...
-***
-${NC}
-EOF
-        _sleep 2
-        docker restart indexer 1>/dev/null
-        bash -c "${RONIN_ELECTRS_MENU}"
-        # restart electrs, return to menu
-        ;;
-    4)
-        if ! _is_electrs; then
-            bash -c "${RONIN_ELECTRS_MENU}"
-            exit 1
-        fi
-        # check if electrs is already installed
-
+    1)
         cat <<EOF
 ${RED}
 ***
@@ -101,12 +35,15 @@ Press Ctrl + C to exit at any time...
 ${NC}
 EOF
         _sleep 2
+
         cd "$dojo_path_my_dojo" || exit
+
         ./dojo.sh logs indexer
+
         bash -c "${RONIN_ELECTRS_MENU}"
         # start electrs, return to menu
         ;;
-	5)
+	2)
         ronin
         # returns to main menu
         ;;
