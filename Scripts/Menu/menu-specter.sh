@@ -8,7 +8,8 @@
 OPTIONS=(1 "Start"
          2 "Stop"
          3 "Restart"
-         4 "Go Back")
+         4 "Status"
+         5 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -68,6 +69,13 @@ EOF
         # Restart specter.service and return to same menu
         ;;
     4)
+        sudo systemctl status specter
+
+        _pause return
+
+        bash -c "${RONIN_SPECTER_MENU}"
+        ;;
+    5)
         ronin
         # Return to main menu
         ;;
