@@ -75,12 +75,12 @@ EOF
         ;;
     3)
         if ! _is_electrs; then
-
-            bash -c "${RONIN_SPECTER_MENU}"
+            bash -c "${RONIN_APPLICATIONS_MENU}"
             exit 1
         fi
         # check if electrs is already installed
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-applications.sh
+
+        bash -c "${RONIN_ELECTRS_MENU}"
         # runs electrs menu script
         ;;
     4)
