@@ -72,17 +72,8 @@ _pacman_update_mirrors
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
-  if hash "${pkg}" 2>/dev/null; then
-      cat <<EOF
-${RED}
-***
-${package_dependencies[$pkg]} already installed...
-***
-${NC}
-EOF
-      _sleep
-  else
-      cat <<EOF
+  if ! hash "${pkg}" 2>/dev/null; then
+    cat <<EOF
 ${RED}
 ***
 Installing ${package_dependencies[$pkg]}...
