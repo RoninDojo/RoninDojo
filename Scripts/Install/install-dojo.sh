@@ -70,7 +70,7 @@ ${NC}
 EOF
 
 cd "$HOME" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
+git clone -b "${SAMOURAI_COMMITISH##*/}" "$SAMOURAI_REPO" dojo 2>/dev/null
 
 if _ronin_ui_update_check; then
     cat <<EOF
