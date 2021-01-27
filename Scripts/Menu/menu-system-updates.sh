@@ -63,6 +63,25 @@ EOF
         ;;
 
     3)
+        if ! _dojo_check; then
+            if [ ! -d "${DOJO_PATH}" ]; then
+                cat <<EOF
+${RED}
+***
+Missing ${DOJO_PATH} directory, aborting update...
+***
+${NC}
+EOF
+                _sleep 2
+
+                _pause return
+
+                bash -c "${RONIN_SYSTEM_MENU}"
+                exit 1
+            fi
+        fi
+        # is dojo installed?
+
         # Update Mirrors
         _pacman_update_mirrors
 
@@ -83,22 +102,6 @@ Use Ctrl+C to exit if needed!
 ${NC}
 EOF
 _sleep 10 --msg "Updating in"
-
-        if [ ! -d "${DOJO_PATH}" ]; then
-            cat <<EOF
-${RED}
-***
-Missing ${HOME}/RoninDojo} directory, skipping!
-***
-${NC}
-EOF
-            _sleep 2
-            _pause return
-            bash -c "${RONIN_UPDATES_MENU}"
-            exit 1
-
-        fi
-        # is ronindojo directory missing?
 
         test -f "$HOME"/ronin-update.sh && sudo rm "$HOME"/ronin-update.sh
         # Remove old update file
@@ -126,23 +129,6 @@ EOF
             _install_ronin_ui_backend
         fi
         # Check if UI Backend needs an update
-
-        if ! _dojo_check; then
-            if [ ! -d "${DOJO_PATH}" ]; then
-                cat <<EOF
-${RED}
-***
-Missing ${DOJO_PATH} directory, skipping!
-***
-${NC}
-EOF
-                _sleep 2
-                _pause return
-                bash -c "${RONIN_SYSTEM_MENU}"
-                exit 1
-            fi
-        fi
-        # is dojo installed?
 
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
