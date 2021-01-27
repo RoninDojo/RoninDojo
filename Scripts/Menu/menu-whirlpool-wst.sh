@@ -87,4 +87,4 @@ pipenv run python wst.py -w=/tmp
 # run wst.py using python3
 
 _pause return
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-sw-toolkit.sh
+bash -c "${ronin_samourai_toolkit_menu}"
