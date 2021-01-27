@@ -402,6 +402,7 @@ Install or swap Indexer & Electrs using the applications install menu...
 ${NC}
 EOF
         _sleep 2
+
         _pause return
         return 1
     fi
