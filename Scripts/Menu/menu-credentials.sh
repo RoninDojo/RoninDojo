@@ -93,6 +93,8 @@ ${NC}
 EOF
             fi
 
+            _pause return
+
             bash -c "${RONIN_CREDENTIALS_MENU}"
             # return to menu
             ;;
