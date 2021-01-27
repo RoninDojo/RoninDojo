@@ -60,6 +60,8 @@ if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool; then
 fi
 
 # Specter
+shopt -s nullglob
+
 for dir in "${HOME}"/specter*; do
     if [[ -d "${dir}" ]]; then
         V3_ADDR_SPECTER=$(sudo cat "${INSTALL_DIR_TOR}"/specter_server/hostname)
