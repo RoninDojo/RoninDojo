@@ -126,13 +126,6 @@ Showing UI Backend Status...
 ${NC}
 EOF
 
-        cat <<EOF
-${RED}
-***
-Press "q" key to exit at any time...
-***
-${NC}
-EOF
         cd "${RONIN_UI_BACKEND_DIR}" || exit
         pm2 status
 

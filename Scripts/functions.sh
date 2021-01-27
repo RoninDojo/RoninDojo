@@ -1008,7 +1008,7 @@ EOF
     cat <<EOF
 ${RED}
 ***
-Preparing shutdown of Dojo. Please wait...
+Preparing shutdown of Dojo...
 ***
 ${NC}
 EOF

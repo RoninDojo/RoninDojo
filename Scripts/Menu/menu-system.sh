@@ -51,14 +51,7 @@ ${NC}
 EOF
             _sleep 2
 
-            cat <<EOF
-${RED}
-***
-Press any key to power off machine now...
-***
-${NC}
-EOF
-            _pause return
+            _pause continue
             sudo systemctl poweroff
             # power off machine
         else
@@ -71,14 +64,7 @@ ${NC}
 EOF
             _sleep 2
 
-            cat <<EOF
-${RED}
-***
-Press any key to power off machine now...
-***
-${NC}
-EOF
-            _pause return
+            _pause continue
             sudo systemctl poweroff
             # power off machine
         fi
@@ -105,14 +91,7 @@ ${NC}
 EOF
             _sleep 2
 
-            cat <<EOF
-${RED}
-***
-Press any key to restart machine now...
-***
-${NC}
-EOF
-            _pause return
+            _pause continue
             sudo systemctl reboot
             # restart machine
         else
@@ -125,14 +104,7 @@ ${NC}
 EOF
             _sleep 2
 
-            cat <<EOF
-${RED}
-***
-Press any key to restart machine now...
-***
-${NC}
-EOF
-            _pause return
+            _pause continue
             sudo systemctl reboot
             # restart machine
         fi
