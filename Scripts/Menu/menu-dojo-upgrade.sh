@@ -256,37 +256,10 @@ EOF
 fi
 
 if ! _is_mempool; then
-    cat <<EOF
-${RED}
-***
-Do you want to Re-install the Mempool Visualizer?
-***
-${NC}
-EOF
-    while true; do
-        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-        case $answer in
-            [yY][eE][sS]|[yY])
-                _mempool_conf
+    _mempool_conf
 
-                # Checks if urls need to be changed for mempool UI
-                _mempool_urls_to_local_btc_explorer
-                break
-                ;;
-            [Nn][oO]|[nN])
-                break
-                ;;
-            *)
-                cat <<EOF
-${RED}
-***
-Please answer Yes or No.
-***
-${NC}
-EOF
-                ;;
-        esac
-    done
+    # Checks if urls need to be changed for mempool UI
+    _mempool_urls_to_local_btc_explorer
 fi
 # Check if mempool available or not
 
@@ -326,69 +299,15 @@ fi
 # stop whirlpool for existing whirlpool users
 
 if _is_specter ; then
-    cat <<EOF
-${RED}
-***
-Do you want to re-install the Specter Server?
-***
-${NC}
-EOF
-    while true; do
-        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-        case $answer in
-            [yY][eE][sS]|[yY])
-                _specter_upgrade
-                break
-                ;;
-            [nN][oO]|[Nn])
-                sudo rm -rf "$HOME"/.specter "$HOME"/specter-* /etc/systemd/system/specter.service
-                break
-                ;;
-            *)
-                cat <<EOF
-${RED}
-***
-Invalid answer! Enter Y or N
-***
-${NC}
-EOF
-                ;;
-        esac
-    done
+    _specter_upgrade
 fi
 
 if _is_bisq ; then
-    cat <<EOF
-${RED}
-***
-Do you want to re-install Bisq Connectivity?
-***
-${NC}
-EOF
-    while true; do
-        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-        case $answer in
-            [yY][eE][sS]|[yY])
-                _install_bisq
-                break
-                ;;
-            [nN][oO]|[Nn])
-                break
-                ;;
-            *)
-                cat <<EOF
-${RED}
-***
-Invalid answer! Enter Y or N
-***
-${NC}
-EOF
-                ;;
-        esac
-    done
+    _install_bisq
 fi
 
 cd "${dojo_path_my_dojo}" || exit
+
 ./dojo.sh upgrade --nolog
 # run upgrade
 
