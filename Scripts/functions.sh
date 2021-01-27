@@ -455,6 +455,7 @@ _is_ronin_ui_backend() {
     _load_user_conf
 
     if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
+        mkdir "${RONIN_UI_BACKEND_DIR}"
         return 1
     fi
     # check if Ronin UI Backend is already installed
