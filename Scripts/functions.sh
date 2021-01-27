@@ -467,12 +467,14 @@ _is_ronin_ui_backend() {
 # UI check for update
 #
 _ronin_ui_update_check() {
-    if _is_ronin_ui_backend; then
-        # Fetch Ronin UI Backend archive
-        wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
+    local ver current_ver
 
-        # Extract latest tar archive filename and latest version
-        pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
+    # Fetch Ronin UI Backend archive
+    wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
+
+    if _is_ronin_ui_backend; then
         ver=$( cut -d ' ' -f2 </tmp/latest.txt )
 
         # Get latest version of current RoninBackend if available
@@ -495,6 +497,11 @@ _ronin_ui_update_check() {
 _install_ronin_ui_backend() {
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
+
+    local pkg
+
+    # Extract latest tar archive filename and latest version
+    pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
 
     _load_user_conf
 
