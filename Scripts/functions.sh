@@ -1574,9 +1574,9 @@ EOF
 }
 
 #
-# Specter systemd unit file creation
+# Specter tor hidden service configuration
 #
-_specter_create_systemd_unit_file() {
+_specter_config_tor() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     local upgrade
@@ -1592,14 +1592,26 @@ _specter_create_systemd_unit_file() {
         esac
     done
 
+    sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
+
     if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] || "${upgrade}" ; then
         sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
+        sudo systemctl restart tor
     fi
     # Set tor hiddenservice for https specter server
+
+    return 0
+}
+
+#
+# Specter systemd unit file creation
+#
+_specter_create_systemd_unit_file() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1633,7 +1645,7 @@ _specter_uninstall() {
     # Remove systemd unit
 
     cd "${dojo_path_my_dojo}"/bitcoin || exit
-    git checkout restart.sh &>/dev/null && cd - || exit
+    git checkout restart.sh &>/dev/null && cd - 1>/dev/null || exit
     # Resets to defaults
 
     if [ -f /etc/udev/rules.d/51-coinkite.rules ]; then
@@ -1652,12 +1664,12 @@ _specter_uninstall() {
     rm "$HOME"/.config/RoninDojo/specter*
     # Deletes the .specter dir, source dir, certificate files and specter.service file
 
-    sudo sed -i "s:^ControlPort .*$:#ControlPort 9051:" /etc/tor/torrc
-    sudo systemctl reload tor
-    # Disable tor control port then restart daemon
+    sudo sed -i -e "s:^ControlPort .*$:#ControlPort 9051:" -e "/specter/,+3d" /etc/tor/torrc
+    sudo systemctl restart tor
+    # Remove torrc changes
 
     if getent group plugdev | grep -q "${USER}" &>/dev/null; then
-        sudo gpasswd -d "${USER}" plugdev
+        sudo gpasswd -d "${USER}" plugdev &>/dev/null
     fi
     # Remove user from plugdev group
 }
@@ -1678,9 +1690,6 @@ EOF
     git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
-
-    sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
-    sudo systemctl restart tor
 
     if ! pacman -Q gcc 2>/dev/null; then
         _pacman_update_mirrors
@@ -1724,6 +1733,8 @@ EOF
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
 
     _specter_create_systemd_unit_file
+
+    _specter_config_tor
 
     _specter_cert_check
 
@@ -1834,7 +1845,9 @@ EOF
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
     # Create file .flaskenv
 
-    _specter_create_systemd_unit_file --upgrade
+    _specter_create_systemd_unit_file
+
+    _specter_config_tor --upgrade
 
     _specter_cert_check
 
