@@ -1656,7 +1656,9 @@ _specter_uninstall() {
     sudo systemctl reload tor
     # Disable tor control port then restart daemon
 
-    sudo gpasswd -d "${USER}" plugdev
+    if getent group plugdev | grep -q "${USER}" &>/dev/null; then
+        sudo gpasswd -d "${USER}" plugdev
+    fi
     # Remove user from plugdev group
 }
 
