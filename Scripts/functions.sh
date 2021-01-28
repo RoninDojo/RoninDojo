@@ -1739,14 +1739,14 @@ EOF
 
     _specter_cert_check
 
-    _specter_hww_udev_rules
-
     _ufw_rule_add "${ip_range}" 25441
 
     sudo systemctl daemon-reload
     sudo systemctl enable specter 2>/dev/null
     sudo systemctl start specter 2>/dev/null
     # Using enable and start to ensure the startup creates the .specter dir
+
+    _specter_hww_udev_rules
 
     return 0
 }
@@ -1852,8 +1852,6 @@ EOF
 
     _specter_cert_check
 
-    _specter_hww_udev_rules
-
     # check if udev rules are present if not install them.
     if sudo ufw status | grep 25441 > /dev/null ; then
         cat <<EOF
@@ -1869,7 +1867,9 @@ EOF
 
     sudo systemctl daemon-reload
     systemctl is-enabled specter 1>/dev/null || sudo systemctl enable specter 2>/dev/null
-    sudo systemctl start specter 2>/dev/null
+    sudo systemctl restart specter 2>/dev/null
+
+    _specter_hww_udev_rules
 
     return 0
 }
