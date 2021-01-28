@@ -1530,9 +1530,10 @@ _specter_hww_udev_rules() {
         sudo udevadm trigger
         sudo udevadm control --reload-rules
 
-        if getent group plugdev 1>/dev/null; then
+        if ! getent group plugdev 1>/dev/null; then
             sudo groupadd plugdev
         fi
+        # Add group plugdev if missing
 
         if ! getent group plugdev | grep -q "${USER}" &>/dev/null; then
             cat <<EOF
@@ -1542,7 +1543,7 @@ Adding user to plugdev group...
 ***
 ${NC}
 EOF
-            sudo gpasswd -a "${USER}" plugdev
+            sudo gpasswd -a "${USER}" plugdev 1>/dev/null
             _sleep 5 --msg "Reloading RoninDojo in" && newgrp plugdev
         fi
     fi
@@ -1669,7 +1670,7 @@ _specter_uninstall() {
     # Remove torrc changes
 
     if getent group plugdev | grep -q "${USER}" &>/dev/null; then
-        sudo gpasswd -d "${USER}" plugdev &>/dev/null
+        sudo gpasswd -d "${USER}" plugdev 1>/dev/null
     fi
     # Remove user from plugdev group
 }
@@ -1691,7 +1692,7 @@ EOF
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
-    if ! pacman -Q gcc 2>/dev/null; then
+    if ! pacman -Q gcc 1>/dev/null; then
         _pacman_update_mirrors
 
         cat <<EOF
