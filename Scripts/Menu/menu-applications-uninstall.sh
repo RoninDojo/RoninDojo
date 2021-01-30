@@ -55,5 +55,6 @@ Nothing to install...
 ${NC}
 EOF
     _pause return
-    ronin
+
+    bash -c "${RONIN_APPLICATIONS_MENU}"
 fi

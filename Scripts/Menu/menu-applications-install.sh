@@ -57,7 +57,7 @@ EOF
             _check_indexer
             ret=$?
 
-            if ((ret==1)); then
+            if ((ret==0)); then
                 cat <<EOF
 ${RED}
 ***
@@ -70,7 +70,7 @@ EOF
                 _uninstall_electrs_indexer
 
                 _set_indexer
-            elif ((ret==0)); then
+            elif ((ret==1)); then
                 cat <<EOF
 ${RED}
 ***
