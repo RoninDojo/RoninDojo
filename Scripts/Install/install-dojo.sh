@@ -154,7 +154,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.config/RoninDojo/user.conf file...
+If you wish to disable this feature, set DOJO_RESTORE=false in the $HOME/.config/RoninDojo/user.conf file...
 ***
 ${NC}
 EOF
@@ -171,9 +171,8 @@ EOF
     _sleep
     sed -i -e "s/BITCOIND_RPC_USER=.*$/BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$RPC_USER}/" \
       -e "s/BITCOIND_RPC_PASSWORD=.*$/BITCOIND_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD:-$RPC_PASS}/" \
-      -e "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}/" \
+      -e "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-1024}/" \
       -e "s/BITCOIND_MAX_MEMPOOL=.*$/BITCOIND_MAX_MEMPOOL=400/" \
-      -e "s/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=${BITCOIND_RPC_EXTERNAL:-on}/" \
       -e "s/BITCOIND_RPC_EXTERNAL_IP=.*$/BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl
       # populate docker-bitcoind.conf.tpl template
 
@@ -196,67 +195,59 @@ EOF
       -e "s/MYSQL_USER=.*$/MYSQL_USER=${MYSQL_USER}/" \
       -e "s/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=${MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mysql.conf.tpl
     # populate docker-mysql.conf.tpl template
-
-    cat <<EOF
-${RED}
-***
-Configuring the BTC RPC Explorer...
-***
-${NC}
-EOF
-    _sleep
-
-    sed -i -e "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}/" \
-      -e "s/EXPLORER_KEY=.*$/EXPLORER_KEY=${EXPLORER_KEY}/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf.tpl
-    # populate docker-explorer.conf.tpl template
 fi
 
-cat <<EOF
+_check_indexer
+
+if (($?==2)); then # No indexer, fresh install so show prompts for indexer selection
+    cat <<EOF
 ${RED}
 ***
 Preparing for Indexer Prompt...
 ***
 ${NC}
 EOF
-_sleep 2
+    _sleep 2
 
-cat <<EOF
+    cat <<EOF
 ${RED}
 ***
 Samourai Indexer is recommended for most users as it helps with querying balances...
 ***
 ${NC}
 EOF
-_sleep 4
+    _sleep 4
 
-cat <<EOF
+    cat <<EOF
 ${RED}
 ***
 Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
 ***
 ${NC}
 EOF
-_sleep 4
+    _sleep 4
 
-cat <<EOF
+    cat <<EOF
 ${RED}
 ***
-Skipping the installation of either Indexer option is ok! You can always install later...
+Skipping the installation of either Indexer option is ok! You can always enable later...
 ***
 ${NC}
 EOF
-_sleep 3
+    _sleep 3
 
-cat <<EOF
+    cat <<EOF
 ${RED}
 ***
 Choose one of the following options for your Indexer...
 ***
 ${NC}
 EOF
-_sleep 3
-_no_indexer_found
-# give user menu for install choices, see functions.sh
+    _sleep 3
+
+    _indexer_prompt
+    # give user menu for install choices, see functions.sh
+fi
 
 cat <<EOF
 ${RED}

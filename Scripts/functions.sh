@@ -593,9 +593,9 @@ which_sbc() {
 }
 
 #
-# Installs the Samourai local indexer
+# Enables the Samourai & or Electrs local indexer
 #
-_set_addrindexer() {
+_set_indexer() {
     local conf
 
     . "$HOME"/RoninDojo/Scripts/defaults.sh
@@ -610,15 +610,56 @@ _set_addrindexer() {
 }
 
 #
+# Undo changes from electrs install
+#
+_uninstall_electrs_indexer() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    test -f "${dojo_path_my_dojo}"/indexer/electrs.toml && rm "${dojo_path_my_dojo}"/indexer/electrs.toml
+
+    cd "${dojo_path_my_dojo}" || exit
+
+    for file in dojo.sh indexer/Dockerfile indexer/restart.sh tor/restart.sh; do
+        git checkout "${file}" &>/dev/null
+    done
+    # undo changes for files
+
+    return 0
+}
+
+#
+# Checks what indexer is set if any
+#
+_check_indexer() {
+    local conf
+
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    conf="conf"
+    test -f "${dojo_path_my_dojo}"/conf/docker-indexer.conf || conf="conf.tpl"
+
+    if grep "local_indexer" "${dojo_path_my_dojo}"/conf/docker-node."${conf}" 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
+        return 0
+        # Found electrs
+    elif grep "local_indexer" "${dojo_path_my_dojo}"/conf/docker-node."${conf}" 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
+        return 1
+        # Found SW indexer
+    fi
+
+    return 2 # No indexer
+}
+
+#
 # No indexer was found so offer user choice of SW indexer, electrs, or none
 #
-_no_indexer_found() {
+_indexer_prompt() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
     # indexer names here are used as data source
     while true; do
-        select indexer in "Samourai Indexer (default)" "Electrum Rust Server" "Do Not Install Indexer"; do
+        select indexer in "Samourai Indexer (recommended)" "Electrum Rust Server" "No Indexer (no recommended)"; do
             case $indexer in
-                "Samourai Indexer (default)")
+                "Samourai Indexer"*)
                     cat <<EOF
 ${RED}
 ***
@@ -628,12 +669,13 @@ ${NC}
 EOF
                     _sleep
 
-                    _set_addrindexer
+                    _check_indexer && _uninstall_electrs_indexer
+
+                    _set_indexer
                     return 0
                     ;;
-                    # samourai indexer install enabled in .conf.tpl files using sed
-
-                "Electrum Rust Server")
+                    # Samourai indexer install enabled in .conf.tpl files using sed
+                "Electrum"*)
                     cat <<EOF
 ${RED}
 ***
@@ -642,11 +684,14 @@ Selected Electrum Rust Server...
 ${NC}
 EOF
                     _sleep
+
+                    _set_indexer
+
                     bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     return 0
                     ;;
                     # triggers electrs install script
-                "Do Not Install Indexer")
+                "No Indexer"*)
                     cat <<EOF
 ${RED}
 ***

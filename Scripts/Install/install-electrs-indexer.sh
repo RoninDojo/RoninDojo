@@ -9,22 +9,18 @@ _load_user_conf
 if [ ! -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then # new install
     RPC_USER=$(sudo grep BITCOIND_RPC_USER= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
     RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
-
-    sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf.tpl
-    sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/'  "${dojo_path_my_dojo}"/conf/docker-node.conf.tpl
 else # existing install so load
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
+
     RPC_USER="${RPC_USER_CONF}"; RPC_PASS="${RPC_PASS_CONF}"
-    sed -i 's/INDEXER_INSTALL=.*$/INDEXER_INSTALL=on/' "${dojo_path_my_dojo}"/conf/docker-indexer.conf
-    sed -i 's/NODE_ACTIVE_INDEXER=.*$/NODE_ACTIVE_INDEXER=local_indexer/'  "${dojo_path_my_dojo}"/conf/docker-node.conf
 fi
+# Retrieve bitcoind RPC credentials
 
-# modify docker-indexer.conf.tpl to turn ON indexer then select local_indexer
-
-cat > "${dojo_path_my_dojo}"/indexer/electrs.toml <<EOF
+cat <<EOF > "${dojo_path_my_dojo}"/indexer/electrs.toml
 cookie = "$RPC_USER:$RPC_PASS"
-server_banner = "Welcome to your RoninDojo Electrs Server!"
+server_banner = "Welcome to your RoninDojo ${ronindojo_version} Electrs Server!"
 EOF
+
 chmod 600 "${dojo_path_my_dojo}"/indexer/electrs.toml || exit 1
 # create electrs.toml for electrs dockerfile
 
@@ -60,4 +56,4 @@ sed -i \
 # modify indexer/restart.sh for electrs
 
 wget -qO "${dojo_path_my_dojo}"/indexer/Dockerfile https://code.samourai.io/Ronin/samourai-dojo/raw/feat_mydojo_local_indexer/docker/my-dojo/indexer/Dockerfile
-# replace indexer dockerfile for electrs usage
+# replace indexer dockerfile for electrs usagedocker/my-dojo/indexer/Dockerfile

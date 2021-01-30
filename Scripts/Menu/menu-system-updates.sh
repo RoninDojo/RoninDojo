@@ -35,9 +35,9 @@ case $CHOICE in
 
         wget --quiet https://ronindojo.io/downloads/ronindojo-version.txt -O "${ronin_data_dir}"/ronin-latest.txt
 
-        ronindojo_version=$(<"${ronin_data_dir}"/ronindojo-latest.txt)
+        version=$(<"${ronin_data_dir}"/ronindojo-latest.txt)
 
-        if [[ "${VERSION}" != "${ronindojo_version}" ]] ; then
+        if [[ "${ronindojo_version}" != "${version}" ]] ; then
             cat <<EOF
 ${RED}
 ***

@@ -54,7 +54,10 @@ EOF
             # Checks for bisq file and modifies restart.sh and creates file
             ;;
         4)
-            if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+            _check_indexer
+            ret=$?
+
+            if ((ret==1)); then
                 cat <<EOF
 ${RED}
 ***
@@ -63,10 +66,11 @@ Switching to Samourai indexer...
 ${NC}
 EOF
                 _sleep 2
-                rm "${dojo_path_my_dojo}"/indexer/electrs.toml
-                _set_addrindexer
-            elif
-                grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+
+                _uninstall_electrs_indexer
+
+                _set_indexer
+            elif ((ret==0)); then
                 cat <<EOF
 ${RED}
 ***
@@ -75,11 +79,13 @@ Switching to Electrum Rust Server...
 ${NC}
 EOF
                 _sleep 2
+
                 bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
-            else
-                _no_indexer_found
+            elif ((ret==2)); then
+                _indexer_prompt
             fi
             # check for which indexer, if no indexer ask if they want to install
+
             upgrade=true
             ;;
     esac

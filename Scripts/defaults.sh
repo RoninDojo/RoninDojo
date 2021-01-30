@@ -2,7 +2,7 @@
 # shellcheck disable=SC2034
 
 # RoninDojo Version tag
-cd "$HOME"/RoninDojo && VERSION=$(git describe --tags)
+cd "$HOME"/RoninDojo && ronindojo_version=$(git describe --tags)
 
 #
 # Package dependencies associative array
@@ -47,7 +47,7 @@ declare -a pkg_ignore=(
 HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
-TITLE="RoninDojo ${VERSION}"
+TITLE="RoninDojo ${ronindojo_version}"
 MENU="Choose one of the following menu options:"
 
 # RoninDojo Menu Paths
