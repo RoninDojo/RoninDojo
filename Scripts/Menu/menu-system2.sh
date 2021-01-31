@@ -66,8 +66,6 @@ EOF
         # uses passwd to unlock root user, returns to menu
         ;;
     5)
-        dojo_stop=false
-
         if ! _dojo_check; then
             _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
         fi
@@ -80,78 +78,19 @@ Uninstalling RoninDojo and all features, press Ctrl+C to exit if needed!
 ***
 ${NC}
 EOF
-_sleep 10 --msg "Uninstalling in"
-
-    cat <<EOF
-${RED}
-***
-Users with a fully synced Blockchain should answer yes to salvage!
-***
-${NC}
-EOF
-    _sleep 2
-
-    cat <<EOF
-${RED}
-***
-WARNING: Data will be lost if you answer no to salvage
-***
-${NC}
-EOF
-    _sleep 2
-
-    cat <<EOF
-${RED}
-Do you want to salvage your Blockchain data?
-${NC}
-EOF
-    _sleep
-
-        while true; do
-            read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-            case $answer in
-                [yY][eE][sS]|[yY])
-                    cat <<EOF
-${RED}
-***
-Copying block data to temporary directory...
-***
-${NC}
-EOF
-                    _sleep 2
-
-                    cd "$dojo_path_my_dojo" || exit
-                    _stop_dojo
-                    # stop dojo
-
-                    test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
-                    # check if salvage directory exist
-
-                    sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
-                    # moves blockchain data to uninstall-salvage to be used by the dojo install script
-
-                    dojo_stop=true
-                    break
-                    ;;
-                [nN][oO]|[Nn])
-                    break
-                    ;;
-                *)
-                    cat <<EOF
-${RED}
-***
-Invalid answer! Enter Y or N
-***
-${NC}
-EOF
-                    ;;
-            esac
-        done
+        _sleep 10 --msg "Uninstalling in"
 
         cd "$dojo_path_my_dojo" || exit
+        _stop_dojo
+        # stop dojo
 
-        $dojo_stop || _stop_dojo
-        # stop dojo only when salvage data was not initiated
+        test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
+        # check if salvage directory exist
+
+        if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
+            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
+        fi
+        # moves blockchain data to uninstall-salvage to be used by the dojo install script
 
         cat <<EOF
 ${RED}
@@ -206,7 +145,9 @@ Complete!
 ${NC}
 EOF
         _sleep 2
+
         _pause return
+
         bash -c "${RONIN_SYSTEM_MENU2}"
         # return to menu
         ;;
