@@ -1624,22 +1624,9 @@ EOF
 _specter_config_tor() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    local upgrade
-    upgrade=false
-
-    # Parse Arguments
-    while [ $# -gt 0 ]; do
-        case "$1" in
-            --upgrade)
-                upgrade=true
-                break
-                ;;
-        esac
-    done
-
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
 
-    if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${INSTALL_DIR_TOR}"/specter_server ] || "${upgrade}" ; then
+    if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${INSTALL_DIR_TOR}"/specter_server ]; then
         sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
 HiddenServiceVersion 3\n\
@@ -1842,7 +1829,7 @@ EOF
 
     _specter_create_systemd_unit_file
 
-    _specter_config_tor --upgrade
+    _specter_config_tor
 
     _specter_cert_check
 
