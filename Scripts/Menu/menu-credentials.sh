@@ -195,6 +195,8 @@ Specter Server Credentials
 ${NC}
 
 Tor URL                 = http://$V3_ADDR_SPECTER
+RPC IP                  = $RPC_IP
+RPC Host                = $RPC_PORT
 EOF
             fi
 
@@ -303,6 +305,8 @@ Specter Server Credentials
 ***
 ${NC}
 Tor URL                 = http://$V3_ADDR_SPECTER
+RPC IP                  = $RPC_IP
+RPC Host                = $RPC_PORT
 EOF
             fi
 
