@@ -1813,34 +1813,7 @@ Proceeding to upgrade to $specter_version...
 ***
 ${NC}
 EOF
-            wget --quiet "$specter_sign_key_url"
-            gpg --import "$specter_sign_key"
-            rm "$specter_sign_key"
-
-            wget --quiet "$specter_url"/v"$specter_version"/sha256.signed.txt
-            gpg --verify sha256.signed.txt
-
-            wget --quiet "$specter_url"/v"$specter_version"/cryptoadvance.specter-"$specter_version".tar.gz
-
-            if grep cryptoadvance.specter-"$specter_version".tar.gz sha256.signed.txt | sha256sum -c -; then
-                cat <<EOF
-${RED}
-***
-Good verification... Installing now
-***
-${NC}
-EOF
-            else
-                cat <<EOF
-${RED}
-***
-Verification failed...
-***
-${NC}
-EOF
-                _sleep 5 --msg "Returning to main menu in"
-                ronin
-            fi
+            git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
             cat <<EOF
 ${RED}
@@ -1855,8 +1828,7 @@ EOF
             sudo rm /etc/systemd/system/specter.service
 
             sudo rm -rf "${dir}"
-
-            sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+            # Remove old specter directory
         else
             cat <<EOF
 ${RED}
@@ -1866,27 +1838,9 @@ On latest version of Specter...
 ${NC}
 EOF
             _sleep 2
-            sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
             return 1
         fi
     done
-
-    mkdir "$HOME"/specter-"$specter_version"
-
-    tar -zxf cryptoadvance.specter-"$specter_version".tar.gz -C "$HOME"/specter-"$specter_version" --strip-components 1
-    rm sha256.signed.txt ./*.tar.gz
-
-    if [ -d .venv_specter ]; then
-        cat <<EOF
-${RED}
-***
-venv is already set...
-***
-${NC}
-EOF
-    else
-        python3 -m venv "$HOME"/.venv_specter &>/dev/null
-    fi
 
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
@@ -1899,7 +1853,7 @@ EOF
     _specter_cert_check
 
     # check if udev rules are present if not install them.
-    if sudo ufw status | grep 25441 > /dev/null ; then
+    if sudo ufw status | grep 25441 &>/dev/null; then
         cat <<EOF
 ${RED}
 ***
