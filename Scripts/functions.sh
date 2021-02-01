@@ -1921,45 +1921,9 @@ EOF
     return 0
 }
 
-_backup_dojo_data_dir(){
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
-    for data in ${backup_dojo_data}; do
-        test -d "${INSTALL_DIR}"/backup/"${data}" || sudo mkdir -p "${INSTALL_DIR}"/backup/"${data}"
-
-        if [ -d "${DOJO_PATH}" ]; then
-            if ${data} == "bitcoind" ; then
-                sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR}"/backup/"${data}"
-            else
-                sudo rsync -ac -delete-before --quiet "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/ "${INSTALL_DIR}"/backup/"${data}"
-            return 0
-            fi
-        else
-            return 1
-        fi
-    done
-}
-
-_recover_dojo_data_dir(){
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
-    for data in "${!backup_dojo_data[@]}"; do
-        test -d "${INSTALL_DIR}"/backup/"${data}" || exit
-        if [ -d "${DOJO_PATH}" ]; then
-                if ${data} == "bitcoind" ; then
-                    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-                    sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
-                else
-                    sudo rm -rf "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/
-                    sudo rsync -ac -delete-before --quiet "${INSTALL_DIR}"/backup/"${data}" "${DOCKER_VOLUMES}"/my-dojo_data-"${data}"/_data/
-                fi
-            return 0
-        else
-            return 1
-        fi
-    done
-}
-
+#
+# Whirlpool Status Tool
+#
 _install_wst(){
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
@@ -1989,6 +1953,9 @@ EOF
     # install WST
 }
 
+#
+# Boltzmann Entropy Calculator
+#
 _install_boltzmann(){
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
