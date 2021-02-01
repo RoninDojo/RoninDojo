@@ -1813,16 +1813,10 @@ Proceeding to upgrade to $specter_version...
 ***
 ${NC}
 EOF
-            git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
-            cat <<EOF
-${RED}
-***
-Proceeding to upgrade to $specter_version...
-***
-${NC}
-EOF
             _sleep
+
+            git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
             sudo systemctl stop specter
             sudo rm /etc/systemd/system/specter.service
