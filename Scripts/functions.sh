@@ -1848,17 +1848,7 @@ EOF
     _specter_cert_check
 
     # check if udev rules are present if not install them.
-    if sudo ufw status | grep 25441 &>/dev/null; then
-        cat <<EOF
-${RED}
-***
-UFW already set for Specter on local LAN
-***
-${NC}
-EOF
-    else
-        _ufw_rule_add "${ip_range}" "25441"
-    fi
+    _ufw_rule_add "${ip_range}" "25441"
 
     sudo systemctl daemon-reload
     systemctl is-enabled specter 1>/dev/null || sudo systemctl enable specter 2>/dev/null
@@ -1969,6 +1959,8 @@ _ufw_rule_add(){
     ip=$1
     port=$2
 
-    sudo ufw allow from "$ip" to any port "$port"
-    sudo ufw reload
+    if ! sudo ufw status | grep "${port}" &>/dev/null; then
+        sudo ufw allow from "$ip" to any port "$port"
+        sudo ufw reload
+    fi
 }
