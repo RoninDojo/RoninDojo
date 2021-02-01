@@ -1588,8 +1588,7 @@ Adding user to plugdev group...
 ***
 ${NC}
 EOF
-            sudo gpasswd -a "${USER}" plugdev 1>/dev/null
-            _sleep 5 --msg "Reloading RoninDojo in" && newgrp plugdev
+            sudo usermod -aG plugdev "${USER}" 1>/dev/null
         fi
     fi
 }
@@ -1788,10 +1787,12 @@ EOF
 
     sudo systemctl daemon-reload
     sudo systemctl enable specter 2>/dev/null
-    sudo systemctl start specter 2>/dev/null
-    # Using enable and start to ensure the startup creates the .specter dir
+    # Using enable
 
     _specter_hww_udev_rules
+
+    sudo systemctl start specter 2>/dev/null
+    # start to ensure the startup creates the .specter dir
 
     return 0
 }
@@ -1912,9 +1913,10 @@ EOF
 
     sudo systemctl daemon-reload
     systemctl is-enabled specter 1>/dev/null || sudo systemctl enable specter 2>/dev/null
-    sudo systemctl restart specter 2>/dev/null
 
     _specter_hww_udev_rules
+
+    sudo systemctl restart specter 2>/dev/null
 
     return 0
 }
