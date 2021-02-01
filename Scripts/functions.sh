@@ -1570,6 +1570,8 @@ _is_specter(){
 _specter_hww_udev_rules() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
+    _load_user_conf
+
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
         sudo cp "$HOME"/specter-"$specter_version"/udev/*.rules /etc/udev/rules.d/
         sudo udevadm trigger
@@ -1599,6 +1601,8 @@ EOF
 _specter_cert_check() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
+    _load_user_conf
+
     if [ ! -f "$HOME"/.specter/cert.pm ] ; then
         cat <<EOF
 ${RED}
@@ -1624,6 +1628,8 @@ EOF
 _specter_config_tor() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
+    _load_user_conf
+
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
 
     if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${INSTALL_DIR_TOR}"/specter_server ]; then
@@ -1644,6 +1650,8 @@ HiddenServicePort 443 127.0.0.1:25441\n\
 #
 _specter_create_systemd_unit_file() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
 [Unit]
@@ -1668,6 +1676,8 @@ EOF
 
 _specter_uninstall() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
 
     if systemctl is-active --quiet specter; then
         sudo systemctl stop specter
@@ -1708,6 +1718,8 @@ _specter_uninstall() {
 
 _specter_install(){
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
 
     cd "${HOME}" || exit
 
@@ -1786,6 +1798,8 @@ EOF
 
 _specter_upgrade(){
     . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
 
     shopt -s nullglob
 
