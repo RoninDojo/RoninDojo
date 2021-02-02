@@ -1761,17 +1761,7 @@ EOF
      sudo pacman --quiet -S --noconfirm libusb
     fi
 
-    if [ -d .venv_specter ]; then
-        cat <<EOF
-${RED}
-***
-venv is already set...
-***
-${NC}
-EOF
-    else
-        python3 -m venv "$HOME"/.venv_specter &>/dev/null
-    fi
+    python3 -m venv "$HOME"/.venv_specter &>/dev/null
 
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
@@ -1837,9 +1827,10 @@ EOF
         fi
     done
 
+    python3 -m venv "$HOME"/.venv_specter &>/dev/null
+
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
-    # Create file .flaskenv
 
     _specter_create_systemd_unit_file
 
