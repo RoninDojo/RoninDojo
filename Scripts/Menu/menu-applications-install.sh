@@ -24,28 +24,12 @@ do
             # Checks for mempool, then installs
             ;;
         2)
-            if ! _is_specter ; then
+            if ! _is_specter ; then # Fresh install
                 _specter_install && upgrade=true
-            else
-                cat <<EOF
-${RED}
-***
-Specter install detected...
-***
-${NC}
-EOF
-                _sleep 2
-                cat <<EOF
-${RED}
-***
-Updating to latest version...
-***
-${NC}
-EOF
+            else # Checks for update
                 _sleep 2
                 _specter_upgrade && upgrade=true
             fi
-            # Runs dojo install script
             ;;
         3)
             if ! _is_bisq ; then
