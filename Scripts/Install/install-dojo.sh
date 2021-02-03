@@ -64,7 +64,7 @@ _sleep 10 --msg "Installing in"
 cat <<EOF
 ${RED}
 ***
-Downloading and extracting latest RoninDojo release...
+Downloading latest RoninDojo release...
 ***
 ${NC}
 EOF
