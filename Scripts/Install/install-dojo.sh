@@ -154,7 +154,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-If you wish to disable this feature, set DOJO_RESTORE=false in the $HOME/.config/RoninDojo/user.conf file...
+If you wish to disable this feature, set dojo_conf_backup=false in the $HOME/.config/RoninDojo/user.conf file...
 ***
 ${NC}
 EOF
@@ -292,58 +292,16 @@ EOF
     # press to continue is needed because sudo password can be requested for next steps
     # if the user is AFK there may be timeout
 
-    # Backup credentials
+    # Backup dojo credentials
     _dojo_backup
 
-    if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
-        cat <<EOF
-${RED}
-***
-Blockchain data salvage starting...
-***
-${NC}
-EOF
+    # Restore any saved IBD from a previous uninstall
+    "${dojo_data_bitcoind_backup}" && _dojo_data_bitcoind restore
 
-        cd "$dojo_path_my_dojo" || exit
-        _stop_dojo
+    # Restore any saved indexer data from a previous uninstall
+    "${dojo_data_indexer_backup}" && _dojo_data_indexer restore
 
-        _sleep
-
-        if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
-            sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-        fi
-
-        sudo mv "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
-        # changes to dojo path, otherwise exit
-        # websearch "bash Logical OR (||)" for info
-        # stops dojo and removes new data directories
-        # then moves salvaged block data
-        #### add indexes to data move logic ####
-        #### swap with _recover_dojo_data_dir function ####
-
-        cat <<EOF
-${RED}
-***
-Blockchain data salvage completed...
-***
-${NC}
-EOF
-        _sleep 2
-
-        sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
-        # remove old salvage directories
-
-        cd "$dojo_path_my_dojo" || exit
-        _source_dojo_conf
-
-        # Start docker containers
-        yamlFiles=$(_select_yaml_files)
-        docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
-        # start dojo
-    fi
-    # check for IBD data, if not found continue
-
-    if ${TOR_RESTORE}; then
+    if ${tor_backup}; then
         _tor_restore
         docker restart tor 1>/dev/null
     fi

@@ -107,8 +107,6 @@ _update_07() {
 
 # Create mnt-usb.mount if missing and system is already mounted.
 _update_08() {
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     local uuid tmp systemd_mountpoint fstype
@@ -144,5 +142,18 @@ EOF"
         _sleep 4 --msg "Restarting RoninDojo in"
 
         ronin
+    fi
+}
+
+# Migrate bitcoin ibd data to new backup directory
+_update_09() {
+    if sudo test -d "${INSTALL_DIR}"/bitcoin && sudo test -d "${INSTALL_DIR}"/bitcoin/blocks; then
+        sudo test -d "${dojo_backup_bitcoind}" || sudo mkdir "${dojo_backup_bitcoind}"
+
+        for dir in blocks chainstate indexes; do
+            if sudo test -d "${INSTALL_DIR}"/bitcoin/"${dir}"; then
+                sudo mv "${INSTALL_DIR}"/bitcoin/"${dir}" "${dojo_backup_bitcoind}"/
+            fi
+        done
     fi
 }

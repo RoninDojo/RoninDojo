@@ -84,13 +84,11 @@ EOF
         _stop_dojo
         # stop dojo
 
-        test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
-        # check if salvage directory exist
+        # Backup Bitcoin Blockchain Data
+        "${dojo_data_bitcoind_backup}" && _dojo_data_bitcoind backup
 
-        if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
-            sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
-        fi
-        # moves blockchain data to uninstall-salvage to be used by the dojo install script
+        # Backup Indexer Data
+        "${dojo_data_indexer_backup}" && _dojo_data_indexer backup
 
         cat <<EOF
 ${RED}
@@ -99,14 +97,14 @@ Uninstalling RoninDojo...
 ***
 ${NC}
 EOF
-        "${TOR_RESTORE}" && _tor_backup
+        "${tor_backup}" && _tor_backup
         # tor backup must happen prior to dojo uninstall
 
         cd "$dojo_path_my_dojo" || exit
         ./dojo.sh uninstall
         # uninstall dojo
 
-        "${DOJO_RESTORE}" && _dojo_backup
+        "${dojo_conf_backup}" && _dojo_backup
 
         rm -rf "${DOJO_PATH}"
 

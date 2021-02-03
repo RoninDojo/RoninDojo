@@ -302,7 +302,7 @@ _sleep 2
         cat <<EOF
 ${RED}
 ***
-If you wish to disable this feature, set TOR_RESTORE=false in $HOME/.conf/RoninDojo/user.conf file...
+If you wish to disable this feature, set tor_backup=false in $HOME/.conf/RoninDojo/user.conf file...
 ***
 ${NC}
 EOF
@@ -880,7 +880,7 @@ _dojo_backup() {
 _dojo_restore() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
-    if "${DOJO_RESTORE}"; then
+    if "${dojo_conf_backup}"; then
         sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/conf "${dojo_path_my_dojo}"
         return 0
     fi
@@ -1941,6 +1941,159 @@ _install_bisq(){
         -e "/  -txindex=1/i\  -whitelist=bloomfilter@${ip}" "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
     echo "peerbloomfilters=1" > "${ronin_data_dir}"/bisq.txt
+}
+
+_dojo_data_indexer() {
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            restore)
+                if sudo test -d "${dojo_backup_indexer}/db" && sudo test -d "${docker_volume_indexer}"; then
+                    cat <<EOF
+${RED}
+***
+Indexer data restore starting...
+***
+${NC}
+EOF
+
+                    cd "$dojo_path_my_dojo" || exit
+                    _stop_dojo
+
+                    _sleep
+
+                    if sudo test -d "${docker_volume_indexer}"/_data/db; then
+                        sudo rm -rf "${docker_volume_indexer}"/_data/db
+                    fi
+
+                    if sudo test -d "${dojo_backup_indexer}"/db; then
+                        sudo mv "${dojo_backup_indexer}"/db "${docker_volume_indexer}"/_data/
+                    fi
+
+                    # changes to dojo path, otherwise exit
+                    # websearch "bash Logical OR (||)" for info
+                    # stops dojo and removes new data directories
+                    # then moves salvaged indexer data
+
+                    cat <<EOF
+${RED}
+***
+Indexer data restore completed...
+***
+${NC}
+EOF
+                    _sleep 2
+
+                    sudo rm -rf "${dojo_backup_indexer}"
+                    # remove old salvage directories
+
+                    cd "$dojo_path_my_dojo" || exit
+                    _source_dojo_conf
+
+                    # Start docker containers
+                    yamlFiles=$(_select_yaml_files)
+                    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+                    # start dojo
+                fi
+                # check for indexer db data directory, if not found continue
+
+                return 0
+                ;;
+            backup)
+                test ! -d "${dojo_backup_indexer}" && sudo mkdir "${dojo_backup_indexer}"
+                # check if salvage directory exist
+
+                if sudo test -d "${docker_volume_indexer}"/_data/db; then
+                    sudo mv "${docker_volume_indexer}"/_data/db "${dojo_backup_indexer}"/
+                fi
+
+                # moves indexer data to ${dojo_backup_indexer} directory to be used by the dojo install script
+                return 0
+                ;;
+        esac
+    done
+}
+
+_dojo_data_bitcoind() {
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
+    _load_user_conf
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            restore)
+                if sudo test -d "${dojo_backup_bitcoind}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
+                    cat <<EOF
+${RED}
+***
+Blockchain data restore starting...
+***
+${NC}
+EOF
+
+                    cd "$dojo_path_my_dojo" || exit
+                    _stop_dojo
+
+                    _sleep
+
+                    for dir in blocks chainstate indexes; do
+                        if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"; then
+                            sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"
+                        fi
+                    done
+
+                    for dir in blocks chainstate indexes; do
+                        if sudo test -d "${dojo_backup_bitcoind}"/"${dir}"; then
+                            sudo mv "${dojo_backup_bitcoind}"/"${dir}" "${DOCKER_VOLUME_BITCOIND}"/_data/
+                        fi
+                    done
+                    # changes to dojo path, otherwise exit
+                    # websearch "bash Logical OR (||)" for info
+                    # stops dojo and removes new data directories
+                    # then moves salvaged block data
+
+                    cat <<EOF
+${RED}
+***
+Blockchain data restore completed...
+***
+${NC}
+EOF
+                    _sleep 2
+
+                    sudo rm -rf "${dojo_backup_bitcoind}"
+                    # remove old salvage directories
+
+                    cd "$dojo_path_my_dojo" || exit
+                    _source_dojo_conf
+
+                    # Start docker containers
+                    yamlFiles=$(_select_yaml_files)
+                    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+                    # start dojo
+                fi
+                # check for IBD data, if not found continue
+                return 0
+                ;;
+            backup)
+                test ! -d "${dojo_backup_bitcoind}" && sudo mkdir "${dojo_backup_bitcoind}"
+                # check if salvage directory exist
+
+                for dir in blocks chainstate indexes; do
+                    if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"; then
+                        sudo mv "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}" "${dojo_backup_bitcoind}"/
+                    fi
+                done
+                # moves blockchain data to ${dojo_backup_bitcoind} to be used by the dojo install script
+                return 0
+                ;;
+        esac
+    done
 }
 
 #

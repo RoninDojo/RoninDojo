@@ -87,10 +87,18 @@ dojo_path_my_dojo="${DOJO_PATH}/docker/my-dojo"
 ronin_data_dir="$HOME/.config/RoninDojo/data"
 BOLTZMANN_PATH="$HOME/boltzmann"
 RONIN_UI_BACKEND_DIR="$HOME/Ronin-UI-Backend"
-DOJO_RESTORE=true
-TOR_RESTORE=true
 
+#
+# Data backup variables
+#
+dojo_data_bitcoind_backup=true
+dojo_data_indexer_backup=true
+dojo_conf_backup=true
+tor_backup=true
+
+#
 # Repositories
+#
 RONIN_DOJO_BRANCH="master" # defaults to master
 RONIN_DOJO_REPO="https://code.samourai.io/ronindojo/RoninDojo"
 SAMOURAI_REPO='https://code.samourai.io/ronindojo/samourai-dojo.git'
@@ -105,22 +113,23 @@ PRIMARY_STORAGE="/dev/sda1"
 SECONDARY_STORAGE="/dev/sdb1"
 STORAGE_MOUNT="/mnt/backup"
 
-BITCOIN_IBD_BACKUP_DIR="${STORAGE_MOUNT}/bitcoin"
+BITCOIN_IBD_BACKUP_DIR="${STORAGE_MOUNT}/backup/bitcoin"
 INSTALL_DIR="/mnt/usb"
 INSTALL_DIR_TOR="${INSTALL_DIR}/tor"
 INSTALL_DIR_SWAP="${INSTALL_DIR}/swapfile"
-INSTALL_DIR_UNINSTALL="${INSTALL_DIR}/bitcoin"
 INSTALL_DIR_DOCKER="${INSTALL_DIR}/docker"
 
 DOCKER_VOLUMES="${INSTALL_DIR_DOCKER}/volumes"
 DOCKER_VOLUME_TOR="${DOCKER_VOLUMES}/my-dojo_data-tor"
 DOCKER_VOLUME_WP="${DOCKER_VOLUMES}/my-dojo_data-whirlpool"
 DOCKER_VOLUME_BITCOIND="${DOCKER_VOLUMES}/my-dojo_data-bitcoind"
+docker_volume_indexer="${DOCKER_VOLUMES}/my-dojo_data-indexer"
 
+# Dojo Related Backup Paths
+dojo_backup_bitcoind="${INSTALL_DIR}/backup/bitcoin"
+dojo_backup_indexer="${INSTALL_DIR}/backup/indexer"
 DOJO_BACKUP_DIR="${INSTALL_DIR}/backup/dojo"
 TOR_BACKUP_DIR="${INSTALL_DIR}/backup/tor"
-INDEXER_BACKUP_DIR="${INSTALL_DIR}/backup/indexer"
-BITCOIN_BACKUP_DIR="${INSTALL_DIR}/backup/bitcoin"
 
 TOR_DATA_DIR="docker/volumes/my-dojo_data-tor"
 BITCOIND_DATA_DIR="docker/volumes/my-dojo_data-bitcoind"
