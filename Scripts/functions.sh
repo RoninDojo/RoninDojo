@@ -2008,13 +2008,16 @@ EOF
                     sudo rm -rf "${dojo_backup_bitcoind}"
                     # remove old salvage directories
 
-                    cd "$dojo_path_my_dojo" || exit
-                    _source_dojo_conf
+                    if ! dojo_data_indexer_backup; then
+                        cd "$dojo_path_my_dojo" || exit
+                        _source_dojo_conf
 
-                    # Start docker containers
-                    yamlFiles=$(_select_yaml_files)
-                    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
-                    # start dojo
+                        # Start docker containers
+                        yamlFiles=$(_select_yaml_files)
+                        docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+                        # start dojo
+                    fi
+                    # Only start dojo if no indexer restore is enabled
                 fi
                 # check for IBD data, if not found continue
                 return 0
