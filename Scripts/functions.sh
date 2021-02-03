@@ -1,6 +1,8 @@
 #!/bin/bash
 # shellcheck disable=SC2221,SC2222,1004,SC2154 source=/dev/null
 
+. "${HOME}"/RoninDojo/Scripts/defaults.sh
+
 RED=$(tput setaf 1)
 NC=$(tput sgr0)
 # No Color
@@ -136,8 +138,6 @@ fi
 # to depend on ${INSTALL_DIR} mount point
 #
 _systemd_unit_drop_in_check() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     local tmp systemd_mountpoint
@@ -270,8 +270,6 @@ _is_active() {
 # Tor credentials backup
 #
 _tor_backup() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     test -d "${TOR_BACKUP_DIR}" || sudo mkdir -p "${TOR_BACKUP_DIR}"
 
     if [ -d "${DOJO_PATH}" ]; then
@@ -286,8 +284,6 @@ _tor_backup() {
 # Tor credentials restore
 #
 _tor_restore() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     if sudo test -d "${TOR_BACKUP_DIR}"; then
         sudo rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
         cat <<EOF
@@ -317,9 +313,6 @@ _sleep 3
 # Setup torrc
 #
 _setup_tor() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
-
     # If the setting is already active, assume user has configured it already
     if ! grep -E "^\s*DataDirectory\s+.+$" /etc/tor/torrc 1>/dev/null; then
         cat <<TOR_CONFIG
@@ -383,8 +376,6 @@ TOR_CONFIG
 # Is Electrum Rust Server Installed
 #
 _is_electrs() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     if [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
         cat <<EOF
 ${RED}
@@ -451,8 +442,6 @@ _ui_backend_credentials() {
 # Check Backend Installation
 #
 _is_ronin_ui_backend() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
@@ -469,8 +458,6 @@ _is_ronin_ui_backend() {
 #
 _ronin_ui_update_check() {
     local ver current_ver
-
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
 
     # Fetch Ronin UI Backend archive
     wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
@@ -496,7 +483,6 @@ _ronin_ui_update_check() {
 # Install Ronin UI Backend
 #
 _install_ronin_ui_backend() {
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
 
     local pkg
@@ -598,8 +584,6 @@ which_sbc() {
 _set_indexer() {
     local conf
 
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     conf="conf"
     test -f "${dojo_path_my_dojo}"/conf/docker-indexer.conf || conf="conf.tpl"
 
@@ -613,8 +597,6 @@ _set_indexer() {
 # Undo changes from electrs install
 #
 _uninstall_electrs_indexer() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     test -f "${dojo_path_my_dojo}"/indexer/electrs.toml && rm "${dojo_path_my_dojo}"/indexer/electrs.toml
 
     cd "${dojo_path_my_dojo}" || exit
@@ -632,10 +614,8 @@ _uninstall_electrs_indexer() {
 #
 _check_indexer() {
     local conf
-
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     conf="conf"
+
     test -f "${dojo_path_my_dojo}"/conf/docker-indexer.conf || conf="conf.tpl"
 
     if grep "NODE_ACTIVE_INDEXER=local_indexer" "${dojo_path_my_dojo}"/conf/docker-node."${conf}" 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
@@ -653,8 +633,6 @@ _check_indexer() {
 # No indexer was found so offer user choice of SW indexer, electrs, or none
 #
 _indexer_prompt() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     # indexer names here are used as data source
     while true; do
         select indexer in "Samourai Indexer (recommended)" "Electrum Rust Server" "No Indexer (no recommended)"; do
@@ -724,7 +702,6 @@ EOF
 # Check if my-dojo directory is missing
 #
 _is_dojo() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
     local menu
     menu="$1"
 
@@ -745,8 +722,8 @@ fi
 # Check if mempool enabled
 #
 _is_mempool() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-    local conf="${dojo_path_my_dojo}/conf/docker-mempool.conf"
+    local conf
+    conf="${dojo_path_my_dojo}/conf/docker-mempool.conf"
 
     if [ -f "$conf" ]; then
         if grep "MEMPOOL_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null; then
@@ -766,8 +743,6 @@ _is_mempool() {
 #
 _mempool_conf() {
     local mempool_conf bitcoind_conf RPC_USER RPC_PASS RPC_IP RPC_PORT MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
-
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     bitcoind_conf="conf"
     test -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf || bitcoind_conf="conf.tpl"
@@ -808,7 +783,6 @@ _mempool_conf() {
 # Mempool url rewrites
 #
 _mempool_urls_to_local_btc_explorer() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 
     if ! _is_mempool && grep "blockstream" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
@@ -822,8 +796,6 @@ _mempool_urls_to_local_btc_explorer() {
 # Update Samourai Dojo Repository
 #
 _dojo_update() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     cd "${DOJO_PATH}" || exit
@@ -839,8 +811,6 @@ _dojo_update() {
 # Upgrade Samourai Dojo containers
 #
 _dojo_upgrade() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     cat <<EOF
 ${RED}
 ***
@@ -862,8 +832,6 @@ EOF
 # Dojo Credentials Backup
 #
 _dojo_backup() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     test -d "${DOJO_BACKUP_DIR}" || sudo mkdir -p "${DOJO_BACKUP_DIR}"
 
     if [ -d "${DOJO_PATH}" ]; then
@@ -878,8 +846,6 @@ _dojo_backup() {
 # Dojo Credentials Restore
 #
 _dojo_restore() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     if "${dojo_conf_backup}"; then
         sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/conf "${dojo_path_my_dojo}"
         return 0
@@ -892,8 +858,6 @@ _dojo_restore() {
 # Checks if dojo db container.
 #
 _dojo_check() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     # Check that ${INSTALL_DIR} is mounted
@@ -931,8 +895,6 @@ EOF
 # Checks if mempool.space is enabled
 #
 _mempool_check() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     # Check that ${INSTALL_DIR} is mounted
@@ -1065,8 +1027,10 @@ _sleep
     # Shutdown the bitcoin daemon
     if [ "$BITCOIND_INSTALL" == "on" ]; then
         # Renewal of bitcoind onion address
-        if [ "$BITCOIND_EPHEMERAL_HS" = "on" ]; then
-            docker exec -it tor rm -rf /var/lib/tor/hsv2bitcoind &> /dev/null
+        if [ "$BITCOIND_LISTEN_MODE" == "on" ]; then
+            if [ "$BITCOIND_EPHEMERAL_HS" = "on" ]; then
+                docker exec -it tor rm -rf /var/lib/tor/hsv3bitcoind &> /dev/null
+            fi
         fi
 
         # Stop the bitcoin daemon
@@ -1082,22 +1046,23 @@ ${NC}
 EOF
         # Check for bitcoind process
         i=0
-        while ((i<21)); do
+        nbIters=$((BITCOIND_SHUTDOWN_DELAY/10))
+
+        while ((i<nbIters)); do
             if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
                 sleep 1
                 ((i++))
             else
-                break
-            fi
-        done
-
-        cat <<EOF
+                cat <<EOF
 ${RED}
 ***
-Bitcoind Daemon stopped...
+Bitcoin Server Daemon stopped...
 ***
 ${NC}
 EOF
+                break
+            fi
+        done
 
         cat <<EOF
 ${RED}
@@ -1568,8 +1533,6 @@ _is_specter(){
 # Allows for users to plug HWW straight into their Ronin and then connect to their Specter
 #
 _specter_hww_udev_rules() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     if [ ! -f /etc/udev/rules.d/51-coinkite.rules ] ; then
@@ -1599,8 +1562,6 @@ EOF
 # Specter check cert
 #
 _specter_cert_check() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     if [ ! -f "$HOME"/.specter/cert.pm ] ; then
@@ -1626,8 +1587,6 @@ EOF
 # Specter tor hidden service configuration
 #
 _specter_config_tor() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
@@ -1649,8 +1608,6 @@ HiddenServicePort 443 127.0.0.1:25441\n\
 # Specter systemd unit file creation
 #
 _specter_create_systemd_unit_file() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     sudo bash -c "cat <<EOF > /etc/systemd/system/specter.service
@@ -1675,8 +1632,6 @@ EOF
 }
 
 _specter_uninstall() {
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     if systemctl is-active --quiet specter; then
@@ -1717,8 +1672,6 @@ _specter_uninstall() {
 }
 
 _specter_install(){
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     cd "${HOME}" || exit
@@ -1787,8 +1740,6 @@ EOF
 }
 
 _specter_upgrade(){
-    . "$HOME"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     shopt -s nullglob
@@ -1855,8 +1806,6 @@ EOF
 # Whirlpool Status Tool
 #
 _install_wst(){
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     cd "$HOME" || exit
 
     git clone -q "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
@@ -1887,8 +1836,6 @@ EOF
 # Boltzmann Entropy Calculator
 #
 _install_boltzmann(){
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     cd "$HOME" || exit
 
     git clone -q "$BOLTZMANN_REPO"
@@ -1923,8 +1870,6 @@ EOF
 }
 
 _is_bisq(){
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     if [ -f "${ronin_data_dir}"/bisq.txt ]; then
         return 0
     else
@@ -1933,8 +1878,6 @@ _is_bisq(){
 }
 
 _install_bisq(){
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     _create_ronin_data_dir
 
     sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
@@ -1944,8 +1887,6 @@ _install_bisq(){
 }
 
 _dojo_data_indexer() {
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     # Parse Arguments
@@ -2019,8 +1960,6 @@ EOF
 }
 
 _dojo_data_bitcoind() {
-    . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
     _load_user_conf
 
     # Parse Arguments
