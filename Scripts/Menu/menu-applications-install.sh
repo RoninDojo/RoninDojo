@@ -66,6 +66,13 @@ EOF
 
                 bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
             elif ((ret==2)); then
+                cat <<EOF
+${RED}
+***
+Select an indexer to use with RoninDojo...
+***
+${NC}
+EOF
                 _indexer_prompt
             fi
             # check for which indexer, if no indexer ask if they want to install
