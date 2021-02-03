@@ -19,7 +19,7 @@ EOF
 fi
 # if data directory is not found then warn and return to menu
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Preparing to copy data from your Backup Data Drive now...
@@ -36,8 +36,8 @@ Your backup drive partition has been detected...
 ***
 ${NC}
 EOF
-  _sleep 2
-  # checks for ${SECONDARY_STORAGE}
+    _sleep 2
+    # checks for ${SECONDARY_STORAGE}
 else
     cat <<EOF
 ${RED}
@@ -46,57 +46,65 @@ No backup drive partition detected! Please make sure it is plugged in and has po
 ***
 ${NC}
 EOF
-  _sleep 5
+    _sleep 5
 
-  _pause return
-  bash -c "${RONIN_DOJO_MENU2}"
-  # no drive detected, press any key to return to menu
+    _pause return
+
+    bash -c "${RONIN_DOJO_MENU2}"
+    # no drive detected, press any key to return to menu
 fi
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Making sure Dojo is stopped...
 ***
 ${NC}
 EOF
+
 _sleep 2
 
 cd "${dojo_path_my_dojo}" || exit
 _stop_dojo
 # stop dojo
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Removing old data...
 ***
 ${NC}
 EOF
+
 _sleep 2
 
 # Make sure we have directories to delete
-if test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
-    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-fi
+for dir in blocks chainstate indexes; do
+    if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"; then
+        sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"
+    fi
+done
 
 # Check to see if we have old legacy backup directory, if so rename to ${STORAGE_MOUNT}
 if sudo test -d "${STORAGE_MOUNT}"/system-setup-salvage; then
     sudo mv "${STORAGE_MOUNT}"/system-setup-salvage "${BITCOIN_IBD_BACKUP_DIR}" 1>/dev/null
 fi
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Copying...
 ***
 ${NC}
 EOF
+
 _sleep 2
 
 if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
-    sudo cp -av "${BITCOIN_IBD_BACKUP_DIR}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
-    # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+    for dir in blocks chainstate indexes; do
+        sudo cp -a "${BITCOIN_IBD_BACKUP_DIR}"/"${dir}" "${DOCKER_VOLUME_BITCOIND}"/_data/
+        # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+    done
 else
     sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
     cat <<BACKUP
@@ -112,13 +120,14 @@ BACKUP
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Transfer Complete!
 ***
 ${NC}
 EOF
+
 _sleep 2
 
 _pause continue
@@ -136,7 +145,7 @@ _sleep 2
 sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
 # unmount backup drive and remove directory
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 You can now safely unplug your backup drive!
@@ -145,21 +154,22 @@ ${NC}
 EOF
 _sleep 2
 
-    cat <<EOF
+cat <<EOF
 ${RED}
 ***
 Starting Dojo...
 ***
 ${NC}
 EOF
-    _sleep 2
 
-    cd "${dojo_path_my_dojo}" || exit
-    _source_dojo_conf
+_sleep 2
 
-    # Start docker containers
-    yamlFiles=$(_select_yaml_files)
-    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+cd "${dojo_path_my_dojo}" || exit
+_source_dojo_conf
+
+# Start docker containers
+yamlFiles=$(_select_yaml_files)
+docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
 
 _pause return
 bash -c "${RONIN_DOJO_MENU2}"
