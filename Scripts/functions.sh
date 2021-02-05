@@ -545,8 +545,8 @@ EOF
     _sleep 2
 
     # Check package dependencies
-    for pkg in npm pm2 jq; do
-        _check_pkg "${pkg}"
+    for x in npm pm2 jq; do
+        _check_pkg "${x}"
     done
 
     _check_pkg "node" "nodejs"
