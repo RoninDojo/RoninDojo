@@ -1791,6 +1791,8 @@ On latest version of Specter...
 ${NC}
 EOF
             _sleep 2
+
+            _pause return
             return 1
         fi
     done
