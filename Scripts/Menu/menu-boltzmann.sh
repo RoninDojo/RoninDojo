@@ -59,7 +59,7 @@ do
   read -r txids
 
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
-    if ! pipenv run python ludwig.py --rpc --txids="${txids}" &>/dev/null; then
+    if ! pipenv run python ludwig.py --rpc --txids="${txids}" 2>/dev/null; then
       _check_pkg "pipenv" "python-pipenv"
 
       cat <<EOF
