@@ -59,7 +59,32 @@ do
   read -r txids
 
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
-    pipenv run python ludwig.py --rpc --txids="${txids}"
+    if ! pipenv run python ludwig.py --rpc --txids="${txids}" &>/dev/null; then
+      if ! hash pipenv; then
+          cat <<EOF
+${RED}
+***
+Installing pipenv...
+***
+${NC}
+EOF
+          sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
+      fi
+
+      cat <<EOF
+${RED}
+***
+Checking for updates...
+***
+${NC}
+EOF
+      _sleep
+
+      cd .. || exit
+
+      # Upgrade dependencies
+      pipenv update &>/dev/null
+    fi
   else
     bash -c "${ronin_samourai_toolkit_menu}"
   fi
