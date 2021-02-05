@@ -156,16 +156,12 @@ EOF
             bash -c "$RONIN_APPLICATIONS_MENU"
         fi
 
-        if ! hash go 2>/dev/null; then
-            cat <<EOF
-${RED}
-***
-Installing go language dependency...
-***
-${NC}
-EOF
-            sudo pacman --quiet -S go glibc --noconfirm
-        fi
+        # Check for package dependencies
+        for pkg in go gcc; do
+            _check_pkg "${pkg}"
+        done
+
+        _check_pkg "ldd" "glibc"
 
         if [ ! -f /etc/systemd/system/bbbfancontrol.service ]; then
             git clone https://github.com/digitalbitbox/bitbox-base.git

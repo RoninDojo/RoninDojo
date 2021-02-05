@@ -60,16 +60,7 @@ do
 
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
     if ! pipenv run python ludwig.py --rpc --txids="${txids}" &>/dev/null; then
-      if ! hash pipenv; then
-          cat <<EOF
-${RED}
-***
-Installing pipenv...
-***
-${NC}
-EOF
-          sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
-      fi
+      _check_pkg "pipenv" "python-pipenv"
 
       cat <<EOF
 ${RED}

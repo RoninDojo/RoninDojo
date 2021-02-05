@@ -18,25 +18,11 @@ cd "$HOME" || exit
 git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
 # download whirlpool stat tool
 
-if ! hash pipenv; then
-  cat <<EOF
-${RED}
-***
-Installing python-pipenv...
-***
-${NC}
-EOF
-  _sleep
-
-  # Update mirrors
-  _pacman_update_mirrors
-
-  sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
-fi
 # check for python-pip and install if not found
+_check_pkg "pipenv" "python-pipenv" --update-mirrors
 
 cd Whirlpool-Stats-Tool || exit
-pipenv install -r requirements.txt &>/dev/null
+pipenv install &>/dev/null
 # change to whirlpool stats directory, otherwise exit
 # install whirlpool stat tool
 

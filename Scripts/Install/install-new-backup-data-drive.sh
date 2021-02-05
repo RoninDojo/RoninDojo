@@ -88,19 +88,7 @@ EOF
 _sleep 2
 
 # Check for sgdisk dependency
-if ! hash sgdisk 2>/dev/null; then
-    # Update mirrors
-    _pacman_update_mirrors
-
-    cat <<EOF
-${RED}
-***
-Installing gptfdisk...
-***
-${NC}
-EOF
-    sudo pacman --quiet -S gptfdisk --noconfirm
-fi
+_check_pkg "sgdisk" "gptfdisk" --update-mirrors
 
 if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
     printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"

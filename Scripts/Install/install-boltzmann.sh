@@ -9,25 +9,7 @@ git clone "$BOLTZMANN_REPO" &>/dev/null
 cd boltzmann || exit
 # pull Boltzmann
 
-cat <<EOF
-${RED}
-***
-Checking package dependencies...
-***
-${NC}
-EOF
-_sleep
-
-if ! hash pipenv; then
-    cat <<EOF
-${RED}
-***
-Installing pipenv...
-***
-${NC}
-EOF
-    sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
-fi
+_check_pkg "pipenv" "python-pipenv"
 
 # Setup a virtual environment to hold boltzmann dependencies. We should use this
 # with all future packages that ship a requirements.txt.

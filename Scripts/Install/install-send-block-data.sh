@@ -83,20 +83,8 @@ sudo test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR
 
 if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
     # Use rsync when existing IBD is found
-    if ! hash rsync 2>/dev/null; then
-        # Update mirrors
-        _pacman_update_mirrors
 
-        cat <<EOF
-${RED}
-***
-Rsync package missing...
-***
-${NC}
-EOF
-        _sleep 5 --msg "Installing in"
-        sudo pacman --quiet -S --noconfirm rsync &>/dev/null
-    fi
+    _check_pkg rsync --update-mirrors
 
     sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${BITCOIN_IBD_BACKUP_DIR}"
 elif sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then

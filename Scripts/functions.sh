@@ -174,6 +174,46 @@ SUDO'
 }
 
 #
+# Check if package is installed or not
+#
+_check_pkg() {
+    local pkg_bin pkg_name update
+    pkg_bin="${1}"
+    pkg_name="${2:-$1}"
+    update=false
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --update-mirrors)
+                update=true
+                break
+                ;;
+            *)
+                shift 1
+                ;;
+        esac
+    done
+
+    "${update}" && _pacman_update_mirrors
+
+    if ! hash "${pkg_bin}"; then
+        cat <<EOF
+${RED}
+***
+Installing ${pkg_name}...
+***
+${NC}
+EOF
+        sudo pacman --quiet -S --noconfirm "${pkg_name}" &>/dev/null
+
+        return 0
+    fi
+
+    return 1
+}
+
+#
 # Package version match
 #
 _check_pkgver() {
@@ -504,25 +544,12 @@ ${NC}
 EOF
     _sleep 2
 
-    # Check for nodejs
-    if ! hash node 2>/dev/null; then
-        sudo pacman --quiet -S --noconfirm nodejs
-    fi
+    # Check package dependencies
+    for pkg in npm pm2 jq; do
+        _check_pkg "${pkg}"
+    done
 
-    # Check for npm
-    if ! hash npm 2>/dev/null; then
-        sudo pacman --quiet -S --noconfirm npm
-    fi
-
-    # Check for pm2 package
-    if ! hash pm2 2>/dev/null; then
-        sudo npm install -g pm2 &>/dev/null
-    fi
-
-    # Check for jq package
-    if ! hash jq 2>/dev/null; then
-        sudo pacman --quiet -S --noconfirm jq
-    fi
+    _check_pkg "node" "nodejs"
 
     # cd into RoninBackend dir
     cd "${RONIN_UI_BACKEND_DIR}" || exit
@@ -1688,18 +1715,8 @@ EOF
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
-    if ! pacman -Q gcc 1>/dev/null; then
-        _pacman_update_mirrors
-
-        cat <<EOF
-${RED}
-***
-Installing gcc
-***
-${NC}
-EOF
-        sudo pacman --quiet -S --noconfirm gcc
-    fi
+    # Check for package dependencies
+    _check_pkg "gcc" --update-mirrors
 
     if ! pacman -Q libusb 1>/dev/null; then
         _pacman_update_mirrors
@@ -1811,18 +1828,8 @@ _install_wst(){
     git clone -q "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
     # Download whirlpool stat tool
 
-    if ! hash pipenv; then
-        cat <<EOF
-${RED}
-***
-Installing python-pipenv...
-***
-${NC}
-EOF
-        _sleep 1
-        sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
-    fi
     # Check for python-pip and install if not found
+    _check_pkg "pipenv" "python-pipenv"
 
     cd Whirlpool-Stats-Tool || exit
 
@@ -1852,16 +1859,8 @@ ${NC}
 EOF
     _sleep
 
-    if ! hash pipenv; then
-        cat <<EOF
-${RED}
-***
-Installing pipenv...
-***
-${NC}
-EOF
-        sudo pacman --quiet -S --noconfirm python-pipenv &>/dev/null
-    fi
+    # Check for package dependency
+    _check_pkg "pipenv" "python-pipenv"
 
     # Setup a virtual environment to hold boltzmann dependencies. We should use this
     # with all future packages that ship a requirements.txt.

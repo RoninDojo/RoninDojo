@@ -72,17 +72,7 @@ _pacman_update_mirrors
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
-  if ! hash "${pkg}" 2>/dev/null; then
-    cat <<EOF
-${RED}
-***
-Installing ${package_dependencies[$pkg]}...
-***
-${NC}
-EOF
-      _sleep
-      sudo pacman --quiet -S --noconfirm "${package_dependencies[$pkg]}"
-  fi
+    _check_pkg "${pkg}" "${package_dependencies[$pkg]}"
 done
 # install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
