@@ -34,14 +34,26 @@ if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3bitcoind; then
     V3_ADDR_BITCOIN=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3bitcoind/hostname)
 fi
 
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv2bitcoind; then
+    V3_ADDR_BITCOIN=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2bitcoind/hostname)
+fi
+
 # Bitcoin Explorer
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer; then
     V3_ADDR_EXPLORER=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3explorer/hostname)
 fi
 
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv2explorer; then
+    V2_ADDR_EXPLORER=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2explorer/hostname)
+fi
+
 # Dojo Maintanance Tool
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3dojo; then
     V3_ADDR_API=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3dojo/hostname)
+fi
+
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv2dojo; then
+    V2_ADDR_API=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2dojo/hostname)
 fi
 
 # Electrum Server
@@ -52,6 +64,10 @@ fi
 # Whirlpool
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3whirlpool; then
     V3_ADDR_WHIRLPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3whirlpool/hostname)
+fi
+
+if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv2whirlpool; then
+    V2_ADDR_WHIRLPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2whirlpool/hostname)
 fi
 
 # Mempool

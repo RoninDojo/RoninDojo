@@ -40,7 +40,9 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Maintenance Tool        = http://$V3_ADDR_API/admin
+Maintenance Tool:
+Tor V2 URL              = http://$V2_ADDR_API/admin
+Tor V3 URL              = http://$V3_ADDR_API/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 EOF
@@ -63,7 +65,8 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
+Tor V2 URL              = http://$V2_ADDR_WHIRLPOOL
+Tor V3 URL              = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
 EOF
             _pause return
@@ -157,15 +160,16 @@ ${NC}
 
 Bitcoin Daemon:
 
-Tor URL                 = http://$V3_ADDR_BITCOIN
+Tor V2 URL              = http://$V2_ADDR_BITCOIN
+Tor V3 URL              = http://$V3_ADDR_BITCOIN
 RPC User                = $RPC_USER_CONF
 RPC Password            = $RPC_PASS_CONF
 RPC IP                  = $RPC_IP
 RPC Host                = $RPC_PORT
 
-Bitcoin RPC Explorer:
-
-Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
+Bitcoin RPC Explorer (No username required):
+Tor V2 URL              = http://$V2_ADDR_EXPLORER
+Tor V3 URL              = http://$V3_ADDR_EXPLORER
 Password                = $EXPLORER_KEY
 EOF
             _pause return
@@ -229,7 +233,9 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Maintenance Tool        = http://$V3_ADDR_API/admin
+Maintenance Tool:
+Tor V2 URL              = http://$V2_ADDR_API/admin
+Tor V3 URL              = http://$V3_ADDR_API/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 
@@ -243,7 +249,8 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
+Tor V2 URL              = http://$V2_ADDR_WHIRLPOOL
+Tor V3 URL              = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
 ${RED}
@@ -265,15 +272,16 @@ ${NC}
 
 Bitcoin Daemon:
 
-Tor URL                 = http://$V3_ADDR_BITCOIN
+Tor V2 URL              = http://$V2_ADDR_BITCOIN
+Tor V3 URL              = http://$V3_ADDR_BITCOIN
 RPC User                = $RPC_USER_CONF
 RPC Password            = $RPC_PASS_CONF
 RPC IP                  = $RPC_IP
 RPC Host                = $RPC_PORT
 
-Bitcoin RPC Explorer:
-
-Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
+Bitcoin RPC Explorer (No username required):
+Tor V2 URL              = http://$V2_ADDR_EXPLORER
+Tor V3 URL              = http://$V3_ADDR_EXPLORER
 Password                = $EXPLORER_KEY
 EOF
             if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
