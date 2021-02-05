@@ -78,7 +78,7 @@ EOF
 
 _sleep 2
 
-sudo test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
+sudo test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir -p "${BITCOIN_IBD_BACKUP_DIR}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
 if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
@@ -104,6 +104,7 @@ EOF
 
     _pause return
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
+    exit
 fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
