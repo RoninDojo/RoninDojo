@@ -18,6 +18,15 @@ do
             sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "$dojo_path_my_dojo"/conf/docker-mempool.conf
             # Turns mempool install set to off
             upgrade=true
+
+            cat <<EOF
+${RED}
+***
+Mempool Visualizer Disabled...
+***
+${NC}
+EOF
+            _sleep 2
             ;;
         2)
             if _is_specter; then
