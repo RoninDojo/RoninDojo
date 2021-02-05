@@ -170,7 +170,7 @@ EOF
             # see defaults.sh
             ;;
         6)
-            ronin
+            bash -c "${ronin_samourai_toolkit_menu}"
             # return to menu
             ;;
 esac
