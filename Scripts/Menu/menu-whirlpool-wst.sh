@@ -83,8 +83,24 @@ EOF
 _pause continue
 # press any key to continue
 
-pipenv run python wst.py -w=/tmp
-# run wst.py using python3
+if ! pipenv run python wst.py -w=/tmp &>/dev/null; then
+    _check_pkg "pipenv" "python-pipenv"
+
+    cat <<EOF
+${RED}
+***
+Checking for updates...
+***
+${NC}
+EOF
+    _sleep
+
+    cd .. || exit
+
+    # Upgrade dependencies
+    pipenv update &>/dev/null
+fi
+# run wst.py
 
 _pause return
 bash -c "${ronin_samourai_toolkit_menu}"
