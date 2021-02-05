@@ -83,7 +83,7 @@ EOF
 _pause continue
 # press any key to continue
 
-if ! pipenv run python wst.py -w=/tmp &>/dev/null; then
+if ! pipenv run python wst.py -w=/tmp 2>/dev/null; then
     _check_pkg "pipenv" "python-pipenv"
 
     cat <<EOF
