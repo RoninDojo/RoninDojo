@@ -34,6 +34,15 @@ do
         3)
             if ! _is_bisq ; then
                 _install_bisq && upgrade=true
+            else
+                cat <<EOF
+${RED}
+***
+Bisq connection is already enabled...
+***
+${NC}
+EOF
+                _pause return
             fi
             # Checks for bisq file and modifies restart.sh and creates file
             ;;
