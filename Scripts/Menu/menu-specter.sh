@@ -76,7 +76,7 @@ EOF
         bash -c "${RONIN_SPECTER_MENU}"
         ;;
     5)
-        ronin
-        # Return to main menu
+        bash -c "${RONIN_APPLICATIONS_MENU}"
+        # Return to applications menu
         ;;
 esac
