@@ -98,7 +98,10 @@ EOF
     cd .. || exit
 
     # Upgrade dependencies
-    pipenv update &>/dev/null && pipenv run python wst.py -w=/tmp
+    pipenv update &>/dev/null
+
+    cd - &>/dev/null || exit
+    pipenv run python wst.py -w=/tmp
 fi
 # run wst.py
 
