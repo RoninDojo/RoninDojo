@@ -35,7 +35,7 @@ if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3bitcoind; then
 fi
 
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv2bitcoind; then
-    V3_ADDR_BITCOIN=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2bitcoind/hostname)
+    V2_ADDR_BITCOIN=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2bitcoind/hostname)
 fi
 
 # Bitcoin Explorer
