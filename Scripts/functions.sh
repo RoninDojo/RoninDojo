@@ -1665,6 +1665,7 @@ _specter_uninstall() {
         sudo systemctl stop specter
         sudo systemctl --quiet disable specter 1>/dev/null
         sudo rm /etc/systemd/system/specter.service
+        sudo systemctl daemon-reload
     fi
     # Remove systemd unit
 
