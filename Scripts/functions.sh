@@ -1685,9 +1685,9 @@ _specter_uninstall() {
     fi
     # Delete udev rules
 
-    rm -rf "$HOME"/.specter "$HOME"/specter-*
+    rm -rf "$HOME"/.specter "$HOME"/specter-* .venv_specter
     rm "$HOME"/.config/RoninDojo/specter*
-    # Deletes the .specter dir, source dir, certificate files and specter.service file
+    # Deletes the .specter dir, source dir, venv directory, certificate files and specter.service file
 
     sudo sed -i -e "s:^ControlPort .*$:#ControlPort 9051:" -e "/specter/,+3d" /etc/tor/torrc
     sudo systemctl restart tor
