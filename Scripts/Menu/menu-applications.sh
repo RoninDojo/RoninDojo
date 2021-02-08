@@ -164,6 +164,13 @@ EOF
         _check_pkg "ldd" "glibc"
 
         if [ ! -f /etc/systemd/system/bbbfancontrol.service ]; then
+            cat <<EOF
+${RED}
+***
+Installing fan control...
+***
+${NC}
+EOF
             git clone https://github.com/digitalbitbox/bitbox-base.git
             cd bitbox-base/tools/bbbfancontrol || exit
             go build
@@ -188,7 +195,7 @@ EOF"
             cat <<EOF
 ${RED}
 ***
-Fan control already installed!
+Fan control already installed...
 ***
 ${NC}
 EOF

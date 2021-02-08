@@ -15,6 +15,13 @@ for choice in $choices
 do
     case $choice in
         1)
+            cat <<EOF
+${RED}
+***
+Uninstalling Mempool Space Visualizer...
+***
+${NC}
+EOF
             sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "$dojo_path_my_dojo"/conf/docker-mempool.conf
             # Turns mempool install set to off
             upgrade=true
@@ -45,6 +52,13 @@ EOF
             fi
             ;;
         3)
+            cat <<EOF
+${RED}
+***
+Disabling connection to Bisq...
+***
+${NC}
+EOF
             rm "${ronin_data_dir}"/bisq.txt
             # Deletes bisq.txt file
 

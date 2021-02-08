@@ -106,15 +106,6 @@ _sleep 10 --msg "Updating in"
         test -f "$HOME"/ronin-update.sh && sudo rm "$HOME"/ronin-update.sh
         # Remove old update file
 
-        cat <<EOF
-${RED}
-***
-Updating RoninDojo...
-***
-${NC}
-EOF
-        _sleep 2
-
         _update_ronin
         # see functions.sh
 

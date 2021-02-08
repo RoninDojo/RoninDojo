@@ -84,7 +84,7 @@ ${NC}
 EOF
                 _indexer_prompt
             fi
-            # check for which indexer, if no indexer ask if they want to install
+            # check for addrindexrs or electrs, if no indexer ask if they want to install
 
             upgrade=true
             ;;
