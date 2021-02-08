@@ -44,7 +44,7 @@ EOF
         # start electrs, return to menu
         ;;
 	2)
-        ronin
-        # returns to main menu
+        bash -c "${RONIN_APPLICATIONS_MENU}"
+        # Return to applications menu
         ;;
 esac

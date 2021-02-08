@@ -200,51 +200,6 @@ fi
 _check_indexer
 
 if (($?==2)); then # No indexer, fresh install so show prompts for indexer selection
-    cat <<EOF
-${RED}
-***
-Preparing for Indexer Prompt...
-***
-${NC}
-EOF
-    _sleep 2
-
-    cat <<EOF
-${RED}
-***
-Samourai Indexer is recommended for most users as it helps with querying balances...
-***
-${NC}
-EOF
-    _sleep 4
-
-    cat <<EOF
-${RED}
-***
-Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
-***
-${NC}
-EOF
-    _sleep 4
-
-    cat <<EOF
-${RED}
-***
-Skipping the installation of either Indexer option is ok! You can always enable later...
-***
-${NC}
-EOF
-    _sleep 3
-
-    cat <<EOF
-${RED}
-***
-Choose one of the following options for your Indexer...
-***
-${NC}
-EOF
-    _sleep 3
-
     _indexer_prompt
     # give user menu for install choices, see functions.sh
 fi

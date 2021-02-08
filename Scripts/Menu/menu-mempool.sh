@@ -41,8 +41,8 @@ Starting Mempool...
 ${NC}
 EOF
             docker start mempool 1>/dev/null
-
             _sleep 5
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
             # see defaults.sh
             # start mempool, return to menu
@@ -69,6 +69,7 @@ Stopping Mempool...
 ${NC}
 EOF
             docker stop mempool 1>/dev/null
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
             # stop mempool, return to menu
             # see defaults.sh
@@ -98,6 +99,8 @@ EOF
             _sleep 5
             docker start mempool 1>/dev/null
             _sleep 2
+
+            _pause return
             bash -c "${RONIN_MEMPOOL_MENU}"
             # start mempool, return to menu
             # see defaults.sh

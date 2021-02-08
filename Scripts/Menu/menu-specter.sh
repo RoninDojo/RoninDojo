@@ -33,6 +33,7 @@ EOF
 
         _sleep
 
+        _pause return
         bash -c "${RONIN_SPECTER_MENU}"
         # Start specter.service and return to same menu
         ;;
@@ -50,6 +51,7 @@ EOF
 
         _sleep
 
+        _pause return
         bash -c "${RONIN_SPECTER_MENU}"
         # Stop specter.service and return to same menu
         ;;
@@ -65,13 +67,21 @@ EOF
 
         _sleep
 
+        _pause return
         bash -c "${RONIN_SPECTER_MENU}"
         # Restart specter.service and return to same menu
         ;;
     4)
-        sudo systemctl status specter
+        cat <<EOF
+${RED}
+***
+Press "q" key to exit at any time...
+***
+${NC}
+EOF
+        _sleep 3
 
-        _pause return
+        sudo systemctl status specter
 
         bash -c "${RONIN_SPECTER_MENU}"
         ;;

@@ -660,9 +660,65 @@ _check_indexer() {
 # No indexer was found so offer user choice of SW indexer, electrs, or none
 #
 _indexer_prompt() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    cat <<EOF
+${RED}
+***
+No Indexer found...
+***
+${NC}
+EOF
+    _sleep 1
+
+    cat <<EOF
+${RED}
+***
+Preparing for Indexer Prompt...
+***
+${NC}
+EOF
+    _sleep 1
+
+    cat <<EOF
+${RED}
+***
+Samourai Indexer is recommended for most users as it helps with querying balances...
+***
+${NC}
+EOF
+    _sleep 3
+
+    cat <<EOF
+${RED}
+***
+Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
+***
+${NC}
+EOF
+    _sleep 3
+
+    cat <<EOF
+${RED}
+***
+Skipping the installation of either Indexer option is ok! You can always enable later...
+***
+${NC}
+EOF
+    _sleep 3
+
+    cat <<EOF
+${RED}
+***
+Choose one of the following options for your Indexer...
+***
+${NC}
+EOF
+    _sleep 1
+
     # indexer names here are used as data source
     while true; do
-        select indexer in "Samourai Indexer (recommended)" "Electrum Rust Server" "No Indexer (no recommended)"; do
+        select indexer in "Samourai Indexer (recommended)" "Electrum Rust Server" "No Indexer (not recommended)"; do
             case $indexer in
                 "Samourai Indexer"*)
                     cat <<EOF
@@ -769,6 +825,14 @@ _is_mempool() {
 # Setup mempool docker variables
 #
 _mempool_conf() {
+    cat <<EOF
+${RED}
+***
+Installing Mempool Space Visualizer...
+***
+${NC}
+EOF
+
     local mempool_conf bitcoind_conf RPC_USER RPC_PASS RPC_IP RPC_PORT MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
 
     bitcoind_conf="conf"
@@ -841,7 +905,7 @@ _dojo_upgrade() {
     cat <<EOF
 ${RED}
 ***
-Performing Samourai Dojo upgrade...
+Performing Dojo upgrade to finalize changes...
 ***
 ${NC}
 EOF
@@ -1661,6 +1725,14 @@ EOF
 _specter_uninstall() {
     _load_user_conf
 
+    cat <<EOF
+${RED}
+***
+Uninstalling Specter $specter_version...
+***
+${NC}
+EOF
+
     if systemctl is-active --quiet specter; then
         sudo systemctl stop specter
         sudo systemctl --quiet disable specter 1>/dev/null
@@ -1880,6 +1952,16 @@ _is_bisq(){
 }
 
 _install_bisq(){
+    cat <<EOF
+${RED}
+***
+Enabling connection to Bisq...
+***
+${NC}
+EOF
+
+    . "${HOME}"/RoninDojo/Scripts/defaults.sh
+
     _create_ronin_data_dir
 
     sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
