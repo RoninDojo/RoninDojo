@@ -2010,7 +2010,7 @@ EOF
                     sudo rm -rf "${dojo_backup_bitcoind}"
                     # remove old salvage directories
 
-                    if ! dojo_data_indexer_backup; then
+                    if ! "${dojo_data_indexer_backup}"; then
                         cd "$dojo_path_my_dojo" || exit
                         _source_dojo_conf
 
