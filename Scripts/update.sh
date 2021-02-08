@@ -82,12 +82,13 @@ _update_05() {
         sudo systemctl daemon-reload
 
         _is_active tor
+    fi
 
-        # Some systems have issue with tor not starting unless User=tor is enabled.
-        if ! systemctl is-active --quiet tor && ! grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
-            sudo sed -i '/Type=notify/a\User=tor' /usr/lib/systemd/system/tor.service
-            _is_active tor
-        fi
+    # Some systems have issue with tor not starting unless User=tor is enabled.
+    if ! systemctl is-active --quiet tor && ! grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
+        sudo sed -i '/Type=notify/a\User=tor' /usr/lib/systemd/system/tor.service
+        sudo systemctl daemon-reload
+        _is_active tor
     fi
 }
 
@@ -155,5 +156,8 @@ _update_09() {
                 sudo mv "${INSTALL_DIR}"/bitcoin/"${dir}" "${dojo_backup_bitcoind}"/
             fi
         done
+
+        # Remove legacy directory
+        rm -rf "${INSTALL_DIR}"/bitcoin
     fi
 }
