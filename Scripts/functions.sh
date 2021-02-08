@@ -106,7 +106,7 @@ EOF
 # Update pacman mirrors
 #
 _pacman_update_mirrors() {
-    sudo pacman --quiet -Syy
+    sudo pacman --quiet -Syy &>/dev/null
     return 0
 }
 
@@ -1797,7 +1797,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Installing libusb
+Installing libusb...
 ***
 ${NC}
 EOF
