@@ -104,11 +104,20 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Mempool.space is not installed...
+Mempool is not installed...
 ***
 ${NC}
 EOF
                 _sleep 2
+                cat <<EOF
+${RED}
+***
+Install using the applications install menu...
+***
+${NC}
+EOF
+                _sleep 2
+
                 _pause return
                 bash -c "${RONIN_CREDENTIALS_MENU}"
             else
