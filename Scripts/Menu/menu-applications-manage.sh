@@ -8,7 +8,7 @@
 upgrade=false
 
 # Set mempool install/uninstall status
-if _is_mempool; then
+if ! _is_mempool; then
     is_mempool_installed=false
     mempool_text="Install"
 else
