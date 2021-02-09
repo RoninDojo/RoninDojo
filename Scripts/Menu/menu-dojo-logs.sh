@@ -112,6 +112,28 @@ EOF
                     _pause return
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
                     exit 1
+                else
+                    cat <<EOF
+${RED}
+***
+No indexer installed...
+***
+${NC}
+EOF
+                    _sleep 2
+                    cat <<EOF
+${RED}
+***
+Install using the applications install menu...
+***
+${NC}
+EOF
+                    _sleep 2
+
+                    _pause return
+
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+                    exit
                 fi
 
               cat <<EOF
