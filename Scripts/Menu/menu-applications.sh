@@ -9,9 +9,8 @@ OPTIONS=(1 "Mempool Visualizer"
          3 "Electrum Server"
          4 "Bisq Connection Status"
          5 "Fan Control"
-         6 "Install Applications Menu"
-         7 "Uninstall Applications Menu"
-         8 "Go Back")
+         6 "Install/Uninstall Applications"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -205,13 +204,9 @@ EOF
         ;;
     6)
         bash -c "${RONIN_APPLICATIONS_INSTALL_MENU}"
-        # applications install menu
+        # applications install/uninstall menu
         ;;
     7)
-        bash -c "${RONIN_APPLICATIONS_UNINSTALL_MENU}"
-        # applications uninstall menu
-        ;;
-    8)
         ronin
         # returns to main menu
         ;;

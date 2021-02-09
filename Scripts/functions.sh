@@ -1955,7 +1955,7 @@ _install_bisq(){
     cat <<EOF
 ${RED}
 ***
-Enabling connection to Bisq...
+Enabling Bisq support...
 ***
 ${NC}
 EOF

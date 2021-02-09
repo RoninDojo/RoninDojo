@@ -4,11 +4,41 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+
 upgrade=false
+
+# Set mempool install/uninstall status
+if _is_mempool; then
+    is_mempool_installed=false
+    mempool_text="Install"
+else
+    is_mempool_installed=true
+    mempool_text="Uninstall"
+fi
+
+# Set Specter install/uninstall status
+if ! _is_specter; then
+    is_specter_installed=false
+    specter_text="Install"
+else
+    is_specter_installed=true
+    specter_text="Uninstall"
+fi
+_is_bisq
+
+# Set Bisq install/uninstall status
+if ! _is_bisq; then
+    is_bisq_installed=false
+    bisq_text="Enable"
+else
+    is_bisq_installed=true
+    bisq_text="Disable"
+fi
+
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
-options=(1 "Install Mempool Space Visualizer" off    # any option can be set to default to "on"
-         2 "Install Specter" off
-         3 "Enable Bisq Connection" off
+options=(1 "${mempool_text} Mempool Space Visualizer" off    # any option can be set to default to "on"
+         2 "${specter_text} Specter" off
+         3 "${bisq_text} Bisq Connection" off
          4 "Swap Electrs/Indexer" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -16,35 +46,72 @@ for choice in $choices
 do
     case $choice in
         1)
-            if _is_mempool ; then
+            if ! "${is_mempool_installed}" ; then
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
                 upgrade=true
+            else
+                cat <<EOF
+${RED}
+***
+Uninstalling Mempool Space Visualizer...
+***
+${NC}
+EOF
+                sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "$dojo_path_my_dojo"/conf/docker-mempool.conf
+                # Turns mempool install set to off
+                upgrade=true
+
+                cat <<EOF
+${RED}
+***
+Mempool Space Visualizer Uninstalled...
+***
+${NC}
+EOF
             fi
             # Checks for mempool, then installs
             ;;
         2)
-            if ! _is_specter ; then # Fresh install
+            if ! "${is_specter_installed}" ; then # Fresh install
                 _specter_install && upgrade=true
-            else # Checks for update
-                _sleep 2
-                _specter_upgrade && upgrade=true
+            else
+                cat <<EOF
+${RED}
+***
+Uninstalling Specter Server...
+***
+${NC}
+EOF
+
+                _specter_uninstall
+                upgrade=true
+
+                cat <<EOF
+${RED}
+***
+Specter Server Uninstalled...
+***
+${NC}
+EOF
             fi
             ;;
         3)
-            if ! _is_bisq ; then
+            if ! "${is_bisq_installed}" ; then
                 _install_bisq && upgrade=true
             else
                 cat <<EOF
 ${RED}
 ***
-Bisq connection is already enabled...
+Disabling Bisq Support...
 ***
 ${NC}
 EOF
-                _pause return
+                rm "${ronin_data_dir}"/bisq.txt
+                # Deletes bisq.txt file
+
+                upgrade=true
             fi
-            # Checks for bisq file and modifies restart.sh and creates file
             ;;
         4)
             _check_indexer

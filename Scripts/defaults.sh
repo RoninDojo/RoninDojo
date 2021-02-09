@@ -52,8 +52,7 @@ MENU="Choose one of the following menu options:"
 
 # RoninDojo Menu Paths
 RONIN_APPLICATIONS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications.sh"
-RONIN_APPLICATIONS_INSTALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications-install.sh"
-RONIN_APPLICATIONS_UNINSTALL_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications-uninstall.sh"
+RONIN_APPLICATIONS_MANAGE_MENU="$HOME/RoninDojo/Scripts/Menu/menu-applications-manage.sh"
 RONIN_CREDENTIALS_MENU="$HOME/RoninDojo/Scripts/Menu/menu-credentials.sh"
 RONIN_BOLTZMANN_MENU="$HOME/RoninDojo/Scripts/Menu/menu-boltzmann.sh"
 RONIN_DOJO_MENU="$HOME/RoninDojo/Scripts/Menu/menu-dojo.sh"
