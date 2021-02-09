@@ -8,10 +8,11 @@ _load_user_conf
 
 OPTIONS=(1 "Firewall"
          2 "Change User Password"
-         3 "Lock Root User"
-         4 "Unlock Root User"
-         5 "Uninstall RoninDojo"
-         6 "Go Back")
+         3 "Change Root Password"
+         4 "Lock Root User"
+         5 "Unlock Root User"
+         6 "Uninstall RoninDojo"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -29,17 +30,33 @@ case $CHOICE in
         cat <<EOF
 ${RED}
 ***
-Prepare to type new password...
+Prepare to type new password for ${USER}...
 ***
 ${NC}
 EOF
         _sleep 2
-        sudo passwd
+        sudo passwd "${USER}"
+
         _pause return
         bash -c "${RONIN_SYSTEM_MENU2}"
         # user change password, returns to menu
         ;;
     3)
+        cat <<EOF
+${RED}
+***
+Prepare to type new password for ${USER}...
+***
+${NC}
+EOF
+        _sleep 2
+        sudo passwd
+
+        _pause return
+        bash -c "${RONIN_SYSTEM_MENU2}"
+        # root change password, returns to menu
+        ;;
+    4)
         cat <<EOF
 ${RED}
 ***
@@ -52,7 +69,7 @@ EOF
         bash -c "${RONIN_SYSTEM_MENU2}"
         # uses passwd to lock root user, returns to menu
         ;;
-    4)
+    5)
         cat <<EOF
 ${RED}
 ***
@@ -65,7 +82,7 @@ EOF
         bash -c "${RONIN_SYSTEM_MENU2}"
         # uses passwd to unlock root user, returns to menu
         ;;
-    5)
+    6)
         if ! _dojo_check; then
             _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
         fi
@@ -149,7 +166,7 @@ EOF
         bash -c "${RONIN_SYSTEM_MENU2}"
         # return to menu
         ;;
-    6)
+    7)
         bash -c "${RONIN_SYSTEM_MENU}"
         # returns to menu
         ;;
