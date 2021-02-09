@@ -203,7 +203,7 @@ EOF
         fi
         ;;
     6)
-        bash -c "${RONIN_APPLICATIONS_INSTALL_MENU}"
+        bash -c "${RONIN_APPLICATIONS_MANAGE_MENU}"
         # applications install/uninstall menu
         ;;
     7)
