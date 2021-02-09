@@ -1640,7 +1640,7 @@ _specter_hww_udev_rules() {
             cat <<EOF
 ${RED}
 ***
-Adding user to plugdev group...
+Adding ${USER} to plugdev group...
 ***
 ${NC}
 EOF
@@ -1659,7 +1659,7 @@ _specter_cert_check() {
         cat <<EOF
 ${RED}
 ***
-Creating Self-Signed Certs for local LAN use
+Generating a self-signed certicate for local LAN use
 ***
 ${NC}
 EOF
