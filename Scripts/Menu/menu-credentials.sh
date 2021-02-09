@@ -189,11 +189,20 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Specter Server is not installed...
+Specter is not installed...
 ***
 ${NC}
 EOF
                 _sleep 2
+                cat <<EOF
+${RED}
+***
+Install using the applications install menu...
+***
+${NC}
+EOF
+                _sleep 2
+
                 _pause return
 
                 bash -c "${RONIN_CREDENTIALS_MENU}"
