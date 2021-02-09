@@ -76,14 +76,6 @@ EOF
             if ! "${is_specter_installed}" ; then # Fresh install
                 _specter_install && upgrade=true
             else
-                cat <<EOF
-${RED}
-***
-Uninstalling Specter Server...
-***
-${NC}
-EOF
-
                 _specter_uninstall
                 upgrade=true
 
