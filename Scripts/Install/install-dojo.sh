@@ -195,6 +195,19 @@ EOF
       -e "s/MYSQL_USER=.*$/MYSQL_USER=${MYSQL_USER}/" \
       -e "s/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=${MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mysql.conf.tpl
     # populate docker-mysql.conf.tpl template
+
+    cat <<EOF
+${RED}
+***
+Configuring the BTC RPC Explorer...
+***
+${NC}
+EOF
+    _sleep
+
+    sed -i -e "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=${EXPLORER_INSTALL:-on}/" \
+      -e "s/EXPLORER_KEY=.*$/EXPLORER_KEY=${EXPLORER_KEY}/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf.tpl
+    # populate docker-explorer.conf.tpl template
 fi
 
 _check_indexer
