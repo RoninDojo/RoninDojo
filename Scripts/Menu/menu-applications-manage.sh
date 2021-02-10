@@ -40,9 +40,9 @@ _check_indexer
 ret=$?
 
 if ((ret==0)); then
-    indexer_name="Electrum Rust Server"
-elif ((ret==1)); then
     indexer_name="Samourai Indexer"
+elif ((ret==1)); then
+    indexer_name="Electrum Rust Server"
 elif ((ret==2)); then
     indexer_name="Bitcoin Indexer"
 fi
