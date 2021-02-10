@@ -482,7 +482,7 @@ Formatting the SSD...
 ***
 ${NC}
 EOF
-_sleep 2
+_sleep 5
 
 if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
     printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
