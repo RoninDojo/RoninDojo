@@ -51,7 +51,7 @@ cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click o
 options=(1 "${mempool_text} Mempool Space Visualizer" off    # any option can be set to default to "on"
          2 "${specter_text} Specter" off
          3 "${bisq_text} Bisq Connection" off
-         4 "${indexer}" off)
+         4 "${indexer_name}" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices

@@ -197,7 +197,7 @@ _check_pkg() {
 
     "${update}" && _pacman_update_mirrors
 
-    if ! hash "${pkg_bin}"; then
+    if ! hash "${pkg_bin}" 2>/dev/null; then
         cat <<EOF
 ${RED}
 ***
