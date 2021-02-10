@@ -187,7 +187,7 @@
 #WHIRLPOOL_DEBUG_CLIENT=off
 
 ##############################
-# Mempool Visualizer         #
+# Mempool Space Visualizer   #
 ##############################
 
 #MEMPOOL_MYSQL_USER=""

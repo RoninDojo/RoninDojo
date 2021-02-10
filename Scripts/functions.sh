@@ -428,7 +428,7 @@ EOF
         cat <<EOF
 ${RED}
 ***
-Install or swap Indexer & Electrs using the applications install menu...
+Enable Electrum Rust Server using the manage applications menu...
 ***
 ${NC}
 EOF
@@ -871,7 +871,7 @@ EOF
 }
 
 #
-# Mempool url rewrites
+# Mempool Space Visualizer url rewrites
 #
 _mempool_urls_to_local_btc_explorer() {
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh

@@ -70,7 +70,7 @@ if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv2whirlpool; then
     V2_ADDR_WHIRLPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv2whirlpool/hostname)
 fi
 
-# Mempool
+# Mempool Space Visualizer
 if sudo test -d "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool; then
     V3_ADDR_MEMPOOL=$(sudo cat "${DOCKER_VOLUME_TOR}"/_data/hsv3mempool/hostname)
 fi

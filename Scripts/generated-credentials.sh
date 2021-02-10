@@ -36,6 +36,6 @@ MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
 # Bitcoin Explorer
 EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
 
-# Mempool
+# Mempool Space Visualizer
 MEMPOOL_MYSQL_USER=$(_rand_passwd)
 MEMPOOL_MYSQL_PASSWORD=$(_rand_passwd)

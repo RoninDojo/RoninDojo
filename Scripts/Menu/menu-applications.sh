@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Mempool Visualizer"
+OPTIONS=(1 "Mempool Space Visualizer"
          2 "Specter Server"
          3 "Electrum Server"
          4 "Bisq Connection Status"
@@ -27,7 +27,7 @@ case $CHOICE in
             cat <<EOF
 ${RED}
 ***
-Mempool not installed!
+Mempool Space Visualizer not installed!
 ***
 ${NC}
 EOF
@@ -35,7 +35,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Install Mempool using the applications install menu...
+Install Mempool Space Visualizer using the manage applications menu...
 ***
 ${NC}
 EOF
@@ -44,7 +44,7 @@ EOF
             bash -c "${RONIN_APPLICATIONS_MENU}"
         else
             bash -c "${RONIN_MEMPOOL_MENU}"
-        # Mempool menu
+        # Mempool Space Visualizer menu
         fi
         ;;
     2)
@@ -60,7 +60,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Install Specter Server using the applications install menu...
+Install Specter Server using the manage applications menu...
 ***
 ${NC}
 EOF

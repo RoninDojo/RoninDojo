@@ -25,7 +25,7 @@ case $CHOICE in
             cat <<EOF
 ${RED}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
 ${NC}
 EOF
@@ -36,7 +36,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Starting Mempool...
+Starting Mempool Space Visualizer...
 ***
 ${NC}
 EOF
@@ -53,7 +53,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
 ${NC}
 EOF
@@ -64,7 +64,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Stopping Mempool...
+Stopping Mempool Space Visualizer...
 ***
 ${NC}
 EOF
@@ -80,7 +80,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
 ${NC}
 EOF
@@ -91,7 +91,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Restarting Mempool...
+Restarting Mempool Space Visualizer...
 ***
 ${NC}
 EOF
@@ -111,7 +111,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
 ${NC}
 EOF
@@ -122,7 +122,7 @@ EOF
             cat <<EOF
 ${RED}
 ***
-Viewing Mempool Logs...
+Viewing Mempool Space Visualizer Logs...
 ***
 ${NC}
 EOF

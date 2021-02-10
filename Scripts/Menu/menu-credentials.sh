@@ -104,7 +104,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Mempool is not installed...
+Mempool Space Visualizer is not installed...
 ***
 ${NC}
 EOF
@@ -112,7 +112,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Install using the applications install menu...
+Install using the manage applications menu...
 ***
 ${NC}
 EOF
@@ -124,7 +124,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Mempool Credentials
+Mempool Space Visualizer Credentials
 ***
 
 ***
@@ -189,7 +189,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Specter is not installed...
+Specter Server is not installed...
 ***
 ${NC}
 EOF
@@ -197,7 +197,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Install using the applications install menu...
+Install using the manage applications menu...
 ***
 ${NC}
 EOF
@@ -316,7 +316,7 @@ EOF
                 cat <<EOF
 ${RED}
 ***
-Mempool Credentials
+Mempool Space Visualizer Credentials
 ***
 ${NC}
 Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
