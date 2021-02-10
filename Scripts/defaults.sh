@@ -28,7 +28,6 @@ declare -A package_dependencies=(
     [pipenv]=python-pipenv
     [sgdisk]=gptfdisk
     [gcc]=gcc
-    [libusb]=libusb
 )
 
 #

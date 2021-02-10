@@ -77,6 +77,17 @@ done
 # install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
 
+if ! pacman -Q libusb 1>/dev/null; then
+    cat <<EOF
+${RED}
+***
+Installing libusb...
+***
+${NC}
+EOF
+    sudo pacman --quiet -S --noconfirm libusb
+fi
+
 if sudo ufw status | grep 22 > /dev/null ; then
     cat <<EOF
 ${RED}
