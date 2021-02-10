@@ -47,6 +47,13 @@ do
     case $choice in
         1)
             if ! "${is_mempool_installed}" ; then
+                cat <<EOF
+${RED}
+***
+Installing Mempool Space Visualizer...
+***
+${NC}
+EOF
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
                 upgrade=true
