@@ -35,11 +35,23 @@ else
     bisq_text="Disable"
 fi
 
+# Set Indexer Install State
+_check_indexer
+ret=$?
+
+if ((ret==0)); then
+    indexer_name="Electrum Rust Server"
+elif ((ret==1)); then
+    indexer_name="Samourai Indexer"
+elif ((ret==2)); then
+    indexer_name="Bitcoin Indexer"
+fi
+
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
 options=(1 "${mempool_text} Mempool Space Visualizer" off    # any option can be set to default to "on"
          2 "${specter_text} Specter" off
          3 "${bisq_text} Bisq Connection" off
-         4 "Swap Electrs/Indexer" off)
+         4 "${indexer}" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices
@@ -113,47 +125,47 @@ EOF
             fi
             ;;
         4)
-            _check_indexer
-            ret=$?
-
-            if ((ret==0)); then
-                cat <<EOF
+            case "${indexer_name}" in
+                "Samourai Indexer")
+                    cat <<EOF
 ${RED}
 ***
 Switching to Samourai indexer...
 ***
 ${NC}
 EOF
-                _sleep 2
+                    _sleep 2
 
-                _uninstall_electrs_indexer
+                    _uninstall_electrs_indexer
 
-                _set_indexer
-            elif ((ret==1)); then
-                cat <<EOF
+                    _set_indexer
+                    ;;
+                "Electrum Rust Server")
+                    cat <<EOF
 ${RED}
 ***
-Switching to Electrum Rust Server...
+Installing Electrum Rust Server...
 ***
 ${NC}
 EOF
-                _sleep 2
+                    _sleep 2
 
-                bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
-            elif ((ret==2)); then
-                cat <<EOF
+                    bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+                    ;;
+                "Bitcoin Indexer")
+                    cat <<EOF
 ${RED}
 ***
 Select an indexer to use with RoninDojo...
 ***
 ${NC}
 EOF
-                _indexer_prompt
-            fi
-            # check for addrindexrs or electrs, if no indexer ask if they want to install
+                    _indexer_prompt
+                    # check for addrindexrs or electrs, if no indexer ask if they want to install
+                    ;;
+            esac
 
             upgrade=true
-            ;;
     esac
 done
 
