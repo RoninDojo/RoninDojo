@@ -22,7 +22,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
 ${RED}
 ***
@@ -42,12 +42,12 @@ ${NC}
 EOF
             _sleep 2
             _pause return
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # see defaults.sh
             # start whirlpool, press to return to menu
             ;;
         2)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
 ${RED}
 ***
@@ -58,12 +58,12 @@ EOF
             _sleep 2
             docker stop whirlpool 1>/dev/null
             _pause return
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # stop whirlpool, press to return to menu
             # see defaults.sh
             ;;
         3)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
 ${RED}
 ***
@@ -77,12 +77,12 @@ EOF
             docker start whirlpool 1>/dev/null
             _sleep 2
             _pause return
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # enable whirlpool at startup, press to return to menu
             # see defaults.sh
 	        ;;
         4)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
 ${RED}
 ***
@@ -101,12 +101,12 @@ ${NC}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs whirlpool
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # view logs, return to menu
             # see defaults.sh
             ;;
         5)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
 ${RED}
 ***
@@ -165,7 +165,7 @@ EOF
             done
 
             _sleep
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # re-initate whirlpool, return to menu
             # see defaults.sh
             ;;

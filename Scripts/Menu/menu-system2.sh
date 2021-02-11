@@ -24,28 +24,28 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        bash -c "${RONIN_FIREWALL_MENU}"
+        bash -c "${ronin_firewall_menu}"
         ;;
     2)
         cat <<EOF
 ${RED}
 ***
-Prepare to type new password for ${USER}...
+Prepare to type new password for ${ronindojo_user}...
 ***
 ${NC}
 EOF
         _sleep 2
-        sudo passwd "${USER}"
+        sudo passwd "${ronindojo_user}"
 
         _pause return
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # user change password, returns to menu
         ;;
     3)
         cat <<EOF
 ${RED}
 ***
-Prepare to type new password for ${USER}...
+Prepare to type new password for ${ronindojo_user}...
 ***
 ${NC}
 EOF
@@ -53,7 +53,7 @@ EOF
         sudo passwd
 
         _pause return
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # root change password, returns to menu
         ;;
     4)
@@ -66,7 +66,7 @@ ${NC}
 EOF
         _sleep 2
         sudo passwd -l root
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # uses passwd to lock root user, returns to menu
         ;;
     5)
@@ -79,12 +79,12 @@ ${NC}
 EOF
         _sleep 2
         sudo passwd -u root
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # uses passwd to unlock root user, returns to menu
         ;;
     6)
         if ! _dojo_check; then
-            _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
+            _is_dojo bash -c "${ronin_system_menu2}"
         fi
             # is dojo installed?
 
@@ -123,15 +123,15 @@ EOF
 
         "${dojo_conf_backup}" && _dojo_backup
 
-        rm -rf "${DOJO_PATH}"
+        rm -rf "${dojo_path}"
 
-        # Returns HOME since $DOJO_PATH deleted
+        # Returns HOME since $dojo_path deleted
         cd "${HOME}" || exit
 
         sudo systemctl restart docker
         # restart docker daemon
 
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
+        cd "${ronin_ui_backend_dir}" || exit
 
         cat <<EOF
 ${RED}
@@ -148,9 +148,9 @@ EOF
         # dump all processes for resurrecting them later
         pm2 save 1>/dev/null
 
-        # Remove ${RONIN_UI_BACKEND_DIR}
+        # Remove ${ronin_ui_backend_dir}
         cd "${HOME}" || exit
-        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
+        rm -rf "${ronin_ui_backend_dir}" || exit
 
         cat <<EOF
 ${RED}
@@ -163,11 +163,11 @@ EOF
 
         _pause return
 
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # return to menu
         ;;
     7)
-        bash -c "${RONIN_SYSTEM_MENU}"
+        bash -c "${ronin_system_menu}"
         # returns to menu
         ;;
 esac

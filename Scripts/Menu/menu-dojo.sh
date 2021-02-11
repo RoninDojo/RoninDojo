@@ -34,9 +34,9 @@ ${NC}
 EOF
                 _sleep 2
                 _pause return
-                bash -c "${RONIN_DOJO_MENU}"
+                bash -c "${ronin_dojo_menu}"
             else
-                _is_dojo "${RONIN_DOJO_MENU}"
+                _is_dojo "${ronin_dojo_menu}"
                 # is dojo installed?
 
                 cat <<EOF
@@ -58,20 +58,20 @@ EOF
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
 
                 _pause return
-                bash -c "${RONIN_DOJO_MENU}"
+                bash -c "${ronin_dojo_menu}"
                 # press any key to return to menu
                 ;;
         2)
             _stop_dojo
             _pause return
-            bash -c "${RONIN_DOJO_MENU}"
+            bash -c "${ronin_dojo_menu}"
             # press any key to return to menu
             ;;
         3)
-            _is_dojo "${RONIN_DOJO_MENU}"
+            _is_dojo "${ronin_dojo_menu}"
             # is dojo installed?
 
-            if [ -d "${DOJO_PATH}" ]; then
+            if [ -d "${dojo_path}" ]; then
                 cat <<EOF
 ${RED}
 ***
@@ -108,19 +108,19 @@ DOJO
                 # restart dojo
 
                 _pause return
-                bash -c "${RONIN_DOJO_MENU}"
+                bash -c "${ronin_dojo_menu}"
                 # press any key to return to menu
             fi
             ;;
         4)
-            _is_dojo "${RONIN_DOJO_MENU}"
+            _is_dojo "${ronin_dojo_menu}"
             # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;
         5)
-            bash -c "${RONIN_DOJO_MENU2}"
+            bash -c "${ronin_dojo_menu2}"
             # takes you to ronin dojo menu2
             ;;
         6)

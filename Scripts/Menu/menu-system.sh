@@ -111,7 +111,7 @@ EOF
         ;;
 
     4)
-        bash -c "${RONIN_UPDATES_MENU}"
+        bash -c "${ronin_updates_menu}"
         # System updates menu
         ;;
     5)
@@ -123,7 +123,7 @@ EOF
         # System Setup & Install menu
         ;;
     7)
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         ;;
     8)
         ronin

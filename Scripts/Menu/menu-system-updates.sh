@@ -26,7 +26,7 @@ case $CHOICE in
         # Update Mirrors and continue.
 
         _pause return
-        bash -c "${RONIN_SYSTEM_MENU}"
+        bash -c "${ronin_system_menu}"
         ;;
     2)
         if [ -f "${ronin_data_dir}"/ronin-latest.txt ] ; then
@@ -59,16 +59,16 @@ EOF
         # check for Ronin update from site
 
         _pause return
-        bash -c "${RONIN_SYSTEM_MENU}"
+        bash -c "${ronin_system_menu}"
         ;;
 
     3)
         if ! _dojo_check; then
-            if [ ! -d "${DOJO_PATH}" ]; then
+            if [ ! -d "${dojo_path}" ]; then
                 cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory, aborting update...
+Missing ${dojo_path} directory, aborting update...
 ***
 ${NC}
 EOF
@@ -76,7 +76,7 @@ EOF
 
                 _pause return
 
-                bash -c "${RONIN_SYSTEM_MENU}"
+                bash -c "${ronin_system_menu}"
                 exit 1
             fi
         fi
@@ -125,7 +125,7 @@ EOF
         # upgrades dojo and returns to menu
         ;;
     4)
-        bash -c "${RONIN_SYSTEM_MENU}"
+        bash -c "${ronin_system_menu}"
         # returns to main system menu
         ;;
 esac

@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if ! sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data; then
+if ! sudo test -d "${docker_volume_bitcoind}"/_data; then
     cat <<EOF
 ${RED}
 ***
@@ -15,7 +15,7 @@ EOF
     _sleep 2
 
     _pause return
-    bash -c "${RONIN_DOJO_MENU2}"
+    bash -c "${ronin_dojo_menu2}"
 fi
 # if data directory is not found then warn and return to menu
 
@@ -29,7 +29,7 @@ EOF
 
 _sleep 3
 
-if [ -b "${SECONDARY_STORAGE}" ]; then
+if [ -b "${secondary_storage}" ]; then
     cat <<EOF
 ${RED}
 ***
@@ -38,7 +38,7 @@ Your backup drive partition has been detected...
 ${NC}
 EOF
     _sleep 2
-    # checks for ${SECONDARY_STORAGE}
+    # checks for ${secondary_storage}
 else
     cat <<EOF
 ${RED}
@@ -50,7 +50,7 @@ EOF
     _sleep 2
 
     _pause return
-    bash -c "${RONIN_DOJO_MENU2}"
+    bash -c "${ronin_dojo_menu2}"
     # no drive detected, press any key to return to menu
 fi
 
@@ -78,20 +78,20 @@ EOF
 
 _sleep 2
 
-sudo test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir -p "${BITCOIN_IBD_BACKUP_DIR}"
+sudo test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
 
-if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
+if sudo test -d "${bitcoin_ibd_backup_dir}"/blocks; then
     # Use rsync when existing IBD is found
 
     _check_pkg rsync --update-mirrors
 
-    sudo rsync -vahW --no-compress --progress --delete-after "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${BITCOIN_IBD_BACKUP_DIR}"
-elif sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
-    sudo cp -av "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate,indexes} "${BITCOIN_IBD_BACKUP_DIR}"
+    sudo rsync -vahW --no-compress --progress --delete-after "${docker_volume_bitcoind}"/_data/{blocks,chainstate,indexes} "${bitcoin_ibd_backup_dir}"
+elif sudo test -d "${docker_volume_bitcoind}"/_data/blocks; then
+    sudo cp -av "${docker_volume_bitcoind}"/_data/{blocks,chainstate,indexes} "${bitcoin_ibd_backup_dir}"
     # use cp for initial fresh IBD copy
 else
-    sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
+    sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 
     cat <<EOF
 ${RED}
@@ -130,7 +130,7 @@ EOF
 
 _sleep 2
 
-sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
+sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
 
 cat <<EOF
@@ -162,5 +162,5 @@ docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
 
 _pause return
 
-bash -c "${RONIN_DOJO_MENU2}"
+bash -c "${ronin_dojo_menu2}"
 # return to menu

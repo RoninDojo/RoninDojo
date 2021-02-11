@@ -5,7 +5,7 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 cd "$HOME" || exit
-git clone "$BOLTZMANN_REPO" &>/dev/null
+git clone "$boltzmann_repo" &>/dev/null
 cd boltzmann || exit
 # pull Boltzmann
 
@@ -18,4 +18,4 @@ pipenv install &>/dev/null
 _pause continue
 
 # will return to boltzmann menu option script
-bash -c "$RONIN_BOLTZMANN_MENU"
+bash -c "$ronin_boltzmann_menu"

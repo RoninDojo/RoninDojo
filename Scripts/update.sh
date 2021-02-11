@@ -113,25 +113,25 @@ _update_08() {
     local uuid tmp systemd_mountpoint fstype
 
     if findmnt /mnt/usb  1>/dev/null && [ ! -f /etc/systemd/system/mnt-usb.mount ]; then
-        uuid=$(lsblk -no UUID "${PRIMARY_STORAGE}")
-        tmp=${INSTALL_DIR:1}                                    # Remove leading '/'
+        uuid=$(lsblk -no UUID "${primary_storage}")
+        tmp=${install_dir:1}                                    # Remove leading '/'
         systemd_mountpoint=${tmp////-}                          # Replace / with -
-        fstype=$(blkid -o value -s TYPE "${PRIMARY_STORAGE}")
+        fstype=$(blkid -o value -s TYPE "${primary_storage}")
 
         cat <<EOF
 ${RED}
 ***
-Adding missing systemd mount unit file for device ${PRIMARY_STORAGE}...
+Adding missing systemd mount unit file for device ${primary_storage}...
 ***
 ${NC}
 EOF
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
-Description=Mount External SSD Drive ${PRIMARY_STORAGE}
+Description=Mount External SSD Drive ${primary_storage}
 
 [Mount]
 What=/dev/disk/by-uuid/${uuid}
-Where=${INSTALL_DIR}
+Where=${install_dir}
 Type=${fstype}
 Options=defaults
 
@@ -148,16 +148,27 @@ EOF"
 
 # Migrate bitcoin ibd data to new backup directory
 _update_09() {
-    if sudo test -d "${INSTALL_DIR}"/bitcoin && sudo test -d "${INSTALL_DIR}"/bitcoin/blocks; then
+    if sudo test -d "${install_dir}"/bitcoin && sudo test -d "${install_dir}"/bitcoin/blocks; then
         sudo test -d "${dojo_backup_bitcoind}" || sudo mkdir "${dojo_backup_bitcoind}"
 
         for dir in blocks chainstate indexes; do
-            if sudo test -d "${INSTALL_DIR}"/bitcoin/"${dir}"; then
-                sudo mv "${INSTALL_DIR}"/bitcoin/"${dir}" "${dojo_backup_bitcoind}"/
+            if sudo test -d "${install_dir}"/bitcoin/"${dir}"; then
+                sudo mv "${install_dir}"/bitcoin/"${dir}" "${dojo_backup_bitcoind}"/
             fi
         done
 
         # Remove legacy directory
-        rm -rf "${INSTALL_DIR}"/bitcoin
+        rm -rf "${install_dir}"/bitcoin
+    fi
+}
+
+# Migrate user.conf variables to lowercase
+_update_10() {
+    if [ -f "${HOME}"/.config/RoninDojo/user.conf ]; then
+        for var in "PRIMARY_STORAGE" "SECONDARY_STORAGE" "INSTALL_DIR" "RONIN_UI_BACKEND_DIR" "GUI_API" "RONIN_DOJO_BRANCH" "SAMOURAI_COMMITISH"; do
+            if grep "${var}" "${HOME}"/.config/RoninDojo/user.conf 1>/dev/null; then
+                sed -i "s/${var}/${var,,}/" "${HOME}"/.config/RoninDojo/user.conf
+            fi
+        done
     fi
 }

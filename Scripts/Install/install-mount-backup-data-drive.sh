@@ -6,7 +6,7 @@
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ]; then
+if [ -b "${secondary_storage}" ]; then
     cat <<EOF
 ${RED}
 ***
@@ -15,7 +15,7 @@ Your backup drive partition has been detected...
 ${NC}
 EOF
   _sleep 2
-  # checks for ${SECONDARY_STORAGE}
+  # checks for ${secondary_storage}
 else
     cat <<EOF
 ${RED}
@@ -26,14 +26,14 @@ ${NC}
 EOF
     _sleep 5
     _pause return
-    bash -c "${RONIN_SYSTEM_STORAGE}"
+    bash -c "${ronin_system_storage}"
     # no drive detected, press any key to return to menu
 fi
 
 cat <<EOF
 ${RED}
 ***
-Preparing to Mount ${SECONDARY_STORAGE} to ${STORAGE_MOUNT}...
+Preparing to Mount ${secondary_storage} to ${storage_mount}...
 ***
 ${NC}
 EOF
@@ -68,21 +68,21 @@ EOF
 done
 # ask user to proceed
 
-test ! -d "${STORAGE_MOUNT}" && sudo mkdir "${STORAGE_MOUNT}"
+test ! -d "${storage_mount}" && sudo mkdir "${storage_mount}"
 # create mount directory if not available
 
 cat <<EOF
 ${RED}
 ***
-Mounting ${SECONDARY_STORAGE} to ${STORAGE_MOUNT}...
+Mounting ${secondary_storage} to ${storage_mount}...
 ***
 ${NC}
 EOF
 _sleep 2
 
-sudo mount "${SECONDARY_STORAGE}" "${STORAGE_MOUNT}"
-# mount backup drive to ${STORAGE_MOUNT} directory
+sudo mount "${secondary_storage}" "${storage_mount}"
+# mount backup drive to ${storage_mount} directory
 
 _pause return
-bash -c "${RONIN_SYSTEM_STORAGE}"
+bash -c "${ronin_system_storage}"
 # press any key to return to menu-system-storage.sh

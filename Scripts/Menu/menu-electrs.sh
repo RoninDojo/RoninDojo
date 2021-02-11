@@ -40,11 +40,11 @@ EOF
 
         ./dojo.sh logs indexer
 
-        bash -c "${RONIN_ELECTRS_MENU}"
+        bash -c "${ronin_electrs_menu}"
         # start electrs, return to menu
         ;;
 	2)
-        bash -c "${RONIN_APPLICATIONS_MENU}"
+        bash -c "${ronin_applications_menu}"
         # Return to applications menu
         ;;
 esac

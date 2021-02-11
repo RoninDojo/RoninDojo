@@ -33,7 +33,7 @@ Starting UI Backend Server...
 ${NC}
 EOF
             _sleep 2
-            cd "${RONIN_UI_BACKEND_DIR}" || exit
+            cd "${ronin_ui_backend_dir}" || exit
 
             pm2 start "Ronin Backend"
         else
@@ -64,7 +64,7 @@ Stopping UI Backend Server...
 ${NC}
 EOF
             _sleep 2
-            cd "${RONIN_UI_BACKEND_DIR}" || exit
+            cd "${ronin_ui_backend_dir}" || exit
 
             pm2 stop "Ronin Backend"
         else
@@ -92,7 +92,7 @@ Restarting UI Backend Server...
 ${NC}
 EOF
         _sleep 2
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
+        cd "${ronin_ui_backend_dir}" || exit
 
         pm2 restart "Ronin Backend" 1>/dev/null
         # restart service
@@ -111,7 +111,7 @@ EOF
 # ***
 # ${NC}
 # EOF
-#         cd "${RONIN_UI_BACKEND_DIR}" || exit
+#         cd "${ronin_ui_backend_dir}" || exit
 #         pm2 status
 
 #         _pause return
@@ -126,7 +126,7 @@ Showing UI Backend Status...
 ${NC}
 EOF
 
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
+        cd "${ronin_ui_backend_dir}" || exit
         pm2 status
 
         _pause return
@@ -148,7 +148,7 @@ Press "q" key to exit at any time...
 ***
 ${NC}
 EOF
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
+        cd "${ronin_ui_backend_dir}" || exit
         _sleep 5 # Workaround until a proper FIX
         less --force logs/combined.log
 

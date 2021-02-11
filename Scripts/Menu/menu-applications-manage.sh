@@ -172,5 +172,5 @@ done
 if $upgrade; then
     _dojo_upgrade
 else
-    bash -c "${RONIN_APPLICATIONS_MENU}"
+    bash -c "${ronin_applications_menu}"
 fi

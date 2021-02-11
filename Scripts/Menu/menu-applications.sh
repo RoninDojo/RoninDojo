@@ -41,9 +41,9 @@ ${NC}
 EOF
             _sleep 2
             _pause return
-            bash -c "${RONIN_APPLICATIONS_MENU}"
+            bash -c "${ronin_applications_menu}"
         else
-            bash -c "${RONIN_MEMPOOL_MENU}"
+            bash -c "${ronin_mempool_menu}"
         # Mempool Space Visualizer menu
         fi
         ;;
@@ -66,20 +66,20 @@ ${NC}
 EOF
             _sleep 2
             _pause return
-            bash -c "${RONIN_APPLICATIONS_MENU}"
+            bash -c "${ronin_applications_menu}"
         else
-            bash -c "${RONIN_SPECTER_MENU}"
+            bash -c "${ronin_specter_menu}"
         fi
         # Specter menu
         ;;
     3)
         if ! _is_electrs; then
-            bash -c "${RONIN_APPLICATIONS_MENU}"
+            bash -c "${ronin_applications_menu}"
             exit 1
         fi
         # check if electrs is already installed
 
-        bash -c "${RONIN_ELECTRS_MENU}"
+        bash -c "${ronin_electrs_menu}"
         # runs electrs menu script
         ;;
     4)
@@ -109,7 +109,7 @@ ${NC}
 EOF
             _sleep 2
             _pause return
-            bash -c "$RONIN_APPLICATIONS_MENU"
+            bash -c "$ronin_applications_menu"
         else
             cat <<EOF
 ${RED}
@@ -128,7 +128,7 @@ ${NC}
 EOF
             _sleep 2
             _pause return
-            bash -c "$RONIN_APPLICATIONS_MENU"
+            bash -c "$ronin_applications_menu"
         fi
         # Bisq check
         ;;
@@ -153,7 +153,7 @@ EOF
             _sleep 2
 
             _pause return
-            bash -c "$RONIN_APPLICATIONS_MENU"
+            bash -c "$ronin_applications_menu"
         fi
 
         # Check for package dependencies
@@ -204,11 +204,11 @@ ${NC}
 EOF
         _pause return
 
-        bash -c "${RONIN_APPLICATIONS_MENU}"
+        bash -c "${ronin_applications_menu}"
         fi
         ;;
     6)
-        bash -c "${RONIN_APPLICATIONS_MANAGE_MENU}"
+        bash -c "${ronin_applications_manage_menu}"
         # Manage applications menu
         ;;
     7)

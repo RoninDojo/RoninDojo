@@ -7,11 +7,11 @@
 
 _load_user_conf
 
-if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+if ! findmnt "${install_dir}" 1>/dev/null; then
     cat <<EOF
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}! Please contact support for assistance...
+Missing drive mount at ${install_dir}! Please contact support for assistance...
 ***
 ${NC}
 EOF
@@ -70,7 +70,7 @@ ${NC}
 EOF
 
 cd "$HOME" || exit
-git clone -b "${SAMOURAI_COMMITISH##*/}" "$SAMOURAI_REPO" dojo 2>/dev/null
+git clone -b "${samourai_commitish##*/}" "$samourai_repo" dojo 2>/dev/null
 
 if _ronin_ui_update_check; then
     cat <<EOF
@@ -122,7 +122,7 @@ ${NC}
 EOF
 _sleep
 
-if [ -d "${DOJO_BACKUP_DIR}" ]; then
+if [ -d "${dojo_backup_dir}" ]; then
     if ! _dojo_restore; then
         cat <<EOF
 ${RED}

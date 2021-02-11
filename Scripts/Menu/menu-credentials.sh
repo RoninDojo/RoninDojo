@@ -47,7 +47,7 @@ Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 EOF
                 _pause return
-                bash -c "${RONIN_CREDENTIALS_MENU}"
+                bash -c "${ronin_credentials_menu}"
                 # press any key to return to menu
                 # shows samouraio dojo credentials and returns to menu
                 ;;
@@ -70,7 +70,7 @@ Tor V3 URL              = http://$V3_ADDR_WHIRLPOOL
 Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
 EOF
             _pause return
-            bash -c "${RONIN_CREDENTIALS_MENU}"
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows whirlpool credentials and returns to menu
             ;;
@@ -96,7 +96,7 @@ ${NC}
 EOF
             fi
 
-            bash -c "${RONIN_CREDENTIALS_MENU}"
+            bash -c "${ronin_credentials_menu}"
             # return to menu
             ;;
         4)
@@ -119,7 +119,7 @@ EOF
                 _sleep 2
 
                 _pause return
-                bash -c "${RONIN_CREDENTIALS_MENU}"
+                bash -c "${ronin_credentials_menu}"
             else
                 cat <<EOF
 ${RED}
@@ -133,7 +133,7 @@ Mempool Tor URL         =  http://${V3_ADDR_MEMPOOL}
 EOF
 
                 _pause return
-                bash -c "${RONIN_CREDENTIALS_MENU}"
+                bash -c "${ronin_credentials_menu}"
                 # press any key to return to menu
                 # see defaults.sh
                 fi
@@ -154,7 +154,7 @@ Port                    =   ${BACKEND_PORT}
 Ronin URL               =   http://${BACKEND_TOR}
 EOF
             _pause return
-            bash -c "${RONIN_CREDENTIALS_MENU}"
+            bash -c "${ronin_credentials_menu}"
             # shows Ronin UI Backend credentials, returns to menu
             ;;
         6)
@@ -180,7 +180,7 @@ Tor V3 URL              = http://$V3_ADDR_EXPLORER
 Password                = $EXPLORER_KEY
 EOF
             _pause return
-            bash -c "${RONIN_CREDENTIALS_MENU}"
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows bitcoind and btc rpc explorer credentials and returns to menu
             ;;
@@ -205,7 +205,7 @@ EOF
 
                 _pause return
 
-                bash -c "${RONIN_CREDENTIALS_MENU}"
+                bash -c "${ronin_credentials_menu}"
             else
                 cat <<EOF
 ${RED}
@@ -223,7 +223,7 @@ EOF
             fi
 
             _pause return
-            bash -c "${RONIN_CREDENTIALS_MENU}"
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows specter server credentials and returns to menu
             ;;
@@ -339,7 +339,7 @@ EOF
             fi
 
             _pause return
-            bash -c "${RONIN_CREDENTIALS_MENU}"
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows all credentials and returns to menu
             ;;

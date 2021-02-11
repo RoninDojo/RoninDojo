@@ -21,7 +21,7 @@ clear
 case $CHOICE in
         1)
             if ! _dojo_check; then
-                _is_dojo "${RONIN_DOJO_MENU2}"
+                _is_dojo "${ronin_dojo_menu2}"
             fi
             # is dojo installed?
 
@@ -37,12 +37,12 @@ EOF
             ./dojo.sh clean
 
             _pause return
-            bash -c "${RONIN_DOJO_MENU2}"
+            bash -c "${ronin_dojo_menu2}"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
         2)
             if ! _dojo_check; then
-                _is_dojo "${RONIN_DOJO_MENU2}"
+                _is_dojo "${ronin_dojo_menu2}"
             fi
             # is dojo installed?
 
@@ -59,12 +59,12 @@ EOF
             # display dojo version info
 
             _pause return
-            bash -c "${RONIN_DOJO_MENU2}"
+            bash -c "${ronin_dojo_menu2}"
             # press any key to return
             ;;
         3)
             if ! _dojo_check; then
-                _is_dojo "${RONIN_DOJO_MENU2}"
+                _is_dojo "${ronin_dojo_menu2}"
             fi
             # is dojo installed?
 
@@ -73,7 +73,7 @@ EOF
             ;;
         4)
             if ! _dojo_check; then
-                _is_dojo "${RONIN_DOJO_MENU2}"
+                _is_dojo "${ronin_dojo_menu2}"
             fi
             # is dojo installed?
 
@@ -81,7 +81,7 @@ EOF
             # copy block data to backup drive
             ;;
         5)
-            bash -c "${RONIN_DOJO_MENU}"
+            bash -c "${ronin_dojo_menu}"
             # return to main menu
             ;;
 esac

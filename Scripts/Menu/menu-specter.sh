@@ -34,7 +34,7 @@ EOF
         _sleep
 
         _pause return
-        bash -c "${RONIN_SPECTER_MENU}"
+        bash -c "${ronin_specter_menu}"
         # Start specter.service and return to same menu
         ;;
     2)
@@ -52,7 +52,7 @@ EOF
         _sleep
 
         _pause return
-        bash -c "${RONIN_SPECTER_MENU}"
+        bash -c "${ronin_specter_menu}"
         # Stop specter.service and return to same menu
         ;;
     3)
@@ -68,7 +68,7 @@ EOF
         _sleep
 
         _pause return
-        bash -c "${RONIN_SPECTER_MENU}"
+        bash -c "${ronin_specter_menu}"
         # Restart specter.service and return to same menu
         ;;
     4)
@@ -83,10 +83,10 @@ EOF
 
         sudo systemctl status specter
 
-        bash -c "${RONIN_SPECTER_MENU}"
+        bash -c "${ronin_specter_menu}"
         ;;
     5)
-        bash -c "${RONIN_APPLICATIONS_MENU}"
+        bash -c "${ronin_applications_menu}"
         # Return to applications menu
         ;;
 esac

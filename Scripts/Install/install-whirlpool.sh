@@ -221,10 +221,10 @@ Description=Whirlpool
 After=tor.service
 
 [Service]
-WorkingDirectory=/home/$USER/whirlpool
-ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
-User=$USER
-Group=$USER
+WorkingDirectory=/home/${ronindojo_user}/whirlpool
+ExecStart=/usr/bin/java -jar /home/${ronindojo_user}/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
+User=${ronindojo_user}
+Group=${ronindojo_user}
 Type=simple
 KillMode=process
 TimeoutSec=60

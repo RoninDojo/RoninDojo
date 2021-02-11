@@ -31,6 +31,8 @@ _main() {
     _update_06 # Modify pacman to Ignore specific packages
     _update_07 # Set user.conf in appropriate place
     _update_08 # Make sure mnt-usb.mount is available
+    _update_09 # Migrate bitcoin ibd data to new backup directory
+    _update_10 # Migrate user.conf variables to lowercase
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -50,7 +52,7 @@ EOF
     # place logo and ronin main menu script "$HOME"/.bashrc to run at each login
 
     # Adding user to docker group if needed
-    if ! getent group docker| grep -q "${USER}"; then
+    if ! getent group docker| grep -q "${ronindojo_user}"; then
         cat <<EOF
 ${RED}
 ***
@@ -63,7 +65,7 @@ EOF
             sudo groupadd docker 1>/dev/null
         fi
 
-        sudo gpasswd -a "${USER}" docker
+        sudo gpasswd -a "${ronindojo_user}" docker
         _sleep 5 --msg "Reloading RoninDojo in" && newgrp docker
     fi
 
@@ -135,14 +137,14 @@ fi
 
 #
 # Set systemd unit dependencies for docker and tor unit files
-# to depend on ${INSTALL_DIR} mount point
+# to depend on ${install_dir} mount point
 #
 _systemd_unit_drop_in_check() {
     _load_user_conf
 
     local tmp systemd_mountpoint
 
-    tmp=${INSTALL_DIR:1}               # Remove leading '/'
+    tmp=${install_dir:1}               # Remove leading '/'
     systemd_mountpoint=${tmp////-}     # Replace / with -
 
     for x in docker tor; do
@@ -152,7 +154,7 @@ _systemd_unit_drop_in_check() {
             if [ -f "/etc/systemd/system/${systemd_mountpoint}.mount" ]; then
                 sudo bash -c "cat <<EOF >/etc/systemd/system/${x}.service.d/override.conf
 [Unit]
-RequiresMountsFor=${INSTALL_DIR}
+RequiresMountsFor=${install_dir}
 EOF"
             fi
 
@@ -310,10 +312,10 @@ _is_active() {
 # Tor credentials backup
 #
 _tor_backup() {
-    test -d "${TOR_BACKUP_DIR}" || sudo mkdir -p "${TOR_BACKUP_DIR}"
+    test -d "${tor_backup_dir}" || sudo mkdir -p "${tor_backup_dir}"
 
-    if [ -d "${DOJO_PATH}" ]; then
-        sudo rsync -ac --delete-before --quiet "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data/ "${TOR_BACKUP_DIR}"
+    if [ -d "${dojo_path}" ]; then
+        sudo rsync -ac --delete-before --quiet "${install_dir}/${tor_data_dir}"/_data/ "${tor_backup_dir}"
         return 0
     fi
 
@@ -324,8 +326,8 @@ _tor_backup() {
 # Tor credentials restore
 #
 _tor_restore() {
-    if sudo test -d "${TOR_BACKUP_DIR}"; then
-        sudo rsync -ac --quiet --delete-before "${TOR_BACKUP_DIR}"/ "${INSTALL_DIR}/${TOR_DATA_DIR}"/_data
+    if sudo test -d "${tor_backup_dir}"; then
+        sudo rsync -ac --quiet --delete-before "${tor_backup_dir}"/ "${install_dir}/${tor_data_dir}"/_data
         cat <<EOF
 ${RED}
 ***
@@ -365,15 +367,15 @@ TOR_CONFIG
 
         # Default config file has example value #DataDirectory /var/lib/tor,
         if grep -E "^#DataDirectory" /etc/tor/torrc 1>/dev/null; then
-            sudo sed -i "s:^#DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
+            sudo sed -i "s:^#DataDirectory .*$:DataDirectory ${install_dir_tor}:" /etc/tor/torrc
         fi
 
     else
-        sudo sed -i "s:^DataDirectory .*$:DataDirectory ${INSTALL_DIR_TOR}:" /etc/tor/torrc
+        sudo sed -i "s:^DataDirectory .*$:DataDirectory ${install_dir_tor}:" /etc/tor/torrc
     fi
 
     # Setup directory
-    if [ ! -d "${INSTALL_DIR_TOR}" ]; then
+    if [ ! -d "${install_dir_tor}" ]; then
         cat <<TOR_DIR
 ${RED}
 ***
@@ -381,12 +383,12 @@ Creating Tor directory...
 ***
 ${NC}
 TOR_DIR
-        sudo mkdir "${INSTALL_DIR_TOR}"
+        sudo mkdir "${install_dir_tor}"
     fi
 
     # Check for ownership
-    if ! [ "$(stat -c "%U" "${INSTALL_DIR_TOR}")" = "tor" ]; then
-        sudo chown -R tor:tor "${INSTALL_DIR_TOR}"
+    if ! [ "$(stat -c "%U" "${install_dir_tor}")" = "tor" ]; then
+        sudo chown -R tor:tor "${install_dir_tor}"
     fi
 
     if ! systemctl is-active --quiet tor; then
@@ -454,7 +456,7 @@ Configuring RoninDojo Backend Tor Address...
 ${NC}
 BACKEND_TOR_CONFIG
         sudo sed -i "/################ This section is just for relays/i\
-HiddenServiceDir ${INSTALL_DIR_TOR}/hidden_service_ronin_backend/\n\
+HiddenServiceDir ${install_dir_tor}/hidden_service_ronin_backend/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 80 127.0.0.1:8470\n\
 " /etc/tor/torrc
@@ -468,12 +470,12 @@ HiddenServicePort 80 127.0.0.1:8470\n\
 # UI Backend get credentials
 #
 _ui_backend_credentials() {
-    cd "${RONIN_UI_BACKEND_DIR}" || exit
+    cd "${ronin_ui_backend_dir}" || exit
 
     API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
     JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
     BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
-    BACKEND_TOR=$(sudo cat "${INSTALL_DIR_TOR}"/hidden_service_ronin_backend/hostname)
+    BACKEND_TOR=$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)
 
     export API_KEY JWT_SECRET BACKEND_PORT BACKEND_TOR
 }
@@ -484,8 +486,8 @@ _ui_backend_credentials() {
 _is_ronin_ui_backend() {
     _load_user_conf
 
-    if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-        mkdir "${RONIN_UI_BACKEND_DIR}"
+    if [ ! -d "${ronin_ui_backend_dir}" ]; then
+        mkdir "${ronin_ui_backend_dir}"
         return 1
     fi
     # check if Ronin UI Backend is already installed
@@ -506,8 +508,8 @@ _ronin_ui_update_check() {
         ver=$( cut -d ' ' -f2 </tmp/latest.txt )
 
         # Get latest version of current RoninBackend if available
-        if [ -f "${RONIN_UI_BACKEND_DIR}"/package.json ]; then
-            current_ver=$(jq --raw-output '.version' "${RONIN_UI_BACKEND_DIR}"/package.json)
+        if [ -f "${ronin_ui_backend_dir}"/package.json ]; then
+            current_ver=$(jq --raw-output '.version' "${ronin_ui_backend_dir}"/package.json)
         fi
 
         # Check if update is needed
@@ -552,7 +554,7 @@ EOF
     _check_pkg "node" "nodejs"
 
     # cd into RoninBackend dir
-    cd "${RONIN_UI_BACKEND_DIR}" || exit
+    cd "${ronin_ui_backend_dir}" || exit
 
     # Fetch tar archive
     wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"
@@ -581,7 +583,7 @@ EOF
         # pm2 system startup
         pm2 startup &>/dev/null
 
-        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "$USER" --hp "$HOME" 1>/dev/null
+        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" 1>/dev/null
 
         _setup_backend_tor
     else # Restart process after updating
@@ -788,11 +790,11 @@ _is_dojo() {
     local menu
     menu="$1"
 
-    if [ ! -d "${DOJO_PATH}" ]; then
+    if [ ! -d "${dojo_path}" ]; then
         cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory!
+Missing ${dojo_path} directory!
 ${NC}
 EOF
         _pause return
@@ -889,13 +891,13 @@ _mempool_urls_to_local_btc_explorer() {
 _dojo_update() {
     _load_user_conf
 
-    cd "${DOJO_PATH}" || exit
+    cd "${dojo_path}" || exit
 
     # Fetch remotes
     git fetch --all --tags --force &>/dev/null
 
     # Reset to origin master branch
-    git reset --hard "${SAMOURAI_COMMITISH}" 1>/dev/null
+    git reset --hard "${samourai_commitish}" 1>/dev/null
 }
 
 #
@@ -916,17 +918,17 @@ EOF
     . dojo.sh upgrade --nolog
     _pause return
 
-    bash -c "${RONIN_APPLICATIONS_MENU}"
+    bash -c "${ronin_applications_menu}"
 }
 
 #
 # Dojo Credentials Backup
 #
 _dojo_backup() {
-    test -d "${DOJO_BACKUP_DIR}" || sudo mkdir -p "${DOJO_BACKUP_DIR}"
+    test -d "${dojo_backup_dir}" || sudo mkdir -p "${dojo_backup_dir}"
 
-    if [ -d "${DOJO_PATH}" ]; then
-        sudo rsync -ac --delete-before --quiet "${dojo_path_my_dojo}"/conf "${DOJO_BACKUP_DIR}"
+    if [ -d "${dojo_path}" ]; then
+        sudo rsync -ac --delete-before --quiet "${dojo_path_my_dojo}"/conf "${dojo_backup_dir}"
         return 0
     fi
 
@@ -938,7 +940,7 @@ _dojo_backup() {
 #
 _dojo_restore() {
     if "${dojo_conf_backup}"; then
-        sudo rsync -ac --quiet --delete-before "${DOJO_BACKUP_DIR}"/conf "${dojo_path_my_dojo}"
+        sudo rsync -ac --quiet --delete-before "${dojo_backup_dir}"/conf "${dojo_path_my_dojo}"
         return 0
     fi
 
@@ -951,12 +953,12 @@ _dojo_restore() {
 _dojo_check() {
     _load_user_conf
 
-    # Check that ${INSTALL_DIR} is mounted
-    if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+    # Check that ${install_dir} is mounted
+    if ! findmnt "${install_dir}" 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}!
+Missing drive mount at ${install_dir}!
 ***
 ${NC}
 EOF
@@ -975,7 +977,7 @@ EOF
 
     _is_active docker
 
-    if [ -d "${DOJO_PATH}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
+    if [ -d "${dojo_path}" ] && [ "$(docker inspect --format='{{.State.Running}}' db 2>/dev/null)" = "true" ]; then
         return 0
     else
         return 1
@@ -988,12 +990,12 @@ EOF
 _mempool_check() {
     _load_user_conf
 
-    # Check that ${INSTALL_DIR} is mounted
-    if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+    # Check that ${install_dir} is mounted
+    if ! findmnt "${install_dir}" 1>/dev/null; then
         cat <<EOF
 ${RED}
 ***
-Missing drive mount at ${INSTALL_DIR}!
+Missing drive mount at ${install_dir}!
 ***
 ${NC}
 EOF
@@ -1012,7 +1014,7 @@ EOF
 
     _is_active docker
 
-    if [ -d "${DOJO_PATH}" ] && grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null ; then
+    if [ -d "${dojo_path}" ] && grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null ; then
         return 0
     else
         return 1
@@ -1074,21 +1076,21 @@ _stop_dojo() {
     local dojo_path_my_dojo
     dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
 
-    if [ ! -d "${DOJO_PATH}" ]; then
+    if [ ! -d "${dojo_path}" ]; then
         cat <<EOF
 ${RED}
 ***
-Missing ${DOJO_PATH} directory!
+Missing ${dojo_path} directory!
 ***
 ${NC}
 EOF
         _pause return
-        bash -c "$RONIN_DOJO_MENU"
+        bash -c "$ronin_dojo_menu"
         exit 1
     fi
     # is dojo installed?
 
-    if [ -d "${DOJO_PATH}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
+    if [ -d "${dojo_path}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
         # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
 
         cd "${dojo_path_my_dojo}" || exit
@@ -1224,13 +1226,13 @@ EOF
         git fetch --all --tags --force &>/dev/null
 
         # Reset to origin master branch
-        git reset --hard "${RONIN_DOJO_BRANCH}" 1>/dev/null
+        git reset --hard "${ronin_dojo_branch}" 1>/dev/null
     else
         cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${RONIN_DOJO_BRANCH}" "${RONIN_DOJO_REPO}" 2>/dev/null
+git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 ${RED}
 ***
 Upgrade Complete!
@@ -1262,7 +1264,7 @@ Now configuring docker to use the external SSD...
 ${NC}
 EOF
     _sleep 3
-    test -d "${INSTALL_DIR_DOCKER}" || sudo mkdir "${INSTALL_DIR_DOCKER}"
+    test -d "${install_dir_docker}" || sudo mkdir "${install_dir_docker}"
     # makes directory to store docker/dojo data
 
     if [ -d /etc/docker ]; then
@@ -1288,7 +1290,7 @@ EOF
     # We can skip this if daemon.json was previous created
     if [ ! -f /etc/docker/daemon.json ]; then
         sudo bash -c "cat << EOF > /etc/docker/daemon.json
-{ \"data-root\": \"${INSTALL_DIR_DOCKER}\" }
+{ \"data-root\": \"${install_dir_docker}\" }
 EOF"
         cat <<EOF
 ${RED}
@@ -1319,12 +1321,12 @@ _check_dojo_perms() {
 
     cd "${dojo_path_my_dojo}" || exit
 
-    if find "${DOJO_PATH}" -user root | grep -q '.'; then
+    if find "${dojo_path}" -user root | grep -q '.'; then
         _stop_dojo
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
-        sudo chown -R "${USER}:${USER}" "${DOJO_PATH}"
+        sudo chown -R "${ronindojo_user}:${ronindojo_user}" "${dojo_path}"
     else
         _stop_dojo
     fi
@@ -1438,15 +1440,15 @@ ${NC}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
-        # Make sure to stop tor and docker when mount point is ${INSTALL_DIR}
-        if [ "${mountpoint}" = "${INSTALL_DIR}" ]; then
+        # Make sure to stop tor and docker when mount point is ${install_dir}
+        if [ "${mountpoint}" = "${install_dir}" ]; then
             for x in tor docker; do
                 sudo systemctl stop "${x}"
             done
 
             # Stop swap on mount point
-            if check_swap "${INSTALL_DIR_SWAP}"; then
-                test -f "${INSTALL_DIR_SWAP}" && sudo swapoff "${INSTALL_DIR_SWAP}"
+            if check_swap "${install_dir_swap}"; then
+                test -f "${install_dir_swap}" && sudo swapoff "${install_dir_swap}"
             fi
         fi
 
@@ -1636,15 +1638,15 @@ _specter_hww_udev_rules() {
         fi
         # Add group plugdev if missing
 
-        if ! getent group plugdev | grep -q "${USER}" &>/dev/null; then
+        if ! getent group plugdev | grep -q "${ronindojo_user}" &>/dev/null; then
             cat <<EOF
 ${RED}
 ***
-Adding ${USER} to plugdev group...
+Adding ${ronindojo_user} to plugdev group...
 ***
 ${NC}
 EOF
-            sudo usermod -aG plugdev "${USER}" 1>/dev/null
+            sudo usermod -aG plugdev "${ronindojo_user}" 1>/dev/null
         fi
     fi
 }
@@ -1682,9 +1684,9 @@ _specter_config_tor() {
 
     sudo sed -i "s:^#ControlPort .*$:ControlPort 9051:" /etc/tor/torrc
 
-    if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${INSTALL_DIR_TOR}"/specter_server ]; then
+    if ! grep "specter_server" /etc/tor/torrc 1>/dev/null && [ ! -d "${install_dir_tor}"/specter_server ]; then
         sudo sed -i "/################ This section is just for relays/i\
-HiddenServiceDir ${INSTALL_DIR_TOR}/specter_server/\n\
+HiddenServiceDir ${install_dir_tor}/specter_server/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
@@ -1707,7 +1709,7 @@ Description=Specter Desktop Service
 After=multi-user.target
 
 [Service]
-User=$USER
+User=${ronindojo_user}
 Type=simple
 ExecStart=$HOME/.venv_specter/bin/python -m cryptoadvance.specter server --host 0.0.0.0 --cert=$HOME/.config/RoninDojo/cert.pem --key=$HOME/.config/RoninDojo/key.pem
 Environment=PATH=$HOME/.venv_specter/bin
@@ -1765,8 +1767,8 @@ EOF
     sudo systemctl restart tor
     # Remove torrc changes
 
-    if getent group plugdev | grep -q "${USER}" &>/dev/null; then
-        sudo gpasswd -d "${USER}" plugdev 1>/dev/null
+    if getent group plugdev | grep -q "${ronindojo_user}" &>/dev/null; then
+        sudo gpasswd -d "${ronindojo_user}" plugdev 1>/dev/null
     fi
     # Remove user from plugdev group
 }
@@ -1900,7 +1902,7 @@ EOF
 _install_wst(){
     cd "$HOME" || exit
 
-    git clone -q "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
+    git clone -q "$whirlpool_stats_repo" Whirlpool-Stats-Tool 2>/dev/null
     # Download whirlpool stat tool
 
     # Check for python-pip and install if not found
@@ -1920,7 +1922,7 @@ _install_wst(){
 _install_boltzmann(){
     cd "$HOME" || exit
 
-    git clone -q "$BOLTZMANN_REPO"
+    git clone -q "$boltzmann_repo"
 
     cd boltzmann || exit
     # Pull Boltzmann
@@ -2050,7 +2052,7 @@ _dojo_data_bitcoind() {
     while [ $# -gt 0 ]; do
         case "$1" in
             restore)
-                if sudo test -d "${dojo_backup_bitcoind}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
+                if sudo test -d "${dojo_backup_bitcoind}/blocks" && sudo test -d "${docker_volume_bitcoind}"; then
                     cat <<EOF
 ${RED}
 ***
@@ -2065,14 +2067,14 @@ EOF
                     _sleep
 
                     for dir in blocks chainstate indexes; do
-                        if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"; then
-                            sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"
+                        if sudo test -d "${docker_volume_bitcoind}"/_data/"${dir}"; then
+                            sudo rm -rf "${docker_volume_bitcoind}"/_data/"${dir}"
                         fi
                     done
 
                     for dir in blocks chainstate indexes; do
                         if sudo test -d "${dojo_backup_bitcoind}"/"${dir}"; then
-                            sudo mv "${dojo_backup_bitcoind}"/"${dir}" "${DOCKER_VOLUME_BITCOIND}"/_data/
+                            sudo mv "${dojo_backup_bitcoind}"/"${dir}" "${docker_volume_bitcoind}"/_data/
                         fi
                     done
                     # changes to dojo path, otherwise exit
@@ -2111,8 +2113,8 @@ EOF
                 # check if salvage directory exist
 
                 for dir in blocks chainstate indexes; do
-                    if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"; then
-                        sudo mv "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}" "${dojo_backup_bitcoind}"/
+                    if sudo test -d "${docker_volume_bitcoind}"/_data/"${dir}"; then
+                        sudo mv "${docker_volume_bitcoind}"/_data/"${dir}" "${dojo_backup_bitcoind}"/
                     fi
                 done
                 # moves blockchain data to ${dojo_backup_bitcoind} to be used by the dojo install script

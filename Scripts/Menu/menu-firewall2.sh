@@ -78,7 +78,7 @@ EOF
             _sleep 2
 
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU2}"
+            bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;
         2)
@@ -142,10 +142,10 @@ EOF
             _sleep 2
 
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU2}"
+            bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;
         3)
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             ;;
 esac

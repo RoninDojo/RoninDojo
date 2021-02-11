@@ -22,5 +22,5 @@ do
     esac
 done
 
-bash -c "${RONIN_SYSTEM_MENU}"
+bash -c "${ronin_system_menu}"
 # return to menu

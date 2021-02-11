@@ -77,5 +77,5 @@ cd "${dojo_path_my_dojo}" || exit
 ./dojo.sh upgrade --nolog
 # run upgrade
 
-bash -c "$RONIN_UPDATES_MENU"
+bash -c "$ronin_updates_menu"
 # return to menu

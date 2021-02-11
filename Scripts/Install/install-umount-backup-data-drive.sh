@@ -6,7 +6,7 @@
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${STORAGE_MOUNT}"; then
+if [ -b "${secondary_storage}" ] && findmnt "${storage_mount}"; then
     cat <<EOF
 ${RED}
 ***
@@ -15,7 +15,7 @@ Your backup drive partition has been detected...
 ${NC}
 EOF
     _sleep 2
-    # checks for ${SECONDARY_STORAGE}
+    # checks for ${secondary_storage}
 else
     cat <<EOF
 ${RED}
@@ -27,14 +27,14 @@ EOF
     _sleep 5
 
     _pause return
-    bash -c "${RONIN_SYSTEM_STORAGE}"
+    bash -c "${ronin_system_storage}"
     # no drive detected, press any key to return to menu
 fi
 
 cat <<EOF
 ${RED}
 ***
-Preparing to Umount ${SECONDARY_STORAGE}...
+Preparing to Umount ${secondary_storage}...
 ***
 ${NC}
 EOF
@@ -72,15 +72,15 @@ done
 cat <<EOF
 ${RED}
 ***
-Umounting ${STORAGE_MOUNT}...
+Umounting ${storage_mount}...
 ***
 ${NC}
 EOF
 _sleep 2
 
-sudo umount "${STORAGE_MOUNT}"
-# umount backup drive ${SECONDARY_STORAGE}
+sudo umount "${storage_mount}"
+# umount backup drive ${secondary_storage}
 
 _pause return
-bash -c "${RONIN_SYSTEM_STORAGE}"
+bash -c "${ronin_system_storage}"
 # press any key to return to menu-system-storage.sh

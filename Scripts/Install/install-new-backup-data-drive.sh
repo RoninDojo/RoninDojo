@@ -6,7 +6,7 @@
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ]; then
+if [ -b "${secondary_storage}" ]; then
     cat <<EOF
 ${RED}
 ***
@@ -15,7 +15,7 @@ Your new backup drive has been detected...
 ${NC}
 EOF
     _sleep 2
-    # checks for ${SECONDARY_STORAGE}
+    # checks for ${secondary_storage}
 else
     cat <<EOF
 ${RED}
@@ -27,14 +27,14 @@ EOF
     _sleep 5
 
     _pause return
-    bash -c "${RONIN_SYSTEM_STORAGE}"
+    bash -c "${ronin_system_storage}"
     # no drive detected, press any key to return to menu
 fi
 
 cat <<EOF
 ${RED}
 ***
-Preparing to Format and Mount ${SECONDARY_STORAGE} to ${STORAGE_MOUNT}...
+Preparing to Format and Mount ${secondary_storage} to ${storage_mount}...
 ***
 ${NC}
 EOF
@@ -62,7 +62,7 @@ while true; do
     case $answer in
         [yY][eE][sS]|[yY]) break;;
         [nN][oO]|[Nn])
-          bash -c "${RONIN_SYSTEM_STORAGE}"
+          bash -c "${ronin_system_storage}"
           exit
           ;;
         * )
@@ -90,7 +90,7 @@ _sleep 2
 # Check for sgdisk dependency
 _check_pkg "sgdisk" "gptfdisk" --update-mirrors
 
-if ! create_fs --label "backup" --device "${SECONDARY_STORAGE}" --mountpoint "${STORAGE_MOUNT}"; then
+if ! create_fs --label "backup" --device "${secondary_storage}" --mountpoint "${storage_mount}"; then
     printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
     _sleep 3
     exit 1
@@ -105,22 +105,22 @@ Displaying the name on the external disk...
 ${NC}
 EOF
 
-lsblk -o NAME,SIZE,LABEL "${SECONDARY_STORAGE}"
+lsblk -o NAME,SIZE,LABEL "${secondary_storage}"
 _sleep 2
-# double-check that "${SECONDARY_STORAGE}" exists, and that its storage capacity is what you expected
+# double-check that "${secondary_storage}" exists, and that its storage capacity is what you expected
 
 cat <<EOF
 ${RED}
 ***
-Check output for ${SECONDARY_STORAGE} and make sure everything looks ok...
+Check output for ${secondary_storage} and make sure everything looks ok...
 ***
 ${NC}
 EOF
 
-df -h "${SECONDARY_STORAGE}"
+df -h "${secondary_storage}"
 _sleep 2
 # checks disk info
 
 _pause return
-bash -c "${RONIN_SYSTEM_STORAGE}"
+bash -c "${ronin_system_storage}"
 # press any key to return to menu-system-storage.sh

@@ -28,27 +28,27 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo.sh
+        bash -c "${ronin_dojo_menu}"
         # runs dojo management menu script
         ;;
     2)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        bash -c "${ronin_ui_backend_menu}"
         # runs Ronin UI Backend menu script
         ;;
     3)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-credentials.sh
+        bash -c "${ronin_credentials_menu}"
         # runs credentials menu script
         ;;
     4)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-applications.sh
+        bash -c "${ronin_applications_menu}"
         # runs extras menu script
         ;;
     5)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-samourai-toolkit.sh
+        bash -c "${ronin_samourai_toolkit_menu}"
         # runs extras menu script
         ;;
     6)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
+        bash -c "${ronin_system_menu}"
         # runs system menu script
         ;;
     255|9)

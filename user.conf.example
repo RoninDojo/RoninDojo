@@ -19,11 +19,11 @@
 #
 # Uncomment below to define custom values.
 #
-# PRIMARY_STORAGE & SECONDARY_STORAGE must point to a partition number i.e sda1
+# primary_storage & secondary_storage must point to a partition number i.e sda1
 #
 # Examples:
-#         PRIMARY_STORAGE="/dev/sda1"           # for SATA
-#         PRIMARY_STORAGE="/dev/nvme0n1p1"      # for NVMe
+#         primary_storage="/dev/sda1"           # for SATA
+#         primary_storage="/dev/nvme0n1p1"      # for NVMe
 #         NODE_ADMIN_KEY="GLRZigyFihw+PAf1i"    # USE random passwords for the love of bitcoin
 #
 
@@ -33,27 +33,27 @@
 # Note you must use full reference path if you plan on testing a different branch
 # other than master. i.e origin/branch_name instead of just branch_name
 
-#RONIN_DOJO_BRANCH="master" # defaults to master
-#SAMOURAI_COMMITISH=""      # empty defaults to master
+#ronin_dojo_branch="master" # defaults to master
+#samourai_commitish=""      # empty defaults to master
 
 ##############################
 # Filesystem paths           #
 ##############################
 
-#PRIMARY_STORAGE=""
-#SECONDARY_STORAGE=""
+#primary_storage=""
+#secondary_storage=""
 
 # Install directory variable can ONLY be enabled once during initial install. DO NOT EDIT this is
 # on an existing RoninDojo installation!
-#INSTALL_DIR=""
+#install_dir=""
 
 #
 # Ronin UI Backend & Ronin GUI Credentials
 #
 
-# RONIN_UI_BACKEND_DIR must be set before installation of backend UI service
+# ronin_ui_backend_dir must be set before installation of backend UI service
 
-#RONIN_UI_BACKEND_DIR=""
+#ronin_ui_backend_dir=""
 
 # These values are for the desktop GUI app
 #GUI_API=""

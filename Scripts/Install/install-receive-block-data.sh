@@ -4,7 +4,7 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if ! sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data; then
+if ! sudo test -d "${docker_volume_bitcoind}"/_data; then
     cat <<EOF
 ${RED}
 ***
@@ -15,7 +15,7 @@ EOF
     _sleep 2
 
     _pause return
-    bash -c "${RONIN_DOJO_MENU2}"
+    bash -c "${ronin_dojo_menu2}"
 fi
 # if data directory is not found then warn and return to menu
 
@@ -28,7 +28,7 @@ ${NC}
 EOF
 _sleep 3
 
-if [ -b "${SECONDARY_STORAGE}" ]; then
+if [ -b "${secondary_storage}" ]; then
     cat <<EOF
 ${RED}
 ***
@@ -37,7 +37,7 @@ Your backup drive partition has been detected...
 ${NC}
 EOF
     _sleep 2
-    # checks for ${SECONDARY_STORAGE}
+    # checks for ${secondary_storage}
 else
     cat <<EOF
 ${RED}
@@ -50,7 +50,7 @@ EOF
 
     _pause return
 
-    bash -c "${RONIN_DOJO_MENU2}"
+    bash -c "${ronin_dojo_menu2}"
     # no drive detected, press any key to return to menu
 fi
 
@@ -80,14 +80,14 @@ _sleep 2
 
 # Make sure we have directories to delete
 for dir in blocks chainstate indexes; do
-    if sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"; then
-        sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/"${dir}"
+    if sudo test -d "${docker_volume_bitcoind}"/_data/"${dir}"; then
+        sudo rm -rf "${docker_volume_bitcoind}"/_data/"${dir}"
     fi
 done
 
-# Check to see if we have old legacy backup directory, if so rename to ${STORAGE_MOUNT}
-if sudo test -d "${STORAGE_MOUNT}"/system-setup-salvage; then
-    sudo mv "${STORAGE_MOUNT}"/system-setup-salvage "${BITCOIN_IBD_BACKUP_DIR}" 1>/dev/null
+# Check to see if we have old legacy backup directory, if so rename to ${storage_mount}
+if sudo test -d "${storage_mount}"/system-setup-salvage; then
+    sudo mv "${storage_mount}"/system-setup-salvage "${bitcoin_ibd_backup_dir}" 1>/dev/null
 fi
 
 cat <<EOF
@@ -100,13 +100,13 @@ EOF
 
 _sleep 2
 
-if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
+if sudo test -d "${bitcoin_ibd_backup_dir}"/blocks; then
     for dir in blocks chainstate indexes; do
-        sudo cp -a "${BITCOIN_IBD_BACKUP_DIR}"/"${dir}" "${DOCKER_VOLUME_BITCOIND}"/_data/
+        sudo cp -a "${bitcoin_ibd_backup_dir}"/"${dir}" "${docker_volume_bitcoind}"/_data/
         # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
     done
 else
-    sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
+    sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
     cat <<BACKUP
 ${RED}
 ***
@@ -142,7 +142,7 @@ ${NC}
 EOF
 _sleep 2
 
-sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
+sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
 
 cat <<EOF
@@ -172,5 +172,5 @@ yamlFiles=$(_select_yaml_files)
 docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
 
 _pause return
-bash -c "${RONIN_DOJO_MENU2}"
+bash -c "${ronin_dojo_menu2}"
 # return to menu

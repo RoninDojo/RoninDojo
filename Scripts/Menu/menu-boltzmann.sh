@@ -5,7 +5,7 @@
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if [ ! -d "${BOLTZMANN_PATH}" ]; then
+if [ ! -d "${boltzmann_path}" ]; then
     cat <<EOF
 ${RED}
 ***
@@ -44,7 +44,7 @@ ${NC}
 8e56317360a548e8ef28ec475878ef70d1371bee3526c017ac22ad61ae5740b8,812bee538bd24d03af7876a77c989b2c236c063a5803c720769fc55222d36b47,...
 EOF
 
-cd "${BOLTZMANN_PATH}"/boltzmann || exit
+cd "${boltzmann_path}"/boltzmann || exit
 
 # Export required environment variables
 export BOLTZMANN_RPC_USERNAME=${RPC_USER_CONF}

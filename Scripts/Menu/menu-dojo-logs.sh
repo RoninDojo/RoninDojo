@@ -267,7 +267,7 @@ EOF
             fi
             ;;
         9)
-            bash -c "${RONIN_DOJO_MENU}"
+            bash -c "${ronin_dojo_menu}"
             # goes back to ronin dojo menu
             ;;
 esac

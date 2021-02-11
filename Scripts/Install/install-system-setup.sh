@@ -223,27 +223,27 @@ _sleep
 cat <<EOF
 ${RED}
 ***
-Creating ${INSTALL_DIR} directory...
+Creating ${install_dir} directory...
 ***
 ${NC}
 EOF
 _sleep
 
-test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
-# test for ${INSTALL_DIR} directory, otherwise creates using mkdir
+test -d "${install_dir}" || sudo mkdir "${install_dir}"
+# test for ${install_dir} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
-if [ -b "${PRIMARY_STORAGE}" ]; then
+if [ -b "${primary_storage}" ]; then
     cat <<EOF
 ${RED}
 ***
-Creating ${STORAGE_MOUNT} directory...
+Creating ${storage_mount} directory...
 ***
 ${NC}
 EOF
     _sleep
 
-    test ! -d "${STORAGE_MOUNT}" && sudo mkdir "${STORAGE_MOUNT}"
+    test ! -d "${storage_mount}" && sudo mkdir "${storage_mount}"
 
     cat <<EOF
 ${RED}
@@ -253,20 +253,20 @@ Attempting to mount drive for Blockchain data salvage...
 ${NC}
 EOF
     _sleep
-    sudo mount "${PRIMARY_STORAGE}" "${STORAGE_MOUNT}"
+    sudo mount "${primary_storage}" "${storage_mount}"
 else
     cat <<EOF
 ${RED}
 ***
-Did not find ${PRIMARY_STORAGE} for Blockchain data salvage.
+Did not find ${primary_storage} for Blockchain data salvage.
 ***
 ${NC}
 EOF
     _sleep
 fi
-# mount main storage drive to "${STORAGE_MOUNT}" directory if found in prep for data salvage
+# mount main storage drive to "${storage_mount}" directory if found in prep for data salvage
 
-if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}/blocks"; then
+if sudo test -d "${bitcoin_ibd_backup_dir}/blocks"; then
     cat <<EOF
 ${RED}
 ***
@@ -277,17 +277,17 @@ EOF
 _sleep
 
     # Check if swap in use
-    if check_swap "${STORAGE_MOUNT}/swapfile"; then
-        test -f "${STORAGE_MOUNT}/swapfile" && sudo swapoff "${STORAGE_MOUNT}/swapfile" &>/dev/null
+    if check_swap "${storage_mount}/swapfile"; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    if [ -f "${STORAGE_MOUNT}"/swapfile ]; then
-        sudo rm -rf "${STORAGE_MOUNT}"/{swapfile,docker,tor}
+    if [ -f "${storage_mount}"/swapfile ]; then
+        sudo rm -rf "${storage_mount}"/{swapfile,docker,tor}
     fi
 
-    if findmnt "${STORAGE_MOUNT}" 1>/dev/null; then
-        sudo umount "${STORAGE_MOUNT}"
-        sudo rmdir "${STORAGE_MOUNT}"
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}"
     fi
     # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
@@ -301,7 +301,7 @@ EOF
 _sleep
 
     # Mount primary drive if not already mounted
-    findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+    findmnt "${primary_storage}" 1>/dev/null || sudo mount "${primary_storage}" "${install_dir}"
 
     cat <<EOF
 ${RED}
@@ -312,22 +312,22 @@ ${NC}
 EOF
 _sleep
 
-    lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
+    lsblk -o NAME,SIZE,LABEL "${primary_storage}"
     # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
     cat <<EOF
 ${RED}
 ***
-Check output for ${PRIMARY_STORAGE} and make sure everything looks ok...
+Check output for ${primary_storage} and make sure everything looks ok...
 ***
 ${NC}
 EOF
 
-    df -h "${PRIMARY_STORAGE}"
+    df -h "${primary_storage}"
     _sleep 5
     # checks disk info
 
-    create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+    create_swap --file "${install_dir_swap}" --size 2G
     # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
     _setup_tor
@@ -360,7 +360,7 @@ EOF
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if sudo test -d "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
+if sudo test -d "${storage_mount}/${bitcoind_data_dir}/_data/blocks"; then
     cat <<EOF
 ${RED}
 ***
@@ -379,10 +379,10 @@ ${NC}
 EOF
     _sleep 2
 
-    test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
+    test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir "${bitcoin_ibd_backup_dir}"
 
-    sudo mv -v "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"/ 1>/dev/null
-    # moves blockchain salvage data to ${STORAGE_MOUNT} if found
+    sudo mv -v "${storage_mount}/${bitcoind_data_dir}/_data/"{blocks,chainstate} "${bitcoin_ibd_backup_dir}"/ 1>/dev/null
+    # moves blockchain salvage data to ${storage_mount} if found
 
     cat <<EOF
 ${RED}
@@ -394,18 +394,18 @@ EOF
     _sleep 2
 
     # Check if swap in use
-    if check_swap "${STORAGE_MOUNT}/swapfile"; then
-        test -f "${STORAGE_MOUNT}/swapfile" && sudo swapoff "${STORAGE_MOUNT}/swapfile" &>/dev/null
+    if check_swap "${storage_mount}/swapfile"; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    sudo rm -rf "${STORAGE_MOUNT}"/{docker,tor,swapfile}
+    sudo rm -rf "${storage_mount}"/{docker,tor,swapfile}
 
-    if findmnt "${STORAGE_MOUNT}" 1>/dev/null; then
-        sudo umount "${STORAGE_MOUNT}"
-        sudo rmdir "${STORAGE_MOUNT}"
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}"
     fi
-    # remove docker, tor, swap file directories from ${STORAGE_MOUNT}
-    # then unmount and remove ${STORAGE_MOUNT}
+    # remove docker, tor, swap file directories from ${storage_mount}
+    # then unmount and remove ${storage_mount}
 
     cat <<EOF
 ${RED}
@@ -417,7 +417,7 @@ EOF
     _sleep
 
     # Mount primary drive if not already mounted
-    findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+    findmnt "${primary_storage}" 1>/dev/null || sudo mount "${primary_storage}" "${install_dir}"
 
     _sleep
 
@@ -430,23 +430,23 @@ ${NC}
 EOF
     _sleep
 
-    lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
+    lsblk -o NAME,SIZE,LABEL "${primary_storage}"
     # lsblk lists disk by device
-    # double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
+    # double-check that ${primary_storage} exists, and its storage capacity is what you expected
 
     cat <<EOF
 ${RED}
 ***
-Check output for ${PRIMARY_STORAGE} and make sure everything looks ok...
+Check output for ${primary_storage} and make sure everything looks ok...
 ***
 ${NC}
 EOF
 
-    df -h "${PRIMARY_STORAGE}"
+    df -h "${primary_storage}"
     _sleep 5
     # checks disk info
 
-    create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+    create_swap --file "${install_dir_swap}" --size 2G
     # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
     _setup_tor
@@ -475,13 +475,13 @@ EOF
     _sleep 2
 
     # Check if swap in use
-    if check_swap "${STORAGE_MOUNT}/swapfile" ; then
-        test -f "${STORAGE_MOUNT}/swapfile" && sudo swapoff "${STORAGE_MOUNT}/swapfile" &>/dev/null
+    if check_swap "${storage_mount}/swapfile" ; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    if findmnt "${STORAGE_MOUNT}" 1>/dev/null; then
-        sudo umount "${STORAGE_MOUNT}"
-        sudo rmdir "${STORAGE_MOUNT}"
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}"
     fi
 fi
 # checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
@@ -495,7 +495,7 @@ ${NC}
 EOF
 _sleep 5
 
-if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
+if ! create_fs --label "main" --device "${primary_storage}" --mountpoint "${install_dir}"; then
     printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
     _sleep 3
     exit 1
@@ -512,22 +512,22 @@ ${NC}
 EOF
 _sleep
 
-lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
-# double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
+lsblk -o NAME,SIZE,LABEL "${primary_storage}"
+# double-check that ${primary_storage} exists, and its storage capacity is what you expected
 
 cat <<EOF
 ${RED}
 ***
-Check output for ${PRIMARY_STORAGE} and make sure everything looks ok...
+Check output for ${primary_storage} and make sure everything looks ok...
 ***
 ${NC}
 EOF
 
-df -h "${PRIMARY_STORAGE}"
+df -h "${primary_storage}"
 _sleep 5
 # checks disk info
 
-create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+create_swap --file "${install_dir_swap}" --size 2G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 _setup_tor

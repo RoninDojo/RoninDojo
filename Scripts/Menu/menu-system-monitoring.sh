@@ -71,7 +71,7 @@ EOF
         # press any key to return to menu
         ;;
     4)
-        bash -c "${RONIN_SYSTEM_MENU}"
+        bash -c "${ronin_system_menu}"
         # returns to menu
         ;;
 esac

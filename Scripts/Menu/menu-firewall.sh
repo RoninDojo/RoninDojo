@@ -34,7 +34,7 @@ EOF
             _sleep 2
             sudo ufw enable
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # enable firewall, press any key to return to menu
             ;;
         2)
@@ -48,7 +48,7 @@ EOF
             _sleep 2
             sudo ufw disable
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # disable firewall, press any key to return to menu
             ;;
         3)
@@ -62,7 +62,7 @@ EOF
             _sleep 2
             sudo ufw status
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # show ufw status, press any key to return to menu
             ;;
         4)
@@ -121,7 +121,7 @@ EOF
             # show firewall status
 
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # press any key to return to menu
             ;;
         5)
@@ -134,7 +134,7 @@ ${NC}
 EOF
             sudo ufw reload
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # reload firewall, press any key to return to menu
             ;;
         6)
@@ -216,7 +216,7 @@ EOF
             _sleep 2
 
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # press any key to return to menu
             ;;
         7)
@@ -289,15 +289,15 @@ EOF
             _sleep 2
 
             _pause return
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             # press any key to return to menu
             ;;
         8)
-            bash -c "${RONIN_FIREWALL_MENU2}"
+            bash -c "${ronin_firewall_menu2}"
             # go to next menu page
             ;;
         9)
-            bash -c "${RONIN_SYSTEM_MENU2}"
+            bash -c "${ronin_system_menu2}"
             # return system menu page 2
             ;;
 esac
