@@ -1759,7 +1759,7 @@ EOF
     fi
     # Delete udev rules
 
-    rm -rf "$HOME"/.specter "$HOME"/specter-* .venv_specter
+    rm -rf "$HOME"/.specter "$HOME"/specter-* "$HOME"/.venv_specter
     rm "$HOME"/.config/RoninDojo/specter*
     # Deletes the .specter dir, source dir, venv directory, certificate files and specter.service file
 
