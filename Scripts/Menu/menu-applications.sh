@@ -151,6 +151,7 @@ Supported devices are Rockpro64 and Rockpi4...
 ${NC}
 EOF
             _sleep 2
+
             _pause return
             bash -c "$RONIN_APPLICATIONS_MENU"
         fi
@@ -170,9 +171,12 @@ Installing fan control...
 ***
 ${NC}
 EOF
-            git clone https://github.com/digitalbitbox/bitbox-base.git
+            git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || exit
+
             cd bitbox-base/tools/bbbfancontrol || exit
+
             go build
+
             sudo cp bbbfancontrol /usr/local/sbin/
             sudo bash -c "cat <<EOF >/etc/systemd/system/bbbfancontrol.service
 [Unit]
@@ -199,6 +203,7 @@ Fan control already installed...
 ${NC}
 EOF
         _pause return
+
         bash -c "${RONIN_APPLICATIONS_MENU}"
         fi
         ;;
