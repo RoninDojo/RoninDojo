@@ -47,10 +47,10 @@ EOF
 cd "${boltzmann_path}"/boltzmann || exit
 
 # Export required environment variables
-export BOLTZMANN_RPC_USERNAME=${RPC_USER_CONF}
-export BOLTZMANN_RPC_PASSWORD=${RPC_PASS_CONF}
-export BOLTZMANN_RPC_HOST=${RPC_IP}
-export BOLTZMANN_RPC_PORT=${RPC_PORT}
+export BOLTZMANN_RPC_USERNAME=${rpc_user_conf}
+export BOLTZMANN_RPC_PASSWORD=${rpc_pass_conf}
+export BOLTZMANN_RPC_HOST=${rpc_ip}
+export BOLTZMANN_RPC_PORT=${rpc_port}
 
 # Loop command until user quits
 until [[ "$txids" =~ (Q|q|quit|Quit) ]]

@@ -7,17 +7,17 @@
 _load_user_conf
 
 if [ ! -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then # new install
-    RPC_USER=$(sudo grep BITCOIND_RPC_USER= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
-    RPC_PASS=$(sudo grep BITCOIND_RPC_PASSWORD= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
+    rpc_user=$(sudo grep BITCOIND_RPC_USER= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
+    rpc_pass=$(sudo grep BITCOIND_RPC_PASSWORD= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
 else # existing install so load
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 
-    RPC_USER="${RPC_USER_CONF}"; RPC_PASS="${RPC_PASS_CONF}"
+    rpc_user="${rpc_user_conf}"; rpc_pass="${rpc_pass_conf}"
 fi
 # Retrieve bitcoind RPC credentials
 
 cat <<EOF > "${dojo_path_my_dojo}"/indexer/electrs.toml
-cookie = "$RPC_USER:$RPC_PASS"
+cookie = "$rpc_user:$rpc_pass"
 server_banner = "Welcome to your RoninDojo ${ronindojo_version} Electrs Server!"
 EOF
 
@@ -42,8 +42,8 @@ fi\n\
 
 sed -i "/onion() {/a\
 if [ \"\$INDEXER_INSTALL\" == \"on\" ]; then\n\
-  V3_ADDR_ELECTRS=\$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\n\
-  echo \"Electrs hidden service address (v3) = \$V3_ADDR_ELECTRS\"\n\
+  v3_addr_electrs=\$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\n\
+  echo \"Electrs hidden service address (v3) = \$v3_addr_electrs\"\n\
 fi\n\
 " "${dojo_path_my_dojo}"/dojo.sh
 # modify dojo.sh for electrs

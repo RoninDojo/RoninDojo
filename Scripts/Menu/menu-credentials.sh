@@ -41,8 +41,8 @@ WARNING: Do not share these onion addresses with anyone!
 ${NC}
 
 Maintenance Tool:
-Tor V2 URL              = http://$V2_ADDR_API/admin
-Tor V3 URL              = http://$V3_ADDR_API/admin
+Tor V2 URL              = http://$v2_addr_dojo_api/admin
+Tor V3 URL              = http://$v3_addr_dojo_api/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 EOF
@@ -65,9 +65,9 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Tor V2 URL              = http://$V2_ADDR_WHIRLPOOL
-Tor V3 URL              = http://$V3_ADDR_WHIRLPOOL
-Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Tor V2 URL              = http://$v2_addr_whirlpool
+Tor V3 URL              = http://$v3_addr_whirlpool
+Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 EOF
             _pause return
             bash -c "${ronin_credentials_menu}"
@@ -83,7 +83,7 @@ Electrs Credentials
 ***
 ${NC}
 
-Electrs Tor URL         = $V3_ADDR_ELECTRS
+Electrs Tor URL         = $v3_addr_electrs
 EOF
                 # displaying electrs tor address to connect to electrum
 
@@ -129,7 +129,7 @@ Mempool Space Visualizer Credentials
 
 ***
 ${NC}
-Mempool Tor URL         =  http://${V3_ADDR_MEMPOOL}
+Mempool Tor URL         =  http://${v3_addr_mempool}
 EOF
 
                 _pause return
@@ -167,16 +167,16 @@ ${NC}
 
 Bitcoin Daemon:
 
-Tor V2 URL              = http://$V2_ADDR_BITCOIN
-Tor V3 URL              = http://$V3_ADDR_BITCOIN
-RPC User                = $RPC_USER_CONF
-RPC Password            = $RPC_PASS_CONF
-RPC IP                  = $RPC_IP
-RPC Host                = $RPC_PORT
+Tor V2 URL              = http://$v2_addr_bitcoind
+Tor V3 URL              = http://$v3_addr_bitcoind
+RPC User                = $rpc_user_conf
+RPC Password            = $rpc_pass_conf
+RPC IP                  = $rpc_ip
+RPC Host                = $rpc_port
 
 Bitcoin RPC Explorer (No username required):
-Tor V2 URL              = http://$V2_ADDR_EXPLORER
-Tor V3 URL              = http://$V3_ADDR_EXPLORER
+Tor V2 URL              = http://$v2_addr_explorer
+Tor V3 URL              = http://$v3_addr_explorer
 Password                = $EXPLORER_KEY
 EOF
             _pause return
@@ -214,11 +214,11 @@ Specter Server Credentials
 ***
 ${NC}
 
-Tor URL                 = http://$V3_ADDR_SPECTER
-RPC User                = $RPC_USER_CONF
-RPC Password            = $RPC_PASS_CONF
-RPC IP                  = $RPC_IP
-RPC Host                = $RPC_PORT
+Tor URL                 = http://$v3_addr_specter
+RPC User                = $rpc_user_conf
+RPC Password            = $rpc_pass_conf
+RPC IP                  = $rpc_ip
+RPC Host                = $rpc_port
 EOF
             fi
 
@@ -250,8 +250,8 @@ WARNING: Do not share these onion addresses with anyone!
 ${NC}
 
 Maintenance Tool:
-Tor V2 URL              = http://$V2_ADDR_API/admin
-Tor V3 URL              = http://$V3_ADDR_API/admin
+Tor V2 URL              = http://$v2_addr_dojo_api/admin
+Tor V3 URL              = http://$v3_addr_dojo_api/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 
@@ -265,9 +265,9 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${NC}
 
-Tor V2 URL              = http://$V2_ADDR_WHIRLPOOL
-Tor V3 URL              = http://$V3_ADDR_WHIRLPOOL
-Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Tor V2 URL              = http://$v2_addr_whirlpool
+Tor V3 URL              = http://$v3_addr_whirlpool
+Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
 ${RED}
 ***
@@ -288,16 +288,16 @@ ${NC}
 
 Bitcoin Daemon:
 
-Tor V2 URL              = http://$V2_ADDR_BITCOIN
-Tor V3 URL              = http://$V3_ADDR_BITCOIN
-RPC User                = $RPC_USER_CONF
-RPC Password            = $RPC_PASS_CONF
-RPC IP                  = $RPC_IP
-RPC Host                = $RPC_PORT
+Tor V2 URL              = http://$v2_addr_bitcoind
+Tor V3 URL              = http://$v3_addr_bitcoind
+RPC User                = $rpc_user_conf
+RPC Password            = $rpc_pass_conf
+RPC IP                  = $rpc_ip
+RPC Host                = $rpc_port
 
 Bitcoin RPC Explorer (No username required):
-Tor V2 URL              = http://$V2_ADDR_EXPLORER
-Tor V3 URL              = http://$V3_ADDR_EXPLORER
+Tor V2 URL              = http://$v2_addr_explorer
+Tor V3 URL              = http://$v3_addr_explorer
 Password                = $EXPLORER_KEY
 EOF
             if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
@@ -308,7 +308,7 @@ Electrs Credentials
 ***
 ${NC}
 
-Electrs Tor URL         = $V3_ADDR_ELECTRS
+Electrs Tor URL         = $v3_addr_electrs
 EOF
             fi
 
@@ -319,7 +319,7 @@ ${RED}
 Mempool Space Visualizer Credentials
 ***
 ${NC}
-Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
+Mempool Tor URL         = http://${v3_addr_mempool}
 EOF
             fi
 
@@ -330,11 +330,11 @@ ${RED}
 Specter Server Credentials
 ***
 ${NC}
-Tor URL                 = http://$V3_ADDR_SPECTER
-RPC User                = $RPC_USER_CONF
-RPC Password            = $RPC_PASS_CONF
-RPC IP                  = $RPC_IP
-RPC Host                = $RPC_PORT
+Tor URL                 = http://$v3_addr_specter
+RPC User                = $rpc_user_conf
+RPC Password            = $rpc_pass_conf
+RPC IP                  = $rpc_ip
+RPC Host                = $rpc_port
 EOF
             fi
 

@@ -56,7 +56,7 @@
 #ronin_ui_backend_dir=""
 
 # These values are for the desktop GUI app
-#GUI_API=""
+#gui_api=""
 
 ##############################
 # Samourai Dojo Credentials  #
@@ -73,11 +73,11 @@
 
 # User account used for rpc access to bitcoind
 # Type: alphanumeric
-#RPC_USER=""
+#BITCOIND_RPC_USER=""
 
 # Password of user account used for rpc access to bitcoind
 # Type: alphanumeric
-#RPC_PASS=""
+#BITCOIND_RPC_PASSWORD=""
 
 # Max number of connections to network peers
 # Type: integer

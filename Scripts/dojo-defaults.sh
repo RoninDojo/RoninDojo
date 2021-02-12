@@ -10,10 +10,10 @@ if [ -f "${dojo_path_my_dojo}"/conf/docker-node.conf ]; then
 fi
 
 if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then
-    RPC_PASS_CONF=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_USER_CONF=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_IP=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    RPC_PORT=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    rpc_pass_conf=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    rpc_user_conf=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    rpc_ip=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
+    rpc_port=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
 fi
 
 if [ -f "${dojo_path_my_dojo}"/conf/docker-explorer.conf ]; then
@@ -22,7 +22,7 @@ fi
 
 # Whirlpool
 if sudo test -f "${docker_volume_wp}"/_data/.whirlpool-cli/whirlpool-cli-config.properties; then
-    WHIRLPOOL_API_KEY=$(sudo grep cli.apiKey "${docker_volume_wp}"/_data/.whirlpool-cli/whirlpool-cli-config.properties | cut -d '=' -f2)
+    whirlpool_api_key=$(sudo grep cli.apiKey "${docker_volume_wp}"/_data/.whirlpool-cli/whirlpool-cli-config.properties | cut -d '=' -f2)
 fi
 
 #
@@ -31,48 +31,48 @@ fi
 
 # Bitcoind
 if sudo test -d "${docker_volume_tor}"/_data/hsv3bitcoind; then
-    V3_ADDR_BITCOIN=$(sudo cat "${docker_volume_tor}"/_data/hsv3bitcoind/hostname)
+    v3_addr_bitcoind=$(sudo cat "${docker_volume_tor}"/_data/hsv3bitcoind/hostname)
 fi
 
 if sudo test -d "${docker_volume_tor}"/_data/hsv2bitcoind; then
-    V2_ADDR_BITCOIN=$(sudo cat "${docker_volume_tor}"/_data/hsv2bitcoind/hostname)
+    v2_addr_bitcoind=$(sudo cat "${docker_volume_tor}"/_data/hsv2bitcoind/hostname)
 fi
 
 # Bitcoin Explorer
 if sudo test -d "${docker_volume_tor}"/_data/hsv3explorer; then
-    V3_ADDR_EXPLORER=$(sudo cat "${docker_volume_tor}"/_data/hsv3explorer/hostname)
+    v3_addr_explorer=$(sudo cat "${docker_volume_tor}"/_data/hsv3explorer/hostname)
 fi
 
 if sudo test -d "${docker_volume_tor}"/_data/hsv2explorer; then
-    V2_ADDR_EXPLORER=$(sudo cat "${docker_volume_tor}"/_data/hsv2explorer/hostname)
+    v2_addr_explorer=$(sudo cat "${docker_volume_tor}"/_data/hsv2explorer/hostname)
 fi
 
 # Dojo Maintanance Tool
 if sudo test -d "${docker_volume_tor}"/_data/hsv3dojo; then
-    V3_ADDR_API=$(sudo cat "${docker_volume_tor}"/_data/hsv3dojo/hostname)
+    v3_addr_dojo_api=$(sudo cat "${docker_volume_tor}"/_data/hsv3dojo/hostname)
 fi
 
 if sudo test -d "${docker_volume_tor}"/_data/hsv2dojo; then
-    V2_ADDR_API=$(sudo cat "${docker_volume_tor}"/_data/hsv2dojo/hostname)
+    v2_addr_dojo_api=$(sudo cat "${docker_volume_tor}"/_data/hsv2dojo/hostname)
 fi
 
 # Electrum Server
 if sudo test -d "${docker_volume_tor}"/_data/hsv3electrs; then
-    V3_ADDR_ELECTRS=$(sudo cat "${docker_volume_tor}"/_data/hsv3electrs/hostname)
+    v3_addr_electrs=$(sudo cat "${docker_volume_tor}"/_data/hsv3electrs/hostname)
 fi
 
 # Whirlpool
 if sudo test -d "${docker_volume_tor}"/_data/hsv3whirlpool; then
-    V3_ADDR_WHIRLPOOL=$(sudo cat "${docker_volume_tor}"/_data/hsv3whirlpool/hostname)
+    v3_addr_whirlpool=$(sudo cat "${docker_volume_tor}"/_data/hsv3whirlpool/hostname)
 fi
 
 if sudo test -d "${docker_volume_tor}"/_data/hsv2whirlpool; then
-    V2_ADDR_WHIRLPOOL=$(sudo cat "${docker_volume_tor}"/_data/hsv2whirlpool/hostname)
+    v2_addr_whirlpool=$(sudo cat "${docker_volume_tor}"/_data/hsv2whirlpool/hostname)
 fi
 
 # Mempool Space Visualizer
 if sudo test -d "${docker_volume_tor}"/_data/hsv3mempool; then
-    V3_ADDR_MEMPOOL=$(sudo cat "${docker_volume_tor}"/_data/hsv3mempool/hostname)
+    v3_addr_mempool=$(sudo cat "${docker_volume_tor}"/_data/hsv3mempool/hostname)
 fi
 
 # Specter
@@ -80,6 +80,6 @@ shopt -s nullglob
 
 for dir in "${HOME}"/specter*; do
     if [[ -d "${dir}" ]]; then
-        V3_ADDR_SPECTER=$(sudo cat "${install_dir_tor}"/specter_server/hostname)
+        v3_addr_specter=$(sudo cat "${install_dir_tor}"/specter_server/hostname)
     fi
 done
