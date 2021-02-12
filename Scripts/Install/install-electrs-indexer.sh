@@ -7,17 +7,14 @@
 _load_user_conf
 
 if [ ! -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then # new install
-    rpc_user=$(sudo grep BITCOIND_RPC_USER= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
-    rpc_pass=$(sudo grep BITCOIND_RPC_PASSWORD= "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl | cut -d '=' -f2)
+    . "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl
 else # existing install so load
     . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
-
-    rpc_user="${rpc_user_conf}"; rpc_pass="${rpc_pass_conf}"
 fi
 # Retrieve bitcoind RPC credentials
 
 cat <<EOF > "${dojo_path_my_dojo}"/indexer/electrs.toml
-cookie = "$rpc_user:$rpc_pass"
+cookie = "$BITCOIND_RPC_USER:$BITCOIND_RPC_PASSWORD"
 server_banner = "Welcome to your RoninDojo ${ronindojo_version} Electrs Server!"
 EOF
 

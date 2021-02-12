@@ -169,10 +169,10 @@ Bitcoin Daemon:
 
 Tor V2 URL              = http://$v2_addr_bitcoind
 Tor V3 URL              = http://$v3_addr_bitcoind
-RPC User                = $rpc_user_conf
-RPC Password            = $rpc_pass_conf
-RPC IP                  = $rpc_ip
-RPC Host                = $rpc_port
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
 
 Bitcoin RPC Explorer (No username required):
 Tor V2 URL              = http://$v2_addr_explorer
@@ -215,10 +215,10 @@ Specter Server Credentials
 ${nc}
 
 Tor URL                 = http://$v3_addr_specter
-RPC User                = $rpc_user_conf
-RPC Password            = $rpc_pass_conf
-RPC IP                  = $rpc_ip
-RPC Host                = $rpc_port
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
 EOF
             fi
 
@@ -290,10 +290,10 @@ Bitcoin Daemon:
 
 Tor V2 URL              = http://$v2_addr_bitcoind
 Tor V3 URL              = http://$v3_addr_bitcoind
-RPC User                = $rpc_user_conf
-RPC Password            = $rpc_pass_conf
-RPC IP                  = $rpc_ip
-RPC Host                = $rpc_port
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
 
 Bitcoin RPC Explorer (No username required):
 Tor V2 URL              = http://$v2_addr_explorer
@@ -331,10 +331,10 @@ Specter Server Credentials
 ***
 ${nc}
 Tor URL                 = http://$v3_addr_specter
-RPC User                = $rpc_user_conf
-RPC Password            = $rpc_pass_conf
-RPC IP                  = $rpc_ip
-RPC Host                = $rpc_port
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
 EOF
             fi
 

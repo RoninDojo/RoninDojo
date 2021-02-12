@@ -2,23 +2,13 @@
 # shellcheck disable=SC2034
 
 #
-# Dojo Existing Configuration Values
+# Dojo Configuration Values
 #
-if [ -f "${dojo_path_my_dojo}"/conf/docker-node.conf ]; then
-    NODE_API_KEY=$(grep NODE_API_KEY "${dojo_path_my_dojo}"/conf/docker-node.conf | cut -d '=' -f2)
-    NODE_ADMIN_KEY=$(grep NODE_ADMIN_KEY "${dojo_path_my_dojo}"/conf/docker-node.conf | cut -d '=' -f2)
-fi
+test -f "${dojo_path_my_dojo}"/conf/docker-node.conf && . "${dojo_path_my_dojo}"/conf/docker-node.conf
 
-if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then
-    rpc_pass_conf=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    rpc_user_conf=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    rpc_ip=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-    rpc_port=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf | cut -d '=' -f2)
-fi
+test -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf && . "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
 
-if [ -f "${dojo_path_my_dojo}"/conf/docker-explorer.conf ]; then
-    EXPLORER_KEY=$(grep EXPLORER_KEY "${dojo_path_my_dojo}"/conf/docker-explorer.conf | cut -d '=' -f2)
-fi
+test -f "${dojo_path_my_dojo}"/conf/docker-explorer.conf && . "${dojo_path_my_dojo}"/conf/docker-explorer.conf
 
 # Whirlpool
 if sudo test -f "${docker_volume_wp}"/_data/.whirlpool-cli/whirlpool-cli-config.properties; then

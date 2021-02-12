@@ -830,7 +830,7 @@ Installing Mempool Space Visualizer...
 ${nc}
 EOF
 
-    local mempool_conf bitcoind_conf rpc_user rpc_pass rpc_ip rpc_port MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
+    local mempool_conf bitcoind_conf MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
 
     bitcoind_conf="conf"
     test -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf || bitcoind_conf="conf.tpl"
@@ -846,11 +846,8 @@ EOF
         . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
     fi
 
-    # Pull values for bitcoind
-    rpc_user=$(grep BITCOIND_RPC_USER "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
-    rpc_pass=$(grep BITCOIND_RPC_PASSWORD "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
-    rpc_ip=$(grep BITCOIND_IP "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
-    rpc_port=$(grep BITCOIND_RPC_PORT "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}" | cut -d '=' -f2)
+    # source values for docker-bitcoind."${bitcoind_conf}"
+    . "${dojo_path_my_dojo}"/conf/docker-bitcoind."${bitcoind_conf}"
 
     _load_user_conf
 
@@ -862,8 +859,8 @@ EOF
     # Set environment values for Dockerfile
     sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \
     -e "s/DB_USER .*$/DB_USER ${MEMPOOL_MYSQL_USER}/" -e "s/DB_PASSWORD .*$/DB_PASSWORD ${MEMPOOL_MYSQL_PASSWORD}/" \
-    -e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${rpc_ip}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${rpc_port}/" \
-    -e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${rpc_user}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${rpc_pass}/" \
+    -e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${BITCOIND_IP}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${BITCOIND_RPC_PORT}/" \
+    -e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${BITCOIND_RPC_USER}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${BITCOIND_RPC_PASSWORD}/" \
     "${dojo_path_my_dojo}"/mempool/Dockerfile
 }
 
