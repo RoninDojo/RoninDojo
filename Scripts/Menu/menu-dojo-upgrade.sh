@@ -21,7 +21,7 @@ _dojo_update
 cd "${HOME}" || exit
 # return to previous working path
 
-if ! _is_mempool; then
+if _is_mempool; then
     _mempool_conf
 
     # Checks if urls need to be changed for mempool UI
