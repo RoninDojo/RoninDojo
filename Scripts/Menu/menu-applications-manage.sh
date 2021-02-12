@@ -67,35 +67,18 @@ ${nc}
 EOF
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
-                upgrade=true
             else
-                cat <<EOF
-${red}
-***
-Uninstalling Mempool Space Visualizer...
-***
-${nc}
-EOF
-                sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "$dojo_path_my_dojo"/conf/docker-mempool.conf
-                # Turns mempool install set to off
-                upgrade=true
-
-                cat <<EOF
-${red}
-***
-Mempool Space Visualizer Uninstalled...
-***
-${nc}
-EOF
+                _mempool_uninstall || exit
             fi
             # Checks for mempool, then installs
+
+            upgrade=true
             ;;
         2)
             if ! "${is_specter_installed}" ; then # Fresh install
-                _specter_install && upgrade=true
+                _specter_install
             else
                 _specter_uninstall
-                upgrade=true
 
                 cat <<EOF
 ${red}
@@ -105,6 +88,8 @@ Specter Server Uninstalled...
 ${nc}
 EOF
             fi
+
+            upgrade=true
             ;;
         3)
             if ! "${is_bisq_installed}" ; then
