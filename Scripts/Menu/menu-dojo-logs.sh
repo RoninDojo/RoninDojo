@@ -112,7 +112,7 @@ EOF
                     _pause return
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
                     exit 1
-                else
+                elif grep "INDEXER_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null; then
                     cat <<EOF
 ${red}
 ***
@@ -134,23 +134,23 @@ EOF
 
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
                     exit
-                fi
-
-              cat <<EOF
+                else
+                    cat <<EOF
 ${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-              _sleep 2
+                    _sleep 2
 
-              cd "${dojo_path_my_dojo}" || exit
+                    cd "${dojo_path_my_dojo}" || exit
 
-              ./dojo.sh logs indexer
+                    ./dojo.sh logs indexer
 
-              bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
-              # shows logs for nginx
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+                    # shows logs for nginx
+                fi
             fi
             ;;
         4)
