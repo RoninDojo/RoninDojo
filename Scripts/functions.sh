@@ -593,8 +593,15 @@ EOF
 which_sbc() {
     case $1 in
         rockpro64)
-            if grep 'rockpro64' /etc/manjaro-arm-version &>/dev/null && [ -f /sys/class/hwmon/hwmon3/pwm1 ]; then
-                return 0
+            if grep 'rockpro64' /etc/manjaro-arm-version &>/dev/null; then
+                # Find fan control file
+                cd /sys/class/hwmon || exit
+
+                for dir in *; do
+                    test -f "${dir}/pwm1" && return 0
+                done
+
+                return 1
             else
                 return 1
             fi
