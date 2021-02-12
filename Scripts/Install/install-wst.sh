@@ -5,11 +5,11 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 cat <<EOF
-${RED}
+${red}
 ***
 Checking package dependencies...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 

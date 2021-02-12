@@ -9,19 +9,19 @@ _load_user_conf
 
 if ! findmnt "${install_dir}" 1>/dev/null; then
     cat <<EOF
-${RED}
+${red}
 ***
 Missing drive mount at ${install_dir}! Please contact support for assistance...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     cat <<EOF
-${RED}
+${red}
 ***
 Exiting RoninDojo...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     _pause return
@@ -30,11 +30,11 @@ fi
 
 if [ -d "${dojo_path_my_dojo}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 RoninDojo is already installed...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     _pause return
@@ -44,29 +44,29 @@ fi
 # Makes sure RoninDojo has been uninstalled
 
 cat <<EOF
-${RED}
+${red}
 ***
 Running RoninDojo install...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Use Ctrl+C to exit now if needed!
 ***
-${NC}
+${nc}
 EOF
 _sleep 10 --msg "Installing in"
 
 cat <<EOF
-${RED}
+${red}
 ***
 Downloading latest RoninDojo release...
 ***
-${NC}
+${nc}
 EOF
 
 cd "$HOME" || exit
@@ -74,11 +74,11 @@ git clone -b "${samourai_commitish##*/}" "$samourai_repo" dojo 2>/dev/null
 
 if _ronin_ui_update_check; then
     cat <<EOF
-${RED}
+${red}
 ***
 Installing Ronin UI Backend...
 ***
-${NC}
+${nc}
 EOF
     _install_ronin_ui_backend
 fi
@@ -87,86 +87,86 @@ fi
 
 
 cat <<EOF
-${RED}
+${red}
 ***
 Credentials necessary for usernames, passwords, etc. will randomly be generated now...
 ***
-${NC}
+${nc}
 EOF
 _sleep 4
 
 cat <<EOF
-${RED}
+${red}
 ***
 Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or the ~/RoninDojo/user.conf.example file...
 ***
-${NC}
+${nc}
 EOF
 _sleep 4
 
 cat <<EOF
-${RED}
+${red}
 ***
 Be aware these credentials are used to login to Dojo Maintenance Tool, Block Explorer, and more!
 ***
-${NC}
+${nc}
 EOF
 _sleep 4
 
 cat <<EOF
-${RED}
+${red}
 ***
 Setting the RPC User and Password...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
 if [ -d "${dojo_backup_dir}" ]; then
     if ! _dojo_restore; then
         cat <<EOF
-${RED}
+${red}
 ***
 Backup restoration disabled!
 ***
-${NC}
+${nc}
 EOF
         _sleep
 
         cat <<EOF
-${RED}
+${red}
 ***
 Enable in user.conf if you wish to restore credentials on dojo install when available...
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
     else
         cat <<EOF
-${RED}
+${red}
 ***
 Credentials backup detected and restored...
 ***
-${NC}
+${nc}
 EOF
         _sleep
 
         cat <<EOF
-${RED}
+${red}
 ***
 If you wish to disable this feature, set dojo_conf_backup=false in the $HOME/.config/RoninDojo/user.conf file...
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
     fi
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Configuring the bitcoin daemon server...
 ***
-${NC}
+${nc}
 EOF
     _sleep
     sed -i -e "s/BITCOIND_RPC_USER=.*$/BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$rpc_user}/" \
@@ -177,11 +177,11 @@ EOF
       # populate docker-bitcoind.conf.tpl template
 
     cat <<EOF
-${RED}
+${red}
 ***
 Configuring the Nodejs container...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -197,11 +197,11 @@ EOF
     # populate docker-mysql.conf.tpl template
 
     cat <<EOF
-${RED}
+${red}
 ***
 Configuring the BTC RPC Explorer...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -218,29 +218,29 @@ if (($?==2)); then # No indexer, fresh install so show prompts for indexer selec
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Please see Wiki for FAQ, help, and so much more...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 https://wiki.ronindojo.io
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 Installing Samourai Wallet's Dojo...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
@@ -248,11 +248,11 @@ cd "$dojo_path_my_dojo" || exit
 
 if ./dojo.sh install --nolog; then
     cat <<EOF
-${RED}
+${red}
 ***
 All RoninDojo feature installations complete...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -276,11 +276,11 @@ EOF
     # restore tor credentials backup to container
 else
         cat <<EOF
-${RED}
+${red}
 ***
 Install failed! Please contact support...
 ***
-${NC}
+${nc}
 EOF
 
         _pause return

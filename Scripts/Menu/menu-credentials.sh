@@ -28,17 +28,17 @@ clear
 case $CHOICE in
         1)
             cat <<EOF
-${RED}
+${red}
 ***
 Samourai Dojo Credentials
 ***
-${NC}
+${nc}
 
-${RED}
+${red}
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
 Maintenance Tool:
 Tor V2 URL              = http://$v2_addr_dojo_api/admin
@@ -53,17 +53,17 @@ EOF
                 ;;
         2)
             cat <<EOF
-${RED}
+${red}
 ***
 Samourai Whirlpool Credentials
 ***
-${NC}
+${nc}
 
-${RED}
+${red}
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
 Tor V2 URL              = http://$v2_addr_whirlpool
 Tor V3 URL              = http://$v3_addr_whirlpool
@@ -77,22 +77,22 @@ EOF
         3)
             if _is_electrs; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Electrs Credentials
 ***
-${NC}
+${nc}
 
 Electrs Tor URL         = $v3_addr_electrs
 EOF
                 # displaying electrs tor address to connect to electrum
 
                 cat <<EOF
-${RED}
+${red}
 ***
 Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 ***
-${NC}
+${nc}
 EOF
             fi
 
@@ -102,19 +102,19 @@ EOF
         4)
             if ! _mempool_check ; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
                 cat <<EOF
-${RED}
+${red}
 ***
 Install using the manage applications menu...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
 
@@ -122,13 +122,13 @@ EOF
                 bash -c "${ronin_credentials_menu}"
             else
                 cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer Credentials
 ***
 
 ***
-${NC}
+${nc}
 Mempool Tor URL         =  http://${v3_addr_mempool}
 EOF
 
@@ -142,11 +142,11 @@ EOF
             _ui_backend_credentials && cd "$HOME" || exit
 
             cat <<EOF
-${RED}
+${red}
 ***
 Ronin UI Backend Credentials
 ***
-${NC}
+${nc}
 
 Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
@@ -159,11 +159,11 @@ EOF
             ;;
         6)
             cat <<EOF
-${RED}
+${red}
 ***
 Bitcoin Credentials
 ***
-${NC}
+${nc}
 
 Bitcoin Daemon:
 
@@ -187,19 +187,19 @@ EOF
         7)
             if ! _is_specter ; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Specter Server is not installed...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
                 cat <<EOF
-${RED}
+${red}
 ***
 Install using the manage applications menu...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
 
@@ -208,11 +208,11 @@ EOF
                 bash -c "${ronin_credentials_menu}"
             else
                 cat <<EOF
-${RED}
+${red}
 ***
 Specter Server Credentials
 ***
-${NC}
+${nc}
 
 Tor URL                 = http://$v3_addr_specter
 RPC User                = $rpc_user_conf
@@ -230,16 +230,16 @@ EOF
         8)
             _ui_backend_credentials && cd "$HOME" || exit
             cat <<EOF
-${RED}
+${red}
 ***
 Displaying list of all available credentials in your RoninDojo...
 ***
-${NC}
+${nc}
 EOF
             _sleep 5 --msg "Displaying in "
 
             cat <<EOF
-${RED}
+${red}
 ***
 Samourai Dojo Credentials
 ***
@@ -247,7 +247,7 @@ Samourai Dojo Credentials
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
 Maintenance Tool:
 Tor V2 URL              = http://$v2_addr_dojo_api/admin
@@ -255,7 +255,7 @@ Tor V3 URL              = http://$v3_addr_dojo_api/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 
-${RED}
+${red}
 ***
 Samourai Whirlpool Credentials
 ***
@@ -263,28 +263,28 @@ Samourai Whirlpool Credentials
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
 Tor V2 URL              = http://$v2_addr_whirlpool
 Tor V3 URL              = http://$v3_addr_whirlpool
 Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
-${RED}
+${red}
 ***
 Ronin UI Backend Credentials
 ***
-${NC}
+${nc}
 
 Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
 Port                    =   ${BACKEND_PORT}
 Ronin URL               =   http://${BACKEND_TOR}
 
-${RED}
+${red}
 ***
 Bitcoin Credentials
 ***
-${NC}
+${nc}
 
 Bitcoin Daemon:
 
@@ -302,11 +302,11 @@ Password                = $EXPLORER_KEY
 EOF
             if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Electrs Credentials
 ***
-${NC}
+${nc}
 
 Electrs Tor URL         = $v3_addr_electrs
 EOF
@@ -314,22 +314,22 @@ EOF
 
             if _mempool_check ; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer Credentials
 ***
-${NC}
+${nc}
 Mempool Tor URL         = http://${v3_addr_mempool}
 EOF
             fi
 
             if _is_specter ; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Specter Server Credentials
 ***
-${NC}
+${nc}
 Tor URL                 = http://$v3_addr_specter
 RPC User                = $rpc_user_conf
 RPC Password            = $rpc_pass_conf

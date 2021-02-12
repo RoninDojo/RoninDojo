@@ -26,11 +26,11 @@ case $CHOICE in
             # is dojo installed?
 
             cat <<EOF
-${RED}
+${red}
 ***
 Deleting docker dangling images and images of previous versions...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cd "$dojo_path_my_dojo" || exit
@@ -47,11 +47,11 @@ EOF
             # is dojo installed?
 
             cat <<EOF
-${RED}
+${red}
 ***
 Displaying the version info...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cd "$dojo_path_my_dojo" || exit

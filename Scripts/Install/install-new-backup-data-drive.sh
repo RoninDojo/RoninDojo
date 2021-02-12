@@ -8,21 +8,21 @@ _load_user_conf
 
 if [ -b "${secondary_storage}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Your new backup drive has been detected...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     # checks for ${secondary_storage}
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No backup drive detected! Please make sure it is plugged in and has power if needed.
 ***
-${NC}
+${nc}
 EOF
     _sleep 5
 
@@ -32,33 +32,33 @@ EOF
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Preparing to Format and Mount ${secondary_storage} to ${storage_mount}...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 WARNING: Any pre-existing data on this backup drive will be lost!
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Are you sure?
 ***
-${NC}
+${nc}
 EOF
 
 while true; do
-    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+    read -rp "[${green}Yes${nc}/${red}No${nc}]: " answer
     case $answer in
         [yY][eE][sS]|[yY]) break;;
         [nN][oO]|[Nn])
@@ -67,11 +67,11 @@ while true; do
           ;;
         * )
           cat <<EOF
-${RED}
+${red}
 ***
 Invalid answer! Enter Y or N
 ***
-${NC}
+${nc}
 EOF
           ;;
     esac
@@ -79,11 +79,11 @@ done
 # ask user to proceed
 
 cat <<EOF
-${RED}
+${red}
 ***
 Formatting the Backup Data Drive...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
@@ -91,18 +91,18 @@ _sleep 2
 _check_pkg "sgdisk" "gptfdisk" --update-mirrors
 
 if ! create_fs --label "backup" --device "${secondary_storage}" --mountpoint "${storage_mount}"; then
-    printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
+    printf "\n %sFilesystem creation failed! Exiting now...%s" "${red}" "${nc}"
     _sleep 3
     exit 1
 fi
 # format partition, see create_fs in functions.sh
 
 cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
 
 lsblk -o NAME,SIZE,LABEL "${secondary_storage}"
@@ -110,11 +110,11 @@ _sleep 2
 # double-check that "${secondary_storage}" exists, and that its storage capacity is what you expected
 
 cat <<EOF
-${RED}
+${red}
 ***
 Check output for ${secondary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
 df -h "${secondary_storage}"

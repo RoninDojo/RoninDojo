@@ -26,11 +26,11 @@ case $CHOICE in
         # Check if process running, otherwise start it
         if pm2 describe "Ronin Backend" | grep status | grep stopped 1>/dev/null; then
             cat <<EOF
-${RED}
+${red}
 ***
 Starting UI Backend Server...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cd "${ronin_ui_backend_dir}" || exit
@@ -38,11 +38,11 @@ EOF
             pm2 start "Ronin Backend"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 UI Backend already started...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
         fi
@@ -57,11 +57,11 @@ EOF
         # Check if process running before stopping it
         if pm2 describe "Ronin Backend" &>/dev/null; then
             cat <<EOF
-${RED}
+${red}
 ***
 Stopping UI Backend Server...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cd "${ronin_ui_backend_dir}" || exit
@@ -69,11 +69,11 @@ EOF
             pm2 stop "Ronin Backend"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 UI Backend Server already stopped...
 ***
-${NC}
+${nc}
 EOF
         fi
 
@@ -85,11 +85,11 @@ EOF
         ;;
     3)
         cat <<EOF
-${RED}
+${red}
 ***
 Restarting UI Backend Server...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         cd "${ronin_ui_backend_dir}" || exit
@@ -105,11 +105,11 @@ EOF
         ;;
 #     4)
 #         cat <<EOF
-# ${RED}
+# ${red}
 # ***
 # Showing UI Backend Status...
 # ***
-# ${NC}
+# ${nc}
 # EOF
 #         cd "${ronin_ui_backend_dir}" || exit
 #         pm2 status
@@ -119,11 +119,11 @@ EOF
 #         ;;
     4)
         cat <<EOF
-${RED}
+${red}
 ***
 Showing UI Backend Status...
 ***
-${NC}
+${nc}
 EOF
 
         cd "${ronin_ui_backend_dir}" || exit
@@ -134,19 +134,19 @@ EOF
         ;;
     5)
         cat <<EOF
-${RED}
+${red}
 ***
 Showing UI Backend Logs...
 ***
-${NC}
+${nc}
 EOF
 
         cat <<EOF
-${RED}
+${red}
 ***
 Press "q" key to exit at any time...
 ***
-${NC}
+${nc}
 EOF
         cd "${ronin_ui_backend_dir}" || exit
         _sleep 5 # Workaround until a proper FIX

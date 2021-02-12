@@ -2,11 +2,6 @@
 # shellcheck disable=SC2221,SC2222,1004,SC2154 source=/dev/null
 
 . "${HOME}"/RoninDojo/Scripts/defaults.sh
-
-RED=$(tput setaf 1)
-NC=$(tput sgr0)
-# No Color
-
 #
 # Main function runs at beginning of script execution
 #
@@ -54,11 +49,11 @@ EOF
     # Adding user to docker group if needed
     if ! getent group docker| grep -q "${ronindojo_user}"; then
         cat <<EOF
-${RED}
+${red}
 ***
 Adding user to the docker group and loading RoninDojo CLI...
 ***
-${NC}
+${nc}
 EOF
         # Create the docker group if not available
         if ! getent group docker 1>/dev/null; then
@@ -74,11 +69,11 @@ EOF
         if [ "$(systemctl is-enabled mnt-usb.mount 2>/dev/null)" = "enabled" ] || [ "$(systemctl is-enabled mnt-usb1.mount 2>/dev/null)" = "enabled" ]; then
             if ! _remove_fstab; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Removing legacy fstab entries and replacing with systemd mount service...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 4 --msg "Starting RoninDojo in"
             fi
@@ -88,11 +83,11 @@ EOF
     # Remove any legacy ipv6.disable entries from kernel line
     if ! _remove_ipv6; then
         cat <<EOF
-${RED}
+${red}
 ***
 Removing ipv6 disable setting in kernel line favor of sysctl...
 ***
-${NC}
+${nc}
 EOF
     fi
 
@@ -201,11 +196,11 @@ _check_pkg() {
 
     if ! hash "${pkg_bin}" 2>/dev/null; then
         cat <<EOF
-${RED}
+${red}
 ***
 Installing ${pkg_name}...
 ***
-${NC}
+${nc}
 EOF
         sudo pacman --quiet -S --noconfirm "${pkg_name}" &>/dev/null
 
@@ -256,7 +251,7 @@ _sleep() {
 
     while [ "$secs" -gt 0 ]; do
         if $verbose; then
-            printf "%s%s %s\033[0K seconds...%s\r" "${RED}" "${msg}" "${secs}" "${NC}"
+            printf "%s%s %s\033[0K seconds...%s\r" "${red}" "${msg}" "${secs}" "${nc}"
         fi
         sleep 1
         : $((secs--))
@@ -269,11 +264,11 @@ _sleep() {
 #
 _pause() {
     cat <<EOF
-${RED}
+${red}
 ***
 Press any key to ${1}...
 ***
-${NC}
+${nc}
 EOF
     read -n 1 -r -s
 }
@@ -329,20 +324,20 @@ _tor_restore() {
     if sudo test -d "${tor_backup_dir}"; then
         sudo rsync -ac --quiet --delete-before "${tor_backup_dir}"/ "${install_dir}/${tor_data_dir}"/_data
         cat <<EOF
-${RED}
+${red}
 ***
 Tor credentials backup detected and restored...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
         cat <<EOF
-${RED}
+${red}
 ***
 If you wish to disable this feature, set tor_backup=false in $HOME/.conf/RoninDojo/user.conf file...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
         return 0
@@ -358,11 +353,11 @@ _setup_tor() {
     # If the setting is already active, assume user has configured it already
     if ! grep -E "^\s*DataDirectory\s+.+$" /etc/tor/torrc 1>/dev/null; then
         cat <<TOR_CONFIG
-${RED}
+${red}
 ***
 Initial Tor Configuration...
 ***
-${NC}
+${nc}
 TOR_CONFIG
 
         # Default config file has example value #DataDirectory /var/lib/tor,
@@ -377,11 +372,11 @@ TOR_CONFIG
     # Setup directory
     if [ ! -d "${install_dir_tor}" ]; then
         cat <<TOR_DIR
-${RED}
+${red}
 ***
 Creating Tor directory...
 ***
-${NC}
+${nc}
 TOR_DIR
         sudo mkdir "${install_dir_tor}"
     fi
@@ -399,11 +394,11 @@ TOR_DIR
     fi
 
     cat <<TOR_CONFIG
-${RED}
+${red}
 ***
 Setting up the Tor service...
 ***
-${NC}
+${nc}
 TOR_CONFIG
 
     # Enable service on startup
@@ -420,19 +415,19 @@ TOR_CONFIG
 _is_electrs() {
     if [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
         cat <<EOF
-${RED}
+${red}
 ***
 Electrum Rust Server is not installed...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         cat <<EOF
-${RED}
+${red}
 ***
 Enable Electrum Rust Server using the manage applications menu...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
 
@@ -449,11 +444,11 @@ EOF
 _setup_backend_tor() {
     if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
         cat <<BACKEND_TOR_CONFIG
-${RED}
+${red}
 ***
 Configuring RoninDojo Backend Tor Address...
 ***
-${NC}
+${nc}
 BACKEND_TOR_CONFIG
         sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir ${install_dir_tor}/hidden_service_ronin_backend/\n\
@@ -538,11 +533,11 @@ _install_ronin_ui_backend() {
     #curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
 
     cat <<EOF
-${RED}
+${red}
 ***
 Checking package dependencies for Ronin UI Backend...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -665,56 +660,56 @@ _indexer_prompt() {
     . "$HOME"/RoninDojo/Scripts/defaults.sh
 
     cat <<EOF
-${RED}
+${red}
 ***
 No Indexer found...
 ***
-${NC}
+${nc}
 EOF
     _sleep 1
 
     cat <<EOF
-${RED}
+${red}
 ***
 Preparing for Indexer Prompt...
 ***
-${NC}
+${nc}
 EOF
     _sleep 1
 
     cat <<EOF
-${RED}
+${red}
 ***
 Samourai Indexer is recommended for most users as it helps with querying balances...
 ***
-${NC}
+${nc}
 EOF
     _sleep 3
 
     cat <<EOF
-${RED}
+${red}
 ***
 Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
 ***
-${NC}
+${nc}
 EOF
     _sleep 3
 
     cat <<EOF
-${RED}
+${red}
 ***
 Skipping the installation of either Indexer option is ok! You can always enable later...
 ***
-${NC}
+${nc}
 EOF
     _sleep 3
 
     cat <<EOF
-${RED}
+${red}
 ***
 Choose one of the following options for your Indexer...
 ***
-${NC}
+${nc}
 EOF
     _sleep 1
 
@@ -724,11 +719,11 @@ EOF
             case $indexer in
                 "Samourai Indexer"*)
                     cat <<EOF
-${RED}
+${red}
 ***
 Selected Samourai Indexer...
 ***
-${NC}
+${nc}
 EOF
                     _sleep
 
@@ -740,11 +735,11 @@ EOF
                     # Samourai indexer install enabled in .conf.tpl files using sed
                 "Electrum"*)
                     cat <<EOF
-${RED}
+${red}
 ***
 Selected Electrum Rust Server...
 ***
-${NC}
+${nc}
 EOF
                     _sleep
 
@@ -756,11 +751,11 @@ EOF
                     # triggers electrs install script
                 "No Indexer"*)
                     cat <<EOF
-${RED}
+${red}
 ***
 An Indexer will not be installed...
 ***
-${NC}
+${nc}
 EOF
                     _sleep
                     return 0
@@ -768,11 +763,11 @@ EOF
                     # indexer will not be installed
                 *)
                     cat <<EOF
-${RED}
+${red}
 ***
 Invalid Entry! Valid values are 1, 2 & 3...
 ***
-${NC}
+${nc}
 EOF
                     _sleep
                     break
@@ -792,10 +787,10 @@ _is_dojo() {
 
     if [ ! -d "${dojo_path}" ]; then
         cat <<EOF
-${RED}
+${red}
 ***
 Missing ${dojo_path} directory!
-${NC}
+${nc}
 EOF
         _pause return
         bash -c "$menu"
@@ -828,11 +823,11 @@ _is_mempool() {
 #
 _mempool_conf() {
     cat <<EOF
-${RED}
+${red}
 ***
 Installing Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
 
     local mempool_conf bitcoind_conf rpc_user rpc_pass rpc_ip rpc_port MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
@@ -905,11 +900,11 @@ _dojo_update() {
 #
 _dojo_upgrade() {
     cat <<EOF
-${RED}
+${red}
 ***
 Performing Dojo upgrade to finalize changes...
 ***
-${NC}
+${nc}
 EOF
 
     _stop_dojo
@@ -956,20 +951,20 @@ _dojo_check() {
     # Check that ${install_dir} is mounted
     if ! findmnt "${install_dir}" 1>/dev/null; then
         cat <<EOF
-${RED}
+${red}
 ***
 Missing drive mount at ${install_dir}!
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
 
         cat <<EOF
-${RED}
+${red}
 ***
 Please contact support for assistance...
 ***
-${NC}
+${nc}
 EOF
         _sleep 5 --msg "Returning to main menu in"
         ronin
@@ -993,20 +988,20 @@ _mempool_check() {
     # Check that ${install_dir} is mounted
     if ! findmnt "${install_dir}" 1>/dev/null; then
         cat <<EOF
-${RED}
+${red}
 ***
 Missing drive mount at ${install_dir}!
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
 
         cat <<EOF
-${RED}
+${red}
 ***
 Please contact support for assistance...
 ***
-${NC}
+${nc}
 EOF
         _sleep 5 --msg "Returning to main menu in"
         ronin
@@ -1078,11 +1073,11 @@ _stop_dojo() {
 
     if [ ! -d "${dojo_path}" ]; then
         cat <<EOF
-${RED}
+${red}
 ***
 Missing ${dojo_path} directory!
 ***
-${NC}
+${nc}
 EOF
         _pause return
         bash -c "$ronin_dojo_menu"
@@ -1096,21 +1091,21 @@ EOF
         cd "${dojo_path_my_dojo}" || exit
     else
         cat <<EOF
-${RED}
+${red}
 ***
 Dojo is already stopped!
 ***
-${NC}
+${nc}
 EOF
         return 1
     fi
 
     cat <<EOF
-${RED}
+${red}
 ***
 Preparing shutdown of Dojo...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -1131,11 +1126,11 @@ _sleep
 --rpcuser="$BITCOIND_RPC_USER" --rpcpassword="$BITCOIND_RPC_PASSWORD" stop &>/dev/null
 
         cat <<EOF
-${RED}
+${red}
 ***
 Waiting for shutdown of Bitcoin Daemon...
 ***
-${NC}
+${nc}
 EOF
         # Check for bitcoind process
         i=0
@@ -1147,22 +1142,22 @@ EOF
                 ((i++))
             else
                 cat <<EOF
-${RED}
+${red}
 ***
 Bitcoin Server Daemon stopped...
 ***
-${NC}
+${nc}
 EOF
                 break
             fi
         done
 
         cat <<EOF
-${RED}
+${red}
 ***
 Stopping all Docker containers...
 ***
-${NC}
+${nc}
 EOF
     fi
 
@@ -1214,11 +1209,11 @@ _update_ronin() {
 
     if [ -d "$HOME"/RoninDojo/.git ]; then
         cat <<EOF
-${RED}
+${red}
 ***
 Git repo found, downloading updates...
 ***
-${NC}
+${nc}
 EOF
         cd "$HOME/RoninDojo" || exit
 
@@ -1233,11 +1228,11 @@ EOF
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
 git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
-${RED}
+${red}
 ***
 Upgrade Complete!
 ***
-${NC}
+${nc}
 sleep 2
 bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 EOF
@@ -1257,11 +1252,11 @@ EOF
 #
 _docker_datadir_setup() {
     cat <<EOF
-${RED}
+${red}
 ***
 Now configuring docker to use the external SSD...
 ***
-${NC}
+${nc}
 EOF
     _sleep 3
     test -d "${install_dir_docker}" || sudo mkdir "${install_dir_docker}"
@@ -1269,19 +1264,19 @@ EOF
 
     if [ -d /etc/docker ]; then
         cat <<EOF
-${RED}
+${red}
 ***
 The /etc/docker directory already exists...
 ***
-${NC}
+${nc}
 EOF
     else
         cat <<EOF
-${RED}
+${red}
 ***
 Creating /etc/docker directory.
 ***
-${NC}
+${nc}
 EOF
         sudo mkdir /etc/docker
         # makes docker directory
@@ -1293,11 +1288,11 @@ EOF
 { \"data-root\": \"${install_dir_docker}\" }
 EOF"
         cat <<EOF
-${RED}
+${red}
 ***
 Starting docker daemon.
 ***
-${NC}
+${nc}
 EOF
     fi
 
@@ -1396,13 +1391,13 @@ create_fs() {
             --fstype|-fs)
                 if [[ ! "${supported_filesystems[*]}" =~ ${2} ]]; then
                     cat <<EOF
-${RED}
+${red}
 ***
 Error: unsupported filesystem type ${2}
 Available options are: ${supported_filesystems[@]}
 Exiting!
 ***
-${NC}
+${nc}
 EOF
                     return 1
                 else
@@ -1432,11 +1427,11 @@ EOF
     # Create mount point directory if not available
     if [ ! -d "${mountpoint}" ]; then
         cat <<EOF
-${RED}
+${red}
 ***
 Creating ${mountpoint} directory...
 ***
-${NC}
+${nc}
 EOF
         sudo mkdir -p "${mountpoint}" || return 1
     elif findmnt "${device}" 1>/dev/null; then # Is device already mounted?
@@ -1465,11 +1460,11 @@ EOF
     sudo sgdisk -Zo -n 1 -t 1:8300 "${_device}" 1>/dev/null
 
     cat <<EOF
-${RED}
+${red}
 ***
 Using ${fstype} filesystem format for ${device} partition...
 ***
-${NC}
+${nc}
 EOF
 
     # Create filesystem
@@ -1495,11 +1490,11 @@ EOF
 
     if ! grep "${uuid}" /etc/systemd/system/"${systemd_mountpoint}".mount &>/dev/null; then
         cat <<EOF
-${RED}
+${red}
 ***
 Adding device ${device} to systemd.mount unit file
 ***
-${NC}
+${nc}
 EOF
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
@@ -1516,11 +1511,11 @@ WantedBy=multi-user.target
 EOF"
         # Mount filesystem
         cat <<EOF
-${RED}
+${red}
 ***
 Mounting ${device} to ${mountpoint}
 ***
-${NC}
+${nc}
 EOF
     fi
 
@@ -1575,11 +1570,11 @@ create_swap() {
 
     if ! check_swap "${file}"; then
         cat <<EOF
-${RED}
+${red}
 ***
 Creating swapfile...
 ***
-${NC}
+${nc}
 EOF
         sudo dd if=/dev/zero of="${file}" bs="${size}" count=1 2>/dev/null
         sudo chmod 600 "${file}"
@@ -1587,22 +1582,22 @@ EOF
         sudo swapon "${file}"
     else
         cat <<EOF
-${RED}
+${red}
 ***
 Swapfile already created...
 ***
-${NC}
+${nc}
 EOF
     fi
 
     # Include fstab value
     if ! grep "${file}" /etc/fstab 1>/dev/null; then
         cat <<EOF
-${RED}
+${red}
 ***
 Creating swapfile entry in /etc/fstab
 ***
-${NC}
+${nc}
 EOF
         sudo bash -c "cat <<EOF >>/etc/fstab
 ${file} swap swap defaults,pri=0 0 0
@@ -1640,11 +1635,11 @@ _specter_hww_udev_rules() {
 
         if ! getent group plugdev | grep -q "${ronindojo_user}" &>/dev/null; then
             cat <<EOF
-${RED}
+${red}
 ***
 Adding ${ronindojo_user} to plugdev group...
 ***
-${NC}
+${nc}
 EOF
             sudo usermod -aG plugdev "${ronindojo_user}" 1>/dev/null
         fi
@@ -1659,11 +1654,11 @@ _specter_cert_check() {
 
     if [ ! -f "$HOME"/.specter/cert.pm ] ; then
         cat <<EOF
-${RED}
+${red}
 ***
 Generating a self-signed certicate for local LAN use
 ***
-${NC}
+${nc}
 EOF
         cd "$HOME"/specter-"$specter_version"/docs || exit
         ./gen-certificate.sh "${ip}" &>/dev/null
@@ -1728,11 +1723,11 @@ _specter_uninstall() {
     _load_user_conf
 
     cat <<EOF
-${RED}
+${red}
 ***
 Uninstalling Specter $specter_version...
 ***
-${NC}
+${nc}
 EOF
 
     if systemctl is-active --quiet specter; then
@@ -1779,11 +1774,11 @@ _specter_install(){
     cd "${HOME}" || exit
 
     cat <<EOF
-${RED}
+${red}
 ***
 Installing Specter $specter_version...
 ***
-${NC}
+${nc}
 EOF
 
     git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
@@ -1797,11 +1792,11 @@ EOF
         _pacman_update_mirrors
 
         cat <<EOF
-${RED}
+${red}
 ***
 Installing libusb...
 ***
-${NC}
+${nc}
 EOF
      sudo pacman --quiet -S --noconfirm libusb
     fi
@@ -1841,11 +1836,11 @@ _specter_upgrade(){
     for dir in specter*; do
         if [[ "${dir}" != specter-$specter_version ]]; then
             cat <<EOF
-${RED}
+${red}
 ***
 Proceeding to upgrade to $specter_version...
 ***
-${NC}
+${nc}
 EOF
 
             _sleep
@@ -1859,11 +1854,11 @@ EOF
             # Remove old specter directory
         else
             cat <<EOF
-${RED}
+${red}
 ***
 On latest version of Specter...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -1928,11 +1923,11 @@ _install_boltzmann(){
     # Pull Boltzmann
 
     cat <<EOF
-${RED}
+${red}
 ***
 Checking package dependencies...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -1955,11 +1950,11 @@ _is_bisq(){
 
 _install_bisq(){
     cat <<EOF
-${RED}
+${red}
 ***
 Enabling Bisq support...
 ***
-${NC}
+${nc}
 EOF
 
     . "${HOME}"/RoninDojo/Scripts/defaults.sh
@@ -1981,11 +1976,11 @@ _dojo_data_indexer() {
             restore)
                 if sudo test -d "${dojo_backup_indexer}/db" && sudo test -d "${docker_volume_indexer}"; then
                     cat <<EOF
-${RED}
+${red}
 ***
 Indexer data restore starting...
 ***
-${NC}
+${nc}
 EOF
 
                     cd "$dojo_path_my_dojo" || exit
@@ -2007,11 +2002,11 @@ EOF
                     # then moves salvaged indexer data
 
                     cat <<EOF
-${RED}
+${red}
 ***
 Indexer data restore completed...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
 
@@ -2054,11 +2049,11 @@ _dojo_data_bitcoind() {
             restore)
                 if sudo test -d "${dojo_backup_bitcoind}/blocks" && sudo test -d "${docker_volume_bitcoind}"; then
                     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data restore starting...
 ***
-${NC}
+${nc}
 EOF
 
                     cd "$dojo_path_my_dojo" || exit
@@ -2083,11 +2078,11 @@ EOF
                     # then moves salvaged block data
 
                     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data restore completed...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
 

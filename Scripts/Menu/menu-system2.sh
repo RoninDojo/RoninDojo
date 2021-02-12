@@ -28,11 +28,11 @@ case $CHOICE in
         ;;
     2)
         cat <<EOF
-${RED}
+${red}
 ***
 Prepare to type new password for ${ronindojo_user}...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         sudo passwd "${ronindojo_user}"
@@ -43,11 +43,11 @@ EOF
         ;;
     3)
         cat <<EOF
-${RED}
+${red}
 ***
 Prepare to type new password for ${ronindojo_user}...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         sudo passwd
@@ -58,11 +58,11 @@ EOF
         ;;
     4)
         cat <<EOF
-${RED}
+${red}
 ***
 Locking Root User...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         sudo passwd -l root
@@ -71,11 +71,11 @@ EOF
         ;;
     5)
         cat <<EOF
-${RED}
+${red}
 ***
 Unlocking Root User...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         sudo passwd -u root
@@ -89,11 +89,11 @@ EOF
             # is dojo installed?
 
         cat <<EOF
-${RED}
+${red}
 ***
 Uninstalling RoninDojo and all features, press Ctrl+C to exit if needed!
 ***
-${NC}
+${nc}
 EOF
         _sleep 10 --msg "Uninstalling in"
 
@@ -108,11 +108,11 @@ EOF
         "${dojo_data_indexer_backup}" && _dojo_data_indexer backup
 
         cat <<EOF
-${RED}
+${red}
 ***
 Uninstalling RoninDojo...
 ***
-${NC}
+${nc}
 EOF
         "${tor_backup}" && _tor_backup
         # tor backup must happen prior to dojo uninstall
@@ -134,11 +134,11 @@ EOF
         cd "${ronin_ui_backend_dir}" || exit
 
         cat <<EOF
-${RED}
+${red}
 ***
 Uninstalling Ronin UI Backend...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
 
@@ -153,11 +153,11 @@ EOF
         rm -rf "${ronin_ui_backend_dir}" || exit
 
         cat <<EOF
-${RED}
+${red}
 ***
 Complete!
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
 

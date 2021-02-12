@@ -24,21 +24,21 @@ case $CHOICE in
         1)
             _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Starting Whirlpool...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             docker start whirlpool 1>/dev/null
 
             cat <<EOF
-${RED}
+${red}
 ***
 Don't forget to login to GUI to unlock mixing!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
@@ -49,11 +49,11 @@ EOF
         2)
             _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Stopping Whirlpool...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             docker stop whirlpool 1>/dev/null
@@ -65,11 +65,11 @@ EOF
         3)
             _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Restarting Whirlpool...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             docker stop whirlpool 1>/dev/null
@@ -84,20 +84,20 @@ EOF
         4)
             _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Viewing Whirlpool Logs...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C to exit at anytime...
 ***
-${NC}
+${nc}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs whirlpool
@@ -108,30 +108,30 @@ EOF
         5)
             _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Re-initiating Whirlpool will reset your mix count and generate new API key...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Are you sure you want to re-initiate Whirlpool?
 ***
-${NC}
+${nc}
 EOF
             while true; do
-                read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+                read -rp "[${green}Yes${nc}/${red}No${nc}]: " answer
                 case $answer in
                     [yY][eE][sS]|[yY])
                         cat <<EOF
-${RED}
+${red}
 ***
 Re-initiating Whirlpool...
 ***
-${NC}
+${nc}
 EOF
                         cd "$dojo_path_my_dojo" || exit
 
@@ -139,11 +139,11 @@ EOF
                         _sleep
 
                         cat <<EOF
-${RED}
+${red}
 ***
 Re-initation complete, leave APIkey blank when pairing to GUI!
 ***
-${NC}
+${nc}
 EOF
                         _sleep 5
                         break
@@ -154,11 +154,11 @@ EOF
                         ;;
                     *)
                         cat <<EOF
-${RED}
+${red}
 ***
 Invalid answer! Enter Y or N
 ***
-${NC}
+${nc}
 EOF
                         ;;
                 esac

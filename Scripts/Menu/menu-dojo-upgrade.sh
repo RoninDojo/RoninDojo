@@ -33,32 +33,32 @@ if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
 
    cat <<EOF
-${RED}
+${red}
 ***
 Whirlpool will be installed via Docker...
 ***
-${NC}
+${nc}
 
-${RED}
+${red}
 ***
 You will need to re-pair with GUI, see Wiki for more information...
 ***
-${NC}
+${nc}
 EOF
    _sleep 5
 else
    cat <<EOF
-${RED}
+${red}
 ***
 Whirlpool will be installed via Docker...
 ***
-${NC}
+${nc}
 
-${RED}
+${red}
 ***
 For pairing information see the wiki...
 ***
-${NC}
+${nc}
 EOF
    _sleep 2
 fi

@@ -73,9 +73,9 @@ ronin_samourai_toolkit_menu="$HOME/RoninDojo/Scripts/Menu/menu-samourai-toolkit.
 #
 # Terminal Colors
 #
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-NC=$(tput sgr0) # No Color
+red=$(tput setaf 1)
+green=$(tput setaf 2)
+nc=$(tput sgr0) # No Color
 
 #
 # Install Defaults

@@ -24,11 +24,11 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -45,30 +45,30 @@ DOJO
         2)
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
                 if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
                     cat <<EOF
-${RED}
+${red}
 ***
 Electrum Rust Server is your current Indexer...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
                     cat <<EOF
-${RED}
+${red}
 ***
 Please check Electrum Rust Server logs instead...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
                     _pause return
@@ -86,11 +86,11 @@ EOF
         3)
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -107,11 +107,11 @@ DOJO
         4)
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -128,11 +128,11 @@ DOJO
         5)
             if ! _dojo_check; then
                 cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh

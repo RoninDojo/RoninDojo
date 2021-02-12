@@ -5,20 +5,20 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 cat <<EOF
-${RED}
+${red}
 ***
 Checking if Whirlpool is already installed...
 ***
-${NC}
+${nc}
 EOF
 
 if [ -f "$HOME"/whirlpool/whirlpool.jar ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Whirlpool is installed!
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -29,30 +29,30 @@ fi
 # checks if whirlpool.jar exists, if so kick back to menu
 
 cat <<EOF
-${RED}
+${red}
 ***
 Checking if Tor is installed...
 ***
-${NC}
+${nc}
 EOF
 
 if hash tor; then
     _pacman_update_mirrors
 
     cat <<EOF
-${RED}
+${red}
 ***
 The Tor package is installed...
 ***
-${NC}
+${nc}
 EOF
 else
     cat <<EOF
-${RED}
+${red}
 ***
 The Tor package will be installed now...
 ***
-${NC}
+${nc}
 EOF
     sudo pacman --quiet -S --noconfirm tor
     _sleep
@@ -62,39 +62,39 @@ EOF
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Installing Whirlpool...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 A UFW rule will be made for Whirlpool...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Whirlpool GUI will be able to access Whirlpool CLI from any machine on your RoninDojo's local network...
 ***
-${NC}
+${nc}
 EOF
 _sleep 5
 
 if sudo ufw status | grep 8899 > /dev/null ; then
     cat <<EOF
-${RED}
+${red}
 ***
 Whirlpool firewall rule already setup...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 else
@@ -141,11 +141,11 @@ else
     # removes txt files that are no longer needed
 
     cat <<EOF
-${RED}
+${red}
 ***
 Reloading UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
     sudo ufw reload
@@ -153,21 +153,21 @@ fi
 # checks for port 8899 ufw rule and skips if found, if not found it is set up
 
 cat <<EOF
-${RED}
+${red}
 ***
 Checking UFW status...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 sudo ufw status
 
 cat <<EOF
-${RED}
+${red}
 ***
 Created a Whirlpool directory...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -177,11 +177,11 @@ cd whirlpool || exit
 # create whirlpool directory
 
 cat <<EOF
-${RED}
+${red}
 ***
 Pulling Whirlpool from repository...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 wget -qO whirlpool.jar https://code.samourai.io/whirlpool/whirlpool-client-cli/uploads/7998ea5a9bb180451616809bc346b9ac/whirlpool-client-cli-0.10.8-run.jar
@@ -189,16 +189,16 @@ wget -qO whirlpool.jar https://code.samourai.io/whirlpool/whirlpool-client-cli/u
 
 # whirlpool service. Check if present else create it
 cat <<EOF
-${RED}
+${red}
 ***
 Checking if Whirlpool.service is already exists...
 ***
-${NC}
+${nc}
 EOF
 
 if [ -f /etc/systemd/system/whirlpool.service ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Whirlpool Service already is installed!
 ***
@@ -207,11 +207,11 @@ EOF
     sudo systemctl stop whirlpool
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Setting Whirlpool Service...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -241,11 +241,11 @@ sudo systemctl daemon-reload
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 Starting Whirlpool in the background...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -254,29 +254,29 @@ sudo systemctl enable whirlpool 2>/dev/null
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixing...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 For pairing with GUI head to full guide at: https://wiki.ronindojo.io/en/cli-setup/step3
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 This install is for non Tor whirlpool, can only access locally...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 

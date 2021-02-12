@@ -8,11 +8,11 @@ _load_user_conf
 
 if [ -d "$HOME"/dojo ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Dojo directory found, please uninstall Dojo first!
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -20,22 +20,22 @@ EOF
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Setting up system and installing dependencies...
 ***
-${NC}
+${nc}
 EOF
 fi
 _sleep 2
 # checks for "$HOME"/dojo directory, if found kicks back to menu
 
 cat <<EOF
-${RED}
+${red}
 ***
 Use Ctrl+C to exit now if needed!
 ***
-${NC}
+${nc}
 EOF
 _sleep 10 --msg "Installing in"
 
@@ -47,22 +47,22 @@ test -f /etc/motd && sudo rm /etc/motd
 
 if _disable_bluetooth; then
     cat <<EOF
-${RED}
+${red}
 ***
 Disabling Bluetooth...
 ***
-${NC}
+${nc}
 EOF
 fi
 # disable bluetooth, see functions.sh
 
 if _disable_ipv6; then
     cat <<EOF
-${RED}
+${red}
 ***
 Disabling Ipv6...
 ***
-${NC}
+${nc}
 EOF
 fi
 # disable ipv6, see functions.sh
@@ -79,31 +79,31 @@ done
 
 if ! pacman -Q libusb 1>/dev/null; then
     cat <<EOF
-${RED}
+${red}
 ***
 Installing libusb...
 ***
-${NC}
+${nc}
 EOF
     sudo pacman --quiet -S --noconfirm libusb
 fi
 
 if sudo ufw status | grep 22 > /dev/null ; then
     cat <<EOF
-${RED}
+${red}
 ***
 SSH firewall rule already setup...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Setting up UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -112,11 +112,11 @@ EOF
     # setting up uncomplicated firewall
 
     cat <<EOF
-${RED}
+${red}
 ***
 Enabling UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -160,22 +160,22 @@ EOF
     # removes txt files that are no longer needed
 
     cat <<EOF
-${RED}
+${red}
 ***
 Reloading UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
     sudo ufw reload
 
     cat <<EOF
-${RED}
+${red}
 ***
 Checking UFW status...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -186,46 +186,46 @@ EOF
     # add comment to initial ufw rule
 
     cat <<EOF
-${RED}
+${red}
 ***
 Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access.
 ***
-${NC}
+${nc}
 EOF
 
     cat <<EOF
-${RED}
+${red}
 ***
 Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc.
 ***
-${NC}
+${nc}
 EOF
 
     cat <<EOF
-${RED}
+${red}
 ***
 Firewall rules can be adjusted using the RoninDojo Firewall Menu.
 ***
-${NC}
+${nc}
 EOF
     _sleep 10
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 All Dojo dependencies installed...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
 cat <<EOF
-${RED}
+${red}
 ***
 Creating ${install_dir} directory...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -235,32 +235,32 @@ test -d "${install_dir}" || sudo mkdir "${install_dir}"
 
 if [ -b "${primary_storage}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Creating ${storage_mount} directory...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
     test ! -d "${storage_mount}" && sudo mkdir "${storage_mount}"
 
     cat <<EOF
-${RED}
+${red}
 ***
 Attempting to mount drive for Blockchain data salvage...
 ***
-${NC}
+${nc}
 EOF
     _sleep
     sudo mount "${primary_storage}" "${storage_mount}"
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Did not find ${primary_storage} for Blockchain data salvage.
 ***
-${NC}
+${nc}
 EOF
     _sleep
 fi
@@ -268,11 +268,11 @@ fi
 
 if sudo test -d "${bitcoin_ibd_backup_dir}/blocks"; then
     cat <<EOF
-${RED}
+${red}
 ***
 Found Blockchain data for salvage!
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -292,11 +292,11 @@ _sleep
     # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
     cat <<EOF
-${RED}
+${red}
 ***
 Mounting drive...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -304,11 +304,11 @@ _sleep
     findmnt "${primary_storage}" 1>/dev/null || sudo mount "${primary_storage}" "${install_dir}"
 
     cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -316,11 +316,11 @@ _sleep
     # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
     cat <<EOF
-${RED}
+${red}
 ***
 Check output for ${primary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
     df -h "${primary_storage}"
@@ -340,21 +340,21 @@ EOF
     # create directory to store user info, see functions.sh
 
     cat <<EOF
-${RED}
+${red}
 ***
 Dojo is ready to be installed!
 ***
-${NC}
+${nc}
 EOF
     _sleep 3
     exit
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No Blockchain data found for salvage check 1...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 fi
@@ -362,20 +362,20 @@ fi
 
 if sudo test -d "${storage_mount}/${bitcoind_data_dir}/_data/blocks"; then
     cat <<EOF
-${RED}
+${red}
 ***
 Found Blockchain data for salvage!
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
     cat <<EOF
-${RED}
+${red}
 ***
 Moving to temporary directory...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -385,11 +385,11 @@ EOF
     # moves blockchain salvage data to ${storage_mount} if found
 
     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data prepared for salvage!
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -408,11 +408,11 @@ EOF
     # then unmount and remove ${storage_mount}
 
     cat <<EOF
-${RED}
+${red}
 ***
 Mounting drive...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -422,11 +422,11 @@ EOF
     _sleep
 
     cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -435,11 +435,11 @@ EOF
     # double-check that ${primary_storage} exists, and its storage capacity is what you expected
 
     cat <<EOF
-${RED}
+${red}
 ***
 Check output for ${primary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
     df -h "${primary_storage}"
@@ -456,21 +456,21 @@ EOF
     # docker data directory setup, see functions.sh
 
     cat <<EOF
-${RED}
+${red}
 ***
 Dojo is ready to be installed!
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     exit
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No Blockchain data found for salvage check 2...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -487,16 +487,16 @@ fi
 # checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
 
 cat <<EOF
-${RED}
+${red}
 ***
 Formatting the SSD...
 ***
-${NC}
+${nc}
 EOF
 _sleep 5
 
 if ! create_fs --label "main" --device "${primary_storage}" --mountpoint "${install_dir}"; then
-    printf "\n %sFilesystem creation failed! Exiting now...%s" "${RED}" "${NC}"
+    printf "\n %sFilesystem creation failed! Exiting now...%s" "${red}" "${nc}"
     _sleep 3
     exit 1
 fi
@@ -504,11 +504,11 @@ fi
 # format partition
 
 cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
@@ -516,11 +516,11 @@ lsblk -o NAME,SIZE,LABEL "${primary_storage}"
 # double-check that ${primary_storage} exists, and its storage capacity is what you expected
 
 cat <<EOF
-${RED}
+${red}
 ***
 Check output for ${primary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
 df -h "${primary_storage}"
@@ -537,20 +537,20 @@ _docker_datadir_setup
 # docker data directory setup, see functions.sh
 
 cat <<EOF
-${RED}
+${red}
 ***
 Installing SW Toolkit...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Installing Boltzmann Calculator...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
@@ -558,22 +558,22 @@ _install_boltzmann
 # install Boltzmann
 
 cat <<EOF
-${RED}
+${red}
 ***
 Installing Whirlpool Stat Tool...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 _install_wst
 
 cat <<EOF
-${RED}
+${red}
 ***
 Dojo is ready to be installed!
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 # will continue to dojo install if it was selected on the install menu

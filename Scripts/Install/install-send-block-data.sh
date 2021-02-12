@@ -6,11 +6,11 @@
 
 if ! sudo test -d "${docker_volume_bitcoind}"/_data; then
     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data not found! Did you forget to install RoninDojo?
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -20,32 +20,32 @@ fi
 # if data directory is not found then warn and return to menu
 
 cat <<EOF
-${RED}
+${red}
 ***
 Preparing to copy data to your Backup Data Drive now...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 3
 
 if [ -b "${secondary_storage}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Your backup drive partition has been detected...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     # checks for ${secondary_storage}
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No backup drive partition detected! Please make sure it is plugged in and has power if needed...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -55,11 +55,11 @@ EOF
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Making sure Dojo is stopped...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -69,11 +69,11 @@ _stop_dojo
 # stop dojo
 
 cat <<EOF
-${RED}
+${red}
 ***
 Copying...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -94,11 +94,11 @@ else
     sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 
     cat <<EOF
-${RED}
+${red}
 ***
 No backup data available to send! Umounting drive now...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -109,11 +109,11 @@ fi
 # copies blockchain data to backup drive while keeping permissions so we can later restore properly
 
 cat <<EOF
-${RED}
+${red}
 ***
 Transfer Complete!
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -121,11 +121,11 @@ _sleep 2
 _pause continue
 
 cat <<EOF
-${RED}
+${red}
 ***
 Unmounting...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -134,21 +134,21 @@ sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
 
 cat <<EOF
-${RED}
+${red}
 ***
 You can now safely unplug your backup drive!
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Starting Dojo...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2

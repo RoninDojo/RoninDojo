@@ -23,22 +23,22 @@ case $CHOICE in
     1)
         if ! _mempool_check ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Starting Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
             docker start mempool 1>/dev/null
             _sleep 5
@@ -51,22 +51,22 @@ EOF
     2)
         if ! _mempool_check ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Stopping Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
             docker stop mempool 1>/dev/null
             _pause return
@@ -78,22 +78,22 @@ EOF
     3)
         if ! _mempool_check ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Restarting Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
             docker stop mempool 1>/dev/null
             _sleep 5
@@ -109,31 +109,31 @@ EOF
     4)
         if ! _mempool_check ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Viewing Mempool Space Visualizer Logs...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C to exit at anytime...
 ***
-${NC}
+${nc}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs mempool

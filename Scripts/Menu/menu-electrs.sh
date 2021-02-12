@@ -19,20 +19,20 @@ clear
 case $CHOICE in
     1)
         cat <<EOF
-${RED}
+${red}
 ***
 Showing Electrs Logs...
 ***
-${NC}
+${nc}
 EOF
         _sleep
 
         cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
 

@@ -21,11 +21,11 @@ clear
 case $CHOICE in
     1)
         cat <<EOF
-${RED}
+${red}
 ***
 Use Ctrl+C at any time to exit Task Manager...
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
         htop
@@ -34,11 +34,11 @@ EOF
         ;;
     2)
         cat <<EOF
-${RED}
+${red}
 ***
 Showing CPU temp...
 ***
-${NC}
+${nc}
 EOF
         _sleep
         cpu=$(cat /sys/class/thermal/thermal_zone0/temp)
@@ -52,11 +52,11 @@ EOF
         ;;
     3)
         cat <<EOF
-${RED}
+${red}
 ***
 Showing network stats...
 ***
-${NC}
+${nc}
 EOF
         _sleep
         ifconfig eth0 | grep 'inet'

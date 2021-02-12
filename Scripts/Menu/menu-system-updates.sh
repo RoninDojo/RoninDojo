@@ -39,20 +39,20 @@ case $CHOICE in
 
         if [[ "${ronindojo_version}" != "${version}" ]] ; then
             cat <<EOF
-${RED}
+${red}
 ***
 RoninDojo update is available!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
         else
             cat <<EOF
-${RED}
+${red}
 ***
 No update is available!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
         fi
@@ -66,11 +66,11 @@ EOF
         if ! _dojo_check; then
             if [ ! -d "${dojo_path}" ]; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Missing ${dojo_path} directory, aborting update...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
 
@@ -86,20 +86,20 @@ EOF
         _pacman_update_mirrors
 
         cat <<EOF
-${RED}
+${red}
 ***
 Updating RoninDojo...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
 
         cat <<EOF
-${RED}
+${red}
 ***
 Use Ctrl+C to exit if needed!
 ***
-${NC}
+${nc}
 EOF
 _sleep 10 --msg "Updating in"
 
@@ -111,11 +111,11 @@ _sleep 10 --msg "Updating in"
 
         if _ronin_ui_update_check; then
             cat <<EOF
-${RED}
+${red}
 ***
 Updating Ronin UI Backend...
 ***
-${NC}
+${nc}
 EOF
             _install_ronin_ui_backend
         fi

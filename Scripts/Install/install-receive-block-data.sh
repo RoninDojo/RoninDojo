@@ -6,11 +6,11 @@
 
 if ! sudo test -d "${docker_volume_bitcoind}"/_data; then
     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data not found! Did you forget to install RoninDojo?
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
@@ -20,31 +20,31 @@ fi
 # if data directory is not found then warn and return to menu
 
 cat <<EOF
-${RED}
+${red}
 ***
 Preparing to copy data from your Backup Data Drive now...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 if [ -b "${secondary_storage}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Your backup drive partition has been detected...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
     # checks for ${secondary_storage}
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No backup drive partition detected! Please make sure it is plugged in and has power if needed...
 ***
-${NC}
+${nc}
 EOF
     _sleep 5
 
@@ -55,11 +55,11 @@ EOF
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Making sure Dojo is stopped...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -69,11 +69,11 @@ _stop_dojo
 # stop dojo
 
 cat <<EOF
-${RED}
+${red}
 ***
 Removing old data...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -91,11 +91,11 @@ if sudo test -d "${storage_mount}"/system-setup-salvage; then
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Copying...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -108,11 +108,11 @@ if sudo test -d "${bitcoin_ibd_backup_dir}"/blocks; then
 else
     sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
     cat <<BACKUP
-${RED}
+${red}
 ***
 No backup data available to receive data! Umounting drive now...
 ***
-${NC}
+${nc}
 BACKUP
     _sleep 2
 
@@ -121,11 +121,11 @@ BACKUP
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Transfer Complete!
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2
@@ -134,11 +134,11 @@ _pause continue
 # press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
 
 cat <<EOF
-${RED}
+${red}
 ***
 Unmounting...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
@@ -146,20 +146,20 @@ sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
 
 cat <<EOF
-${RED}
+${red}
 ***
 You can now safely unplug your backup drive!
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Starting Dojo...
 ***
-${NC}
+${nc}
 EOF
 
 _sleep 2

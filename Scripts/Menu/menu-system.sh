@@ -32,22 +32,22 @@ case $CHOICE in
     2)
         if [ -d "$HOME"/dojo ]; then
             cat <<EOF
-${RED}
+${red}
 ***
 Shutting down Dojo if running...
 ***
-${NC}
+${nc}
 EOF
             cd "${dojo_path_my_dojo}" || exit
             _stop_dojo
             # stop dojo
 
             cat <<EOF
-${RED}
+${red}
 ***
 Powering off machine, or press Ctrl + C to cancel...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -56,11 +56,11 @@ EOF
             # power off machine
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Powering off machine, or press Ctrl + C to cancel...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -72,22 +72,22 @@ EOF
     3)
         if [ -d "$HOME"/dojo ]; then
             cat <<EOF
-${RED}
+${red}
 ***
 Shutting down Dojo if running...
 ***
-${NC}
+${nc}
 EOF
             cd "${dojo_path_my_dojo}" || exit
             _stop_dojo
             # stop dojo
 
             cat <<EOF
-${RED}
+${red}
 ***
 Restarting machine, or press Ctrl + C to cancel...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -96,11 +96,11 @@ EOF
             # restart machine
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Restarting machine, or press Ctrl + C to cancel...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 

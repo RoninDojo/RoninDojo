@@ -7,11 +7,11 @@
 
 if [ ! -d "${boltzmann_path}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Installing Boltzmann...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -33,14 +33,14 @@ EOF
 cat <<EOF
 Example Usage:
 
-${RED}
+${red}
 Single txid
-${NC}
+${nc}
 8e56317360a548e8ef28ec475878ef70d1371bee3526c017ac22ad61ae5740b8
 
-${RED}
+${red}
 Multiple txids
-${NC}
+${nc}
 8e56317360a548e8ef28ec475878ef70d1371bee3526c017ac22ad61ae5740b8,812bee538bd24d03af7876a77c989b2c236c063a5803c720769fc55222d36b47,...
 EOF
 
@@ -63,11 +63,11 @@ do
       _check_pkg "pipenv" "python-pipenv"
 
       cat <<EOF
-${RED}
+${red}
 ***
 Checking for updates...
 ***
-${NC}
+${nc}
 EOF
       _sleep
 

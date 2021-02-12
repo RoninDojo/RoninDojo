@@ -25,11 +25,11 @@ clear
 case $CHOICE in
         1)
             cat <<EOF
-${RED}
+${red}
 ***
 Enabling Firewall...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw enable
@@ -39,11 +39,11 @@ EOF
             ;;
         2)
             cat <<EOF
-${RED}
+${red}
 ***
 Disabling Firewall...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw disable
@@ -53,11 +53,11 @@ EOF
             ;;
         3)
             cat <<EOF
-${RED}
+${red}
 ***
 Showing Status...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw status
@@ -67,31 +67,31 @@ EOF
             ;;
         4)
             cat <<EOF
-${RED}
+${red}
 ***
 Find the rule you want to delete, and type its row number to delete it...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw status
             # show firewall status
 
             cat <<EOF
-${RED}
+${red}
 ***
 Be careful when deleting old firewall rules! Don't lock yourself out from SSH access...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Example: If you want to delete the 3rd rule listed, press the number 3, and press Enter...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -100,21 +100,21 @@ EOF
             # request user input to delete a ufw rule
 
             cat <<EOF
-${RED}
+${red}
 ***
 Reloading...
 ***
-${NC}
+${nc}
 EOF
             sudo ufw reload
             # reload firewall
 
             cat <<EOF
-${RED}
+${red}
 ***
 Showing status...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw status
@@ -126,11 +126,11 @@ EOF
             ;;
         5)
             cat <<EOF
-${RED}
+${red}
 ***
 Reloading...
 ***
-${NC}
+${nc}
 EOF
             sudo ufw reload
             _pause return
@@ -139,79 +139,79 @@ EOF
             ;;
         6)
             cat <<EOF
-${RED}
+${red}
 ***
 Obtain the IP address of any machine on the same local network as your RoninDojo...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 The IP address entered will be adapted to end with .0/24 range...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 This will allow any machine on the same network to have SSH access...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Enter the local IP address you wish to give SSH access now...
 ***
-${NC}
+${nc}
 EOF
 
             read -rp 'Local IP Address: ' ip_address
             sudo ufw allow from "$ip_address"/24 to any port 22 comment 'SSH access restricted to local network'
 
             cat <<EOF
-${RED}
+${red}
 ***
 Reloading...
 ***
-${NC}
+${nc}
 EOF
             sudo ufw reload
             # reload firewall
 
             cat <<EOF
-${RED}
+${red}
 ***
 Showing status...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw status
             # show firewall status
 
             cat <<EOF
-${RED}
+${red}
 ***
 Make sure that you see your new rule!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -221,70 +221,70 @@ EOF
             ;;
         7)
             cat <<EOF
-${RED}
+${red}
 ***
 Obtain the specific IP address you wish to give access to SSH...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 SSH access will be restricted to this IP address only...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Enter the local IP address you wish to give SSH access now...
 ***
-${NC}
+${nc}
 EOF
 
             read -rp 'Local IP Address: ' ip_address
             sudo ufw allow from "$ip_address" to any port 22 comment 'SSH access restricted to specific IP'
 
             cat <<EOF
-${RED}
+${red}
 ***
 Reloading...
 ***
-${NC}
+${nc}
 EOF
             sudo ufw reload
             # reload the firewall
 
             cat <<EOF
-${RED}
+${red}
 ***
 Showing status...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             sudo ufw status
             # show firewall status
 
             cat <<EOF
-${RED}
+${red}
 ***
 Make sure that you see your new rule!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 

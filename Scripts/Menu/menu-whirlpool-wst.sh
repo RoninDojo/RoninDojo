@@ -6,11 +6,11 @@
 
 if [ ! -d "$HOME"/Whirlpool-Stats-Tool ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Installing Whirlpool Stat Tool...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -23,45 +23,45 @@ fi
 # else inform user and launch
 
 cat <<EOF
-${RED}
+${red}
 Whirlpool Stat Tool INSTRUCTIONS:
-${NC}
+${nc}
 EOF
 
 _sleep 2
 # instructions are given to user
 
 cat <<EOF
-${RED}
+${red}
 Download in the working directory a snaphot for the 0.01BTC pools:
-${NC}
+${nc}
 download 001
 EOF
 
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 Load and compute the statistcs for the snaphot:
-${NC}
+${nc}
 load 001
 EOF
 
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 Display the metrics computed for a transaction stored in the active snapshot:
-${NC}
+${nc}
 score <ENTER TXID OF DESIRED 0.01 BTC transaction>
 EOF
 
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 Sample output...
-${NC}
+${nc}
 Backward-looking metrics for the outputs of this mix:
     anonset = 92
     spread = 89%
@@ -74,7 +74,7 @@ EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Type: 'quit' at anytime to exit the Whirlpool Statitics Tool.
 ***
@@ -87,11 +87,11 @@ if ! pipenv run python wst.py -w=/tmp 2>/dev/null; then
     _check_pkg "pipenv" "python-pipenv"
 
     cat <<EOF
-${RED}
+${red}
 ***
 Checking for updates...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 

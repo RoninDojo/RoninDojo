@@ -26,11 +26,11 @@ case $CHOICE in
         1)
             if _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Dojo is already started!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
                 _pause return
@@ -40,11 +40,11 @@ EOF
                 # is dojo installed?
 
                 cat <<EOF
-${RED}
+${red}
 ***
 Starting Dojo...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
 
@@ -73,21 +73,21 @@ EOF
 
             if [ -d "${dojo_path}" ]; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Restarting Dojo...
 ***
-${NC}
+${nc}
 EOF
                 _sleep 2
                 cd "${dojo_path_my_dojo}" || exit
 
                 cat <<DOJO
-${RED}
+${red}
 ***
 Stopping Dojo...
 ***
-${NC}
+${nc}
 DOJO
                 # Check if db container running before stopping all containers
                 if _dojo_check; then
@@ -95,11 +95,11 @@ DOJO
                 fi
 
                 cat <<DOJO
-${RED}
+${red}
 ***
 Starting Dojo...
 ***
-${NC}
+${nc}
 DOJO
 
                 # Start docker containers

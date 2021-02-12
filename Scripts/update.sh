@@ -6,38 +6,38 @@
 _update_01() {
     if ! _check_pkgver bridge-utils 1.7-1; then
         cat <<EOF
-${RED}
+${red}
 ***
 Outdated and bridge-utils found...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         cat <<EOF
-${RED}
+${red}
 ***
 Starting bridge-utils upgrade...
 ***
-${NC}
+${nc}
 EOF
         sudo pacman --quiet -U --noconfirm https://ronindojo.io/downloads/distfiles/bridge-utils-1.7-1-aarch64.pkg.tar.xz &>/dev/null
 
         # If existing dojo found, then reboot system to apply changes
         if [ -d "${HOME}/dojo" ]; then
             cat <<EOF
-${RED}
+${red}
 ***
 Existing dojo found! Rebooting system to apply changes...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C now if you wish to skip...
 ***
-${NC}
+${nc}
 EOF
             _sleep 10 --msg "Rebooting in"
             sudo systemctl reboot
@@ -119,11 +119,11 @@ _update_08() {
         fstype=$(blkid -o value -s TYPE "${primary_storage}")
 
         cat <<EOF
-${RED}
+${red}
 ***
 Adding missing systemd mount unit file for device ${primary_storage}...
 ***
-${NC}
+${nc}
 EOF
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]

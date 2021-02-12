@@ -60,33 +60,33 @@ do
         1)
             if ! "${is_mempool_installed}" ; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Installing Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
                 _mempool_conf
                 _mempool_urls_to_local_btc_explorer
                 upgrade=true
             else
                 cat <<EOF
-${RED}
+${red}
 ***
 Uninstalling Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
                 sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "$dojo_path_my_dojo"/conf/docker-mempool.conf
                 # Turns mempool install set to off
                 upgrade=true
 
                 cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer Uninstalled...
 ***
-${NC}
+${nc}
 EOF
             fi
             # Checks for mempool, then installs
@@ -99,11 +99,11 @@ EOF
                 upgrade=true
 
                 cat <<EOF
-${RED}
+${red}
 ***
 Specter Server Uninstalled...
 ***
-${NC}
+${nc}
 EOF
             fi
             ;;
@@ -112,11 +112,11 @@ EOF
                 _install_bisq && upgrade=true
             else
                 cat <<EOF
-${RED}
+${red}
 ***
 Disabling Bisq Support...
 ***
-${NC}
+${nc}
 EOF
                 rm "${ronin_data_dir}"/bisq.txt
                 # Deletes bisq.txt file
@@ -128,11 +128,11 @@ EOF
             case "${indexer_name}" in
                 "Samourai Indexer")
                     cat <<EOF
-${RED}
+${red}
 ***
 Switching to Samourai indexer...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
 
@@ -142,11 +142,11 @@ EOF
                     ;;
                 "Electrum Rust Server")
                     cat <<EOF
-${RED}
+${red}
 ***
 Installing Electrum Rust Server...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
 
@@ -154,11 +154,11 @@ EOF
                     ;;
                 "Bitcoin Indexer")
                     cat <<EOF
-${RED}
+${red}
 ***
 Select an indexer to use with RoninDojo...
 ***
-${NC}
+${nc}
 EOF
                     _indexer_prompt
                     # check for addrindexrs or electrs, if no indexer ask if they want to install

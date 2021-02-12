@@ -23,11 +23,11 @@ case $CHOICE in
     1)
         if _is_active specter; then
             cat <<EOF
-${RED}
+${red}
 ***
 Starting Specter Service...
 ***
-${NC}
+${nc}
 EOF
         fi
 
@@ -40,11 +40,11 @@ EOF
     2)
         if ! _is_active specter; then
             cat <<EOF
-${RED}
+${red}
 ***
 Stopping Specter Service...
 ***
-${NC}
+${nc}
 EOF
         sudo systemctl stop specter
         fi
@@ -57,11 +57,11 @@ EOF
         ;;
     3)
         cat <<EOF
-${RED}
+${red}
 ***
 Restarting Specter Service...
 ***
-${NC}
+${nc}
 EOF
         sudo systemctl restart specter
 
@@ -73,11 +73,11 @@ EOF
         ;;
     4)
         cat <<EOF
-${RED}
+${red}
 ***
 Press "q" key to exit at any time...
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
 

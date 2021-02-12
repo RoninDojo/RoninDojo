@@ -25,19 +25,19 @@ case $CHOICE in
     1)
         if ! _mempool_check ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Mempool Space Visualizer not installed!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Install Mempool Space Visualizer using the manage applications menu...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
@@ -50,19 +50,19 @@ EOF
     2)
         if ! _is_specter ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Specter server not installed!
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Install Specter Server using the manage applications menu...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
@@ -84,47 +84,47 @@ EOF
         ;;
     4)
         cat <<EOF
-${RED}
+${red}
 ***
 Checking your RoninDojo's compatibility with Bisq...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         if ! _is_bisq ; then
             cat <<EOF
-${RED}
+${red}
 ***
 Bisq connections are not enabled...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Enable Bisq connections using the applications install menu...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
             bash -c "$ronin_applications_menu"
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Bisq connections are enabled...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Enjoy those no-KYC sats...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             _pause return
@@ -137,18 +137,18 @@ EOF
 
         if ! which_sbc rockpro64; then
             cat <<EOF
-${RED}
+${red}
 ***
 No supported single-board computer detected for fan control...
 ***
 EOF
             _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Supported devices are Rockpro64 and Rockpi4...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
@@ -165,11 +165,11 @@ EOF
 
         if [ ! -f /etc/systemd/system/bbbfancontrol.service ]; then
             cat <<EOF
-${RED}
+${red}
 ***
 Installing fan control...
 ***
-${NC}
+${nc}
 EOF
             git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || exit
 
@@ -196,11 +196,11 @@ EOF"
             sudo systemctl start bbbfancontrol
         else
             cat <<EOF
-${RED}
+${red}
 ***
 Fan control already installed...
 ***
-${NC}
+${nc}
 EOF
         _pause return
 

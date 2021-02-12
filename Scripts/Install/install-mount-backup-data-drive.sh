@@ -8,21 +8,21 @@ _load_user_conf
 
 if [ -b "${secondary_storage}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Your backup drive partition has been detected...
 ***
-${NC}
+${nc}
 EOF
   _sleep 2
   # checks for ${secondary_storage}
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No backup drive partition detected! Please make sure it is plugged in and has power if needed."
 ***
-${NC}
+${nc}
 EOF
     _sleep 5
     _pause return
@@ -31,24 +31,24 @@ EOF
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Preparing to Mount ${secondary_storage} to ${storage_mount}...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 Are you ready to mount?
 ***
-${NC}
+${nc}
 EOF
 
 while true; do
-    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+    read -rp "[${green}Yes${nc}/${red}No${nc}]: " answer
     case $answer in
         [yY][eE][sS]|[yY]) break;;
         [nN][oO]|[Nn])
@@ -57,11 +57,11 @@ while true; do
           ;;
         *)
           cat <<EOF
-${RED}
+${red}
 ***
 Invalid answer! Enter Y or N
 ***
-${NC}
+${nc}
 EOF
           ;;
     esac
@@ -72,11 +72,11 @@ test ! -d "${storage_mount}" && sudo mkdir "${storage_mount}"
 # create mount directory if not available
 
 cat <<EOF
-${RED}
+${red}
 ***
 Mounting ${secondary_storage} to ${storage_mount}...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 

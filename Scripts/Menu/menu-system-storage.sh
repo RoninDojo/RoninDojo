@@ -22,11 +22,11 @@ clear
 case $CHOICE in
     1)
         cat <<EOF
-${RED}
+${red}
 ***
 Showing Disk Space Info...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 

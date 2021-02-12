@@ -27,21 +27,21 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
                 cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
-${NC}
+${nc}
 EOF
               _sleep 2
 
@@ -56,21 +56,21 @@ EOF
         2)
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
-${NC}
+${nc}
 EOF
               _sleep 2
               cd "${dojo_path_my_dojo}" || exit
@@ -82,30 +82,30 @@ EOF
         3)
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
                 if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
                     cat <<EOF
-${RED}
+${red}
 ***
 Electrum Rust Server is your current Indexer...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
                     cat <<EOF
-${RED}
+${red}
 ***
 Please check Electrum Rust Server logs instead...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
 
@@ -114,19 +114,19 @@ EOF
                     exit 1
                 else
                     cat <<EOF
-${RED}
+${red}
 ***
 No indexer installed...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
                     cat <<EOF
-${RED}
+${red}
 ***
 Install using the applications install menu...
 ***
-${NC}
+${nc}
 EOF
                     _sleep 2
 
@@ -137,11 +137,11 @@ EOF
                 fi
 
               cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
-${NC}
+${nc}
 EOF
               _sleep 2
 
@@ -156,21 +156,21 @@ EOF
         4)
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
-${NC}
+${nc}
 EOF
               _sleep 2
               cd "${dojo_path_my_dojo}" || exit
@@ -182,21 +182,21 @@ EOF
         5)
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl + C to exit at any time...
 ***
-${NC}
+${nc}
 EOF
               _sleep 2
 
@@ -209,11 +209,11 @@ EOF
         6)
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
@@ -221,11 +221,11 @@ EOF
               _sleep 2
 
               cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C to exit at anytime...
 ***
-${NC}
+${nc}
 EOF
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs whirlpool
@@ -241,11 +241,11 @@ EOF
         8)
             if ! _dojo_check; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 EOF
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
@@ -253,11 +253,11 @@ EOF
               _sleep 2
 
               cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C to exit at anytime...
 ***
-${NC}
+${nc}
 EOF
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs
