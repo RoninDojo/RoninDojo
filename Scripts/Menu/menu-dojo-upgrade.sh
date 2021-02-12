@@ -69,7 +69,7 @@ if _is_specter ; then
 fi
 
 if _is_bisq ; then
-    _install_bisq
+    _bisq_install
 fi
 
 cd "${dojo_path_my_dojo}" || exit

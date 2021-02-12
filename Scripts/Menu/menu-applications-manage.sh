@@ -24,7 +24,6 @@ else
     is_specter_installed=true
     specter_text="Uninstall"
 fi
-_is_bisq
 
 # Set Bisq install/uninstall status
 if ! _is_bisq; then
@@ -109,20 +108,12 @@ EOF
             ;;
         3)
             if ! "${is_bisq_installed}" ; then
-                _install_bisq && upgrade=true
+                _bisq_install
             else
-                cat <<EOF
-${red}
-***
-Disabling Bisq Support...
-***
-${nc}
-EOF
-                rm "${ronin_data_dir}"/bisq.txt
-                # Deletes bisq.txt file
-
-                upgrade=true
+                _bisq_uninstall
             fi
+
+            upgrade=true
             ;;
         4)
             case "${indexer_name}" in

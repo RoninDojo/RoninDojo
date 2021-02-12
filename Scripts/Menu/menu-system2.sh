@@ -152,6 +152,42 @@ EOF
         cd "${HOME}" || exit
         rm -rf "${ronin_ui_backend_dir}" || exit
 
+        _is_specter && _specter_uninstall || exit
+
+        _is_bisq && _bisq_uninstall || exit
+
+        _is_mempool && _mempool_uninstall || exit
+
+        if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
+            cd "${HOME}"/Whirlpool-Stats-Tool || exit
+
+            cat <<EOF
+${red}
+***
+Uninstalling Whirlpool Stats Tool...
+***
+${nc}
+EOF
+            pipenv --rm &>/dev/null
+            cd - 1>/dev/null || exit
+            rm -rf "${HOME}"/Whirlpool-Stats-Tool
+        fi
+
+        if [ -d "${HOME}"/boltzmann ]; then
+            cd "${HOME}"/boltzmann || exit
+
+            cat <<EOF
+${red}
+***
+Uninstalling Bolzmann...
+***
+${nc}
+EOF
+            pipenv --rm &>/dev/null
+            cd - 1>/dev/null || exit
+            rm -rf "${HOME}"/Whirlpool-Stats-Tool
+        fi
+
         cat <<EOF
 ${red}
 ***

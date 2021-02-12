@@ -819,6 +819,31 @@ _is_mempool() {
 }
 
 #
+# Uninstall Mempool Space Visualizer
+#
+_mempool_uninstall() {
+    cat <<EOF
+${red}
+***
+Uninstalling Mempool Space Visualizer...
+***
+${nc}
+EOF
+    sed -i 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=off/' "$dojo_path_my_dojo"/conf/docker-mempool.conf
+    # Turns mempool install set to off
+
+    cat <<EOF
+${red}
+***
+Mempool Space Visualizer Uninstalled...
+***
+${nc}
+EOF
+
+    return 0
+}
+
+#
 # Setup mempool docker variables
 #
 _mempool_conf() {
@@ -1945,7 +1970,10 @@ _is_bisq(){
     fi
 }
 
-_install_bisq(){
+#
+# Install Bisq Support
+#
+_bisq_install(){
     cat <<EOF
 ${red}
 ***
@@ -1962,8 +1990,30 @@ EOF
         -e "/  -txindex=1/i\  -whitelist=bloomfilter@${ip}" "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
     echo "peerbloomfilters=1" > "${ronin_data_dir}"/bisq.txt
+
+    return 0
 }
 
+#
+# Uninstall Bisq Support
+#
+_bisq_uninstall() {
+    cat <<EOF
+${red}
+***
+Disabling Bisq Support...
+***
+${nc}
+EOF
+    rm "${ronin_data_dir}"/bisq.txt
+    # Deletes bisq.txt file
+
+    return 0
+}
+
+#
+# Indexer data backup/restore
+#
 _dojo_data_indexer() {
     _load_user_conf
 
@@ -2037,6 +2087,9 @@ EOF
     done
 }
 
+#
+# Bitcoin IBD backup/restore
+#
 _dojo_data_bitcoind() {
     _load_user_conf
 
