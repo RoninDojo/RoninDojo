@@ -615,15 +615,34 @@ which_sbc() {
 # Install fan control for rockchip boards
 #
 _fan_control_install() {
-    git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
+    if [ ! -d "${HOME}"/bitbox-base ]; then
+        git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
+        cd bitbox-base/tools/bbbfancontrol || return 1
+    else
+        _fan_control_upgrade
+    fi
 
-    cd bitbox-base/tools/bbbfancontrol || return 1
+    _fan_control_compile || return 1
 
-    go build || return 1
+    _fan_control_unit_file || return 1
 
-    sudo cp bbbfancontrol /usr/local/sbin/
+    cat <<EOF
+${red}
+***
+Fan control installed...
+***
+${nc}
+EOF
 
-    sudo bash -c "cat <<EOF >/etc/systemd/system/bbbfancontrol.service
+    return 0
+}
+
+#
+# Fan Control systemd unit file
+#
+_fan_control_unit_file() {
+    if [ ! -f /etc/systemd/system/bbbfancontrol.service ]; then
+        sudo bash -c "cat <<EOF >/etc/systemd/system/bbbfancontrol.service
 [Unit]
 Description=BitBoxBase fancontrol
 After=local-fs.target
@@ -638,16 +657,43 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF"
 
-    sudo systemctl enable bbbfancontrol 2>/dev/null
-    sudo systemctl start bbbfancontrol
+        sudo systemctl enable bbbfancontrol 1>/dev/null
+        sudo systemctl start bbbfancontrol
+    else # Previous unit file found
+        # Update unit file if hwmon directory location changed
+        if ! grep "${hwmon_dir}" /etc/systemd/system/bbbfancontrol.service 2>/dev/null; then
+            sudo sed -i "s:/sys/class/hwmon/hwmon[0-9]/pwm1:/sys/class/hwmon/${hwmon_dir}/pwm1:" /etc/systemd/system/bbbfancontrol.service
 
-    cat <<EOF
-${red}
-***
-Fan control installed...
-***
-${nc}
-EOF
+            # Reload systemd unit file & restart daemon
+            sudo systemctl daemon-reload
+            sudo systemctl restart bbbfancontrol.service
+        fi
+    fi
+
+    return 0
+}
+
+#
+# Fan Control build package
+#
+_fan_control_compile() {
+    # Build package
+    go build || return 1
+
+    sudo cp bbbfancontrol /usr/local/sbin/
+
+    return 0
+}
+
+#
+# Update fan control for rockchip boards
+#
+_fan_control_upgrade() {
+    cd "${HOME}"/bitbox-base || exit
+
+    git pull &>/dev/null
+
+    cd tools/bbbfancontrol || return 1
 
     return 0
 }

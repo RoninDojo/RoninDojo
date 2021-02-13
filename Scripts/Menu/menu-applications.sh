@@ -186,10 +186,23 @@ Fan control already installed...
 ***
 ${nc}
 EOF
+
+            _sleep
+
+            cat <<EOF
+${red}
+***
+Checking for Fan Control updates...
+***
+${nc}
+EOF
+
+            _fan_control_install || return 1
+        fi
+
         _pause return
 
         bash -c "${ronin_applications_menu}"
-        fi
         ;;
     6)
         bash -c "${ronin_applications_manage_menu}"
