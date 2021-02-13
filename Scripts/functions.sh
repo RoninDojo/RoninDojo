@@ -598,7 +598,9 @@ which_sbc() {
                 cd /sys/class/hwmon || exit
 
                 for dir in *; do
-                    test -f "${dir}/pwm1" && return 0
+                    test -f "${dir}/pwm1"
+                    hwmon_dir="${dir}"
+                    return 0
                 done
 
                 return 1
@@ -607,6 +609,47 @@ which_sbc() {
             fi
             ;;
     esac
+}
+
+#
+# Install fan control for rockchip boards
+#
+_fan_control_install() {
+    git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
+
+    cd bitbox-base/tools/bbbfancontrol || return 1
+
+    go build || return 1
+
+    sudo cp bbbfancontrol /usr/local/sbin/
+
+    sudo bash -c "cat <<EOF >/etc/systemd/system/bbbfancontrol.service
+[Unit]
+Description=BitBoxBase fancontrol
+After=local-fs.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/sbin/bbbfancontrol --tmin 60 --tmax 75 --cooldown 55 -fan /sys/class/hwmon/${hwmon_dir}/pwm1
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+EOF"
+
+    sudo systemctl enable bbbfancontrol 2>/dev/null
+    sudo systemctl start bbbfancontrol
+
+    cat <<EOF
+${red}
+***
+Fan control installed...
+***
+${nc}
+EOF
+
+    return 0
 }
 
 #

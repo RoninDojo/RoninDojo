@@ -133,8 +133,6 @@ EOF
         # Bisq check
         ;;
     5)
-        cd "$HOME" || exit 1
-
         if ! which_sbc rockpro64; then
             cat <<EOF
 ${red}
@@ -154,6 +152,7 @@ EOF
 
             _pause return
             bash -c "$ronin_applications_menu"
+            exit
         fi
 
         # Check for package dependencies
@@ -171,29 +170,14 @@ Installing fan control...
 ***
 ${nc}
 EOF
-            git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || exit
+            cd "${HOME}" || exit
 
-            cd bitbox-base/tools/bbbfancontrol || exit
+            _fan_control_install || exit 1
 
-            go build
+            _pause return
 
-            sudo cp bbbfancontrol /usr/local/sbin/
-            sudo bash -c "cat <<EOF >/etc/systemd/system/bbbfancontrol.service
-[Unit]
-Description=BitBoxBase fancontrol
-After=local-fs.target
-
-[Service]
-Type=simple
-ExecStart=/usr/local/sbin/bbbfancontrol --tmin 60 --tmax 75 --cooldown 55 -fan /sys/class/hwmon/hwmon3/pwm1
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-EOF"
-            sudo systemctl enable bbbfancontrol 2>/dev/null
-            sudo systemctl start bbbfancontrol
+            bash -c "${ronin_applications_menu}"
+            # Manage applications menu
         else
             cat <<EOF
 ${red}
