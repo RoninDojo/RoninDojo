@@ -1348,7 +1348,7 @@ cd "$HOME"
 git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 ${red}
 ***
-Upgrade Complete!
+Upgrade Complete...
 ***
 ${nc}
 sleep 2
