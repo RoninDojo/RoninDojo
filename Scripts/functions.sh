@@ -658,7 +658,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF"
 
-        sudo systemctl enable bbbfancontrol 1>/dev/null
+        sudo systemctl enable bbbfancontrol 2>/dev/null
         sudo systemctl start bbbfancontrol
     else # Previous unit file found
         # Update unit file if hwmon directory location changed
