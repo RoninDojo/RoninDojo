@@ -620,12 +620,17 @@ _fan_control_install() {
         git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
         cd bitbox-base/tools/bbbfancontrol || return 1
     else
+        # Stop service before upgrade
+        sudo systemctl stop bbbfancontrol
+
         _fan_control_upgrade
     fi
 
     _fan_control_compile || return 1
 
     _fan_control_unit_file || return 1
+
+    _is_active bbbfancontrol
 
     cat <<EOF
 ${red}
