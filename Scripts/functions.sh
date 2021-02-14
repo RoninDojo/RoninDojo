@@ -598,9 +598,10 @@ which_sbc() {
                 cd /sys/class/hwmon || exit
 
                 for dir in *; do
-                    test -f "${dir}/pwm1"
-                    hwmon_dir="${dir}"
-                    return 0
+                    if [ -f "${dir}/pwm1" ]; then
+                        hwmon_dir="${dir}"
+                        return 0
+                    fi
                 done
 
                 return 1
