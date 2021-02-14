@@ -126,6 +126,8 @@ EOF
 
         _is_ronin_ui_backend && _ronin_ui_uninstall || exit
 
+        _is_fan_control && _fan_control_uninstall || exit
+
         if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
             cd "${HOME}"/Whirlpool-Stats-Tool || exit
 

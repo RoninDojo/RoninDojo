@@ -641,10 +641,21 @@ which_sbc() {
 }
 
 #
+# Is fan control installed
+#
+_is_fan_control() {
+    if [ -d "${HOME}"/bitbox-base ]; then
+        return 0
+    fi
+
+    return 1
+}
+
+#
 # Install fan control for rockchip boards
 #
 _fan_control_install() {
-    if [ ! -d "${HOME}"/bitbox-base ]; then
+    if ! _is_fan_control; then
         git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
         cd bitbox-base/tools/bbbfancontrol || return 1
     else
@@ -667,6 +678,32 @@ Fan control installed...
 ***
 ${nc}
 EOF
+
+    return 0
+}
+
+#
+# Install fan control for rockchip boards
+#
+_fan_control_uninstall() {
+    if _is_fan_control && [ -f /etc/systemd/system/bbbfancontrol.service ]; then
+        # Stop service before upgrade
+        sudo systemctl stop bbbfancontrol
+
+        sudo systemctl disable bbbfancontrol 1>/dev/null
+
+        sudo rm /etc/systemd/system/bbbfancontrol.service
+
+        rm -rf "${HOME}"/bitbox-base || exit
+
+        cat <<EOF
+${red}
+***
+Fan control Uninstalled...
+***
+${nc}
+EOF
+    fi
 
     return 0
 }
