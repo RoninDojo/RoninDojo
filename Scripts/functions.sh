@@ -441,7 +441,7 @@ EOF
 #
 # Backend torrc
 #
-_setup_backend_tor() {
+_ronin_ui_setup_tor() {
     if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
         cat <<BACKEND_TOR_CONFIG
 ${red}
@@ -580,10 +580,38 @@ EOF
 
         sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" 1>/dev/null
 
-        _setup_backend_tor
+        _ronin_ui_setup_tor
     else # Restart process after updating
         pm2 restart "Ronin Backend" 1>/dev/null
     fi
+}
+
+#
+# Ronin UI Uninstall
+#
+_ronin_ui_uninstall() {
+    cd "${ronin_ui_backend_dir}" || exit
+
+    cat <<EOF
+${red}
+***
+Uninstalling Ronin UI Backend...
+***
+${nc}
+EOF
+    _sleep 2
+
+    # Delete app from process list
+    pm2 delete "Ronin Backend" &>/dev/null
+
+    # dump all processes for resurrecting them later
+    pm2 save 1>/dev/null
+
+    # Remove ${ronin_ui_backend_dir}
+    cd "${HOME}" || exit
+    rm -rf "${ronin_ui_backend_dir}" || exit
+
+    return 0
 }
 
 #

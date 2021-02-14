@@ -91,7 +91,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Uninstalling RoninDojo and all features, press Ctrl+C to exit if needed!
+Uninstalling RoninDojo, press Ctrl+C to exit if needed!
 ***
 ${nc}
 EOF
@@ -117,46 +117,14 @@ EOF
         "${tor_backup}" && _tor_backup
         # tor backup must happen prior to dojo uninstall
 
-        cd "$dojo_path_my_dojo" || exit
-        ./dojo.sh uninstall
-        # uninstall dojo
-
-        "${dojo_conf_backup}" && _dojo_backup
-
-        rm -rf "${dojo_path}"
-
-        # Returns HOME since $dojo_path deleted
-        cd "${HOME}" || exit
-
-        sudo systemctl restart docker
-        # restart docker daemon
-
-        cd "${ronin_ui_backend_dir}" || exit
-
-        cat <<EOF
-${red}
-***
-Uninstalling Ronin UI Backend...
-***
-${nc}
-EOF
-        _sleep 2
-
-        # Delete app from process list
-        pm2 delete "Ronin Backend" &>/dev/null
-
-        # dump all processes for resurrecting them later
-        pm2 save 1>/dev/null
-
-        # Remove ${ronin_ui_backend_dir}
-        cd "${HOME}" || exit
-        rm -rf "${ronin_ui_backend_dir}" || exit
-
+        # Check if applications need to be uninstalled
         _is_specter && _specter_uninstall || exit
 
         _is_bisq && _bisq_uninstall || exit
 
         _is_mempool && _mempool_uninstall || exit
+
+        _is_ronin_ui_backend && _ronin_ui_uninstall || exit
 
         if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
             cd "${HOME}"/Whirlpool-Stats-Tool || exit
@@ -191,7 +159,29 @@ EOF
         cat <<EOF
 ${red}
 ***
-Complete!
+Removing Samourai Dojo Server...
+***
+${nc}
+EOF
+
+        cd "$dojo_path_my_dojo" || exit
+        ./dojo.sh uninstall
+        # uninstall dojo
+
+        "${dojo_conf_backup}" && _dojo_backup
+
+        rm -rf "${dojo_path}"
+
+        # Returns HOME since $dojo_path deleted
+        cd "${HOME}" || exit
+
+        sudo systemctl restart docker
+        # restart docker daemon
+
+        cat <<EOF
+${red}
+***
+All RoninDojo features has been Uninstalled...
 ***
 ${nc}
 EOF
