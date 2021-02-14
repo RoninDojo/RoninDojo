@@ -667,7 +667,7 @@ EOF"
         sudo systemctl start bbbfancontrol
     else # Previous unit file found
         # Update unit file if hwmon directory location changed
-        if ! grep "${hwmon_dir}" /etc/systemd/system/bbbfancontrol.service 2>/dev/null; then
+        if ! grep "${hwmon_dir}" /etc/systemd/system/bbbfancontrol.service 1>/dev/null; then
             sudo sed -i "s:/sys/class/hwmon/hwmon[0-9]/pwm1:/sys/class/hwmon/${hwmon_dir}/pwm1:" /etc/systemd/system/bbbfancontrol.service
 
             # Reload systemd unit file & restart daemon
