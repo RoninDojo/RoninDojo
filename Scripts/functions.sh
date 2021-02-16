@@ -2012,6 +2012,14 @@ EOF
     sudo systemctl start specter 2>/dev/null
     # start to ensure the startup creates the .specter dir
 
+    cat <<EOF
+${red}
+***
+Specter $specter_version installed...
+***
+${nc}
+EOF
+
     return 0
 }
 
