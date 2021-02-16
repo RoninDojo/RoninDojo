@@ -112,7 +112,7 @@ _update_08() {
 
     local uuid tmp systemd_mountpoint fstype
 
-    if findmnt /mnt/usb  1>/dev/null && [ ! -f /etc/systemd/system/mnt-usb.mount ]; then
+    if findmnt /mnt/usb 1>/dev/null && [ ! -f /etc/systemd/system/mnt-usb.mount ]; then
         uuid=$(lsblk -no UUID "${primary_storage}")
         tmp=${install_dir:1}                                    # Remove leading '/'
         systemd_mountpoint=${tmp////-}                          # Replace / with -
