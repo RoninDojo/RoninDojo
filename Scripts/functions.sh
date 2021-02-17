@@ -1080,7 +1080,13 @@ _dojo_update() {
     # Fetch remotes
     git fetch --all --tags --force &>/dev/null
 
-    # Reset to origin master branch
+    # Reset to upstream snapshot
+    git reset --hard "@{upstream}" 1>/dev/null
+
+    # Clean up
+    git clean -dx --force &>/dev/null
+
+    # Reset to samourai_commitish value
     git reset --hard "${samourai_commitish}" 1>/dev/null
 }
 
@@ -1409,7 +1415,13 @@ EOF
         # Fetch remotes
         git fetch --all --tags --force &>/dev/null
 
-        # Reset to origin master branch
+        # Reset to upstream snapshot
+        git reset --hard "@{upstream}" 1>/dev/null
+
+        # Clean up
+        git clean -dx --force &>/dev/null
+
+        # Reset to ronin_dojo_branch value
         git reset --hard "${ronin_dojo_branch}" 1>/dev/null
     else
         cat <<EOF > "$HOME"/ronin-update.sh
