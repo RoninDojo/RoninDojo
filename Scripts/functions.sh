@@ -1416,7 +1416,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
+git clone -b "${ronin_dojo_branch#*/}" "${ronin_dojo_repo}" 2>/dev/null
 ${red}
 ***
 Upgrade Complete...
