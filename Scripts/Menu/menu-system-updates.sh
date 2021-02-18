@@ -109,7 +109,7 @@ _sleep 10 --msg "Updating in"
         _update_ronin
         # see functions.sh
 
-        if _ronin_ui_update_check; then
+        if ! _ronin_ui_update_check; then
             cat <<EOF
 ${red}
 ***

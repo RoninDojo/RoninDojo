@@ -508,11 +508,11 @@ _ronin_ui_update_check() {
 
         # Check if update is needed
         if [[ "${ver}" != "${current_ver}" ]]; then
+            return 1
+        else
             return 0
         fi
     fi
-
-    return 0
 }
 
 #
@@ -546,6 +546,9 @@ EOF
     done
 
     _check_pkg "node" "nodejs"
+
+    # Create dir
+    mkdir "${ronin_ui_backend_dir}"
 
     # cd into RoninBackend dir
     cd "${ronin_ui_backend_dir}" || exit

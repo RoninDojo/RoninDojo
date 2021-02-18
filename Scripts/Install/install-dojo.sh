@@ -72,7 +72,7 @@ EOF
 cd "$HOME" || exit
 git clone -b "${samourai_commitish#*/}" "$samourai_repo" dojo 2>/dev/null
 
-if _ronin_ui_update_check; then
+if ! _ronin_ui_update_check; then
     cat <<EOF
 ${red}
 ***
