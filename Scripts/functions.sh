@@ -1072,24 +1072,50 @@ _mempool_urls_to_local_btc_explorer() {
 }
 
 #
+# git current branch
+#
+_git_current_branch() {
+    git branch --show-current
+}
+
+#
+# git check if detached state
+#
+_git_is_detached() {
+    git symbolic-ref -q HEAD
+}
+
+#
 # Update Samourai Dojo Repository
 #
 _dojo_update() {
+    local _branch
+
     _load_user_conf
 
     cd "${dojo_path}" || exit
 
+    _branch=$(_git_current_branch)
+
     # Fetch remotes
     git fetch --all --tags --force &>/dev/null
-
-    # Reset to upstream snapshot
-    git reset --hard "@{upstream}" 1>/dev/null
 
     # Clean up
     git clean -dx --force &>/dev/null
 
-    # Reset to samourai_commitish value
-    git reset --hard "${samourai_commitish}" 1>/dev/null
+    # Check if on existing branch
+    if [ ! "${samourai_commitish#*/}" = "${_branch}" ]; then
+        git checkout -b "${samourai_commitish}" dojo 1>/dev/null
+
+        # Switch over to a branch if in detached state. Usually this happens
+        # when you clone a tag instead of a branch
+        cd dojo || exit
+
+        _git_is_detached || git switch -c "${samourai_commitish}" 2>/dev/null
+
+        # Delete old local branch
+        git branch -d "${_branch}" 1>/dev/null
+    fi
 }
 
 #
@@ -1417,20 +1443,29 @@ EOF
         # Fetch remotes
         git fetch --all --tags --force &>/dev/null
 
-        # Reset to upstream snapshot
-        git reset --hard "@{upstream}" 1>/dev/null
-
         # Clean up
         git clean -dx --force &>/dev/null
 
-        # Reset to ronin_dojo_branch value
-        git reset --hard "${ronin_dojo_branch}" 1>/dev/null
+        # Check if on existing branch
+        if [ ! "${ronin_dojo_branch#*/}" = "${_branch}" ]; then
+            git checkout -b "${ronin_dojo_branch}" 1>/dev/null
+
+            # Delete old local branch
+            git branch -d "${_branch}" 1>/dev/null
+        fi
     else
         cat <<EOF > "$HOME"/ronin-update.sh
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${ronin_dojo_branch#*/}" "${ronin_dojo_repo}" 2>/dev/null
+git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" dojo 2>/dev/null
+
+# Switch over to a branch if in detached state. Usually this happens
+# when you clone a tag instead of a branch
+cd dojo || exit
+
+git symbolic-ref -q HEAD || git switch -c "${ronin_dojo_branch}"
+
 ${red}
 ***
 Upgrade Complete...
