@@ -1105,12 +1105,10 @@ _dojo_update() {
 
     # Check if on existing branch
     if [ ! "${samourai_commitish#*/}" = "${_branch}" ]; then
-        git checkout -b "${samourai_commitish}" dojo 1>/dev/null
+        git checkout -b "${samourai_commitish}" 1>/dev/null
 
         # Switch over to a branch if in detached state. Usually this happens
         # when you clone a tag instead of a branch
-        cd dojo || exit
-
         _git_is_detached || git switch -c "${samourai_commitish}" 2>/dev/null
 
         # Delete old local branch
@@ -1458,7 +1456,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" dojo 2>/dev/null
+git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch
