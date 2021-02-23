@@ -1100,7 +1100,7 @@ _dojo_update() {
 
         # Switch over to a branch if in detached state. Usually this happens
         # when you clone a tag instead of a branch
-        _git_is_detached 2>/dev/null || git switch -c "${samourai_commitish}" 2>/dev/null
+        _git_is_detached 1>/dev/null || git switch -c "${samourai_commitish}" 2>/dev/null
 
         # Delete old local branch is available
         if test "${_branch}" && [ "${_branch}" != "master" ]; then

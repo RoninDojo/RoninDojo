@@ -76,7 +76,7 @@ git clone -q -b "${samourai_commitish#*/}" "$samourai_repo" dojo 2>/dev/null
 # when you clone a tag instead of a branch
 cd dojo || exit
 
-_git_is_detached 2>/dev/null || git switch -c "${samourai_commitish}" 2>/dev/null
+_git_is_detached 1>/dev/null || git switch -c "${samourai_commitish}" 2>/dev/null
 
 # Switch to $samourai_commitish
 cd "${dojo_path}" || exit
