@@ -1448,7 +1448,7 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
+git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch
