@@ -351,6 +351,8 @@ _sleep 3
 # Setup torrc
 #
 _setup_tor() {
+    _load_user_conf
+
     # If the setting is already active, assume user has configured it already
     if ! grep -E "^\s*DataDirectory\s+.+$" /etc/tor/torrc 1>/dev/null; then
         cat <<TOR_CONFIG
