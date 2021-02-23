@@ -1100,9 +1100,6 @@ _dojo_update() {
     # Fetch remotes
     git fetch --all --tags --force &>/dev/null
 
-    # Clean up
-    git clean -dx --force &>/dev/null
-
     # Check if on existing branch
     if [ ! "${samourai_commitish#*/}" = "${_branch}" ]; then
         git checkout -b "${samourai_commitish}" 1>/dev/null
@@ -1442,9 +1439,6 @@ EOF
 
         # Fetch remotes
         git fetch --all --tags --force &>/dev/null
-
-        # Clean up
-        git clean -dx --force &>/dev/null
 
         # Check if on existing branch
         if [ ! "${ronin_dojo_branch#*/}" = "${_branch}" ]; then
