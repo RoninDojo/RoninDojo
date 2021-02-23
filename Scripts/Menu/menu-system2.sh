@@ -118,15 +118,15 @@ EOF
         # tor backup must happen prior to dojo uninstall
 
         # Check if applications need to be uninstalled
-        _is_specter && _specter_uninstall || exit
+        _is_specter && _specter_uninstall
 
-        _is_bisq && _bisq_uninstall || exit
+        _is_bisq && _bisq_uninstall
 
-        _is_mempool && _mempool_uninstall || exit
+        _is_mempool && _mempool_uninstall
 
-        _is_ronin_ui_backend && _ronin_ui_uninstall || exit
+        _is_ronin_ui_backend && _ronin_ui_uninstall
 
-        _is_fan_control && _fan_control_uninstall || exit
+        _is_fan_control && _fan_control_uninstall
 
         if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
             cd "${HOME}"/Whirlpool-Stats-Tool || exit
