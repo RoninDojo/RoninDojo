@@ -109,6 +109,12 @@ _sleep 10 --msg "Updating in"
         _update_ronin
         # see functions.sh
 
+        # Source update script
+        . "$HOME"/RoninDojo/Scripts/update.sh
+
+        # Migrate user.conf variables to lowercase
+        _update_10
+
         if ! _ronin_ui_update_check; then
             cat <<EOF
 ${red}
