@@ -1094,7 +1094,7 @@ _dojo_update() {
     git fetch --all --tags --force &>/dev/null
 
     # Check if on existing branch
-    if [ ! "${samourai_commitish#*/}" = "${_branch}" ]; then
+    if [ ! "${samourai_commitish}" = "${_branch}" ]; then
         git checkout -b "${samourai_commitish}" 1>/dev/null
 
         # Switch over to a branch if in detached state. Usually this happens
@@ -1102,7 +1102,7 @@ _dojo_update() {
         _git_is_detached 2>/dev/null || git switch -c "${samourai_commitish}" 2>/dev/null
 
         # Delete old local branch is available
-        if test "${_branch}"; then
+        if test "${_branch}" && [ "${_branch}" != "master" ]; then
             git branch -d "${_branch}" 1>/dev/null
         fi
     fi
@@ -1434,11 +1434,11 @@ EOF
         git fetch --all --tags --force &>/dev/null
 
         # Check if on existing branch
-        if [ ! "${ronin_dojo_branch#*/}" = "${_branch}" ]; then
+        if [ ! "${ronin_dojo_branch}" = "${_branch}" ]; then
             git checkout -b "${ronin_dojo_branch}" 1>/dev/null
 
             # Delete old local branch if available
-            if test "${_branch}"; then
+            if test "${_branch}" && [ "${_branch}" != "master" ]; then
                 git branch -d "${_branch}" 1>/dev/null
             fi
         fi
@@ -1453,7 +1453,7 @@ git clone -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 # when you clone a tag instead of a branch
 cd dojo || exit
 
-git symbolic-ref -q HEAD || git switch -c "${ronin_dojo_branch}"
+git symbolic-ref -q HEAD || git switch -c "${ronin_dojo_branch}" 2>/dev/null
 
 ${red}
 ***
