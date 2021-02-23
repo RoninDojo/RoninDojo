@@ -1095,7 +1095,7 @@ _dojo_update() {
 
     # Check if on existing branch
     if [ ! "${samourai_commitish}" = "${_branch}" ]; then
-        git checkout -b "${samourai_commitish}" 1>/dev/null
+        git checkout -b "${samourai_commitish}" 2>/dev/null
 
         # Switch over to a branch if in detached state. Usually this happens
         # when you clone a tag instead of a branch
@@ -1435,7 +1435,7 @@ EOF
 
         # Check if on existing branch
         if [ ! "${ronin_dojo_branch}" = "${_branch}" ]; then
-            git checkout -b "${ronin_dojo_branch}" 1>/dev/null
+            git checkout -b "${ronin_dojo_branch}" 2>/dev/null
 
             # Delete old local branch if available
             if test "${_branch}" && [ "${_branch}" != "master" ]; then

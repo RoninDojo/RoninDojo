@@ -5,7 +5,7 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 cd "$HOME" || exit
-git clone "$boltzmann_repo" &>/dev/null
+git clone -q "$boltzmann_repo" &>/dev/null
 cd boltzmann || exit
 # pull Boltzmann
 

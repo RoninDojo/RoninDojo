@@ -70,7 +70,7 @@ ${nc}
 EOF
 
 cd "$HOME" || exit
-git clone -b "${samourai_commitish#*/}" "$samourai_repo" dojo 2>/dev/null
+git clone -q -b "${samourai_commitish#*/}" "$samourai_repo" dojo 2>/dev/null
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch

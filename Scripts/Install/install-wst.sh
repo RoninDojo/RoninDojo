@@ -15,7 +15,7 @@ _sleep
 
 cd "$HOME" || exit
 
-git clone "${whirlpool_stats_repo}" Whirlpool-Stats-Tool 2>/dev/null
+git clone -q "${whirlpool_stats_repo}" Whirlpool-Stats-Tool 2>/dev/null
 # download whirlpool stat tool
 
 # check for python-pip and install if not found
