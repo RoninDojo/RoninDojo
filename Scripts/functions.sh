@@ -1838,9 +1838,9 @@ EOF"
 _is_specter(){
     if [ -d "$HOME"/.specter ]; then
         return 0
-    else
-        return 1
     fi
+
+    return 1
 }
 
 #
