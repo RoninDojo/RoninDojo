@@ -1091,7 +1091,7 @@ _dojo_update() {
     _branch=$(_git_current_branch)
 
     # Fetch remotes
-    git fetch --all --tags --force &>/dev/null
+    git fetch -q --all --tags --force
 
     # Check if on existing branch
     if [ ! "${samourai_commitish}" = "${_branch}" ]; then
@@ -1431,7 +1431,7 @@ EOF
         cd "$HOME/RoninDojo" || exit
 
         # Fetch remotes
-        git fetch --all --tags --force &>/dev/null
+        git fetch -q --all --tags --force
 
         # Check if on existing branch
         if [ ! "${ronin_dojo_branch}" = "${_branch}" ]; then
