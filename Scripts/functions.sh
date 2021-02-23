@@ -1017,14 +1017,6 @@ EOF
 # Setup mempool docker variables
 #
 _mempool_conf() {
-    cat <<EOF
-${red}
-***
-Installing Mempool Space Visualizer...
-***
-${nc}
-EOF
-
     local mempool_conf bitcoind_conf MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
 
     bitcoind_conf="conf"
