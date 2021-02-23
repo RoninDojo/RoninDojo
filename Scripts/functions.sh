@@ -28,6 +28,7 @@ _main() {
     _update_08 # Make sure mnt-usb.mount is available
     _update_09 # Migrate bitcoin ibd data to new backup directory
     _update_10 # Migrate user.conf variables to lowercase
+    _update_11 # Migrate to new ui backend tor location
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then

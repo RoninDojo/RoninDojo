@@ -172,3 +172,13 @@ _update_10() {
         done
     fi
 }
+
+# Migrate to new ui backend tor location
+_update_11() {
+    if grep "/var/lib/tor/hidden_service_ronin_backend" /etc/tor/torrc 1>/dev/null; then
+        sudo sed -i 's:/var/lib/tor/hidden_service_ronin_backend/:/mnt/usb/tor/hidden_service_ronin_backend/:' /etc/tor/torrc
+        sudo rm -rf /var/lib/tor/hidden_service_ronin_backend
+
+        sudo systemctl restart tor
+    fi
+}
