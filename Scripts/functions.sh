@@ -391,7 +391,6 @@ TOR_DIR
 
     if ! systemctl is-active --quiet tor; then
         sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
-        #sudo sed -i '/Type=notify/i\User=tor' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
         sudo systemctl restart tor
     fi
