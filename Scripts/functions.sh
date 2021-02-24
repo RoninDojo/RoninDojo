@@ -1066,45 +1066,95 @@ _mempool_urls_to_local_btc_explorer() {
 }
 
 #
-# git current branch
+# git current branch or tag reference. First command checks for tags.
 #
-_git_current_branch() {
-    git branch --show-current
+_git_head() {
+    if ! git describe --exact-match HEAD 2>/dev/null; then # on branch
+        git branch --show-current
+    fi
 }
 
 #
-# git check if detached state
+# git reference type a.k.a is it a branch or tag?
 #
-_git_is_detached() {
-    git symbolic-ref -q HEAD
+_git_ref_type() {
+    local _ref
+
+    # Check if argument was passed
+    if [ -z "$1" ]; then
+        _ref=$(_git_head)
+    else
+        _ref=$1
+    fi
+
+    if git show-ref -q --verify "refs/remotes/origin/${_ref#*/}" 2>/dev/null; then
+        # Valid branch
+        return 3
+    elif git show-ref -q --verify "refs/tags/${_ref#*/}" 2>/dev/null; then
+        # Valid tag
+        return 2
+    else
+        # Invalid reference, exit script
+        return 1
+    fi
 }
 
 #
 # Update Samourai Dojo Repository
 #
 _dojo_update() {
-    local _branch
+    local _head _ret
 
     _load_user_conf
 
     cd "${dojo_path}" || exit
 
-    _branch=$(_git_current_branch)
+    # Validate current branch from user.conf
+    _git_ref_type "${samourai_commitish#*/}"
+    _ret=$?
+
+    # Validate branch/tag reference
+    if ((_ret==1)); then
+        cat <<EOF
+${red}
+***
+Invalid branch or tag name for ${samourai_commitish}!!!
+***
+${nc}
+EOF
+        exit
+    fi
+
+    # Check current branch/tag
+    _head=$(_git_head)
 
     # Fetch remotes
     git fetch -q --all --tags --force
 
-    # Check if on existing branch
-    if [ ! "${samourai_commitish}" = "${_branch}" ]; then
-        git checkout -b "${samourai_commitish}" 2>/dev/null
+    # Check if on existing branch/tag
+    if [ "${samourai_commitish}" != "${_head}" ]; then
+        _git_ref_type
+        _ret=$?
 
-        # Switch over to a branch if in detached state. Usually this happens
-        # when you clone a tag instead of a branch
-        _git_is_detached 1>/dev/null || git switch -c "${samourai_commitish}" 2>/dev/null
+        if ((_ret==3)); then
+            # valid branch
+            git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
+        else
+            # valid tag
+            git checkout -q "${samourai_commitish}" -t "${samourai_commitish}"
+        fi
 
-        # Delete old local branch is available
-        if test "${_branch}" && [ "${_branch}" != "master" ]; then
-            git branch -d "${_branch}" 1>/dev/null
+        # Delete old local branch
+        if test "${_head}" && [ "${_head}" != "master" ]; then
+            git branch -d "${_head}"
+        fi
+    else # On same branch/tag
+        _git_ref_type
+        _ret=$?
+
+        if ((_ret==3)); then
+            # valid branch so git pull
+            git pull -q --rebase=true
         fi
     fi
 }
