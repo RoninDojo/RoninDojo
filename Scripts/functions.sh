@@ -1148,7 +1148,7 @@ EOF
         fi
 
         # Delete old local branch
-        if test "${_head}" && [ "${_head}" != "master" ]; then
+        if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)); then
             git branch -d "${_head}"
         fi
     else # On same branch/tag
