@@ -1472,9 +1472,29 @@ _remove_ipv6() {
 # Update RoninDojo
 #
 _update_ronin() {
+    local _head _ret
+
     _load_user_conf
 
     if [ -d "$HOME"/RoninDojo/.git ]; then
+        cd "$HOME/RoninDojo" || exit
+
+        # Validate current branch from user.conf
+        _git_ref_type "${ronin_dojo_branch#*/}"
+        _ret=$?
+
+        # Validate branch/tag reference
+        if ((_ret==1)); then
+            cat <<EOF
+${red}
+***
+Invalid branch or tag name for ${ronin_dojo_branch}!!!
+***
+${nc}
+EOF
+            exit
+        fi
+
         cat <<EOF
 ${red}
 ***
@@ -1482,18 +1502,56 @@ Git repo found, downloading updates...
 ***
 ${nc}
 EOF
-        cd "$HOME/RoninDojo" || exit
+
+        # Validate current branch from user.conf
+        _git_ref_type "${ronin_dojo_branch#*/}"
+        _ret=$?
+
+        # Validate branch/tag reference
+        if ((_ret==1)); then
+            cat <<EOF
+${red}
+***
+Invalid branch or tag name for ${ronin_dojo_branch}!!!
+***
+${nc}
+EOF
+            exit
+        fi
+
+        # Check current branch/tag
+        _head=$(_git_head)
 
         # Fetch remotes
         git fetch -q --all --tags --force
 
-        # Check if on existing branch
-        if [ ! "${ronin_dojo_branch}" = "${_branch}" ]; then
-            git checkout -b "${ronin_dojo_branch}" 2>/dev/null
+        # reset any local changes to HEAD
+        git reset -q --hard HEAD
 
-            # Delete old local branch if available
-            if test "${_branch}" && [ "${_branch}" != "master" ]; then
-                git branch -d "${_branch}" 1>/dev/null
+        # Check if on existing branch/tag
+        if [ "${ronin_dojo_branch}" != "${_head}" ]; then
+            _git_ref_type
+            _ret=$?
+
+            if ((_ret==3)); then
+                # valid branch
+                git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
+            else
+                # valid tag
+                git checkout -q "${ronin_dojo_branch}"
+            fi
+
+            # Delete old local branch
+            if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)); then
+                git branch -d "${_head}"
+            fi
+        else # On same branch/tag
+            _git_ref_type
+            _ret=$?
+
+            if ((_ret==3)); then
+                # valid branch so git pull
+                git pull -q --rebase=true
             fi
         fi
     else
@@ -1507,7 +1565,7 @@ git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 # when you clone a tag instead of a branch
 cd dojo || exit
 
-git symbolic-ref -q HEAD || git switch -c "${ronin_dojo_branch}" 2>/dev/null
+git symbolic-ref -q HEAD || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
 
 ${red}
 ***
