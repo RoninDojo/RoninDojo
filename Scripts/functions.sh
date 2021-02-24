@@ -1131,6 +1131,9 @@ EOF
     # Fetch remotes
     git fetch -q --all --tags --force
 
+    # reset any local changes to HEAD
+    git reset -q --hard HEAD
+
     # Check if on existing branch/tag
     if [ "${samourai_commitish}" != "${_head}" ]; then
         _git_ref_type
@@ -1141,7 +1144,7 @@ EOF
             git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
         else
             # valid tag
-            git checkout -q "${samourai_commitish}" -t "${samourai_commitish}"
+            git checkout -q "${samourai_commitish}"
         fi
 
         # Delete old local branch
