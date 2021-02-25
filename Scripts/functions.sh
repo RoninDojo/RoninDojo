@@ -1105,7 +1105,6 @@ _git_ref_type() {
 _dojo_update() {
     local _head _ret
     _sleep 5 --msg "debugging in"
-    set -x
 
     _load_user_conf
 
@@ -1146,7 +1145,7 @@ EOF
             git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
         else
             # valid tag
-            git checkout -q "${samourai_commitish}"
+            git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
         fi
 
         # Delete old local branch
@@ -1162,7 +1161,6 @@ EOF
             git pull -q --rebase=true
         fi
     fi
-    set +x
 }
 
 #
@@ -1541,7 +1539,7 @@ EOF
                 git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
             else
                 # valid tag
-                git checkout -q "${ronin_dojo_branch}"
+                git checkout -q -b "${ronin_dojo_branch}" "${ronin_dojo_branch}"
             fi
 
             # Delete old local branch
