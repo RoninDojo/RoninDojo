@@ -1104,7 +1104,6 @@ _git_ref_type() {
 #
 _dojo_update() {
     local _head _ret
-    _sleep 5 --msg "debugging in"
 
     _load_user_conf
 
@@ -1474,6 +1473,8 @@ _remove_ipv6() {
 #
 _update_ronin() {
     local _head _ret
+    set -x
+    _sleep 4 --msg "debugging in"
 
     # Source update script
     . "$HOME"/RoninDojo/Scripts/update.sh
@@ -1591,6 +1592,8 @@ EOF
 
     # Check TOR
     _setup_tor
+
+    set +x
 }
 
 #
