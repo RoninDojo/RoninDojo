@@ -1473,8 +1473,6 @@ _remove_ipv6() {
 #
 _update_ronin() {
     local _head _ret
-    set -x
-    _sleep 4 --msg "debugging in"
 
     # Source update script
     . "$HOME"/RoninDojo/Scripts/update.sh
@@ -1592,8 +1590,6 @@ EOF
 
     # Check TOR
     _setup_tor
-
-    set +x
 }
 
 #
