@@ -8,6 +8,9 @@
 # Source update script
 . "$HOME"/RoninDojo/Scripts/update.sh
 
+# Create Updates history directory
+test ! -d "$HOME"/.config/RoninDojo/data/updates && mkdir -p "$HOME"/.config/RoninDojo/data/updates
+
 # Migrate user.conf variables to lowercase
  _update_10
 
