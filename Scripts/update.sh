@@ -43,6 +43,9 @@ EOF
             sudo systemctl reboot
         fi
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/01-"$(date +%m-%d-%Y)"
 }
 
 # Remove old whirlpool stats tool directory
@@ -50,6 +53,9 @@ _update_02() {
     if [ -d "$HOME"/wst ]; then
         rm -rf "$HOME"/wst
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/02-"$(date +%m-%d-%Y)"
 }
 
 # Add password less reboot/shutdown privileges to sudo
@@ -61,6 +67,9 @@ ALL ALL=(root) NOPASSWD: /usr/bin/systemctl reboot, /usr/bin/systemctl poweroff
 EOF"
         fi
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/03-"$(date +%m-%d-%Y)"
 }
 
 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges to sudo
@@ -73,6 +82,9 @@ ALL ALL=(root) NOPASSWD: /usr/bin/umount, /usr/bin/mount, /usr/bin/mkswap, /usr/
 EOF"
         fi
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/04-"$(date +%m-%d-%Y)"
 }
 
 # Fix tor unit file
@@ -90,6 +102,9 @@ _update_05() {
         sudo systemctl daemon-reload
         _is_active tor
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/05-"$(date +%m-%d-%Y)"
 }
 
 # Modify pacman.conf and add ignore packages
@@ -97,6 +112,9 @@ _update_06() {
     if ! grep "${pkg_ignore[0]}" /etc/pacman.conf 1>/dev/null; then
         sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = ${pkg_ignore[*]}:" /etc/pacman.conf
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/06-"$(date +%m-%d-%Y)"
 }
 
 # Copy user.conf.example to correct location
@@ -104,6 +122,9 @@ _update_07() {
     if [ ! -f "$HOME"/.config/RoninDojo/user.conf ] ; then
         cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/07-"$(date +%m-%d-%Y)"
 }
 
 # Create mnt-usb.mount if missing and system is already mounted.
@@ -144,6 +165,9 @@ EOF"
 
         ronin
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/08-"$(date +%m-%d-%Y)"
 }
 
 # Migrate bitcoin ibd data to new backup directory
@@ -160,6 +184,9 @@ _update_09() {
         # Remove legacy directory
         rm -rf "${install_dir}"/bitcoin
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/09-"$(date +%m-%d-%Y)"
 }
 
 # Migrate user.conf variables to lowercase
@@ -171,6 +198,9 @@ _update_10() {
             fi
         done
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/10-"$(date +%m-%d-%Y)"
 }
 
 # Migrate to new ui backend tor location
@@ -181,4 +211,7 @@ _update_11() {
 
         sudo systemctl restart tor
     fi
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/11-"$(date +%m-%d-%Y)"
 }

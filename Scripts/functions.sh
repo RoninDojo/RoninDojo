@@ -9,6 +9,9 @@ _main() {
     # Create RoninDojo config directory
     test ! -d "$HOME"/.config/RoninDojo && mkdir -p "$HOME"/.config/RoninDojo
 
+    # Create Updates history directory
+    test ! -d "$HOME"/.config/RoninDojo/data/updates && mkdir -p "$HOME"/.config/RoninDojo/data/updates
+
     if [ ! -f "$HOME/.config/RoninDojo/.run" ]; then
         _sleep 5 --msg "Welcome to RoninDojo. Loading in"
         touch "$HOME/.config/RoninDojo/.run"
@@ -18,17 +21,17 @@ _main() {
     # Source update script
     . "$HOME"/RoninDojo/Scripts/update.sh
 
-    _update_01 # Check for bridge-utils version update
-    _update_02 # Migrate WST to new location and install method
-    _update_03 # Add password less reboot/shutdown privileges
-    _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
-    _update_05 # Fix tor unit file
-    _update_06 # Modify pacman to Ignore specific packages
-    _update_07 # Set user.conf in appropriate place
-    _update_08 # Make sure mnt-usb.mount is available
-    _update_09 # Migrate bitcoin ibd data to new backup directory
-    _update_10 # Migrate user.conf variables to lowercase
-    _update_11 # Migrate to new ui backend tor location
+    test -f "$HOME"/.config/RoninDojo/data/updates/01-* || _update_01 # Check for bridge-utils version update
+    test -f "$HOME"/.config/RoninDojo/data/updates/02-* || _update_02 # Migrate WST to new location and install method
+    test -f "$HOME"/.config/RoninDojo/data/updates/03-* || _update_03 # Add password less reboot/shutdown privileges
+    test -f "$HOME"/.config/RoninDojo/data/updates/04-* || _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
+    test -f "$HOME"/.config/RoninDojo/data/updates/05-* || _update_05 # Fix tor unit file
+    test -f "$HOME"/.config/RoninDojo/data/updates/06-* || _update_06 # Modify pacman to Ignore specific packages
+    test -f "$HOME"/.config/RoninDojo/data/updates/07-* || _update_07 # Set user.conf in appropriate place
+    test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
+    test -f "$HOME"/.config/RoninDojo/data/updates/09-* || _update_09 # Migrate bitcoin ibd data to new backup directory
+    test -f "$HOME"/.config/RoninDojo/data/updates/10-* || _update_10 # Migrate user.conf variables to lowercase
+    test -f "$HOME"/.config/RoninDojo/data/updates/11-* || _update_11 # Migrate to new ui backend tor location
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
