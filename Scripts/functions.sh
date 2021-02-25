@@ -1475,6 +1475,12 @@ _remove_ipv6() {
 _update_ronin() {
     local _head _ret
 
+    # Source update script
+    . "$HOME"/RoninDojo/Scripts/update.sh
+
+    # Migrate user.conf variables to lowercase
+    _update_10
+
     _load_user_conf
 
     if [ -d "$HOME"/RoninDojo/.git ]; then

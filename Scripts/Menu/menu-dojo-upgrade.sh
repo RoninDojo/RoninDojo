@@ -5,12 +5,6 @@
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-# Source update script
-. "$HOME"/RoninDojo/Scripts/update.sh
-
-# Migrate user.conf variables to lowercase
-_update_10
-
 _load_user_conf
 
 _check_dojo_perms "${dojo_path_my_dojo}"
