@@ -1104,6 +1104,8 @@ _git_ref_type() {
 #
 _dojo_update() {
     local _head _ret
+    _sleep 5 --msg "debugging in"
+    set -x
 
     _load_user_conf
 
@@ -1160,6 +1162,7 @@ EOF
             git pull -q --rebase=true
         fi
     fi
+    set +x
 }
 
 #
