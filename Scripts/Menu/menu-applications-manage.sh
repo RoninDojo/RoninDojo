@@ -39,11 +39,11 @@ _check_indexer
 ret=$?
 
 if ((ret==0)); then
-    indexer_name="Samourai Indexer"
+    indexer_name="Install Samourai Indexer"
 elif ((ret==1)); then
-    indexer_name="Electrum Rust Server"
+    indexer_name="Install Electrum Indexer"
 elif ((ret==2)); then
-    indexer_name="Bitcoin Indexer"
+    indexer_name="Install Indexer"
 fi
 
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
@@ -102,7 +102,7 @@ EOF
             ;;
         4)
             case "${indexer_name}" in
-                "Samourai Indexer")
+                "Install Samourai Indexer")
                     cat <<EOF
 ${red}
 ***
@@ -116,7 +116,7 @@ EOF
 
                     _set_indexer
                     ;;
-                "Electrum Rust Server")
+                "Install Electrum Indexer")
                     cat <<EOF
 ${red}
 ***
@@ -128,7 +128,7 @@ EOF
 
                     bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     ;;
-                "Bitcoin Indexer")
+                "Install Indexer")
                     cat <<EOF
 ${red}
 ***
