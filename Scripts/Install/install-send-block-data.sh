@@ -30,15 +30,48 @@ EOF
 _sleep 3
 
 if [ -b "${secondary_storage}" ]; then
-    cat <<EOF
+    # Make sure /mnt/usb UUID is not same as $secondary_storage
+    if [[ $(lsblk -no UUID "$(findmnt -n -o SOURCE --target "${install_dir}")") != $(lsblk -no UUID "${secondary_storage}") ]]; then
+        cat <<EOF
 ${red}
 ***
-Your backup drive partition has been detected...
+Your new backup drive has been detected...
 ***
 ${nc}
 EOF
-    _sleep 2
-    # checks for ${secondary_storage}
+        _sleep 2
+        # checks for ${secondary_storage}
+    else
+        cat <<EOF
+${red}
+***
+Possible drive rearrangement occured. Checking if ${primary_storage} is available to format...
+***
+${nc}
+EOF
+        # Make sure device does not contain an existing filesystem
+        if [ -b "${primary_storage}" ] && [ -n "$(lsblk -no FSTYPE "${primary_storage}")" ]; then
+            # Drive got rearranged
+            secondary_storage="${primary_storage}"
+        elif [ -b "${primary_storage}" ] && [ -z "$(lsblk -no FSTYPE "${primary_storage}")" ]; then
+            if ! "${backup_format}"; then
+                cat <<EOF
+${red}
+***
+${primary_storage} contains an existing filesystem and cannot be formatted. If you wish to use this drive
+for backup purposes. Set backup_format=true in ${HOME}/.config/RoninDojo/user.conf
+***
+${nc}
+EOF
+                _pause return
+
+                # press any key to return to menu-system-storage.sh
+                bash -c "${ronin_system_storage}"
+            else
+                secondary_storage="${primary_storage}"
+            fi
+        fi
+    fi
 else
     cat <<EOF
 ${red}
