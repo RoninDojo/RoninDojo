@@ -2154,7 +2154,7 @@ _specter_upgrade(){
             cat <<EOF
 ${red}
 ***
-Proceeding to upgrade to $specter_version...
+Upgrading Specter to version $specter_version...
 ***
 ${nc}
 EOF
