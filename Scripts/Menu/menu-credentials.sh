@@ -96,11 +96,14 @@ ${nc}
 EOF
             fi
 
+            _sleep 2
+
+            _pause return
             bash -c "${ronin_credentials_menu}"
             # return to menu
             ;;
         4)
-            if ! _mempool_check ; then
+            if ! _is_mempool ; then
                 cat <<EOF
 ${red}
 ***
