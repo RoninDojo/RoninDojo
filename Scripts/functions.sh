@@ -1437,7 +1437,7 @@ _remove_ipv6() {
 #
 # Update RoninDojo
 #
-_update_ronin() {
+_ronindojo_update() {
     local _head _ret
 
     # Source update script

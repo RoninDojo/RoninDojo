@@ -106,7 +106,7 @@ _sleep 10 --msg "Updating in"
         test -f "$HOME"/ronin-update.sh && sudo rm "$HOME"/ronin-update.sh
         # Remove old update file
 
-        _update_ronin
+        _ronindojo_update
         # see functions.sh
 
         if ! _ronin_ui_update_check; then
