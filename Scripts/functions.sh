@@ -69,8 +69,8 @@ EOF
     fi
 
     # Remove any old legacy fstab entries when systemd.mount is enabled
-    if [ -f /etc/systemd/system/mnt-usb.mount ] || [ -f /etc/systemd/system/mnt-usb1.mount ]; then
-        if [ "$(systemctl is-enabled mnt-usb.mount 2>/dev/null)" = "enabled" ] || [ "$(systemctl is-enabled mnt-usb1.mount 2>/dev/null)" = "enabled" ]; then
+    if [ -f /etc/systemd/system/mnt-usb.mount ] || [ -f /etc/systemd/system/mnt-backup.mount ]; then
+        if [ "$(systemctl is-enabled mnt-usb.mount 2>/dev/null)" = "enabled" ] || [ "$(systemctl is-enabled mnt-backup.mount 2>/dev/null)" = "enabled" ]; then
             if ! _remove_fstab; then
                 cat <<EOF
 ${red}
@@ -1405,8 +1405,8 @@ EOF
 # Remove old fstab entries in favor of systemd.mount.
 #
 _remove_fstab() {
-    if grep -E '(^UUID=.* \/mnt\/usb1? ext4|\/mnt\/usb1? ext4)' /etc/fstab 1>/dev/null; then
-        sudo sed -i '/\/mnt\/usb1\? ext4/d' /etc/fstab
+    if grep -E '(^UUID=.* \/mnt\/(usb1?|backup) ext4)' /etc/fstab 1>/dev/null; then
+        sudo sed -i '/\/mnt\/usb\|backup ext4/d' /etc/fstab
         return 1
     fi
 
