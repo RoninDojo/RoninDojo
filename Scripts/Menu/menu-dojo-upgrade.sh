@@ -11,8 +11,11 @@
 # Create Updates history directory
 test ! -d "$HOME"/.config/RoninDojo/data/updates && mkdir -p "$HOME"/.config/RoninDojo/data/updates
 
+# Remove update file from a previous upgrade
+test -f "$HOME"/.config/RoninDojo/data/updates/10-* && rm "$HOME"/.config/RoninDojo/data/updates/10-*
+
 # Migrate user.conf variables to lowercase
- _update_10
+_update_10
 
 _load_user_conf
 
