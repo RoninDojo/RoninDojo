@@ -108,10 +108,8 @@ EOF
 _sleep 2
 
 if sudo test -d "${bitcoin_ibd_backup_dir}"/blocks; then
-    for dir in blocks chainstate indexes; do
-        sudo cp -a "${bitcoin_ibd_backup_dir}"/"${dir}" "${docker_volume_bitcoind}"/_data/
-        # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
-    done
+    # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+    sudo cp -av "${bitcoin_ibd_backup_dir}"/{blocks,chainstate,indexes} "${docker_volume_bitcoind}"/_data/
 else
     sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
     cat <<BACKUP
