@@ -90,6 +90,13 @@ if sudo test -d "${storage_mount}"/system-setup-salvage; then
     sudo mv "${storage_mount}"/system-setup-salvage "${bitcoin_ibd_backup_dir}" 1>/dev/null
 fi
 
+# Migrate from old $bitcoin_ibd_backup_dir path to new
+if sudo test -d "${storage_mount}"/bitcoin; then
+    sudo test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
+    sudo mv "${storage_mount}"/bitcoin/* "${bitcoin_ibd_backup_dir}"/
+    sudo rm -rf "${storage_mount}"/bitcoin
+fi
+
 cat <<EOF
 ${red}
 ***
