@@ -1250,43 +1250,6 @@ EOF
 }
 
 #
-# Checks if mempool.space is enabled
-#
-_mempool_check() {
-    _load_user_conf
-
-    # Check that ${install_dir} is mounted
-    if ! findmnt "${install_dir}" 1>/dev/null; then
-        cat <<EOF
-${red}
-***
-Missing drive mount at ${install_dir}!
-***
-${nc}
-EOF
-        _sleep 3
-
-        cat <<EOF
-${red}
-***
-Please contact support for assistance...
-***
-${nc}
-EOF
-        _sleep 5 --msg "Returning to main menu in"
-        ronin
-    fi
-
-    _is_active docker
-
-    if [ -d "${dojo_path}" ] && grep "MEMPOOL_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-mempool.conf 1>/dev/null ; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-#
 # Source DOJO confs
 #
 _source_dojo_conf() {

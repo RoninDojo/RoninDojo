@@ -21,7 +21,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
 ${red}
 ***
@@ -49,7 +49,7 @@ EOF
         fi
         ;;
     2)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
 ${red}
 ***
@@ -76,7 +76,7 @@ EOF
         fi
         ;;
     3)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
 ${red}
 ***
@@ -107,7 +107,7 @@ EOF
         fi
         ;;
     4)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
 ${red}
 ***

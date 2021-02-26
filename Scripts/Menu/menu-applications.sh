@@ -23,7 +23,7 @@ clear
 
 case $CHOICE in
     1)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
 ${red}
 ***
