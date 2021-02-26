@@ -315,7 +315,7 @@ Electrs Tor URL         = $v3_addr_electrs
 EOF
             fi
 
-            if _is_mempoolthen
+            if _is_mempool; then
                 cat <<EOF
 ${red}
 ***
