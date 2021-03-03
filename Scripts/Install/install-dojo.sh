@@ -279,7 +279,7 @@ EOF
     # if the user is AFK there may be timeout
 
     # Backup dojo credentials
-    _dojo_backup
+    "${dojo_conf_backup}" && _dojo_backup
 
     # Restore any saved IBD from a previous uninstall
     "${dojo_data_bitcoind_backup}" && _dojo_data_bitcoind restore
