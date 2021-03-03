@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck disable=SC2034
+# shellcheck disable=SC2034,SC2154 source=/dev/null
 
 #
 # Dojo Configuration Values
