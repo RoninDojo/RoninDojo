@@ -155,7 +155,7 @@ ${nc}
 EOF
             pipenv --rm &>/dev/null
             cd - 1>/dev/null || exit
-            rm -rf "${HOME}"/Whirlpool-Stats-Tool
+            rm -rf "${HOME}"/boltzmann
         fi
 
         cat <<EOF
