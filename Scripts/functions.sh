@@ -1301,9 +1301,6 @@ _select_yaml_files() {
 # Stop Samourai Dojo containers
 #
 _stop_dojo() {
-    local dojo_path_my_dojo
-    dojo_path_my_dojo="$HOME/dojo/docker/my-dojo"
-
     if [ ! -d "${dojo_path}" ]; then
         cat <<EOF
 ${red}
@@ -1318,8 +1315,8 @@ EOF
     fi
     # is dojo installed?
 
-    if [ -d "${dojo_path}" ] && [ "$(docker inspect --format="{{.State.Running}}" db 2> /dev/null)" = "true" ]; then
-        # checks if dojo is not running (check the db container), if not running, tells user dojo is alredy stopped
+    if docker inspect --format="{{.State.Running}}" db 1>/dev/null; then
+        # checks if dojo is running (check the db container), if not running, tells user dojo is alredy stopped
 
         cd "${dojo_path_my_dojo}" || exit
     else
