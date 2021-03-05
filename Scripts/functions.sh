@@ -1867,7 +1867,10 @@ _mem_total() {
 
     _load_user_conf
 
-    awk -v _percentage="$_percentage" '/MemTotal/ {printf( "%d\n", $2 / 1024 / _percentage )}' /proc/meminfo
+    # We only return if ${BITCOIND_DB_CACHE} variable is not set in user.conf
+    if [ -z "${BITCOIND_DB_CACHE}" ]; then
+        awk -v _percentage="$_percentage" '/MemTotal/ {printf( "%d\n", $2 / 1024 / _percentage )}' /proc/meminfo
+    fi
 }
 
 #
