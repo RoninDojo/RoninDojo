@@ -25,7 +25,7 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/02-* || _update_02 # Migrate WST to new location and install method
     test -f "$HOME"/.config/RoninDojo/data/updates/03-* || _update_03 # Add password less reboot/shutdown privileges
     test -f "$HOME"/.config/RoninDojo/data/updates/04-* || _update_04 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges
-    test -f "$HOME"/.config/RoninDojo/data/updates/05-* || _update_05 # Fix tor unit file
+    _update_05 # Check on tor unit service
     test -f "$HOME"/.config/RoninDojo/data/updates/06-* || _update_06 # Modify pacman to Ignore specific packages
     test -f "$HOME"/.config/RoninDojo/data/updates/07-* || _update_07 # Set user.conf in appropriate place
     test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available

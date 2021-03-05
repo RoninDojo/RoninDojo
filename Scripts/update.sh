@@ -42,20 +42,20 @@ EOF
             _sleep 10 --msg "Rebooting in"
             sudo systemctl reboot
         fi
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/01-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/01-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Remove old whirlpool stats tool directory
 _update_02() {
     if [ -d "$HOME"/wst ]; then
         rm -rf "$HOME"/wst
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/02-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/02-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Add password less reboot/shutdown privileges to sudo
@@ -65,11 +65,11 @@ _update_03() {
             sudo bash -c "cat <<EOF >>${sudoers_file}
 ALL ALL=(root) NOPASSWD: /usr/bin/systemctl reboot, /usr/bin/systemctl poweroff
 EOF"
+
+            # Finalize
+            touch "$HOME"/.config/RoninDojo/data/updates/03-"$(date +%m-%d-%Y)"
         fi
     fi
-
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/03-"$(date +%m-%d-%Y)"
 }
 
 # Add password less for /usr/bin/{ufw,mount,umount,cat,grep,test,mkswap,swapon,swapoff} privileges to sudo
@@ -81,10 +81,10 @@ ALL ALL=(root) NOPASSWD: /usr/bin/test, /usr/bin/grep, /usr/bin/cat, /usr/bin/uf
 ALL ALL=(root) NOPASSWD: /usr/bin/umount, /usr/bin/mount, /usr/bin/mkswap, /usr/bin/swapon, /usr/bin/swapoff
 EOF"
         fi
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/04-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/04-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Fix tor unit file
@@ -103,29 +103,26 @@ _update_05() {
 
         _is_active tor
     fi
-
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/05-"$(date +%m-%d-%Y)"
 }
 
 # Modify pacman.conf and add ignore packages
 _update_06() {
     if ! grep "${pkg_ignore[0]}" /etc/pacman.conf 1>/dev/null; then
         sudo sed -i "s:^#IgnorePkg   =.*$:IgnorePkg   = ${pkg_ignore[*]}:" /etc/pacman.conf
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/06-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/06-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Copy user.conf.example to correct location
 _update_07() {
     if [ ! -f "$HOME"/.config/RoninDojo/user.conf ] ; then
         cp "$HOME"/RoninDojo/user.conf.example "$HOME"/.config/RoninDojo/user.conf
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/07-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/07-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Create mnt-usb.mount if missing and system is already mounted.
@@ -164,11 +161,11 @@ EOF"
 
         _sleep 4 --msg "Restarting RoninDojo in"
 
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/08-"$(date +%m-%d-%Y)"
+
         ronin
     fi
-
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/08-"$(date +%m-%d-%Y)"
 }
 
 # Migrate bitcoin ibd data to new backup directory
@@ -184,10 +181,10 @@ _update_09() {
 
         # Remove legacy directory
         rm -rf "${install_dir}"/bitcoin
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/09-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/09-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Migrate user.conf variables to lowercase
@@ -198,10 +195,10 @@ _update_10() {
                 sed -i "s/${var}/${var,,}/" "${HOME}"/.config/RoninDojo/user.conf
             fi
         done
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/10-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/10-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Migrate to new ui backend tor location
@@ -211,10 +208,10 @@ _update_11() {
         sudo rm -rf /var/lib/tor/hidden_service_ronin_backend
 
         sudo systemctl restart tor
-    fi
 
-    # Finalize
-    touch "$HOME"/.config/RoninDojo/data/updates/11-"$(date +%m-%d-%Y)"
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/11-"$(date +%m-%d-%Y)"
+    fi
 }
 
 # Set BITCOIND_DB_CACHE to use db_cache_total value if not set
