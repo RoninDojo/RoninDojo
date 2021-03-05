@@ -214,13 +214,13 @@ _update_11() {
     fi
 }
 
-# Set BITCOIND_DB_CACHE to use db_cache_total value if not set
+# Set BITCOIND_DB_CACHE to use bitcoind_db_cache_total value if not set
 _update_12() {
     _load_user_conf
 
-    if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then
-        if findmnt /mnt/usb 1>/dev/null && ! _dojo_check && ! grep BITCOIND_DB_CACHE="$(_mem_total "${db_cache_total}")" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf; then
-            sed -i "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=$(_mem_total "${db_cache_total}")/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
+    if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ] && [ -z "${BITCOIND_DB_CACHE}" ]; then
+        if findmnt /mnt/usb 1>/dev/null && ! _dojo_check && ! grep BITCOIND_DB_CACHE="$(_mem_total "${bitcoind_db_cache_total}")" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf; then
+            sed -i "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=$(_mem_total "${bitcoind_db_cache_total}")/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
 
             # Finalize
             touch "$HOME"/.config/RoninDojo/data/updates/12-"$(date +%m-%d-%Y)"

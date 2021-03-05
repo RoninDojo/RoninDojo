@@ -32,7 +32,7 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/09-* || _update_09 # Migrate bitcoin ibd data to new backup directory
     test -f "$HOME"/.config/RoninDojo/data/updates/10-* || _update_10 # Migrate user.conf variables to lowercase
     test -f "$HOME"/.config/RoninDojo/data/updates/11-* || _update_11 # Migrate to new ui backend tor location
-    test -f "$HOME"/.config/RoninDojo/data/updates/12-* || _update_12 # Set BITCOIND_DB_CACHE to use db_cache_total value if not set
+    test -f "$HOME"/.config/RoninDojo/data/updates/12-* || _update_12 # Set BITCOIND_DB_CACHE to use bitcoind_db_cache_total value if not set
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -1208,7 +1208,7 @@ _dojo_restore() {
     if "${dojo_conf_backup}"; then
         sudo rsync -ac --quiet --delete-before "${dojo_backup_dir}"/conf "${dojo_path_my_dojo}"
 
-        # Apply db_cache_total tweak if needed
+        # Apply bitcoind_db_cache_total tweak if needed
         . "$HOME"/RoninDojo/Scripts/update.sh
 
         test -f "$HOME"/.config/RoninDojo/data/updates/12-* || _update_12
@@ -1858,19 +1858,13 @@ check_swap() {
 }
 
 #
-# Returns percentage value from RAM total. Value may be override with the use of db_cache_total=3
-# which would mean use 30% of RAM for BITCOIND_DB_CACHE value in docker-bitcoind.conf.tpl
+# Returns percentage value from RAM total.
 #
 _mem_total() {
-    local _percentage
-    _percentage=$1
-
     _load_user_conf
 
-    # We only return if ${BITCOIND_DB_CACHE} variable is not set in user.conf
-    if [ -z "${BITCOIND_DB_CACHE}" ]; then
-        awk -v _percentage="$_percentage" '/MemTotal/ {printf( "%d\n", $2 / 1024 / _percentage )}' /proc/meminfo
-    fi
+    # return percentage value based on Total Memory
+    awk -vn="$1" '/MemTotal/ {printf("%d\n", $2 / 1024 * n )}' /proc/meminfo
 }
 
 #
