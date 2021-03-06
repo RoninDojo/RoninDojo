@@ -52,7 +52,7 @@ EOF
     # place logo and ronin main menu script "$HOME"/.bashrc to run at each login
 
     # Adding user to docker group if needed
-    if ! id -a "${ronindojo_user}" 1>/dev/null | grep -q "${ronindojo_user}"; then
+    if ! id -a "${ronindojo_user}" | grep -q "docker"; then
         cat <<EOF
 ${red}
 ***

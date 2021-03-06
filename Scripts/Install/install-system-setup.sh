@@ -282,12 +282,12 @@ _sleep
     fi
 
     if [ -f "${storage_mount}"/swapfile ]; then
-        sudo rm -rf "${storage_mount}"/{swapfile,docker,tor}
+        sudo rm -rf "${storage_mount}"/{swapfile,docker,tor} &>/dev/null
     fi
 
     if findmnt "${storage_mount}" 1>/dev/null; then
         sudo umount "${storage_mount}"
-        sudo rmdir "${storage_mount}"
+        sudo rmdir "${storage_mount}" &>/dev/null
     fi
     # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
@@ -384,7 +384,7 @@ EOF
 
     test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir "${bitcoin_ibd_backup_dir}"
 
-    sudo mv -v "${storage_mount}/${bitcoind_data_dir}/_data/"{blocks,chainstate} "${bitcoin_ibd_backup_dir}"/ 1>/dev/null
+    sudo mv -v "${storage_mount}/${bitcoind_data_dir}/_data/"{blocks,chainstate,indexes} "${bitcoin_ibd_backup_dir}"/ 1>/dev/null
     # moves blockchain salvage data to ${storage_mount} if found
 
     cat <<EOF
@@ -401,11 +401,11 @@ EOF
         test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    sudo rm -rf "${storage_mount}"/{docker,tor,swapfile}
+    sudo rm -rf "${storage_mount}"/{docker,tor,swapfile} &>/dev/null
 
     if findmnt "${storage_mount}" 1>/dev/null; then
         sudo umount "${storage_mount}"
-        sudo rmdir "${storage_mount}"
+        sudo rmdir "${storage_mount}" &>/dev/null
     fi
     # remove docker, tor, swap file directories from ${storage_mount}
     # then unmount and remove ${storage_mount}
