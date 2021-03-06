@@ -1858,13 +1858,59 @@ check_swap() {
 }
 
 #
-# Returns percentage value from RAM total.
+# Returns RAM total or a percentage of it
 #
 _mem_total() {
+    local t
+    t=false
+
     _load_user_conf
 
-    # return percentage value based on Total Memory
-    awk -vn="$1" '/MemTotal/ {printf("%d\n", $2 / 1024 * n )}' /proc/meminfo
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            --total|-t)
+                t=true
+                shift 1
+                ;;
+            [0-9].[0-9])
+                num=$1
+                shift
+                ;;
+        esac
+    done
+
+    if "${t}"; then
+        # returns total
+        awk '/MemTotal/ {printf("%d\n", $2 / 1024)}' /proc/meminfo
+    else
+        # returns percentage
+        awk -vn="$num" '/MemTotal/ {printf("%d\n", $2 / 1024 * n )}' /proc/meminfo
+    fi
+}
+
+#
+# Calculate swapfile size based on available RAM
+#
+_swap_size() {
+    # Calculate swap file size when swapfile_size variable is not set
+    _size="${swapfile_size:-$(_mem_total -t)}"
+
+    for num in 1024 2096; do
+        if [ -z "${swapfile_size}" ]; then
+            # < 2GB set twice RAM total for swapfile
+            if (( num >= 0 && _size <= num )); then
+                _size=$((_size * 2 / 1000))
+                break
+            fi
+
+            # > 2GB
+            if (( num >= 2096 && num <= _size )); then
+                _size=$((_size / 1000))
+                break
+            fi
+        fi
+    done
 }
 
 #

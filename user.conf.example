@@ -58,6 +58,9 @@
 # These values are for the desktop GUI app
 #gui_api=""
 
+# Default swap overrides create_swap creation. Set only in user.conf
+# swapfile_size=2096 # Use only 2G of swap
+
 ##############################
 # Samourai Dojo Credentials  #
 ##############################
