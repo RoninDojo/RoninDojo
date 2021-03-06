@@ -107,8 +107,8 @@ ${nc}
 EOF
     _sleep
 
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
+    sudo ufw default deny incoming &>/dev/null
+    sudo ufw default allow outgoing &>/dev/null
     # setting up uncomplicated firewall
 
     cat <<EOF
@@ -120,7 +120,7 @@ ${nc}
 EOF
     _sleep
 
-    sudo ufw --force enable
+    sudo ufw --force enable &>/dev/null
     sudo systemctl enable ufw 2>/dev/null
     # enabling ufw so /etc/ufw/user.rules file configures properly
 
