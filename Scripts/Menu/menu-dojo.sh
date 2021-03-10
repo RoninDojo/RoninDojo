@@ -62,7 +62,7 @@ EOF
                 # press any key to return to menu
                 ;;
         2)
-            _stop_dojo
+            _dojo_check && _stop_dojo
             _pause return
             bash -c "${ronin_dojo_menu}"
             # press any key to return to menu
@@ -90,10 +90,7 @@ Stopping Dojo...
 ${nc}
 DOJO
                 # Check if db container running before stopping all containers
-                if _dojo_check; then
-                    _stop_dojo
-                fi
-
+                _dojo_check && _stop_dojo
                 cat <<DOJO
 ${red}
 ***

@@ -98,7 +98,7 @@ EOF
 _sleep 2
 
 cd "${dojo_path_my_dojo}" || exit
-_stop_dojo
+_dojo_check && _stop_dojo
 # stop dojo
 
 cat <<EOF

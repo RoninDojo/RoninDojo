@@ -1178,7 +1178,7 @@ Performing Dojo upgrade to finalize changes...
 ${nc}
 EOF
 
-    _stop_dojo
+    _dojo_check && _stop_dojo
     cd "${dojo_path_my_dojo}" || exit
 
     . dojo.sh upgrade --nolog
@@ -1629,13 +1629,13 @@ _check_dojo_perms() {
     cd "${dojo_path_my_dojo}" || exit
 
     if find "${dojo_path}" -user root | grep -q '.'; then
-        _stop_dojo
+        _dojo_check && _stop_dojo
 
         # Change ownership so that we don't
         # need to use sudo ./dojo.sh
         sudo chown -R "${ronindojo_user}:${ronindojo_user}" "${dojo_path}"
     else
-        _stop_dojo
+        _dojo_check && _stop_dojo
     fi
 
     return 0
@@ -2384,7 +2384,7 @@ ${nc}
 EOF
 
                     cd "$dojo_path_my_dojo" || exit
-                    _stop_dojo
+                    _dojo_check && _stop_dojo
 
                     _sleep
 
@@ -2460,7 +2460,7 @@ ${nc}
 EOF
 
                     cd "$dojo_path_my_dojo" || exit
-                    _stop_dojo
+                    _dojo_check && _stop_dojo
 
                     _sleep
 
