@@ -18,6 +18,16 @@ EOF
 
     _pause return
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
+elif [ -f "${ronin_data_dir}"/system-install ]; then
+    cat <<EOF
+${red}
+***
+Previous system install detected. Exiting script...
+***
+${nc}
+EOF
+    _pause return
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 else
     cat <<EOF
 ${red}
@@ -69,6 +79,14 @@ fi
 
 # Update mirrors
 _pacman_update_mirrors
+
+cat <<EOF
+${red}
+***
+Checking package dependencies. Please wait...
+***
+${nc}
+EOF
 
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
@@ -168,7 +186,7 @@ ${nc}
 EOF
     _sleep
 
-    sudo ufw reload
+    sudo ufw reload &>/dev/null
 
     cat <<EOF
 ${red}
@@ -350,6 +368,10 @@ Dojo is ready to be installed!
 ${nc}
 EOF
     _sleep 3
+
+    # Make sure we don't run system install twice
+    touch "${ronin_data_dir}"/system-install
+
     exit
 else
     cat <<EOF
@@ -469,6 +491,10 @@ Dojo is ready to be installed!
 ${nc}
 EOF
     _sleep 2
+
+    # Make sure we don't run system install twice
+    touch "${ronin_data_dir}"/system-install
+
     exit
 else
     cat <<EOF
@@ -585,4 +611,8 @@ Dojo is ready to be installed!
 ${nc}
 EOF
 _sleep 3
+
+# Make sure we don't run system install twice
+touch "${ronin_data_dir}"/system-install
+
 # will continue to dojo install if it was selected on the install menu
