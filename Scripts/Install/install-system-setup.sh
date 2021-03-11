@@ -623,6 +623,8 @@ ${nc}
 EOF
 _sleep 3
 
+_pause continue
+
 # Make sure we don't run system install twice
 touch "${ronin_data_dir}"/system-install
 

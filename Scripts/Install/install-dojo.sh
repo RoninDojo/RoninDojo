@@ -277,9 +277,10 @@ ${nc}
 EOF
     _sleep
 
+    # Press to continue is needed because sudo password can be requested for next steps
+    # If the user is AFK there may be timeout
     _pause continue
-    # press to continue is needed because sudo password can be requested for next steps
-    # if the user is AFK there may be timeout
+
 
     # Backup dojo credentials
     "${dojo_conf_backup}" && _dojo_backup
@@ -295,6 +296,10 @@ EOF
         docker restart tor 1>/dev/null
     fi
     # restore tor credentials backup to container
+
+    # Press to continue to prevent from snapping back to menu too quickly
+    _pause return
+
 else
         cat <<EOF
 ${red}
