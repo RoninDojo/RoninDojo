@@ -2423,6 +2423,16 @@ EOF
                 fi
                 # check for indexer db data directory, if not found continue
 
+                if ! _dojo_check; then
+                    cd "$dojo_path_my_dojo" || exit
+                    _source_dojo_conf
+
+                    # Start docker containers
+                    yamlFiles=$(_select_yaml_files)
+                    docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+                    # start dojo
+                fi
+
                 return 0
                 ;;
             backup)
