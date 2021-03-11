@@ -227,3 +227,14 @@ _update_12() {
         fi
     fi
 }
+
+# tag that system install has been installed already
+_update_13() {
+    if [ -d "${install_dir_tor}" ] && [ ! -f "${ronin_data_dir}"/system-install ]; then
+        # Make sure we don't run system install twice
+        touch "${ronin_data_dir}"/system-install
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/13-"$(date +%m-%d-%Y)"
+    fi
+}
