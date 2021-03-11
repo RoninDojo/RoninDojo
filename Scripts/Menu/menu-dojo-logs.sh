@@ -34,6 +34,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
                 cat <<EOF
@@ -63,6 +66,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
@@ -73,8 +79,10 @@ Press Ctrl + C to exit at any time...
 ${nc}
 EOF
               _sleep 2
+
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs db
+
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for db
             fi
@@ -89,6 +97,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
                 if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
@@ -110,6 +121,7 @@ EOF
                     _sleep 2
 
                     _pause return
+
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
                     exit 1
                 elif grep "INDEXER_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null; then
@@ -163,6 +175,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
@@ -173,8 +188,10 @@ Press Ctrl + C to exit at any time...
 ${nc}
 EOF
               _sleep 2
+
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs node
+
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for nodejs
             fi
@@ -189,6 +206,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
@@ -202,6 +222,7 @@ EOF
 
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs tor
+
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # shows logs for tor
             fi
@@ -216,6 +237,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               _sleep 2
@@ -229,6 +253,7 @@ ${nc}
 EOF
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs whirlpool
+
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # view logs, return to menu
               # see defaults.sh
@@ -248,6 +273,9 @@ Please start Dojo first!
 ${nc}
 EOF
                 _sleep 5
+
+                _pause return
+
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               _sleep 2
@@ -261,6 +289,7 @@ ${nc}
 EOF
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs
+
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               # view logs, return to menu
               # see defaults.sh
