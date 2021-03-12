@@ -84,6 +84,11 @@ if _is_bisq ; then
     _bisq_install
 fi
 
+# Check if UI Backend needs installing
+if ! _ronin_ui_update_check; then
+    _install_ronin_ui_backend
+fi
+
 cd "${dojo_path_my_dojo}" || exit
 
 ./dojo.sh upgrade --nolog

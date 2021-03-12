@@ -74,7 +74,7 @@ git clone -q -b "${samourai_commitish#*/}" "$samourai_repo" dojo 2>/dev/null
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch
-cd dojo || exit
+cd "${dojo_path}" || exit
 
 _git_ref_type
 _ret=$?
@@ -87,22 +87,10 @@ else
     git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
 fi
 
-# Switch to $samourai_commitish
-cd "${dojo_path}" || exit
-
+# Check if UI Backend needs installing
 if ! _ronin_ui_update_check; then
-    cat <<EOF
-${red}
-***
-Installing Ronin UI Backend...
-***
-${nc}
-EOF
     _install_ronin_ui_backend
 fi
-
-# Check if UI Backend needs installing
-
 
 cat <<EOF
 ${red}
@@ -297,9 +285,37 @@ EOF
     fi
     # restore tor credentials backup to container
 
+    # Installing SW Toolkit
+
+    if [ ! -d "${HOME}"/boltzmann ]; then
+        cat <<EOF
+${red}
+***
+Installing Boltzmann Calculator...
+***
+${nc}
+EOF
+        _sleep 2
+
+        # install Boltzmann
+        _install_boltzmann
+    fi
+
+    if [ ! -d "${HOME}"/Whirlpool-Stats-Tool ]; then
+        cat <<EOF
+${red}
+***
+Installing Whirlpool Stat Tool...
+***
+${nc}
+EOF
+        _sleep 2
+
+        _install_wst
+    fi
+
     # Press to continue to prevent from snapping back to menu too quickly
     _pause return
-
 else
         cat <<EOF
 ${red}

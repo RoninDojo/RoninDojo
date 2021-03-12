@@ -515,10 +515,26 @@ _ronin_ui_update_check() {
 
         # Check if update is needed
         if [[ "${ver}" != "${current_ver}" ]]; then
+            cat <<EOF
+${red}
+***
+Updating to Ronin UI Backend v"${ver}"...
+***
+${nc}
+EOF
             return 1
         else
             return 0
         fi
+    else
+            cat <<EOF
+${red}
+***
+Installing Ronin UI Backend v"${ver}"...
+***
+${nc}
+EOF
+        return 1
     fi
 }
 
