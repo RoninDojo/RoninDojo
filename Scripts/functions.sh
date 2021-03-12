@@ -53,14 +53,19 @@ EOF
     # place logo and ronin main menu script "$HOME"/.bashrc to run at each login
 
     # Adding user to docker group if needed
-    if ! id -a "${ronindojo_user}" | grep -q "docker"; then
-        cat <<EOF
+    if ! id | grep -q "docker"; then
+        if ! id "${ronindojo_user}" | grep -q "docker"; then
+            cat <<EOF
 ${red}
 ***
 Adding user to the docker group and loading RoninDojo CLI...
 ***
 ${nc}
 EOF
+        else
+            newgrp docker
+        fi
+
         # Create the docker group if not available
         if ! getent group docker 1>/dev/null; then
             sudo groupadd docker 1>/dev/null
