@@ -2430,6 +2430,13 @@ EOF
                     cd "$dojo_path_my_dojo" || exit
                     _source_dojo_conf
 
+                    cat <<EOF
+${red}
+***
+Starting all Docker containers...
+***
+${nc}
+EOF
                     # Start docker containers
                     yamlFiles=$(_select_yaml_files)
                     docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
@@ -2520,6 +2527,13 @@ EOF
                         cd "$dojo_path_my_dojo" || exit
                         _source_dojo_conf
 
+                        cat <<EOF
+${red}
+***
+Starting all Docker containers...
+***
+${nc}
+EOF
                         # Start docker containers
                         yamlFiles=$(_select_yaml_files)
                         docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
