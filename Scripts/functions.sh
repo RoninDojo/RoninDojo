@@ -510,9 +510,9 @@ _ronin_ui_update_check() {
     # Fetch Ronin UI Backend archive
     wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
 
-    if _is_ronin_ui_backend; then
-        ver=$( cut -d ' ' -f2 </tmp/latest.txt )
+    ver=$( cut -d ' ' -f2 </tmp/latest.txt )
 
+    if _is_ronin_ui_backend; then
         # Get latest version of current RoninBackend if available
         if [ -f "${ronin_ui_backend_dir}"/package.json ]; then
             current_ver=$(jq --raw-output '.version' "${ronin_ui_backend_dir}"/package.json)
@@ -535,7 +535,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Installing Ronin UI Backend v"${ver}"...
+Installing Ronin UI Backend...
 ***
 ${nc}
 EOF
@@ -2397,14 +2397,6 @@ _dojo_data_indexer() {
         case "$1" in
             restore)
                 if sudo test -d "${dojo_backup_indexer}/db" && sudo test -d "${docker_volume_indexer}"; then
-                    cat <<EOF
-${red}
-***
-Indexer data restore starting...
-***
-${nc}
-EOF
-
                     cd "$dojo_path_my_dojo" || exit
                     _dojo_check && _stop_dojo
 
