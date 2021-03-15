@@ -94,6 +94,12 @@ cd "${dojo_path_my_dojo}" || exit
 ./dojo.sh upgrade --nolog
 # run upgrade
 
+# Source update script
+. "$HOME"/RoninDojo/Scripts/update.sh
+
+# Run _update_08
+test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
+
 _pause return
 
 bash -c "$ronin_updates_menu"
