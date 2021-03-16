@@ -1175,7 +1175,7 @@ EOF
 
         # Delete old local branch
         if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)); then
-            git branch -d "${_head}"
+            git branch -q -d "${_head}"
         fi
     else # On same branch/tag
         _git_ref_type
@@ -1538,7 +1538,7 @@ EOF
 
             # Delete old local branch
             if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)); then
-                git branch -d "${_head}"
+                git branch -q -d "${_head}"
             fi
         else # On same branch/tag
             _git_ref_type
