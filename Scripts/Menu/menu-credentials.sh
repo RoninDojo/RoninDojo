@@ -311,7 +311,7 @@ Electrs Credentials
 ***
 ${nc}
 
-Electrs Tor URL         = $v3_addr_electrs
+Electrs Tor URL         = http://${v3_addr_electrs}
 EOF
             fi
 
