@@ -82,6 +82,13 @@ EOF
         fi
         # is dojo installed?
 
+        cat <<EOF
+${red}
+***
+Updating Arch OS Mirrors, Please wait...
+***
+${nc}
+EOF
         # Update Mirrors
         _pacman_update_mirrors
 

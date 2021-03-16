@@ -12,7 +12,7 @@
 test ! -d "$HOME"/.config/RoninDojo/data/updates && mkdir -p "$HOME"/.config/RoninDojo/data/updates
 
 # Remove update file from a previous upgrade
-test -f "$HOME"/.config/RoninDojo/data/updates/10-* && rm "$HOME"/.config/RoninDojo/data/updates/10-*
+test -f "$HOME"/.config/RoninDojo/data/updates/10-* && rm "$HOME"/.config/RoninDojo/data/updates/10-* &>/dev/null
 
 # Migrate user.conf variables to lowercase
 _update_10

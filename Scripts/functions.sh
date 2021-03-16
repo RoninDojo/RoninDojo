@@ -1129,7 +1129,8 @@ _git_ref_type() {
 # Update Samourai Dojo Repository
 #
 _dojo_update() {
-    local _head _ret
+    local _head _ret _master
+    _master=false
 
     _load_user_conf
 
@@ -1174,7 +1175,7 @@ EOF
         fi
 
         # Delete old local branch
-        if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)); then
+        if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)) && ! "${_master}"; then
             git branch -q -d "${_head}"
         fi
     else # On same branch/tag
@@ -1464,10 +1465,8 @@ _remove_ipv6() {
 # Update RoninDojo
 #
 _ronindojo_update() {
-    local _head _ret
-
-    # Source update script
-    . "$HOME"/RoninDojo/Scripts/update.sh
+    local _head _ret _master
+    _master=false
 
     _load_user_conf
 
@@ -1498,22 +1497,6 @@ Git repo found, downloading updates...
 ${nc}
 EOF
 
-        # Validate current branch from user.conf
-        _git_ref_type "${ronin_dojo_branch#*/}"
-        _ret=$?
-
-        # Validate branch/tag reference
-        if ((_ret==1)); then
-            cat <<EOF
-${red}
-***
-Invalid branch or tag name for ${ronin_dojo_branch}!!!
-***
-${nc}
-EOF
-            exit
-        fi
-
         # Check current branch/tag
         _head=$(_git_head)
 
@@ -1530,14 +1513,18 @@ EOF
 
             if ((_ret==3)); then
                 # valid branch
-                git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
+                if [ "${ronin_dojo_branch}" != "master" ]; then
+                    git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
+                else
+                    _master=true
+                fi
             else
                 # valid tag
                 git checkout -q -b "${ronin_dojo_branch}" "${ronin_dojo_branch}"
             fi
 
             # Delete old local branch
-            if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)); then
+            if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)) && ! "${_master}"; then
                 git branch -q -d "${_head}"
             fi
         else # On same branch/tag
@@ -1554,12 +1541,18 @@ EOF
 #!/bin/bash
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
-git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
+
+if [ "${ronin_dojo_branch}" != "master" ]; then
+    git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
+else
+    git clone -q "${ronin_dojo_repo}" 2>/dev/null
+fi
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch
 cd dojo || exit
 
+# Would not run when ronin_dojo_branch="master"
 git symbolic-ref -q HEAD || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
 
 ${red}
