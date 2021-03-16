@@ -608,7 +608,7 @@ EOF
         # pm2 system startup
         pm2 startup &>/dev/null
 
-        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" 1>/dev/null
+        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" &>/dev/null
 
         _ronin_ui_setup_tor
     else # Restart process after updating
