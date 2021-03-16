@@ -265,11 +265,6 @@ ${nc}
 EOF
     _sleep
 
-    # Press to continue is needed because sudo password can be requested for next steps
-    # If the user is AFK there may be timeout
-    _pause continue
-
-
     # Backup dojo credentials
     "${dojo_conf_backup}" && _dojo_backup
 
@@ -313,6 +308,12 @@ EOF
 
         _install_wst
     fi
+
+    # Source update script
+    . "$HOME"/RoninDojo/Scripts/update.sh
+
+    # Run _update_08
+    test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
 
     # Press to continue to prevent from snapping back to menu too quickly
     _pause return
