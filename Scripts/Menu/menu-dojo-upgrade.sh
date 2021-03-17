@@ -102,5 +102,5 @@ test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mn
 
 _pause return
 
-bash -c "$ronin_updates_menu"
+bash -c "$ronin_system_menu"
 # return to menu

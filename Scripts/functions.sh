@@ -1092,12 +1092,11 @@ _mempool_urls_to_local_btc_explorer() {
 }
 
 #
-# git current branch or tag reference. First command checks for tags.
+# git current branch name. If in detached state returns zero output. We only need branch name as
+# we discard any detached states in future versions
 #
-_git_head() {
-    if ! git describe --exact-match HEAD 2>/dev/null; then # on branch
-        git branch --show-current
-    fi
+_git_branch_name() {
+    git branch --show-current
 }
 
 #
@@ -1108,7 +1107,9 @@ _git_ref_type() {
 
     # Check if argument was passed
     if [ -z "$1" ]; then
-        _ref=$(_git_head)
+        _ref=$(_git_branch_name)
+
+        test "$_ref" || return 1
     else
         _ref=$1
     fi
@@ -1126,11 +1127,21 @@ _git_ref_type() {
 }
 
 #
+# git check if local branch exist
+#
+_git_is_branch() {
+    if git show-ref --quiet refs/heads/"${1}"; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+#
 # Update Samourai Dojo Repository
 #
 _dojo_update() {
-    local _head _ret _master
-    _master=false
+    local _head _ret
 
     _load_user_conf
 
@@ -1153,38 +1164,52 @@ EOF
     fi
 
     # Check current branch/tag
-    _head=$(_git_head)
+    _head=$(_git_branch_name)
 
     # Fetch remotes
     git fetch -q --all --tags --force
 
-    # reset any local changes to HEAD
-    git reset -q --hard HEAD
+    # reset any local changes
+    git reset -q --hard
 
     # Check if on existing branch/tag
     if [ "${samourai_commitish}" != "${_head}" ]; then
-        _git_ref_type
-        _ret=$?
-
-        if ((_ret==3)); then
-            # valid branch
-            git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
-        else
-            # valid tag
-            git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
+        # Make sure we are not in current master branch
+        if [ "${samourai_commitish}" != "master" ]; then
+            if ((_ret==3)); then
+                if ! _git_is_branch "${samourai_commitish}"; then
+                    git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
+                else
+                    git checkout -q "${samourai_commitish}"
+                    git reset -q --hard "@{u}"
+                fi
+            else
+                if ! _git_is_branch "${samourai_commitish}"; then
+                    git checkout -q tags/"${samourai_commitish}" -b "${samourai_commitish}"
+                fi
+            fi
+        elif ! _git_is_branch "${samourai_commitish}"; then
+                if [ "${_head}" != "master" ]; then
+                    git checkout -q "${samourai_commitish}"
+                fi
         fi
 
-        # Delete old local branch
-        if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)) && ! "${_master}"; then
-            git branch -q -d "${_head}"
+        # Delete old local branch if available otherwise check if master branch needs
+        # to be deleted
+        if test "${_head}"; then
+            if ! git branch -q -D "${_head}" 2>/dev/null; then
+                if _git_is_branch master; then
+                    git branch -q -D master
+                fi
+            fi
         fi
     else # On same branch/tag
         _git_ref_type
         _ret=$?
 
         if ((_ret==3)); then
-            # valid branch so git pull
-            git pull -q --rebase=true
+            # valid branch, so reset hard
+            git reset -q --hard "@{u}"
         fi
     fi
 }
@@ -1465,8 +1490,7 @@ _remove_ipv6() {
 # Update RoninDojo
 #
 _ronindojo_update() {
-    local _head _ret _master
-    _master=false
+    local _head _ret
 
     _load_user_conf
 
@@ -1498,42 +1522,52 @@ ${nc}
 EOF
 
         # Check current branch/tag
-        _head=$(_git_head)
+        _head=$(_git_branch_name)
 
         # Fetch remotes
         git fetch -q --all --tags --force
 
-        # reset any local changes to HEAD
-        git reset -q --hard HEAD
+        # reset any local changes
+        git reset -q --hard
 
         # Check if on existing branch/tag
         if [ "${ronin_dojo_branch}" != "${_head}" ]; then
-            _git_ref_type
-            _ret=$?
-
-            if ((_ret==3)); then
-                # valid branch
-                if [ "${ronin_dojo_branch}" != "master" ]; then
-                    git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
+            # Make sure we are not in current master branch
+            if [ "${ronin_dojo_branch}" != "master" ]; then
+                if ((_ret==3)); then
+                    if ! _git_is_branch "${ronin_dojo_branch}"; then
+                        git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
+                    else
+                        git checkout -q "${ronin_dojo_branch}"
+                        git reset -q --hard "@{u}"
+                    fi
                 else
-                    _master=true
+                    if ! _git_is_branch "${ronin_dojo_branch}"; then
+                        git checkout -q tags/"${ronin_dojo_branch}" -b "${ronin_dojo_branch}"
+                    fi
                 fi
-            else
-                # valid tag
-                git checkout -q -b "${ronin_dojo_branch}" "${ronin_dojo_branch}"
+            elif ! _git_is_branch "${ronin_dojo_branch}"; then
+                    if [ "${_head}" != "master" ]; then
+                        git checkout -q "${ronin_dojo_branch}"
+                    fi
             fi
 
-            # Delete old local branch
-            if test "${_head}" && [ "${_head}" != "master" ] && ((_ret==3)) && ! "${_master}"; then
-                git branch -q -d "${_head}"
+            # Delete old local branch if available otherwise check if master branch needs
+            # to be deleted
+            if test "${_head}"; then
+                if ! git branch -q -D "${_head}" 2>/dev/null; then
+                    if _git_is_branch master; then
+                        git branch -q -D master
+                    fi
+                fi
             fi
         else # On same branch/tag
             _git_ref_type
             _ret=$?
 
             if ((_ret==3)); then
-                # valid branch so git pull
-                git pull -q --rebase=true
+                # valid branch, so reset hard
+                git reset -q --hard "@{u}"
             fi
         fi
     else
