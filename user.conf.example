@@ -92,7 +92,10 @@
 
 # Db cache size in MB
 # Type: integer
-#BITCOIND_DB_CACHE="700"
+#BITCOIND_DB_CACHE="1024"
+
+# bitcoind db cache optimization.
+#bitcoind_db_cache_total=0.6 # Uses 60% of total RAM
 
 # EXPOSE BITCOIND RPC API AND ZMQ NOTIFICATIONS TO EXTERNAL APPS
 # THESE PARAMETERS HAVE NO EFFECT IF BITCOIND_INSTALL IS SET TO OFF
