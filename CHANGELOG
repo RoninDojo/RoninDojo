@@ -1,3 +1,21 @@
+RoninDojo v1.9 Change Log
+
+- Update to Samourai Dojo 1.9.0
+- Add Specter 1.2.2
+- Add Bisq Support
+- Added Automatic Indexer Data backup and restore
+- Add rockchip bbbfancontrol in applications menu
+- Fix issue with new backup drive creation
+- Automatically set BITCOIND_DB_CACHE to 30% of total RAM
+(see bitcoind_db_cache_total variable in user.conf to increase it)
+- Automatic swapfile size calculation during creation
+- Cosmetic changes
+- Menu restructuring
+- Better application management
+- Lots of bug fixes
+- Lots of optimizations and code refactoring
+- General UX enhancement
+
 RoninDojo v1.8 Change Log
 
 - Boltzmann Calculator v1.0
