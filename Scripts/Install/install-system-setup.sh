@@ -410,13 +410,13 @@ ${nc}
 EOF
     _sleep 2
 
-    test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir "${bitcoin_ibd_backup_dir}"
+    test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
 
     sudo mv -v "${storage_mount}/${bitcoind_data_dir}/_data/"{blocks,chainstate,indexes} "${bitcoin_ibd_backup_dir}"/ 1>/dev/null
     # moves blockchain salvage data to ${storage_mount} if found
 
     if "${_indexer_salvage}"; then
-        test -d "${indexer_backup_dir}" || sudo mkdir "${indexer_backup_dir}"
+        test -d "${indexer_backup_dir}" || sudo mkdir -p "${indexer_backup_dir}"
         sudo mv -v "${storage_mount}/${indexer_data_dir}/_data/db" "${indexer_backup_dir}"/ 1>/dev/null
     fi
 
