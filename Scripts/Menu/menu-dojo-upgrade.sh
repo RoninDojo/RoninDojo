@@ -91,6 +91,18 @@ fi
 
 cd "${dojo_path_my_dojo}" || exit
 
+# Re-enable the indexer
+_check_indexer
+ret=$?
+
+if ((ret==0)); then
+    bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+elif ((ret==1)); then
+    test -f "${dojo_path_my_dojo}"/indexer/electrs.toml && rm "${dojo_path_my_dojo}"/indexer/electrs.toml
+
+    _set_indexer
+fi
+
 ./dojo.sh upgrade --nolog
 # run upgrade
 
