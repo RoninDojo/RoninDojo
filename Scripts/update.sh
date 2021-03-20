@@ -238,3 +238,13 @@ _update_13() {
         touch "$HOME"/.config/RoninDojo/data/updates/13-"$(date +%m-%d-%Y)"
     fi
 }
+
+# Remove user.config file if it exist
+_update_14() {
+    if test -f "$HOME"/.config/RoninDojo/user.config; then
+        rm "$HOME"/.config/RoninDojo/user.config
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/14-"$(date +%m-%d-%Y)"
+    fi
+}
