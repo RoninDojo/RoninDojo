@@ -16,10 +16,10 @@ sudo systemctl stop --quiet whirlpool
 # download whirlpool cli using wget
 # if sha256 hash does not match, warn it failed to correct
 if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
-  cat <<EOF
+    cat <<EOF
 ${red}
 ***
-Binarios de Whirlpool corruptos o perdidos, intentando descargar......
+Binarios de Whirlpool corruptos o perdidos, intentando descargar...
 ***
 ${nc}
 EOF
@@ -31,7 +31,7 @@ EOF
   wget -q --output-document="${CLI_FILENAME}" "https://github.com/Samourai-Wallet/whirlpool-client-cli/releases/download/${CLI_VERSION}/whirlpool-client-cli-${CLI_VERSION}-run.jar"
 
   if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
-    cat <<EOF
+        cat <<EOF
 ${red}
 ***
 Fallo al corregir binarios de Whirlpool corruptos o perdidos...
