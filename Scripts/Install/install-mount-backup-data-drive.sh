@@ -53,7 +53,7 @@ else
     cat <<EOF
 ${red}
 ***
-No backup drive partition detected! Please make sure it is plugged in and has power if needed."
+No backup drive partition detected! Please make sure it is plugged in and has power if needed...
 ***
 ${nc}
 EOF
