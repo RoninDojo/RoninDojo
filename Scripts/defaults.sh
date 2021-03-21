@@ -98,7 +98,7 @@ backup_format=false
 #
 # Repositories
 #
-ronin_dojo_branch="master" # defaults to master
+ronin_dojo_branch="master_test" # defaults to master
 ronin_dojo_repo="https://code.samourai.io/ronindojo/RoninDojo"
 samourai_repo='https://code.samourai.io/ronindojo/samourai-dojo.git'
 samourai_commitish="v1.9.0" # empty defaults to master
