@@ -34,12 +34,9 @@ cd "${HOME}" || exit
 # return to previous working path
 
 if _is_mempool; then
-    _mempool_conf
-
-    # Checks if urls need to be changed for mempool UI
-    _mempool_urls_to_local_btc_explorer
+    _mempool_uninstall || exit
 fi
-# Check if mempool available or not
+# Check if mempool available or not, then uninstall it.
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
