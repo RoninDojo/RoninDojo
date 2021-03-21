@@ -4,8 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Logs"
-         2 "Go Back")
+OPTIONS=(1 "Registros"
+         2 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -20,7 +20,7 @@ case $CHOICE in
         cat <<EOF
 ${red}
 ***
-Showing Electrs Logs...
+Mostrando registros de Electrs...
 ***
 ${nc}
 EOF
@@ -29,7 +29,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Press Ctrl + C to exit at any time...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF

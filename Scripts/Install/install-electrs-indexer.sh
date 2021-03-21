@@ -15,7 +15,7 @@ fi
 
 cat <<EOF > "${dojo_path_my_dojo}"/indexer/electrs.toml
 cookie = "$BITCOIND_RPC_USER:$BITCOIND_RPC_PASSWORD"
-server_banner = "Welcome to your RoninDojo ${ronindojo_version} Electrs Server!"
+server_banner = "Bienvenido a tu servidor Electrs de ${ronindojo_version}!"
 EOF
 
 chmod 600 "${dojo_path_my_dojo}"/indexer/electrs.toml || exit 1

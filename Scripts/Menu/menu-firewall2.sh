@@ -4,9 +4,9 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Add IP Range for Whirlpool GUI"
-         2 "Add Specific IP for Whirlpool GUI"
-         3 "Go Back")
+OPTIONS=(1 "Añadir rango IP para Whirlpool GUI"
+         2 "Añadir IP específica para Whirlpool GUI"
+         3 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -21,7 +21,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Obtain the IP address you wish to give access to Whirlpool CLI...
+Obtén la dirección IP específica a la que deseas dar acceso a Whirlpool CLI...
 ***
 ${nc}
 EOF
@@ -30,7 +30,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
+Tu direción IP en la red local debe parecerse a 192.168.4.21 o 12.34.56.78 dependiendo de tu configuración...
 ***
 ${nc}
 EOF
@@ -39,7 +39,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Enter the local IP address you wish to give Whirlpool CLI access now...
+Introduce la IP local a la que deseas dar acceso a Whirlpool CLI ahora...
 ***
 ${nc}
 EOF
@@ -50,7 +50,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Reloading...
+Recargando...
 ***
 ${nc}
 EOF
@@ -60,7 +60,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Showing status...
+Mostrando estado...
 ***
 ${nc}
 EOF
@@ -71,13 +71,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Make sure that you see your new rule!
+Asegurate de ver tu nueva regla!
 ***
 ${nc}
 EOF
             _sleep
 
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;
@@ -85,7 +85,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Obtain the IP address you wish to give access to Whirlpool CLI...
+Obtén la dirección IP específica a la que deseas dar acceso a Whirlpool CLI...
 ***
 ${nc}
 EOF
@@ -94,7 +94,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
+Tu direción IP en la red local debe parecerse a 192.168.4.21 o 12.34.56.78 dependiendo de tu configuración...
 ***
 ${nc}
 EOF
@@ -103,7 +103,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Enter the local IP address you wish to give Whirlpool CLI access now...
+Introduce la IP local a la que deseas dar acceso a Whirlpool CLI ahora...
 ***
 ${nc}
 EOF
@@ -114,7 +114,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Reloading...
+Recargando...
 ***
 ${nc}
 EOF
@@ -124,7 +124,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Showing status...
+Mostrando estado...
 ***
 ${nc}
 EOF
@@ -135,14 +135,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Make sure that you see your new rule!
+Asegurate de ver tu nueva regla!
 ***
 ${nc}
 EOF
             _sleep
 
-            _pause return
-
+            _pause volver
             bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;

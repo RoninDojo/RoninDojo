@@ -4,10 +4,10 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Task Manager"
-         2 "Check Temperature"
-         3 "Check Network Stats"
-         4 "Go Back")
+OPTIONS=(1 "Administrador de tareas"
+         2 "Comprobar Temperatura"
+         3 "Comprobar estadísticas de la red"
+         4 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -23,7 +23,7 @@ case $CHOICE in
         cat <<EOF
 ${red}
 ***
-Use Ctrl+C at any time to exit Task Manager...
+Pulsa Ctrl + C para salir en cualquier momento del administrador de tareas...
 ***
 ${nc}
 EOF
@@ -38,7 +38,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Showing CPU temp...
+Mostrando temperatura de la cpu...
 ***
 ${nc}
 EOF
@@ -48,7 +48,7 @@ EOF
         echo $tempC $'\xc2\xb0'C
         # cpu temp info
 
-        _pause return
+        _pause volver
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # press any key to return to menu
         ;;
@@ -56,7 +56,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Showing network stats...
+Mostrando estadísticas de la red...
 ***
 ${nc}
 EOF
@@ -68,7 +68,7 @@ EOF
         echo "        Transmit: $network_tx"
         # network info, use wlan0 for wireless
 
-        _pause return
+        _pause volver
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # press any key to return to menu
         ;;

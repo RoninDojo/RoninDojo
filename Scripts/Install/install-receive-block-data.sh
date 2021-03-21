@@ -8,13 +8,13 @@ if ! sudo test -d "${docker_volume_bitcoind}"/_data; then
     cat <<EOF
 ${red}
 ***
-Blockchain data not found! Did you forget to install RoninDojo?
+No se han encontrado datos de la Blockchain! Te has olvidado de instalar RoninDojo?
 ***
 ${nc}
 EOF
     _sleep
 
-    _pause return
+    _pause volver
     bash -c "${ronin_dojo_menu2}"
 fi
 # if data directory is not found then warn and return to menu
@@ -22,7 +22,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Preparing to copy data from your Backup Data Drive now...
+Preparando para copiar los datos de la copia de seguridad de tú unidad ahora...
 ***
 ${nc}
 EOF
@@ -34,7 +34,7 @@ if [ -b "${secondary_storage}" ]; then
         cat <<EOF
 ${red}
 ***
-Your new backup drive has been detected...
+La partición de tu copia de seguridad ha sido detectada...
 ***
 ${nc}
 EOF
@@ -54,13 +54,13 @@ else
     cat <<EOF
 ${red}
 ***
-No backup drive partition detected! Make sure it is available for use...
+Ninguna partición con copia de seguridad ha sido detectada! Asegúrate de que el disco duro esté conectado y que no le falte electricidad si así fuera necesario...
 ***
 ${nc}
 EOF
     _sleep 5
 
-    _pause return
+    _pause volver
 
     bash -c "${ronin_dojo_menu2}"
     # no drive detected, press any key to return to menu
@@ -124,7 +124,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Making sure Dojo is stopped...
+Asegurando que Dojo esté parado...
 ***
 ${nc}
 EOF
@@ -138,7 +138,7 @@ _dojo_check && _stop_dojo
 cat <<EOF
 ${red}
 ***
-Removing old data...
+Borrando datos viejos...
 ***
 ${nc}
 EOF
@@ -167,7 +167,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Copying...
+Copiando...
 ***
 ${nc}
 EOF
@@ -182,13 +182,13 @@ else
     cat <<BACKUP
 ${red}
 ***
-No backup data available to receive data! Umounting drive now...
+No hay datos disponibles en la copia de seguridad! Desmontando la unidad ahora..
 ***
 ${nc}
 BACKUP
     _sleep
 
-    _pause return
+    _pause volver
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
     exit
 fi
@@ -196,7 +196,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Transfer Complete!
+Transferencia completa!
 ***
 ${nc}
 EOF
@@ -209,7 +209,7 @@ _pause continue
 cat <<EOF
 ${red}
 ***
-Unmounting...
+Desmontando...
 ***
 ${nc}
 EOF
@@ -221,7 +221,7 @@ sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 cat <<EOF
 ${red}
 ***
-You can now safely unplug your backup drive!
+Ahora ya puedes desconectar el disco duro sin peligro!
 ***
 ${nc}
 EOF
@@ -244,6 +244,6 @@ _source_dojo_conf
 yamlFiles=$(_select_yaml_files)
 docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
 
-_pause return
+_pause volver
 bash -c "${ronin_dojo_menu2}"
 # return to menu

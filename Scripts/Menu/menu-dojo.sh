@@ -6,12 +6,12 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Start"
-         2 "Stop"
-         3 "Restart"
-         4 "Logs"
-         5 "Next Page"
-         6 "Go Back")
+OPTIONS=(1 "Iniciar"
+         2 "Detener"
+         3 "Reiniciar"
+         4 "Registros"
+         5 "Siguiente página"
+         6 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -27,12 +27,12 @@ case $CHOICE in
                 cat <<EOF
 ${red}
 ***
-Dojo is already started!
+Dojo ya está iniciado!
 ***
 ${nc}
 EOF
                 _sleep
-                _pause return
+                _pause volver
                 bash -c "${ronin_dojo_menu}"
             else
                 _is_dojo "${ronin_dojo_menu}"
@@ -41,7 +41,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Starting Dojo...
+Iniciando Dojo...
 ***
 ${nc}
 EOF
@@ -56,15 +56,13 @@ EOF
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
 
-            _pause return
-
+            _pause volver
             bash -c "${ronin_dojo_menu}"
             # press any key to return to menu
             ;;
         2)
             _dojo_check && _stop_dojo
-            _pause return
-
+            _pause volver
             bash -c "${ronin_dojo_menu}"
             # press any key to return to menu
             ;;
@@ -76,7 +74,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Restarting Dojo...
+Reiniciando Dojo...
 ***
 ${nc}
 EOF
@@ -86,7 +84,7 @@ EOF
                 cat <<DOJO
 ${red}
 ***
-Stopping Dojo...
+Deteniendo Dojo...
 ***
 ${nc}
 DOJO
@@ -95,7 +93,7 @@ DOJO
                 cat <<DOJO
 ${red}
 ***
-Starting Dojo...
+Iniciando Dojo...
 ***
 ${nc}
 DOJO
@@ -105,7 +103,7 @@ DOJO
                 docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
                 # restart dojo
 
-                _pause return
+                _pause volver
                 bash -c "${ronin_dojo_menu}"
                 # press any key to return to menu
             fi

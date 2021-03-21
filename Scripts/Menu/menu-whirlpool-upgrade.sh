@@ -19,7 +19,7 @@ if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ];
   cat <<EOF
 ${red}
 ***
-Corrupted/missing whirlpool binary, attempting to download...
+Binarios de Whirlpool corruptos o perdidos, intentando descargar......
 ***
 ${nc}
 EOF
@@ -34,11 +34,11 @@ EOF
     cat <<EOF
 ${red}
 ***
-Failed to correct corrupted/missing whirlpool binary...
+Fallo al corregir binarios de Whirlpool corruptos o perdidos...
 ***
 ${nc}
 EOF
-    _sleep 5 --msg "Returning to main menu in"
+    _sleep 5 --msg "Volviendo al menú principal en"
     ronin
   fi
 fi

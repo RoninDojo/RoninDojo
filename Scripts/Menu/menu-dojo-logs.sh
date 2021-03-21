@@ -10,9 +10,9 @@ OPTIONS=(1 "Bitcoind"
          4 "Node.js"
          5 "Tor"
          6 "Whirlpool"
-         7 "Error Logs"
-         8 "All Logs"
-         9 "Go Back")
+         7 "Registro de errores"
+         8 "Todos los registros"
+         9 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -29,20 +29,20 @@ case $CHOICE in
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
                 cat <<EOF
 ${red}
 ***
-Press Ctrl + C to exit at any time...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -61,20 +61,20 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
 ${red}
 ***
-Press Ctrl + C to exit at any time...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -92,13 +92,13 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
@@ -106,7 +106,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Electrum Rust Server is your current Indexer...
+El servidor de Electrum Rust es tu indexador actual....
 ***
 ${nc}
 EOF
@@ -114,13 +114,13 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Please check Electrum Rust Server logs instead...
+Por favor en su lugar comprueba los registros de Electum rust...
 ***
 ${nc}
 EOF
                     _sleep
 
-                    _pause return
+                    _pause volver
 
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
                     exit 1
@@ -142,7 +142,7 @@ ${nc}
 EOF
                     _sleep
 
-                    _pause return
+                    _pause volver
 
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
                     exit
@@ -150,7 +150,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Press Ctrl + C to exit at any time...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -170,20 +170,20 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
 ${red}
 ***
-Press Ctrl + C to exit at any time...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -201,20 +201,20 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
               cat <<EOF
 ${red}
 ***
-Press Ctrl + C to exit at any time...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -232,13 +232,13 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
@@ -247,7 +247,7 @@ EOF
               cat <<EOF
 ${red}
 ***
-Press Ctrl+C to exit at anytime...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -268,13 +268,13 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 EOF
                 _sleep 5
 
-                _pause return
+                _pause volver
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
@@ -283,7 +283,7 @@ EOF
               cat <<EOF
 ${red}
 ***
-Press Ctrl+C to exit at anytime...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF

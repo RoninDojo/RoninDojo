@@ -6,13 +6,13 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Firewall"
-         2 "Change User Password"
-         3 "Change Root Password"
-         4 "Lock Root User"
-         5 "Unlock Root User"
-         6 "Uninstall RoninDojo"
-         7 "Go Back")
+OPTIONS=(1 "Cortafuegos"
+         2 "Cambiar contraseña de usuario"
+         3 "Cambiar contraseña de root"
+         4 "Bloquear usuario Root"
+         5 "Desbloquear usuario Root"
+         6 "Desinstalar RoninDojo"
+         7 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -30,14 +30,14 @@ case $CHOICE in
         cat <<EOF
 ${red}
 ***
-Prepare to type new password for ${ronindojo_user} user...
+Prepárate para escribir una nueva contraseña para ${ronindojo_user}...
 ***
 ${nc}
 EOF
         _sleep
         sudo passwd "${ronindojo_user}"
 
-        _pause return
+        _pause volver
         bash -c "${ronin_system_menu2}"
         # user change password, returns to menu
         ;;
@@ -52,7 +52,7 @@ EOF
         _sleep
         sudo passwd
 
-        _pause return
+        _pause volver
         bash -c "${ronin_system_menu2}"
         # root change password, returns to menu
         ;;
@@ -60,7 +60,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Locking Root User...
+Bloqueando usuario Root...
 ***
 ${nc}
 EOF
@@ -73,7 +73,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Unlocking Root User...
+Desbloqueando usuario Root...
 ***
 ${nc}
 EOF
@@ -91,11 +91,11 @@ EOF
         cat <<EOF
 ${red}
 ***
-Uninstalling RoninDojo, press Ctrl+C to exit if needed!
+Desinstalando RoninDojo y todas sus características, presiona Ctrl+C para salir si es necesario!
 ***
 ${nc}
 EOF
-        _sleep 10 --msg "Uninstalling in"
+        _sleep 10 --msg "Desinstalando en"
 
         cd "$dojo_path_my_dojo" || exit
         _dojo_check && _stop_dojo
@@ -110,7 +110,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Uninstalling RoninDojo...
+Desinstalando RoninDojo...
 ***
 ${nc}
 EOF
@@ -194,7 +194,7 @@ EOF
             _sleep
         fi
 
-        _pause return
+        _pause volver
 
         bash -c "${ronin_system_menu2}"
         # return to menu

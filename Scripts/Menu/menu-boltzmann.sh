@@ -8,7 +8,7 @@ if [ ! -d "${boltzmann_path}" ]; then
     cat <<EOF
 ${red}
 ***
-Installing Boltzmann...
+Instalando Boltzmann...
 ***
 ${nc}
 EOF
@@ -24,16 +24,16 @@ cat << 'EOF'
   / __ \/ __ \/ / __/_  / / __ `__ \/ __ `/ __ \/ __ \
  / /_/ / /_/ / / /_  / /_/ / / / / / /_/ / / / / / / /
 /_.___/\____/_/\__/ /___/_/ /_/ /_/\__,_/_/ /_/_/ /_/ 
-A python script computing the entropy of Bitcoin transactions
-    and the linkability of their inputs and outputs.
+Un Script de python para el cálculo de la entropia de las transacciones de Bitcoin
+    y la trazabilidad de los inputs y los outputs.
 
 EOF
 
 cat <<EOF
-Example Usage:
+Ejemplo de uso:
 
 ${red}
-Single txid
+Txid única
 ${nc}
 8e56317360a548e8ef28ec475878ef70d1371bee3526c017ac22ad61ae5740b8
 
@@ -54,7 +54,7 @@ export BOLTZMANN_RPC_PORT=${BITCOIND_RPC_PORT}
 # Loop command until user quits
 until [[ "$txids" =~ (Q|q|quit|Quit) ]]
 do
-  printf "\nEnter a txid or multiple txids separated by commas. Type [Q|Quit] to exit boltzmann\n"
+  printf "\nIntroduzca un txid o múltiples txids separados con comas. Teclea [Q|Quit] Para salir de boltzmann\n"
   read -r txids
 
   if [[ ! "$txids" =~ (Q|Quit) ]]; then

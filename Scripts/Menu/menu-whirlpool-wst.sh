@@ -8,7 +8,7 @@ if [ ! -d "$HOME"/Whirlpool-Stats-Tool ]; then
     cat <<EOF
 ${red}
 ***
-Installing Whirlpool Stat Tool...
+Instalando herramienta estadística de Whirlpool...
 ***
 ${nc}
 EOF
@@ -24,7 +24,7 @@ fi
 
 cat <<EOF
 ${red}
-Whirlpool Stat Tool INSTRUCTIONS:
+Instrucciones de la herramienta estadística de Whirlpool:
 ${nc}
 EOF
 
@@ -33,7 +33,7 @@ _sleep
 
 cat <<EOF
 ${red}
-Download in the working directory a snaphot for the 0.01BTC pools:
+Descarga en el directorio de trabajo un Snapshot para las pools de 0.01 BTC:
 ${nc}
 download 001
 EOF
@@ -42,7 +42,7 @@ _sleep
 
 cat <<EOF
 ${red}
-Load and compute the statistcs for the snaphot:
+Carga y computa las estadísticas para el Snapshot:
 ${nc}
 load 001
 EOF
@@ -51,22 +51,22 @@ _sleep
 
 cat <<EOF
 ${red}
-Display the metrics computed for a transaction stored in the active snapshot:
+Muestra las métricas computadas para una transacción guardada en el snapshot activo:
 ${nc}
-score <ENTER TXID OF DESIRED 0.01 BTC transaction>
+Puntuación <INTRODUCE LA TXID DE LA TRANSACCIÓN DE 0.01 BTC DESEADA>
 EOF
 
 _sleep
 
 cat <<EOF
 ${red}
-Sample output...
+Ejemplo de salida...
 ${nc}
-Backward-looking metrics for the outputs of this mix:
+Metricas retrospectivas para los outputs de este mix:
     anonset = 92
     spread = 89%
 
-Forward-looking metrics for the outputs of Tx0s having this transaction as their first mix:
+Metricas retrospectivas para los outputs de Tx0s teniendo esta transacción su primer mix:
     anonset = 127
     spread = 76%
 EOF
@@ -76,7 +76,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Type: 'quit' at anytime to exit the Whirlpool Statitics Tool.
+Escribe : 'quit' en cualquier momento para salir de la herramienta estadística de Whirlpool.
 ***
 EOF
 
@@ -89,7 +89,7 @@ if ! pipenv run python wst.py -w=/tmp 2>/dev/null; then
     cat <<EOF
 ${red}
 ***
-Checking for updates...
+Comprobando actualizaciones...
 ***
 ${nc}
 EOF
@@ -105,5 +105,5 @@ EOF
 fi
 # run wst.py
 
-_pause return
+_pause volver
 bash -c "${ronin_samourai_toolkit_menu}"

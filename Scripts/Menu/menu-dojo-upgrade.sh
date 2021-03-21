@@ -49,13 +49,13 @@ if [ -f /etc/systemd/system/whirlpool.service ] ; then
    cat <<EOF
 ${red}
 ***
-Whirlpool will be installed via Docker...
+Whirlpool será instalado via Docker...
 ***
 ${nc}
 
 ${red}
 ***
-You will need to re-pair with GUI, see Wiki for more information...
+Necesitas re-emparejar con GUI, revisa la wiki para mas información...
 ***
 ${nc}
 EOF
@@ -64,13 +64,13 @@ else
    cat <<EOF
 ${red}
 ***
-Whirlpool will be installed via Docker...
+Whirlpool será instalado via Docker...
 ***
 ${nc}
 
 ${red}
 ***
-For pairing information see the wiki...
+Para información del emparejamiento revisa la wiki...
 ***
 ${nc}
 EOF
@@ -109,7 +109,7 @@ fi
 # Run _update_08
 test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
 
-_pause return
+_pause volver
 
 ronin
 # return to menu

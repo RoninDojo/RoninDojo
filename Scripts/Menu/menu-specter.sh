@@ -4,11 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start"
-         2 "Stop"
-         3 "Restart"
-         4 "Status"
-         5 "Go Back")
+OPTIONS=(1 "Iniciar"
+         2 "Detener"
+         3 "Reiniciar"
+         4 "Estado"
+         5 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -24,7 +24,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Starting Specter Service...
+Iniciando servicio de Specter...
 ***
 ${nc}
 EOF
@@ -32,7 +32,7 @@ EOF
 
         _sleep
 
-        _pause return
+        _pause volver
         bash -c "${ronin_specter_menu}"
         # Start specter.service and return to same menu
         ;;
@@ -41,7 +41,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Stopping Specter Service...
+Deteniendo servicio de Specter...
 ***
 ${nc}
 EOF
@@ -50,7 +50,7 @@ EOF
 
         _sleep
 
-        _pause return
+        _pause volver
         bash -c "${ronin_specter_menu}"
         # Stop specter.service and return to same menu
         ;;
@@ -58,7 +58,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Restarting Specter Service...
+Reiniciando servicio de Specter...
 ***
 ${nc}
 EOF
@@ -66,7 +66,7 @@ EOF
 
         _sleep
 
-        _pause return
+        _pause volver
         bash -c "${ronin_specter_menu}"
         # Restart specter.service and return to same menu
         ;;

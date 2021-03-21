@@ -12,7 +12,7 @@ if [ -b "${secondary_storage}" ]; then
         cat <<EOF
 ${red}
 ***
-Your new backup drive has been detected...
+Tu nueva unidad para la copia de serguridad ha sido dectectada...
 ***
 ${nc}
 EOF
@@ -40,7 +40,7 @@ for backup purposes. Set backup_format=true in ${HOME}/.config/RoninDojo/user.co
 ***
 ${nc}
 EOF
-                _pause return
+                _pause volver
 
                 # press any key to return to menu-system-storage.sh
                 bash -c "${ronin_system_storage}"
@@ -54,13 +54,13 @@ else
     cat <<EOF
 ${red}
 ***
-No backup drive detected! Please make sure it is plugged in and has power if needed...
+Ninguna unidad con copia de seguridad ha sido detectada! Asegúrate de que el disco duro esté conectado y que no le falte electricidad si así fuera necesario...
 ***
 ${nc}
 EOF
     _sleep 5
 
-    _pause return
+    _pause volver
     bash -c "${ronin_system_storage}"
     # no drive detected, press any key to return to menu
 fi
@@ -68,7 +68,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Preparing to Format and Mount ${secondary_storage} to ${storage_mount}...
+Preparando para formatear y montar ${secondary_storage} a ${storage_mount}...
 ***
 ${nc}
 EOF
@@ -77,7 +77,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-WARNING: Any pre-existing data on this backup drive will be lost!
+CUIDADO: Cualquier dato preexistente en esta unidad para la copia seguridad será borrado!
 ***
 ${nc}
 EOF
@@ -86,7 +86,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Are you sure?
+Estás seguro?
 ***
 ${nc}
 EOF
@@ -103,7 +103,7 @@ while true; do
           cat <<EOF
 ${red}
 ***
-Invalid answer! Enter Y or N
+Respuesta inválida! Pulsa Y o N
 ***
 ${nc}
 EOF
@@ -115,7 +115,7 @@ done
 cat <<EOF
 ${red}
 ***
-Formatting the Backup Data Drive...
+Formateando el disco para la copia de seguridad...
 ***
 ${nc}
 EOF
@@ -134,7 +134,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Displaying the name on the external disk...
+Mostrando el nombre en el disco externo...
 ***
 ${nc}
 EOF
@@ -146,7 +146,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Check output for ${secondary_storage} and make sure everything looks ok...
+Mira la respuesta de ${secondary_storage} y asegúrate de que todo parezca correcto...
 ***
 ${nc}
 EOF
@@ -155,6 +155,6 @@ df -h "${secondary_storage}"
 _sleep
 # checks disk info
 
-_pause return
+_pause volver
 bash -c "${ronin_system_storage}"
 # press any key to return to menu-system-storage.sh

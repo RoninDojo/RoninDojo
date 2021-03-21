@@ -4,11 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start"
-         2 "Stop"
-         3 "Restart"
-         4 "Logs"
-         5 "Go Back")
+OPTIONS=(1 "Iniciar"
+         2 "Detener"
+         3 "Reiniciar"
+         4 "Registros"
+         5 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -24,24 +24,24 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Mempool Space Visualizer is not installed...
+Mempool.space no esta instalado...
 ***
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
 ${red}
 ***
-Starting Mempool Space Visualizer...
+Iniciando Mempool...
 ***
 ${nc}
 EOF
             docker start mempool 1>/dev/null
             _sleep 5
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
             # see defaults.sh
             # start mempool, return to menu
@@ -52,23 +52,23 @@ EOF
             cat <<EOF
 ${red}
 ***
-Mempool Space Visualizer is not installed...
+Mempool.space no esta instalado...
 ***
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
 ${red}
 ***
-Stopping Mempool Space Visualizer...
+Deteniendo Mempool...
 ***
 ${nc}
 EOF
             docker stop mempool 1>/dev/null
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
             # stop mempool, return to menu
             # see defaults.sh
@@ -79,18 +79,18 @@ EOF
             cat <<EOF
 ${red}
 ***
-Mempool Space Visualizer is not installed...
+Mempool.space no esta instalado...
 ***
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
 ${red}
 ***
-Restarting Mempool Space Visualizer...
+Reiniciando Mempool...
 ***
 ${nc}
 EOF
@@ -99,7 +99,7 @@ EOF
             docker start mempool 1>/dev/null
             _sleep
 
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
             # start mempool, return to menu
             # see defaults.sh
@@ -110,18 +110,18 @@ EOF
             cat <<EOF
 ${red}
 ***
-Mempool Space Visualizer is not installed...
+Mempool.space no esta instalado...
 ***
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
 ${red}
 ***
-Viewing Mempool Space Visualizer Logs...
+Viendo registros de la Mempool...
 ***
 ${nc}
 EOF
@@ -130,7 +130,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Press Ctrl+C to exit at anytime...
+Pulsa Ctrl + C para salir en cualquier momento...
 ***
 ${nc}
 EOF

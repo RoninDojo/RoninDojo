@@ -296,7 +296,7 @@ _pause() {
     cat <<EOF
 ${red}
 ***
-Press any key to ${1}...
+Pulsa cualquier tecla para ${1}...
 ***
 ${nc}
 EOF
@@ -462,7 +462,7 @@ ${nc}
 EOF
         _sleep
 
-        _pause return
+        _pause volver
         return 1
     fi
 
@@ -1072,7 +1072,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Preparing for Indexer Prompt...
+Preparando el Indexer Prompt...
 ***
 ${nc}
 EOF
@@ -1081,7 +1081,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Samourai Indexer is recommended for most users as it helps with querying balances...
+Samourai Indexer es recomendado para la mayoría de usuarios facilita la consulta de los balances...
 ***
 ${nc}
 EOF
@@ -1090,7 +1090,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
+El servidor Electrum Rust es recomendado para carteras físicas, signatura multiple "Multisig" y otras carectaristicas de Electrum...
 ***
 ${nc}
 EOF
@@ -1099,7 +1099,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Skipping the installation of either Indexer option is ok! You can always enable later...
+No hay problema si se salta la instalación de los indexer! Siempre lo podra instalar más tarde...
 ***
 ${nc}
 EOF
@@ -1108,7 +1108,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Choose one of the following options for your Indexer...
+Elija una de las siguientes opciones para tu Indexer...
 ***
 ${nc}
 EOF
@@ -1193,7 +1193,7 @@ ${red}
 Missing ${dojo_path} directory!
 ${nc}
 EOF
-        _pause return
+        _pause volver
         bash -c "$menu"
         exit 1
 fi
@@ -1434,7 +1434,7 @@ EOF
     cd "${dojo_path_my_dojo}" || exit
 
     . dojo.sh upgrade --nolog
-    _pause return
+    _pause volver
 
     bash -c "${ronin_applications_menu}"
 }
@@ -1568,7 +1568,7 @@ Missing ${dojo_path} directory!
 ***
 ${nc}
 EOF
-        _pause return
+        _pause volver
         bash -c "$ronin_dojo_menu"
         exit 1
     fi
