@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -21,148 +21,123 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
-${RED}
+${red}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            _pause return
+            bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
-Starting Mempool...
+Starting Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
             docker start mempool 1>/dev/null
-
             _sleep 5
-            bash -c "$RONIN_MEMPOOL_MENU"
+            _pause return
+            bash -c "${ronin_mempool_menu}"
             # see defaults.sh
             # start mempool, return to menu
         fi
         ;;
     2)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
-${RED}
+${red}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            _pause return
+            bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
-Stopping Mempool...
+Stopping Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
             docker stop mempool 1>/dev/null
-            bash -c "$RONIN_MEMPOOL_MENU"
+            _pause return
+            bash -c "${ronin_mempool_menu}"
             # stop mempool, return to menu
             # see defaults.sh
         fi
         ;;
     3)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
-${RED}
+${red}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            _pause return
+            bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
-Restarting Mempool...
+Restarting Mempool Space Visualizer...
 ***
-${NC}
+${nc}
 EOF
             docker stop mempool 1>/dev/null
             _sleep 5
             docker start mempool 1>/dev/null
             _sleep 2
-            bash -c "$RONIN_MEMPOOL_MENU"
+
+            _pause return
+            bash -c "${ronin_mempool_menu}"
             # start mempool, return to menu
             # see defaults.sh
         fi
         ;;
     4)
-        if ! _mempool_check ; then
+        if ! _is_mempool ; then
             cat <<EOF
-${RED}
+${red}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-            bash -c "$RONIN_MEMPOOL_MENU"
+            _pause return
+            bash -c "${ronin_mempool_menu}"
         else
             cat <<EOF
-${RED}
+${red}
 ***
-Viewing Mempool Logs...
+Viewing Mempool Space Visualizer Logs...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C to exit at anytime...
 ***
-${NC}
+${nc}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs mempool
-            bash -c "$RONIN_MEMPOOL_MENU"
+            bash -c "${ronin_mempool_menu}"
             # view logs, return to menu
             # see defaults.sh
         fi

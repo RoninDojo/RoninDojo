@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -22,140 +22,116 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Starting Whirlpool...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             docker start whirlpool 1>/dev/null
 
             cat <<EOF
-${RED}
+${red}
 ***
 Don't forget to login to GUI to unlock mixing!
 ***
-${NC}
+${nc}
 EOF
-            _sleep 5
-
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            _sleep 2
+            _pause return
+            bash -c "$ronin_whirlpool_menu"
             # see defaults.sh
             # start whirlpool, press to return to menu
             ;;
         2)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Stopping Whirlpool...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             docker stop whirlpool 1>/dev/null
-
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            _pause return
+            bash -c "$ronin_whirlpool_menu"
             # stop whirlpool, press to return to menu
             # see defaults.sh
             ;;
         3)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Restarting Whirlpool...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
             docker stop whirlpool 1>/dev/null
             _sleep 5
             docker start whirlpool 1>/dev/null
             _sleep 2
-
-            cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-            _pause            
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            _pause return
+            bash -c "$ronin_whirlpool_menu"
             # enable whirlpool at startup, press to return to menu
             # see defaults.sh
 	        ;;
         4)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Viewing Whirlpool Logs...
 ***
-${NC}
+${nc}
 EOF
             _sleep 2
 
             cat <<EOF
-${RED}
+${red}
 ***
 Press Ctrl+C to exit at anytime...
 ***
-${NC}
+${nc}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs whirlpool
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # view logs, return to menu
             # see defaults.sh
             ;;
         5)
-            _is_dojo "${RONIN_WHIRLPOOL_MENU}"
+            _is_dojo "${ronin_whirlpool_menu}"
             cat <<EOF
-${RED}
+${red}
 ***
 Re-initiating Whirlpool will reset your mix count and generate new API key...
 ***
-${NC}
+${nc}
 EOF
-_sleep 2
+            _sleep 2
             cat <<EOF
-${RED}
+${red}
 ***
 Are you sure you want to re-initiate Whirlpool?
 ***
-${NC}
+${nc}
 EOF
             while true; do
-                read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+                read -rp "[${green}Yes${nc}/${red}No${nc}]: " answer
                 case $answer in
                     [yY][eE][sS]|[yY])
                         cat <<EOF
-${RED}
+${red}
 ***
 Re-initiating Whirlpool...
 ***
-${NC}
+${nc}
 EOF
                         cd "$dojo_path_my_dojo" || exit
 
@@ -163,45 +139,38 @@ EOF
                         _sleep
 
                         cat <<EOF
-${RED}
+${red}
 ***
 Re-initation complete, leave APIkey blank when pairing to GUI!
 ***
-${NC}
+${nc}
 EOF
                         _sleep 5
                         break
                         ;;
                     [nN][oO]|[Nn])
-                        cat <<EOF
-${RED}
-***
-Returning to menu..."
-***
-${NC}
-EOF
-                            _sleep 2
-                            break
-                            ;;
+                        _pause return
+                        break
+                        ;;
                     *)
                         cat <<EOF
-${RED}
+${red}
 ***
 Invalid answer! Enter Y or N
 ***
-${NC}
+${nc}
 EOF
                         ;;
                 esac
             done
 
             _sleep
-            bash -c "$RONIN_WHIRLPOOL_MENU"
+            bash -c "$ronin_whirlpool_menu"
             # re-initate whirlpool, return to menu
             # see defaults.sh
             ;;
         6)
-            ronin
+            bash -c "${ronin_samourai_toolkit_menu}"
             # return to menu
             ;;
 esac

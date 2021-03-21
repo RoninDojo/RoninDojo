@@ -18,122 +18,134 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
         1)
-            echo -e "${RED}"
-            echo "***"
-            echo "Obtain the IP address you wish to give access to your Whirlpool CLI."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Obtain the IP address you wish to give access to Whirlpool CLI...
+***
+${nc}
+EOF
             _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Your IP address on your network may look like 192.168.4.21"
-            echo "Or it could look like 12.34.56.78"
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
+***
+${nc}
+EOF
             _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Enter the local IP address you wish to give SSH access now."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Enter the local IP address you wish to give Whirlpool CLI access now...
+***
+${nc}
+EOF
 
             read -rp 'Local IP Address: ' ip_address
             sudo ufw allow from "$ip_address"/24 to any port 8899 comment 'Whirlpool CLI access restricted to local LAN only'
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Reloading..."
-            echo "***"
-            _sleep 2
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Reloading...
+***
+${nc}
+EOF
             sudo ufw reload
             # reload the firewall
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing status..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Showing status...
+***
+${nc}
+EOF
             _sleep 2
             sudo ufw status
             # show firewall status
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Make sure that you see your new rule!"
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Make sure that you see your new rule!
+***
+${nc}
+EOF
+            _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
-            _pause
-            bash -c "${RONIN_FIREWALL_MENU2}"
+            _pause return
+            bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;
         2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Obtain the IP address you wish to give access to SSH."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Obtain the IP address you wish to give access to Whirlpool CLI...
+***
+${nc}
+EOF
             _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Your IP address on your network may look like 192.168.4.21"
-            echo "Or it could look like 12.34.56.78"
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
+***
+${nc}
+EOF
             _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Enter the local IP address you wish to give SSH access now."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Enter the local IP address you wish to give Whirlpool CLI access now...
+***
+${nc}
+EOF
 
             read -rp 'Local IP Address: ' ip_address
             sudo ufw allow from "$ip_address" to any port 8899 comment 'Whirlpool CLI access restricted to local LAN only'
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Reloading..."
-            echo "***"
-            _sleep 2
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Reloading...
+***
+${nc}
+EOF
             sudo ufw reload
             # reload the firewall
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Showing status..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Showing status...
+***
+${nc}
+EOF
             _sleep 2
             sudo ufw status
             # show firewall status
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Make sure that you see your new rule!"
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Make sure that you see your new rule!
+***
+${nc}
+EOF
+            _sleep 2
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
-            _pause
-            bash -c "${RONIN_FIREWALL_MENU2}"
+            _pause return
+            bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;
         3)
-            bash -c "${RONIN_FIREWALL_MENU}"
+            bash -c "${ronin_firewall_menu}"
             ;;
 esac
