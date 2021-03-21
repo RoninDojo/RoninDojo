@@ -6,10 +6,10 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Update Mirrors"
-         2 "Check for RoninDojo Update"
-         3 "Update RoninDojo"
-         4 "Go Back")
+OPTIONS=(1 "Actualización de Mirrors"
+         2 "Comprobar actualizaciones de RoninDojo"
+         3 "Actualizar RoninDojo"
+         4 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -24,7 +24,7 @@ case $CHOICE in
         _pacman_update_mirrors
         # Update Mirrors and continue.
 
-        _pause return
+        _pause volver
         bash -c "${ronin_system_menu}"
         ;;
     2)
@@ -40,7 +40,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-RoninDojo update is available!
+Actualización de RoninDojo disponible!
 ***
 ${nc}
 EOF
@@ -49,7 +49,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-No update is available!
+No hay ninguna actualización disponible!
 ***
 ${nc}
 EOF
@@ -57,7 +57,7 @@ EOF
         fi
         # check for Ronin update from site
 
-        _pause return
+        _pause volver
         bash -c "${ronin_system_menu}"
         ;;
 
@@ -67,13 +67,13 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Missing ${dojo_path} directory, aborting update...
+No se encuentra el directorio ${dojo_path}, cancelando actualización...
 ***
 ${nc}
 EOF
                 _sleep
 
-                _pause return
+                _pause volver
 
                 bash -c "${ronin_system_menu}"
                 exit 1
@@ -84,7 +84,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Updating Arch OS Mirrors, Please wait...
+Actualización de espejos de Arch OS, Espere por favor...
 ***
 ${nc}
 EOF
@@ -94,7 +94,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Updating PNPM, Please wait...
+Actualizando PNPM, Espere por favor...
 ***
 ${nc}
 EOF
@@ -104,7 +104,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Updating RoninDojo...
+Actualizando RoninDojo...
 ***
 ${nc}
 EOF
@@ -113,12 +113,11 @@ EOF
         cat <<EOF
 ${red}
 ***
-Use Ctrl+C to exit if needed!
+Presione Ctrl + C para salir si fuera necesario!
 ***
 ${nc}
 EOF
-
-        _sleep 10 --msg "Updating in"
+        _sleep 10 --msg "Actualizando en"
 
         test -f "$HOME"/ronin-update.sh && sudo rm "$HOME"/ronin-update.sh
         # Remove old update file

@@ -5,9 +5,9 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Whirlpool"
-         2 "Boltzmann Calculator"
-         3 "Whirlpool Stat Tool"
-         4 "Go Back")
+         2 "Calculadora Boltzmann"
+         3 "Herramientas estadísticas de Whirlpool"
+         4 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \

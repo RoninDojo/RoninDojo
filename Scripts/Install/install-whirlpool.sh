@@ -7,7 +7,7 @@
 cat <<EOF
 ${red}
 ***
-Checking if Whirlpool is already installed...
+Comprobando si whirlpool ya esta instalado...
 ***
 ${nc}
 EOF
@@ -16,13 +16,13 @@ if [ -f "$HOME"/whirlpool/whirlpool.jar ]; then
     cat <<EOF
 ${red}
 ***
-Whirlpool is installed!
+Whirlpool esta instalado!
 ***
 ${nc}
 EOF
     _sleep
 
-    _pause return
+    _pause volver
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
     exit
 fi
@@ -31,7 +31,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Checking if Tor is installed...
+Cromprobando que Tor esté instalado...
 ***
 ${nc}
 EOF
@@ -42,7 +42,7 @@ if hash tor; then
     cat <<EOF
 ${red}
 ***
-The Tor package is installed...
+El paquete Tor esta instalado...
 ***
 ${nc}
 EOF
@@ -50,7 +50,7 @@ else
     cat <<EOF
 ${red}
 ***
-The Tor package will be installed now...
+El paquete Tor se va a instalar ahora....
 ***
 ${nc}
 EOF
@@ -64,7 +64,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Installing Whirlpool...
+Instalando Whirlpool...
 ***
 ${nc}
 EOF
@@ -73,7 +73,7 @@ _sleep 3
 cat <<EOF
 ${red}
 ***
-A UFW rule will be made for Whirlpool...
+Una regla de UFW se hará para Whirlpool...
 ***
 ${nc}
 EOF
@@ -82,7 +82,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Whirlpool GUI will be able to access Whirlpool CLI from any machine on your RoninDojo's local network...
+La Whirlpool GUI será capaz de acceder a la Whirlpool CLI desde cualquier ordenador que este en la misma red local que tu RoninDojo...
 ***
 ${nc}
 EOF
@@ -92,7 +92,7 @@ if sudo ufw status | grep 8899 > /dev/null ; then
     cat <<EOF
 ${red}
 ***
-Whirlpool firewall rule already setup...
+La regla del Cortafuegos para Whirlpool ya esta configurada...
 ***
 ${nc}
 EOF
@@ -143,7 +143,7 @@ else
     cat <<EOF
 ${red}
 ***
-Reloading UFW...
+Recargando UFW...
 ***
 ${nc}
 EOF
@@ -155,7 +155,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Checking UFW status...
+Comprobando el estado de UFW...
 ***
 ${nc}
 EOF
@@ -165,7 +165,7 @@ sudo ufw status
 cat <<EOF
 ${red}
 ***
-Created a Whirlpool directory...
+Un directorio para Whirlpool ha sido creado...
 ***
 ${nc}
 EOF
@@ -179,7 +179,7 @@ cd whirlpool || exit
 cat <<EOF
 ${red}
 ***
-Pulling Whirlpool from repository...
+Descargando Whirlpool de git...
 ***
 ${nc}
 EOF
@@ -191,7 +191,7 @@ wget -qO whirlpool.jar https://code.samourai.io/whirlpool/whirlpool-client-cli/u
 cat <<EOF
 ${red}
 ***
-Checking if Whirlpool.service is already exists...
+Comprobando que Whirlpool.service sea existente...
 ***
 ${nc}
 EOF
@@ -200,7 +200,7 @@ if [ -f /etc/systemd/system/whirlpool.service ]; then
     cat <<EOF
 ${red}
 ***
-Whirlpool Service already is installed!
+Whirlpool Service ya ha sido instalado!
 ***
 EOF
     _sleep
@@ -209,7 +209,7 @@ else
     cat <<EOF
 ${red}
 ***
-Setting Whirlpool Service...
+Configurando Whirlpool Service...
 ***
 ${nc}
 EOF
@@ -243,7 +243,7 @@ _sleep 3
 cat <<EOF
 ${red}
 ***
-Starting Whirlpool in the background...
+Iniciando Whirlpool en segundo plano...
 ***
 ${nc}
 EOF
@@ -256,7 +256,7 @@ _sleep 3
 cat <<EOF
 ${red}
 ***
-Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixing...
+Instala Whirpool GUI para inciar Whirlpool y procede a abrir el monedero/wallet para empezar a mezclar...
 ***
 ${nc}
 EOF
@@ -265,7 +265,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-For pairing with GUI head to full guide at: https://wiki.ronindojo.io/en/cli-setup/step3
+Para enlazar con la GUI dirigete a la guia: https://wiki.ronindojo.io/en/cli-setup/step3
 ***
 ${nc}
 EOF
@@ -274,10 +274,10 @@ _sleep
 cat <<EOF
 ${red}
 ***
-This install is for non Tor whirlpool, can only access locally...
+Esta instalción es sin Tor whirlpool, solo se puede acceder en la red local...
 ***
 ${nc}
 EOF
 _sleep
 
-_pause return
+_pause volver

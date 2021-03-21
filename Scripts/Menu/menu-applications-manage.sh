@@ -9,28 +9,28 @@ upgrade=false
 # Set mempool install/uninstall status
 if ! _is_mempool; then
     is_mempool_installed=false
-    mempool_text="Install"
+    mempool_text="Instalar"
 else
     is_mempool_installed=true
-    mempool_text="Uninstall"
+    mempool_text="Desinstalar"
 fi
 
 # Set Specter install/uninstall status
 if ! _is_specter; then
     is_specter_installed=false
-    specter_text="Install"
+    specter_text="Instalar"
 else
     is_specter_installed=true
-    specter_text="Uninstall"
+    specter_text="Desinstalar"
 fi
 
 # Set Bisq install/uninstall status
 if ! _is_bisq; then
     is_bisq_installed=false
-    bisq_text="Enable"
+    bisq_text="Activar"
 else
     is_bisq_installed=true
-    bisq_text="Disable"
+    bisq_text="Desactivar"
 fi
 
 # Set Indexer Install State
@@ -38,17 +38,17 @@ _check_indexer
 ret=$?
 
 if ((ret==0)); then
-    indexer_name="Install Samourai Indexer"
+    indexer_name="Instalar Samourai indexador"
 elif ((ret==1)); then
-    indexer_name="Install Electrum Indexer"
+    indexer_name="Instalar Electrum indexador"
 elif ((ret==2)); then
-    indexer_name="Install Indexer"
+    indexer_name="Instalar el indexador"
 fi
 
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
-options=(1 "${mempool_text} Mempool Space Visualizer" off    # any option can be set to default to "on"
+options=(1 "${mempool_text} visualizador de espacio en la Mempool" off    # any option can be set to default to "on"
          2 "${specter_text} Specter" off
-         3 "${bisq_text} Bisq Connection" off
+         3 "${bisq_text} conexión con Bisq" off
          4 "${indexer_name}" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
@@ -60,7 +60,7 @@ do
                 cat <<EOF
 ${red}
 ***
-Installing Mempool Space Visualizer...
+Instalando visualizador de espacio en la Mempool...
 ***
 ${nc}
 EOF
@@ -82,7 +82,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Specter Server Uninstalled...
+Desinstalando el servidor de Specter...
 ***
 ${nc}
 EOF
@@ -101,11 +101,11 @@ EOF
             ;;
         4)
             case "${indexer_name}" in
-                "Install Samourai Indexer")
+                "Instalar Samourai indexador")
                     cat <<EOF
 ${red}
 ***
-Switching to Samourai indexer...
+Cambiando al indexador de Samourai...
 ***
 ${nc}
 EOF
@@ -115,11 +115,11 @@ EOF
 
                     _set_indexer
                     ;;
-                "Install Electrum Indexer")
+                "Instalar Electrum indexador")
                     cat <<EOF
 ${red}
 ***
-Installing Electrum Rust Server...
+Cambiando al servidor de Electrum Rust...
 ***
 ${nc}
 EOF
@@ -127,11 +127,11 @@ EOF
 
                     bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     ;;
-                "Install Indexer")
+                "Instalar el Indexer")
                     cat <<EOF
 ${red}
 ***
-Select an indexer to use with RoninDojo...
+Seleccione un indexador para usar con RoninDojo...
 ***
 ${nc}
 EOF

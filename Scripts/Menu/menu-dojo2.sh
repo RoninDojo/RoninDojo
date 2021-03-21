@@ -4,11 +4,11 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Clean Dojo"
-         2 "Dojo Version"
-         3 "Receive Block Data from Backup"
-         4 "Send Block Data to Backup"
-         5 "Go Back")
+OPTIONS=(1 "Limpiar Dojo"
+         2 "Versión de Dojo"
+         3 "Recibir bloques de la copia de seguridad"
+         4 "Enviar bloques a la copia de seguridad"
+         5 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -28,7 +28,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Deleting docker dangling images and images of previous versions...
+Eliminando imagenes colgadas e imágenes de versiones previas de Docker...
 ***
 ${nc}
 EOF
@@ -36,7 +36,7 @@ EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh clean
 
-            _pause return
+            _pause volver
             bash -c "${ronin_dojo_menu2}"
             # free disk space by deleting docker dangling images and images of previous versions. then returns to menu
             ;;
@@ -49,7 +49,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Displaying the version info...
+Mostrando info de la versión...
 ***
 ${nc}
 EOF
@@ -58,7 +58,7 @@ EOF
             ./dojo.sh version
             # display dojo version info
 
-            _pause return
+            _pause volver
             bash -c "${ronin_dojo_menu2}"
             # press any key to return
             ;;

@@ -9,7 +9,7 @@ OPTIONS=(1 "Bitcoind"
          3 "Indexer"
          4 "Node.js"
          5 "Tor"
-         6 "Go Back")
+         6 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -26,7 +26,7 @@ case $CHOICE in
               cat <<DOJO
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 DOJO
@@ -37,7 +37,7 @@ DOJO
               ./dojo.sh logs bitcoind -n 200 | grep -i 'error'
               # shows bitcoind error logs
 
-              _pause return
+              _pause volver
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               # press any key to return to menu
             fi
@@ -47,7 +47,7 @@ DOJO
               cat <<DOJO
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 DOJO
@@ -58,7 +58,7 @@ DOJO
                     cat <<EOF
 ${red}
 ***
-Electrum Rust Server is your current Indexer...
+El servidor de Electrum Rust es tu indexador actual...
 ***
 ${nc}
 EOF
@@ -66,12 +66,12 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Please check Electrum Rust Server logs instead...
+Por favor en su lugar comprueba los registros de Electum rust...
 ***
 ${nc}
 EOF
                     _sleep
-                    _pause return
+                    _pause volver
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               fi
               cd "$dojo_path_my_dojo" || exit
@@ -79,7 +79,7 @@ EOF
               # shows db error logs
             fi
 
-            _pause return
+            _pause volver
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
 	          ;;
@@ -88,7 +88,7 @@ EOF
               cat <<DOJO
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 DOJO
@@ -100,7 +100,7 @@ DOJO
               # shows indexer error logs
             fi
 
-            _pause return
+            _pause volver
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
@@ -109,7 +109,7 @@ DOJO
               cat <<DOJO
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 DOJO
@@ -121,7 +121,7 @@ DOJO
               # shows nodejs error logs
             fi
 
-            _pause return
+            _pause volver
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
@@ -130,7 +130,7 @@ DOJO
                 cat <<DOJO
 ${red}
 ***
-Please start Dojo first!
+Por favor primero inicia Dojo!
 ***
 ${nc}
 DOJO
@@ -142,7 +142,7 @@ DOJO
               # shows tor error logs
             fi
 
-            _pause return
+            _pause volver
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;

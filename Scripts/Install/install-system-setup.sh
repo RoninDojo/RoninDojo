@@ -10,23 +10,23 @@ if [ -d "$HOME"/dojo ]; then
     cat <<EOF
 ${red}
 ***
-Dojo directory found, please uninstall Dojo first!
+Se ha encontrado el directorio Dojo, por favor desinstala Dojo primero!
 ***
 ${nc}
 EOF
     _sleep
 
-    _pause return
+    _pause volver
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 elif [ -f "${ronin_data_dir}"/system-install ]; then
     cat <<EOF
 ${red}
 ***
-Previous system install detected. Exiting script...
+Preparando el sistema e instalando las dependencias...
 ***
 ${nc}
 EOF
-    _pause return
+    _pause volver
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 else
     cat <<EOF
@@ -43,11 +43,11 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Use Ctrl+C to exit now if needed!
+Usa Ctrl+C para salir si lo necesitas!
 ***
 ${nc}
 EOF
-_sleep 10 --msg "Installing in"
+_sleep 10 --msg "Instalando en"
 
 "$HOME"/RoninDojo/Scripts/.logo
 # display ronindojo logo
@@ -59,7 +59,7 @@ if _disable_bluetooth; then
     cat <<EOF
 ${red}
 ***
-Disabling Bluetooth...
+Deshabilitando Bluetooth...
 ***
 ${nc}
 EOF
@@ -70,7 +70,7 @@ if _disable_ipv6; then
     cat <<EOF
 ${red}
 ***
-Disabling Ipv6...
+Deshabilitando Ipv6...
 ***
 ${nc}
 EOF
@@ -99,7 +99,7 @@ if ! pacman -Q libusb 1>/dev/null; then
     cat <<EOF
 ${red}
 ***
-Installing libusb...
+Instalando libusb...
 ***
 ${nc}
 EOF
@@ -110,7 +110,7 @@ if sudo ufw status | grep 22 > /dev/null ; then
     cat <<EOF
 ${red}
 ***
-SSH firewall rule already setup...
+La regla para el cortafuegos del SSH ya está listo...
 ***
 ${nc}
 EOF
@@ -119,7 +119,7 @@ else
     cat <<EOF
 ${red}
 ***
-Setting up UFW...
+Configurando UFW...
 ***
 ${nc}
 EOF
@@ -132,7 +132,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Enabling UFW...
+Habilitando UFW...
 ***
 ${nc}
 EOF
@@ -180,7 +180,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Reloading UFW...
+Recargando UFW...
 ***
 ${nc}
 EOF
@@ -191,7 +191,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Checking UFW status...
+Comprobando el status de UFW...
 ***
 ${nc}
 EOF
@@ -206,7 +206,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access.
+Ahora que el UFW ha sido habilitado, cualquier ordenador conectado en la misma red tendra acceso al RoninDojo através de SSH...
 ***
 ${nc}
 EOF
@@ -214,7 +214,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc.
+Dejar por defecto esta configuración NO ES RECOMENDABLE para los usuarios que se conectan a Iternet desde una red de acceso público, universidades Etc...
 ***
 ${nc}
 EOF
@@ -222,7 +222,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Firewall rules can be adjusted using the RoninDojo Firewall Menu.
+La configuración del cortafuegos puede ser ajustada usando el menú del cortafuegos de RoninDojo...
 ***
 ${nc}
 EOF
@@ -232,7 +232,7 @@ fi
 cat <<EOF
 ${red}
 ***
-All Dojo dependencies installed...
+Todas las dependencias de Dojo han sido instaladas...
 ***
 ${nc}
 EOF
@@ -241,7 +241,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Creating ${install_dir} directory...
+Creando el directorio ${install_dir}...
 ***
 ${nc}
 EOF
@@ -255,7 +255,7 @@ if [ -b "${primary_storage}" ]; then
     cat <<EOF
 ${red}
 ***
-Creating ${storage_mount} directory...
+Creando el directorio ${storage_mount}...
 ***
 ${nc}
 EOF
@@ -266,7 +266,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Attempting to mount drive for Blockchain data salvage...
+Montando el disco duro para el intento de recuperar los datos de la blockchain...
 ***
 ${nc}
 EOF
@@ -276,7 +276,7 @@ else
     cat <<EOF
 ${red}
 ***
-Did not find ${primary_storage} for Blockchain data salvage.
+No se ha encontrado ${primary_storage} para la recuperación de datos de la Blockchain...
 ***
 ${nc}
 EOF
@@ -288,7 +288,7 @@ if sudo test -d "${bitcoin_ibd_backup_dir}/blocks"; then
     cat <<EOF
 ${red}
 ***
-Found Blockchain data for salvage!
+Se han encontrado datos para la recuperación de la Blockchain!
 ***
 ${nc}
 EOF
@@ -312,7 +312,7 @@ _sleep
     cat <<EOF
 ${red}
 ***
-Mounting drive...
+Montando la unidad...
 ***
 ${nc}
 EOF
@@ -324,7 +324,7 @@ _sleep
     cat <<EOF
 ${red}
 ***
-Displaying the name on the external disk...
+Mostrando el nombre en el disco externo...
 ***
 ${nc}
 EOF
@@ -336,7 +336,7 @@ _sleep
     cat <<EOF
 ${red}
 ***
-Check output for ${primary_storage} and make sure everything looks ok...
+Mira la respuesta de ${primary_storage} y asegúrate de que todo parezca correcto...
 ***
 ${nc}
 EOF
@@ -363,7 +363,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Dojo is ready to be installed!
+Dojo esta preparado para ser instalado!
 ***
 ${nc}
 EOF
@@ -379,7 +379,7 @@ else
     cat <<EOF
 ${red}
 ***
-No Blockchain data found for salvage check 1...
+No se ha encontrado datos para la recuperción de la Blockchain, comprobación 1...
 ***
 ${nc}
 EOF
@@ -397,7 +397,7 @@ if sudo test -d "${storage_mount}/${bitcoind_data_dir}/_data/blocks"; then
     cat <<EOF
 ${red}
 ***
-Found Blockchain data for salvage!
+Se han encontrado datos para recuperación de la Blockchain!
 ***
 ${nc}
 EOF
@@ -406,7 +406,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Moving to temporary directory...
+Traslandando los datos a un directorio temporal...
 ***
 ${nc}
 EOF
@@ -425,7 +425,8 @@ EOF
     cat <<EOF
 ${red}
 ***
-Blockchain data prepared for salvage!
+Blockchain data prepared for salvage! Los datos de la Blockchain estan preparados para su recuperación!
+
 ***
 ${nc}
 EOF
@@ -448,7 +449,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Mounting drive...
+Montando el disco duro...
 ***
 ${nc}
 EOF
@@ -462,7 +463,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Displaying the name on the external disk...
+Mostrando el nombre en el disco externo...
 ***
 ${nc}
 EOF
@@ -475,7 +476,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Check output for ${primary_storage} and make sure everything looks ok...
+Mira la respuesta de ${primary_storage} y asegúrate de que todo parezca correcto...
 ***
 ${nc}
 EOF
@@ -499,7 +500,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Dojo is ready to be installed!
+Dojo ya esta preparado para ser instalado!
 ***
 ${nc}
 EOF
@@ -515,7 +516,7 @@ else
     cat <<EOF
 ${red}
 ***
-No Blockchain data found for salvage check 2...
+No se ha encontrado datos para la recuperción de la Blockchain, comprobación 2...
 ***
 ${nc}
 EOF
@@ -536,7 +537,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Formatting the SSD...
+Formateando la SSD...
 ***
 ${nc}
 EOF
@@ -553,7 +554,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Displaying the name on the external disk...
+Mostrando el nombre en el disco externo...
 ***
 ${nc}
 EOF
@@ -565,7 +566,7 @@ lsblk -o NAME,SIZE,LABEL "${primary_storage}"
 cat <<EOF
 ${red}
 ***
-Check output for ${primary_storage} and make sure everything looks ok...
+Mira la respuesta de ${primary_storage} y asegúrate de que todo parezca correcto...
 ***
 ${nc}
 EOF
@@ -589,7 +590,7 @@ _docker_datadir_setup
 cat <<EOF
 ${red}
 ***
-Installing SW Toolkit...
+Instalando SW Toolkit...
 ***
 ${nc}
 EOF
@@ -598,7 +599,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Installing Boltzmann Calculator...
+Instalando Boltzmann Calculator...
 ***
 ${nc}
 EOF
@@ -610,7 +611,7 @@ _install_boltzmann
 cat <<EOF
 ${red}
 ***
-Installing Whirlpool Stat Tool...
+Instalando Whirlpool Stat Tool...
 ***
 ${nc}
 EOF
@@ -632,7 +633,7 @@ _ronin_ui_install
 cat <<EOF
 ${red}
 ***
-Dojo is ready to be installed!
+Dojo ha sido instalado!
 ***
 ${nc}
 EOF

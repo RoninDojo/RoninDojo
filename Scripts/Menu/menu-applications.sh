@@ -4,13 +4,13 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Mempool Space Visualizer"
-         2 "Specter Server"
-         3 "Electrum Server"
-         4 "Bisq Connection Status"
-         5 "Fan Control"
-         6 "Manage Applications"
-         7 "Go Back")
+OPTIONS=(1 "Visualizador de la mempool"
+         2 "Servidor de Specter"
+         3 "Servidor de Electrum"
+         4 "Estado de la conexión con Bisq"
+         5 "Control de los ventiladores"
+         6 "Menú de instalación de aplicaciones"
+         7 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -27,7 +27,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Mempool Space Visualizer not installed!
+Mempool no esta instalado!
 ***
 ${nc}
 EOF
@@ -35,12 +35,12 @@ EOF
             cat <<EOF
 ${red}
 ***
-Install Mempool Space Visualizer using the manage applications menu...
+Instala Mempool usando el menú de instalación de aplicaciones...
 ***
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "${ronin_applications_menu}"
         else
             bash -c "${ronin_mempool_menu}"
@@ -52,7 +52,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Specter server not installed!
+Servidor de Specter no instalado!
 ***
 ${nc}
 EOF
@@ -65,7 +65,7 @@ Install Specter Server using the manage applications menu...
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "${ronin_applications_menu}"
         else
             bash -c "${ronin_specter_menu}"
@@ -86,7 +86,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Checking your RoninDojo's compatibility with Bisq...
+Verificando la compatibilidad de tu RoninDojo con Bisq...
 ***
 ${nc}
 EOF
@@ -95,7 +95,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Bisq connections are not enabled...
+Las conexiones con bisq no están habilitadas...
 ***
 ${nc}
 EOF
@@ -108,13 +108,13 @@ Enable Bisq connections using the applications install menu...
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "$ronin_applications_menu"
         else
             cat <<EOF
 ${red}
 ***
-Bisq connections are enabled...
+Las conexiones con Bisq están habilitadas...
 ***
 ${nc}
 EOF
@@ -122,12 +122,12 @@ EOF
             cat <<EOF
 ${red}
 ***
-Enjoy those no-KYC sats...
+Disfruta esos sats sin KYC...
 ***
 ${nc}
 EOF
             _sleep
-            _pause return
+            _pause volver
             bash -c "$ronin_applications_menu"
         fi
         # Bisq check
@@ -137,20 +137,20 @@ EOF
             cat <<EOF
 ${red}
 ***
-No supported single-board computer detected for fan control...
+Placa sin soporte detectada para el control de los ventiladores...
 ***
 EOF
             _sleep
             cat <<EOF
 ${red}
 ***
-Supported devices are Rockpro64 and Rockpi4...
+Los dispositivos soportados són Rockpro64 and Rockpi4...
 ***
 ${nc}
 EOF
             _sleep
 
-            _pause return
+            _pause volver
             bash -c "$ronin_applications_menu"
             exit
         fi
@@ -174,7 +174,7 @@ EOF
 
             _fan_control_install || exit 1
 
-            _pause return
+            _pause volver
 
             bash -c "${ronin_applications_menu}"
             # Manage applications menu
@@ -182,7 +182,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Fan control already installed...
+Control de ventiladores ya instalado...
 ***
 ${nc}
 EOF
@@ -208,7 +208,7 @@ EOF
             fi
         fi
 
-        _pause return
+        _pause volver
 
         bash -c "${ronin_applications_menu}"
         ;;

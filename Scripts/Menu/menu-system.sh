@@ -6,14 +6,14 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Disk Storage"
-         2 "Power Off"
-         3 "Reboot"
-         4 "Software Updates"
-         5 "System Monitoring"
-         6 "System Setup & Install"
-         7 "Next Page"
-         8 "Go Back")
+OPTIONS=(1 "Almacenamiento de disco"
+         2 "Apagar"
+         3 "Reiniciar"
+         4 "Actualizaciones de Software"
+         5 "Monitoreo del sistema"
+         6 "Configuración del sistema e instalación"
+         7 "Siguiente página"
+         8 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -34,7 +34,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Shutting down Dojo if running...
+Deteniendo Dojo si estubiera en marcha...
 ***
 ${nc}
 EOF
@@ -45,7 +45,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Powering off machine, or press Ctrl + C to cancel...
+Apagando la máquina, presiona Ctrl + C para cancelar...
 ***
 ${nc}
 EOF
@@ -59,7 +59,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Powering off machine, or press Ctrl + C to cancel...
+Apagando la máquina, presiona Ctrl + C para cancelar...
 ***
 ${nc}
 EOF
@@ -76,7 +76,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Shutting down Dojo if running...
+Deteniendo Dojo si estubiera en marcha...
 ***
 ${nc}
 EOF
@@ -88,7 +88,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Restarting machine, or press Ctrl + C to cancel...
+Reiniciando la máquina, presiona Ctrl + C para cancelar...
 ***
 ${nc}
 EOF
@@ -102,7 +102,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Restarting machine, or press Ctrl + C to cancel...
+Reiniciando la máquina, presiona Ctrl + C para cancelar...
 ***
 ${nc}
 EOF

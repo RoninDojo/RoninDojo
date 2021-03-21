@@ -4,15 +4,15 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Enable"
-         2 "Disable"
-         3 "Status"
-         4 "Delete Rule"
-         5 "Reload"
-         6 "Add IP Range for SSH"
-         7 "Add Specific IP for SSH"
-         8 "Next Page"
-         9 "Go Back")
+OPTIONS=(1 "Activar"
+         2 "Desactivar"
+         3 "Estado"
+         4 "Eliminar regla"
+         5 "Recargar"
+         6 "Añadir rango IP para SSH"
+         7 "Añadir IP específica para SSH"
+         8 "Siguiente página"
+         9 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -27,13 +27,13 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Enabling Firewall...
+Activando cortafuegos...
 ***
 ${nc}
 EOF
             _sleep
             sudo ufw enable
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # enable firewall, press any key to return to menu
             ;;
@@ -41,13 +41,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Disabling Firewall...
+Desactivando cortafuegos...
 ***
 ${nc}
 EOF
             _sleep
             sudo ufw disable
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # disable firewall, press any key to return to menu
             ;;
@@ -55,13 +55,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Showing Status...
+Mostrando el estado...
 ***
 ${nc}
 EOF
             _sleep
             sudo ufw status
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # show ufw status, press any key to return to menu
             ;;
@@ -69,7 +69,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Find the rule you want to delete, and type its row number to delete it...
+Encuentra la regla que quieras eliminar y pulsa su número para eliminarla...
 ***
 ${nc}
 EOF
@@ -80,7 +80,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Be careful when deleting old firewall rules! Don't lock yourself out from SSH access...
+Ten cuidado al eliminar las reglas antiguas del cortafuegos!No te dejes a ti mismo sin acceso por SSH...
 ***
 ${nc}
 EOF
@@ -89,7 +89,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Example: If you want to delete the 3rd rule listed, press the number 3, and press Enter...
+Ejemplo: Si quieres eliminar la 3a regla listada, apreta el número 3 y pulsa Enter...
 ***
 ${nc}
 EOF
@@ -102,7 +102,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Reloading...
+Recargando...
 ***
 ${nc}
 EOF
@@ -112,7 +112,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Showing status...
+Mostrando estado...
 ***
 ${nc}
 EOF
@@ -120,7 +120,7 @@ EOF
             sudo ufw status
             # show firewall status
 
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # press any key to return to menu
             ;;
@@ -128,12 +128,12 @@ EOF
             cat <<EOF
 ${red}
 ***
-Reloading...
+Recargando...
 ***
 ${nc}
 EOF
             sudo ufw reload
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # reload firewall, press any key to return to menu
             ;;
@@ -141,7 +141,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Obtain the IP address of any machine on the same local network as your RoninDojo...
+Obtén la IP de cualquier máquina conectada en la misma red local que tu RoninDojo...
 ***
 ${nc}
 EOF
@@ -150,7 +150,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-The IP address entered will be adapted to end with .0/24 range...
+La dirección IP introducida debe ser adaptada en su final con el rango .0/24 ...
 ***
 ${nc}
 EOF
@@ -159,7 +159,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-This will allow any machine on the same network to have SSH access...
+Esto permitirá a cualquier máquina conectada a la misma red local conectarse via SSH...
 ***
 ${nc}
 EOF
@@ -168,7 +168,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
+Tu direción IP en la red local debe parecerse a 192.168.4.21 o 12.34.56.78 dependiendo de tu configuración...
 ***
 ${nc}
 EOF
@@ -177,7 +177,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Enter the local IP address you wish to give SSH access now...
+Introduce la IP local a la que deseas dar acceso por SSh ahora...
 ***
 ${nc}
 EOF
@@ -188,7 +188,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Reloading...
+Recargando...
 ***
 ${nc}
 EOF
@@ -198,7 +198,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Showing status...
+Mostrando estado...
 ***
 ${nc}
 EOF
@@ -209,13 +209,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Make sure that you see your new rule!
+Asegurate de ver tu nueva regla!
 ***
 ${nc}
 EOF
             _sleep
 
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # press any key to return to menu
             ;;
@@ -223,7 +223,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Obtain the specific IP address you wish to give access to SSH...
+Obtén la dirección IP específica a la que deseas dar acceso por SSH...
 ***
 ${nc}
 EOF
@@ -232,7 +232,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-SSH access will be restricted to this IP address only...
+El acceso por SSh será restringido solo para esta dirección IP...
 ***
 ${nc}
 EOF
@@ -241,7 +241,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 depending on setup...
+Tu direción IP en la red local debe parecerse a 192.168.4.21 o 12.34.56.78 dependiendo de tu configuración...
 ***
 ${nc}
 EOF
@@ -250,7 +250,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Enter the local IP address you wish to give SSH access now...
+Introduce la IP local a la que deseas dar acceso por SSh ahora...
 ***
 ${nc}
 EOF
@@ -261,7 +261,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Reloading...
+Recargando...
 ***
 ${nc}
 EOF
@@ -271,7 +271,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Showing status...
+Mostrando estado...
 ***
 ${nc}
 EOF
@@ -282,13 +282,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Make sure that you see your new rule!
+Asegurate de ver tu nueva regla!
 ***
 ${nc}
 EOF
             _sleep
 
-            _pause return
+            _pause volver
             bash -c "${ronin_firewall_menu}"
             # press any key to return to menu
             ;;

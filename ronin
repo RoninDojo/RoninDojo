@@ -12,11 +12,11 @@ test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dia
 
 OPTIONS=(1 "Dojo"
          2 "Ronin UI"
-         3 "Credentials"
-         4 "Applications"
-         5 "Samourai Toolkit"
-         6 "System"
-         7 "Exit RoninDojo")
+         3 "Credenciales"
+         4 "Aplicaciones"
+         5 "Herramientas de Samourai"
+         6 "Sistema"
+         7 "Salir de RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \

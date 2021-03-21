@@ -7,7 +7,7 @@
 cat <<EOF
 ${red}
 ***
-Checking package dependencies...
+Comprobando las dependencias de los paquetes...
 ***
 ${nc}
 EOF

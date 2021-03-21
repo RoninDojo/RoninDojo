@@ -11,7 +11,7 @@ if ! findmnt "${install_dir}" 1>/dev/null; then
     cat <<EOF
 ${red}
 ***
-Missing drive mount at ${install_dir}! Please contact support for assistance...
+El disco montado no se encuentra disponible en ${INSTALL_DIR}! Para más información, por favor contacte con asistencia técnica.
 ***
 ${nc}
 EOF
@@ -19,12 +19,12 @@ EOF
     cat <<EOF
 ${red}
 ***
-Exiting RoninDojo...
+Saliendo de RoninDojo en 5 segundos...
 ***
 ${nc}
 EOF
     _sleep
-    _pause return
+    _pause volver
     exit 1
 fi
 
@@ -32,12 +32,12 @@ if [ -d "${dojo_path_my_dojo}" ]; then
     cat <<EOF
 ${red}
 ***
-RoninDojo is already installed...
+RoninDojo ya está instalado...
 ***
 ${nc}
 EOF
     _sleep
-    _pause return
+    _pause volver
     ronin
     exit
 fi
@@ -46,7 +46,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Running RoninDojo install...
+Aplicando la instalación de RoninDojo...
 ***
 ${nc}
 EOF
@@ -55,16 +55,16 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Use Ctrl+C to exit now if needed!
+Puedes pulsar Ctrl+C si necesitas salir ahora!
 ***
 ${nc}
 EOF
-_sleep 10 --msg "Installing in"
+_sleep 10 --msg "Instalando en"
 
 cat <<EOF
 ${red}
 ***
-Downloading latest RoninDojo release...
+Descargando y extrayendo la última version de RoninDojo...
 ***
 ${nc}
 EOF
@@ -90,7 +90,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Credentials necessary for usernames, passwords, etc. will randomly be generated now...
+Las credenciales necesarias para los nombres de usuario, contraseñas, etc. serán creadas al azar ahora...
 ***
 ${nc}
 EOF
@@ -99,7 +99,7 @@ _sleep 4
 cat <<EOF
 ${red}
 ***
-Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or the ~/RoninDojo/user.conf.example file...
+Las credenciales se encuentran en el menu de RoninDojo, ${dojo_path_my_dojo}/conf, o en ~/RoninDojo/user.conf.example file...
 ***
 ${nc}
 EOF
@@ -108,7 +108,7 @@ _sleep 4
 cat <<EOF
 ${red}
 ***
-Be aware these credentials are used to login to Dojo Maintenance Tool, Block Explorer, and more!
+Recuerda que estas credenciales son para acceder a la herramienta de mantenimiento de Dojo, Explorador de Blocks, y más!
 ***
 ${nc}
 EOF
@@ -117,7 +117,7 @@ _sleep 4
 cat <<EOF
 ${red}
 ***
-Setting the RPC User and Password...
+Ajustando el RCP Usuario y Contraseña...
 ***
 ${nc}
 EOF
@@ -128,7 +128,7 @@ if [ -d "${dojo_backup_dir}" ]; then
         cat <<EOF
 ${red}
 ***
-Backup restoration disabled!
+Deshabilitada la restauración de la copia de seguridad!
 ***
 ${nc}
 EOF
@@ -137,7 +137,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Enable in user.conf if you wish to restore credentials on dojo install when available...
+Habilita user.conf si deseas restaurar las credenciales en la instalación de dojo cuando esten disponibles...
 ***
 ${nc}
 EOF
@@ -146,7 +146,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Credentials backup detected and restored...
+La copia de seguridad de las credenciales ha sido detectada y restaurada...
 ***
 ${nc}
 EOF
@@ -155,7 +155,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-If you wish to disable this feature, set dojo_conf_backup=false in the $HOME/.config/RoninDojo/user.conf file...
+Si deseas deshabilitar esta opción, configura DOJO_RESTORE=false en el archivo $HOME/.config/RoninDojo/user.conf ...
 ***
 ${nc}
 EOF
@@ -165,7 +165,7 @@ else
     cat <<EOF
 ${red}
 ***
-Configuring the bitcoin daemon server...
+Configurando el servidor daemon de bitcoin...
 ***
 ${nc}
 EOF
@@ -181,7 +181,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Configuring the Nodejs container...
+Configurando el contenedor Nodejs...
 ***
 ${nc}
 EOF
@@ -201,7 +201,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Configuring the BTC RPC Explorer...
+Configurando el explorador BTC RCP...
 ***
 ${nc}
 EOF
@@ -228,7 +228,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Please see Wiki for FAQ, help, and so much more...
+Por favor hecha un vistazo a la Wiki en FAQ, ayuda, y mucho más...
 ***
 ${nc}
 EOF
@@ -246,7 +246,7 @@ _sleep 3
 cat <<EOF
 ${red}
 ***
-Installing Samourai Wallet's Dojo...
+Instalando Dojo para la cartera "Samourai Wallet"...
 ***
 ${nc}
 EOF
@@ -261,7 +261,7 @@ if ./dojo.sh install --nolog --auto; then
     cat <<EOF
 ${red}
 ***
-All RoninDojo feature installations complete...
+Todas las opciones de RoninDojo han sido instaladas...
 ***
 ${nc}
 EOF
@@ -289,7 +289,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Installing Boltzmann Calculator...
+Instalando Boltzmann Calculator...
 ***
 ${nc}
 EOF
@@ -303,7 +303,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Installing Whirlpool Stat Tool...
+Instalando Whirlpool Stat Tool...
 ***
 ${nc}
 EOF
@@ -319,16 +319,16 @@ EOF
     test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
 
     # Press to continue to prevent from snapping back to menu too quickly
-    _pause return
+    _pause volver
 else
         cat <<EOF
 ${red}
 ***
-Install failed! Please contact support...
+La instalación ha fallado! Por favor contacte con asistencia técnica...
 ***
 ${nc}
 EOF
 
-        _pause return
+        _pause volver
         ronin
 fi

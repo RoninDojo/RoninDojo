@@ -298,7 +298,7 @@ _pause() {
     cat <<EOF
 ${red}
 ***
-Press any key to ${1}...
+Pulsa cualquier tecla para ${1}...
 ***
 ${nc}
 EOF
@@ -464,7 +464,7 @@ ${nc}
 EOF
         _sleep
 
-        _pause return
+        _pause volver
         return 1
     fi
 
@@ -1070,7 +1070,7 @@ ${red}
 Missing ${dojo_path} directory!
 ${nc}
 EOF
-        _pause return
+        _pause volver
         bash -c "$menu"
         exit 1
 fi
@@ -1311,7 +1311,7 @@ EOF
     cd "${dojo_path_my_dojo}" || exit
 
     . dojo.sh upgrade --nolog
-    _pause return
+    _pause volver
 
     bash -c "${ronin_applications_menu}"
 }
@@ -1445,7 +1445,7 @@ Missing ${dojo_path} directory!
 ***
 ${nc}
 EOF
-        _pause return
+        _pause volver
         bash -c "$ronin_dojo_menu"
         exit 1
     fi

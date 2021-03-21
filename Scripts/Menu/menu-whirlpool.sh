@@ -4,12 +4,12 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-OPTIONS=(1 "Start"
-         2 "Stop"
-         3 "Restart"
-         4 "Logs"
+OPTIONS=(1 "Iniciar"
+         2 "Detener"
+         3 "Reiniciar"
+         4 "Registros"
          5 "Reset"
-         6 "Go Back")
+         6 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -25,7 +25,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Starting Whirlpool...
+Iniciando Whirlpool...
 ***
 ${nc}
 EOF
@@ -35,14 +35,12 @@ EOF
             cat <<EOF
 ${red}
 ***
-Don't forget to login to GUI to unlock mixing!
+No olvides iniciar sesión en GUI para desbloquear el mezclado!
 ***
 ${nc}
 EOF
             _sleep
-
-            _pause return
-
+            _pause volver
             bash -c "$ronin_whirlpool_menu"
             # see defaults.sh
             # start whirlpool, press to return to menu
@@ -52,15 +50,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Stopping Whirlpool...
+Deteniendo Whirlpool...
 ***
 ${nc}
 EOF
             _sleep
             docker stop whirlpool 1>/dev/null
-
-            _pause return
-
+            _pause volver
             bash -c "$ronin_whirlpool_menu"
             # stop whirlpool, press to return to menu
             # see defaults.sh
@@ -70,7 +66,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Restarting Whirlpool...
+Reiniciando Whirlpool...
 ***
 ${nc}
 EOF
@@ -79,9 +75,7 @@ EOF
 
             docker start whirlpool 1>/dev/null
             _sleep
-
-            _pause return
-
+            _pause volver
             bash -c "$ronin_whirlpool_menu"
             # enable whirlpool at startup, press to return to menu
             # see defaults.sh
@@ -91,7 +85,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Viewing Whirlpool Logs...
+Viendo registros de Whirlpool...
 ***
 ${nc}
 EOF
@@ -100,7 +94,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Press Ctrl+C to exit at anytime...
+Presiona Ctrl+C para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -116,7 +110,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Re-initiating Whirlpool will reset your mix count and generate new API key...
+Re-inicializar Whirlpool reseteará tu cuenta de mixes y generará una nueva API key...
 ***
 ${nc}
 EOF
@@ -124,7 +118,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Are you sure you want to re-initiate Whirlpool?
+Estás seguro de re-inicializar Whirlpool?
 ***
 ${nc}
 EOF
@@ -135,7 +129,7 @@ EOF
                         cat <<EOF
 ${red}
 ***
-Re-initiating Whirlpool...
+Re-inicializando Whirlpool...
 ***
 ${nc}
 EOF
@@ -147,7 +141,7 @@ EOF
                         cat <<EOF
 ${red}
 ***
-Re-initation complete, leave APIkey blank when pairing to GUI!
+Re-inicialización completa, deja la APIkey en blanco cuando emparejes con GUI!
 ***
 ${nc}
 EOF
@@ -155,14 +149,14 @@ EOF
                         break
                         ;;
                     [nN][oO]|[Nn])
-                        _pause return
+                        _pause volver
                         break
                         ;;
                     *)
                         cat <<EOF
 ${red}
 ***
-Invalid answer! Enter Y or N
+Respuesta no válida! Teclea Y or N
 ***
 ${nc}
 EOF
