@@ -8,32 +8,44 @@ _load_user_conf
 
 if [ -d "$HOME"/dojo ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Dojo directory found, please uninstall Dojo first!
 ***
-${NC}
+${nc}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+
+    _pause return
+    bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
+elif [ -f "${ronin_data_dir}"/system-install ]; then
+    cat <<EOF
+${red}
+***
+Previous system install detected. Exiting script...
+***
+${nc}
+EOF
+    _pause return
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Setting up system and installing dependencies...
 ***
-${NC}
+${nc}
 EOF
 fi
 _sleep 2
 # checks for "$HOME"/dojo directory, if found kicks back to menu
 
 cat <<EOF
-${RED}
+${red}
 ***
 Use Ctrl+C to exit now if needed!
 ***
-${NC}
+${nc}
 EOF
 _sleep 10 --msg "Installing in"
 
@@ -45,85 +57,88 @@ test -f /etc/motd && sudo rm /etc/motd
 
 if _disable_bluetooth; then
     cat <<EOF
-${RED}
+${red}
 ***
 Disabling Bluetooth...
 ***
-${NC}
+${nc}
 EOF
 fi
 # disable bluetooth, see functions.sh
 
 if _disable_ipv6; then
     cat <<EOF
-${RED}
+${red}
 ***
 Disabling Ipv6...
 ***
-${NC}
+${nc}
 EOF
 fi
 # disable ipv6, see functions.sh
 
+# Update mirrors
+_pacman_update_mirrors
+
+cat <<EOF
+${red}
+***
+Checking package dependencies. Please wait...
+***
+${nc}
+EOF
+
 # Install system dependencies
 for pkg in "${!package_dependencies[@]}"; do
-  if hash "${pkg}" 2>/dev/null; then
-      cat <<EOF
-${RED}
-***
-${package_dependencies[$pkg]} already installed...
-***
-${NC}
-EOF
-      _sleep
-  else
-      cat <<EOF
-${RED}
-***
-Installing ${package_dependencies[$pkg]}...
-***
-${NC}
-EOF
-      _sleep
-      sudo pacman -S --noconfirm "${package_dependencies[$pkg]}"
-  fi
+    _check_pkg "${pkg}" "${package_dependencies[$pkg]}"
 done
 # install system dependencies, see defaults.sh
 # websearch "bash associative array" for info
 
+if ! pacman -Q libusb 1>/dev/null; then
+    cat <<EOF
+${red}
+***
+Installing libusb...
+***
+${nc}
+EOF
+    sudo pacman --quiet -S --noconfirm libusb
+fi
+
 if sudo ufw status | grep 22 > /dev/null ; then
     cat <<EOF
-${RED}
+${red}
 ***
 SSH firewall rule already setup...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Setting up UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
-    sudo ufw default deny incoming
-    sudo ufw default allow outgoing
+    sudo ufw default deny incoming &>/dev/null
+    sudo ufw default allow outgoing &>/dev/null
     # setting up uncomplicated firewall
 
     cat <<EOF
-${RED}
+${red}
 ***
 Enabling UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
-    sudo ufw --force enable
+    sudo ufw --force enable &>/dev/null
     sudo systemctl enable ufw 2>/dev/null
     # enabling ufw so /etc/ufw/user.rules file configures properly
 
@@ -163,22 +178,22 @@ EOF
     # removes txt files that are no longer needed
 
     cat <<EOF
-${RED}
+${red}
 ***
 Reloading UFW...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
-    sudo ufw reload
+    sudo ufw reload &>/dev/null
 
     cat <<EOF
-${RED}
+${red}
 ***
 Checking UFW status...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -189,148 +204,151 @@ EOF
     # add comment to initial ufw rule
 
     cat <<EOF
-${RED}
+${red}
 ***
 Now that UFW is enabled, any computer connected to the same local network as your RoninDojo will have SSH access.
 ***
-${NC}
+${nc}
 EOF
 
     cat <<EOF
-${RED}
+${red}
 ***
 Leaving this setting default is NOT RECOMMENDED for users who are connecting to something like University, Public Internet, Etc.
 ***
-${NC}
+${nc}
 EOF
 
     cat <<EOF
-${RED}
+${red}
 ***
 Firewall rules can be adjusted using the RoninDojo Firewall Menu.
 ***
-${NC}
+${nc}
 EOF
     _sleep 10
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 All Dojo dependencies installed...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
 cat <<EOF
-${RED}
+${red}
 ***
-Creating "${INSTALL_DIR}" directory...
+Creating ${install_dir} directory...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
-test -d "${INSTALL_DIR}" || sudo mkdir "${INSTALL_DIR}"
-# test for ${INSTALL_DIR} directory, otherwise creates using mkdir
+test -d "${install_dir}" || sudo mkdir "${install_dir}"
+# test for ${install_dir} directory, otherwise creates using mkdir
 # websearch "bash Logical OR (||)" for info
 
-if [ -b "${PRIMARY_STORAGE}" ]; then
+if [ -b "${primary_storage}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
-Creating ${STORAGE_MOUNT} directory...
+Creating ${storage_mount} directory...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
-    test ! -d "${STORAGE_MOUNT}" && sudo mkdir "${STORAGE_MOUNT}"
+    test ! -d "${storage_mount}" && sudo mkdir "${storage_mount}"
 
     cat <<EOF
-${RED}
+${red}
 ***
 Attempting to mount drive for Blockchain data salvage...
 ***
-${NC}
+${nc}
 EOF
     _sleep
-    sudo mount "${PRIMARY_STORAGE}" "${STORAGE_MOUNT}"
+    sudo mount "${primary_storage}" "${storage_mount}"
 else
     cat <<EOF
-${RED}
+${red}
 ***
-Did not find ${PRIMARY_STORAGE} for Blockchain data salvage.
+Did not find ${primary_storage} for Blockchain data salvage.
 ***
-${NC}
+${nc}
 EOF
     _sleep
 fi
-# mount main storage drive to "${STORAGE_MOUNT}" directory if found in prep for data salvage
+# mount main storage drive to "${storage_mount}" directory if found in prep for data salvage
 
-if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}/blocks"; then
+if sudo test -d "${bitcoin_ibd_backup_dir}/blocks"; then
     cat <<EOF
-${RED}
+${red}
 ***
 Found Blockchain data for salvage!
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
     # Check if swap in use
-    if check_swap "${STORAGE_MOUNT}/swapfile"; then
-        test -f "${STORAGE_MOUNT}/swapfile" && sudo swapoff "${STORAGE_MOUNT}/swapfile" &>/dev/null
+    if check_swap "${storage_mount}/swapfile"; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    if [ -f "${STORAGE_MOUNT}"/swapfile ]; then
-        sudo rm -rf "${STORAGE_MOUNT}"/{swapfile,docker,tor}
+    if [ -f "${storage_mount}"/swapfile ]; then
+        sudo rm -rf "${storage_mount}"/{swapfile,docker,tor} &>/dev/null
     fi
 
-    if findmnt "${STORAGE_MOUNT}" 1>/dev/null; then
-        sudo umount "${STORAGE_MOUNT}"
-        sudo rmdir "${STORAGE_MOUNT}"
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}" &>/dev/null
     fi
     # if uninstall-salvage directory is found, delete older {docker,tor} directory and swapfile
 
     cat <<EOF
-${RED}
+${red}
 ***
 Mounting drive...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
     # Mount primary drive if not already mounted
-    findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+    findmnt "${primary_storage}" 1>/dev/null || sudo mount "${primary_storage}" "${install_dir}"
 
     cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
-    lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
+    lsblk -o NAME,SIZE,LABEL "${primary_storage}"
     # double-check that /dev/sda exists, and that its storage capacity is what you expected
 
     cat <<EOF
-${RED}
+${red}
 ***
-Check output for ${PRIMARY_STORAGE} and make sure everything looks ok...
+Check output for ${primary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
-    df -h "${PRIMARY_STORAGE}"
+    df -h "${primary_storage}"
     _sleep 5
     # checks disk info
 
-    create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+    # Calculate swapfile size
+    _swap_size
+
+    create_swap --file "${install_dir_swap}" --size "${_size}"G
     # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
     _setup_tor
@@ -339,114 +357,137 @@ EOF
     _docker_datadir_setup
     # docker data directory setup, see functions.sh
 
+    _create_ronin_data_dir
+    # create directory to store user info, see functions.sh
+
     cat <<EOF
-${RED}
+${red}
 ***
 Dojo is ready to be installed!
 ***
-${NC}
+${nc}
 EOF
-    _sleep 3
+
+    # Make sure to wait for user interaction before continuing
+    _pause continue
+
+    # Make sure we don't run system install twice
+    touch "${ronin_data_dir}"/system-install
+
     exit
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No Blockchain data found for salvage check 1...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
-if sudo test -d "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/blocks"; then
+if sudo test -d "${storage_mount}/${bitcoind_data_dir}/_data/blocks"; then
+    if sudo test -d "${storage_mount}/${indexer_data_dir}/_data/db"; then
+        _indexer_salvage=true
+    else
+        _indexer_salvage=false
+    fi
+
     cat <<EOF
-${RED}
+${red}
 ***
 Found Blockchain data for salvage!
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
     cat <<EOF
-${RED}
+${red}
 ***
 Moving to temporary directory...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
-    test -d "${BITCOIN_IBD_BACKUP_DIR}" || sudo mkdir "${BITCOIN_IBD_BACKUP_DIR}"
+    test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
 
-    sudo mv -v "${STORAGE_MOUNT}/${BITCOIND_DATA_DIR}/_data/"{blocks,chainstate} "${BITCOIN_IBD_BACKUP_DIR}"/ 1>/dev/null
-    # moves blockchain salvage data to ${STORAGE_MOUNT} if found
+    sudo mv -v "${storage_mount}/${bitcoind_data_dir}/_data/"{blocks,chainstate,indexes} "${bitcoin_ibd_backup_dir}"/ 1>/dev/null
+    # moves blockchain salvage data to ${storage_mount} if found
+
+    if "${_indexer_salvage}"; then
+        test -d "${indexer_backup_dir}" || sudo mkdir -p "${indexer_backup_dir}"
+        sudo mv -v "${storage_mount}/${indexer_data_dir}/_data/db" "${indexer_backup_dir}"/ 1>/dev/null
+    fi
 
     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data prepared for salvage!
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
     # Check if swap in use
-    if check_swap "${STORAGE_MOUNT}/swapfile"; then
-        test -f "${STORAGE_MOUNT}/swapfile" && sudo swapoff "${STORAGE_MOUNT}/swapfile" &>/dev/null
+    if check_swap "${storage_mount}/swapfile"; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    sudo rm -rf "${STORAGE_MOUNT}"/{docker,tor,swapfile}
+    sudo rm -rf "${storage_mount}"/{docker,tor,swapfile} &>/dev/null
 
-    if findmnt "${STORAGE_MOUNT}" 1>/dev/null; then
-        sudo umount "${STORAGE_MOUNT}"
-        sudo rmdir "${STORAGE_MOUNT}"
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}" &>/dev/null
     fi
-    # remove docker, tor, swap file directories from ${STORAGE_MOUNT}
-    # then unmount and remove ${STORAGE_MOUNT}
+    # remove docker, tor, swap file directories from ${storage_mount}
+    # then unmount and remove ${storage_mount}
 
     cat <<EOF
-${RED}
+${red}
 ***
 Mounting drive...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
     # Mount primary drive if not already mounted
-    findmnt "${PRIMARY_STORAGE}" 1>/dev/null || sudo mount "${PRIMARY_STORAGE}" "${INSTALL_DIR}"
+    findmnt "${primary_storage}" 1>/dev/null || sudo mount "${primary_storage}" "${install_dir}"
 
     _sleep
 
     cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
-    lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
+    lsblk -o NAME,SIZE,LABEL "${primary_storage}"
     # lsblk lists disk by device
-    # double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
+    # double-check that ${primary_storage} exists, and its storage capacity is what you expected
 
     cat <<EOF
-${RED}
+${red}
 ***
-Check output for ${PRIMARY_STORAGE} and make sure everything looks ok...
+Check output for ${primary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
-    df -h "${PRIMARY_STORAGE}"
+    df -h "${primary_storage}"
     _sleep 5
     # checks disk info
 
-    create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+    # Calculate swapfile size
+    _swap_size
+
+    create_swap --file "${install_dir_swap}" --size "${_size}"G
     # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
     _setup_tor
@@ -456,77 +497,87 @@ EOF
     # docker data directory setup, see functions.sh
 
     cat <<EOF
-${RED}
+${red}
 ***
 Dojo is ready to be installed!
 ***
-${NC}
+${nc}
 EOF
-    _sleep 2
+
+    # Make sure to wait for user interaction before continuing
+    _pause continue
+
+    # Make sure we don't run system install twice
+    touch "${ronin_data_dir}"/system-install
+
     exit
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No Blockchain data found for salvage check 2...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
 
     # Check if swap in use
-    if check_swap "${STORAGE_MOUNT}/swapfile" ; then
-        test -f "${STORAGE_MOUNT}/swapfile" && sudo swapoff "${STORAGE_MOUNT}/swapfile" &>/dev/null
+    if check_swap "${storage_mount}/swapfile" ; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    if findmnt "${STORAGE_MOUNT}" 1>/dev/null; then
-        sudo umount "${STORAGE_MOUNT}"
-        sudo rmdir "${STORAGE_MOUNT}"
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}"
     fi
 fi
 # checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
 
 cat <<EOF
-${RED}
+${red}
 ***
 Formatting the SSD...
 ***
-${NC}
+${nc}
 EOF
-_sleep 2
+_sleep 5
 
-if ! create_fs --label "main" --device "${PRIMARY_STORAGE}" --mountpoint "${INSTALL_DIR}"; then
-    echo -e "${RED}Filesystem creation failed! Exiting${NC}"
+if ! create_fs --label "main" --device "${primary_storage}" --mountpoint "${install_dir}"; then
+    printf "\n %sFilesystem creation failed! Exiting now...%s" "${red}" "${nc}"
+    _sleep 3
     exit 1
 fi
 # create a partition table with a single partition that takes the whole disk
 # format partition
 
 cat <<EOF
-${RED}
+${red}
 ***
 Displaying the name on the external disk...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
-lsblk -o NAME,SIZE,LABEL "${PRIMARY_STORAGE}"
-# double-check that ${PRIMARY_STORAGE} exists, and its storage capacity is what you expected
+lsblk -o NAME,SIZE,LABEL "${primary_storage}"
+# double-check that ${primary_storage} exists, and its storage capacity is what you expected
 
 cat <<EOF
-${RED}
+${red}
 ***
-Check output for ${PRIMARY_STORAGE} and make sure everything looks ok...
+Check output for ${primary_storage} and make sure everything looks ok...
 ***
-${NC}
+${nc}
 EOF
 
-df -h "${PRIMARY_STORAGE}"
+df -h "${primary_storage}"
 _sleep 5
 # checks disk info
 
-create_swap --file "${INSTALL_DIR_SWAP}" --size 2G
+# Calculate swapfile size
+_swap_size
+
+create_swap --file "${install_dir_swap}" --size "${_size}"G
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 _setup_tor
@@ -536,11 +587,49 @@ _docker_datadir_setup
 # docker data directory setup, see functions.sh
 
 cat <<EOF
-${RED}
+${red}
+***
+Installing SW Toolkit...
+***
+${nc}
+EOF
+_sleep 2
+
+cat <<EOF
+${red}
+***
+Installing Boltzmann Calculator...
+***
+${nc}
+EOF
+_sleep 2
+
+_install_boltzmann
+# install Boltzmann
+
+cat <<EOF
+${red}
+***
+Installing Whirlpool Stat Tool...
+***
+${nc}
+EOF
+_sleep 2
+
+_install_wst
+
+cat <<EOF
+${red}
 ***
 Dojo is ready to be installed!
 ***
-${NC}
+${nc}
 EOF
-_sleep 3
+
+# Make sure to wait for user interaction before continuing
+_pause continue
+
+# Make sure we don't run system install twice
+touch "${ronin_data_dir}"/system-install
+
 # will continue to dojo install if it was selected on the install menu

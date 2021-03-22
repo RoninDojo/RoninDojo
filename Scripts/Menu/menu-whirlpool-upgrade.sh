@@ -6,7 +6,7 @@
 CLI_OBJECT="$(curl -s 'https://raw.githubusercontent.com/Samourai-Wallet/whirlpool-runtimes/master/CLI.json' | jq -r '.CLI_API[([.CLI_API | keys[] | select(test("^[0-9]"))] | max)]')"
 CLI_VERSION="$(jq -r '.CLI_VERSION' <<< "${CLI_OBJECT}")"
 CLI_CHECKSUM="$(jq -r '.CLI_CHECKSUM' <<< "${CLI_OBJECT}")"
-CLI_FILENAME="/home/$USER/whirlpool/whirlpool.jar"
+CLI_FILENAME="/home/${ronindojo_user}/whirlpool/whirlpool.jar"
 
 sudo systemctl stop whirlpool &>/dev/null
 # stop whirlpool service

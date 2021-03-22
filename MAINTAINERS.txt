@@ -20,6 +20,7 @@ RoninDojo Website:
 
 RoninUI:
     - @pajasevi
+    - @miguelm9             - https://code.samourai.io/miguelmartinn9
 
 RoninDojo Documentation:
     - @Crazyk031

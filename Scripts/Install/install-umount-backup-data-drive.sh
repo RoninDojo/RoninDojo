@@ -1,62 +1,55 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${STORAGE_MOUNT}"; then
+if [ -b "${secondary_storage}" ] && findmnt "${storage_mount}"; then
     cat <<EOF
-${RED}
+${red}
 ***
 Your backup drive partition has been detected...
 ***
-${NC}
+${nc}
 EOF
     _sleep 2
-    # checks for ${SECONDARY_STORAGE}
+    # checks for ${secondary_storage}
 else
     cat <<EOF
-${RED}
+${red}
 ***
 No backup drive partition detected and or drive not mounted!
 ***
-${NC}
+${nc}
 EOF
     _sleep 5
 
-    cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-    _pause
-    bash -c "${RONIN_SYSTEM_STORAGE}"
+    _pause return
+    bash -c "${ronin_system_storage}"
     # no drive detected, press any key to return to menu
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
-Preparing to Umount ${SECONDARY_STORAGE}...
+Preparing to Umount ${secondary_storage}...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 Are you ready to Umount?
 ***
-${NC}
+${nc}
 EOF
 
 while true; do
-    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+    read -rp "[${green}Yes${nc}/${red}No${nc}]: " answer
     case $answer in
         [yY][eE][sS]|[yY]) break;;
         [nN][oO]|[Nn])
@@ -65,11 +58,11 @@ while true; do
           ;;
         *)
           cat <<EOF
-${RED}
+${red}
 ***
 Invalid answer! Enter Y or N
 ***
-${NC}
+${nc}
 EOF
           ;;
     esac
@@ -77,24 +70,17 @@ done
 # ask user to proceed
 
 cat <<EOF
-${RED}
+${red}
 ***
-Umounting ${STORAGE_MOUNT}...
+Umounting ${storage_mount}...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
-sudo umount "${STORAGE_MOUNT}"
-# umount backup drive ${SECONDARY_STORAGE}
+sudo umount "${storage_mount}"
+# umount backup drive ${secondary_storage}
 
-cat <<EOF
-${RED}
-***
-Press any key to return...
-***
-${NC}
-EOF
-_pause
-bash -c "${RONIN_SYSTEM_STORAGE}"
+_pause return
+bash -c "${ronin_system_storage}"
 # press any key to return to menu-system-storage.sh

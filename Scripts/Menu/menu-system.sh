@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -31,67 +31,87 @@ case $CHOICE in
         ;;
     2)
         if [ -d "$HOME"/dojo ]; then
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Shutting down Dojo if running...
+***
+${nc}
+EOF
             cd "${dojo_path_my_dojo}" || exit
-            _stop_dojo
+            _dojo_check && _stop_dojo
             # stop dojo
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${red}
+***
+Powering off machine, or press Ctrl + C to cancel...
+***
+${nc}
+EOF
+            _sleep 2
+
+            _pause continue
             sudo systemctl poweroff
             # power off machine
         else
-            echo -e "${RED}"
-            echo "***"
-            echo "Powering off in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${red}
+***
+Powering off machine, or press Ctrl + C to cancel...
+***
+${nc}
+EOF
+            _sleep 2
+
+            _pause continue
             sudo systemctl poweroff
             # power off machine
         fi
         ;;
     3)
         if [ -d "$HOME"/dojo ]; then
-            echo -e "${RED}"
-            echo "***"
-            echo "Shutting down Dojo if running..."
-            echo "***"
-            echo -e "${NC}"
+            cat <<EOF
+${red}
+***
+Shutting down Dojo if running...
+***
+${nc}
+EOF
             cd "${dojo_path_my_dojo}" || exit
-            _stop_dojo
+            _dojo_check && _stop_dojo
             # stop dojo
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${red}
+***
+Restarting machine, or press Ctrl + C to cancel...
+***
+${nc}
+EOF
+            _sleep 2
+
+            _pause continue
             sudo systemctl reboot
             # restart machine
         else
-            echo -e "${RED}"
-            echo "***"
-            echo "Restarting in 5s, or press Ctrl + C to cancel now..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 5
+            cat <<EOF
+${red}
+***
+Restarting machine, or press Ctrl + C to cancel...
+***
+${nc}
+EOF
+            _sleep 2
+
+            _pause continue
             sudo systemctl reboot
             # restart machine
         fi
         ;;
 
     4)
-        bash -c "$RONIN_UPDATES_MENU"
+        bash -c "${ronin_updates_menu}"
         # System updates menu
         ;;
     5)
@@ -103,7 +123,7 @@ case $CHOICE in
         # System Setup & Install menu
         ;;
     7)
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         ;;
     8)
         ronin

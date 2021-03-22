@@ -1,3 +1,39 @@
+RoninDojo v1.9 Change Log
+
+- Update to Samourai Dojo 1.9.0
+- Add Specter 1.2.2
+- Add Bisq Support
+- Added Automatic Indexer Data backup and restore
+- Add rockchip bbbfancontrol in applications menu
+- Fix issue with new backup drive creation
+- Automatically set BITCOIND_DB_CACHE to 30% of total RAM
+(see bitcoind_db_cache_total variable in user.conf to increase it)
+- Automatic swapfile size calculation during creation
+- Cosmetic changes
+- Menu restructuring
+- Better application management
+- Lots of bug fixes
+- Lots of optimizations and code refactoring
+- General UX enhancement
+
+RoninDojo v1.8 Change Log
+
+- Boltzmann Calculator v1.0
+- Mempool v1.0 (external links set to OXT via Tor Browser)
+- Electrs 0.8.6
+- Whirlpool 0.10.9
+- SW Indexer/Electrs Swap Capability
+- Tor Hidden Service Backup
+- Tor bug fixes
+- Credentials backup during install
+- Menu consolidation and restructure
+- General UX enhancement
+
+RoninDojo v1.7 Change Log
+
+- Dojo 1.8.0
+- minor patch to Tor setup
+
 RoninDojo v1.6 Change Log
 
 - Integration of Ronin UI Backend

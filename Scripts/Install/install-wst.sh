@@ -1,38 +1,28 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 cat <<EOF
-${RED}
+${red}
 ***
 Checking package dependencies...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
 cd "$HOME" || exit
 
-git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
+git clone -q "${whirlpool_stats_repo}" Whirlpool-Stats-Tool 2>/dev/null
 # download whirlpool stat tool
 
-if ! hash pipenv; then
-  cat <<EOF
-${RED}
-***
-Installing python-pipenv...
-***
-${NC}
-EOF
-  _sleep
-  sudo pacman -S --noconfirm python-pipenv &>/dev/null
-fi
 # check for python-pip and install if not found
+_check_pkg "pipenv" "python-pipenv" --update-mirrors
 
 cd Whirlpool-Stats-Tool || exit
-pipenv install -r requirements.txt &>/dev/null
+pipenv install &>/dev/null
 # change to whirlpool stats directory, otherwise exit
 # install whirlpool stat tool
 

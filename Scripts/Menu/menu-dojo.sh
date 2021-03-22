@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null disable=SC2086
+# shellcheck source=/dev/null disable=SC2086,SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -25,26 +25,30 @@ clear
 case $CHOICE in
         1)
             if _dojo_check; then
-                echo -e "${RED}"
-                echo "***"
-                echo "Dojo is already started!"
-                echo "***"
-                echo -e "${NC}"
-                _sleep 5
-                bash -c "$RONIN_DOJO_MENU"
+                cat <<EOF
+${red}
+***
+Dojo is already started!
+***
+${nc}
+EOF
+                _sleep 2
+                _pause return
+                bash -c "${ronin_dojo_menu}"
             else
-                _is_dojo "${RONIN_DOJO_MENU}"
+                _is_dojo "${ronin_dojo_menu}"
                 # is dojo installed?
 
-                echo -e "${RED}"
-                echo "***"
-                echo "Starting Dojo..."
-                echo "***"
-                echo -e "${NC}"
+                cat <<EOF
+${red}
+***
+Starting Dojo...
+***
+${nc}
+EOF
                 _sleep 2
 
-                cd "$dojo_path_my_dojo" || exit
-
+                cd "${dojo_path_my_dojo}" || exit
                 _source_dojo_conf
 
                 # Start docker containers
@@ -53,58 +57,46 @@ case $CHOICE in
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
 
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
-            _pause
-            bash -c "${RONIN_DOJO_MENU}"
-            # press any key to return to menu
-            ;;
+                _pause return
+                bash -c "${ronin_dojo_menu}"
+                # press any key to return to menu
+                ;;
         2)
-            _stop_dojo
-
-            echo -e "${RED}"
-            echo "***"
-            echo "Press any key to return..."
-            echo "***"
-            echo -e "${NC}"
-            _pause
-            bash -c "${RONIN_DOJO_MENU}"
+            _dojo_check && _stop_dojo
+            _pause return
+            bash -c "${ronin_dojo_menu}"
             # press any key to return to menu
             ;;
         3)
-            _is_dojo "${RONIN_DOJO_MENU}"
+            _is_dojo "${ronin_dojo_menu}"
             # is dojo installed?
 
-            if [ -d "${DOJO_PATH}" ]; then
-                echo -e "${RED}"
-                echo "***"
-                echo "Restarting Dojo..."
-                echo "***"
-                echo -e "${NC}"
+            if [ -d "${dojo_path}" ]; then
+                cat <<EOF
+${red}
+***
+Restarting Dojo...
+***
+${nc}
+EOF
                 _sleep 2
-                cd "$dojo_path_my_dojo" || exit
+                cd "${dojo_path_my_dojo}" || exit
 
                 cat <<DOJO
-${RED}
+${red}
 ***
 Stopping Dojo...
 ***
-${NC}
+${nc}
 DOJO
                 # Check if db container running before stopping all containers
-                if _dojo_check; then
-                    _stop_dojo
-                fi
-
+                _dojo_check && _stop_dojo
                 cat <<DOJO
-${RED}
+${red}
 ***
 Starting Dojo...
 ***
-${NC}
+${nc}
 DOJO
 
                 # Start docker containers
@@ -112,25 +104,20 @@ DOJO
                 docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
                 # restart dojo
 
-                echo -e "${RED}"
-                echo "***"
-                echo "Press any key to return..."
-                echo "***"
-                echo -e "${NC}"
-                _pause
-                bash -c "${RONIN_DOJO_MENU}"
+                _pause return
+                bash -c "${ronin_dojo_menu}"
                 # press any key to return to menu
             fi
             ;;
         4)
-            _is_dojo "${RONIN_DOJO_MENU}"
+            _is_dojo "${ronin_dojo_menu}"
             # is dojo installed?
 
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             # go to dojo logs menu
             ;;
         5)
-            bash -c "${RONIN_DOJO_MENU2}"
+            bash -c "${ronin_dojo_menu2}"
             # takes you to ronin dojo menu2
             ;;
         6)
