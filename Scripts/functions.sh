@@ -1184,15 +1184,15 @@ EOF
                     git checkout -q "${samourai_commitish}"
                     git reset -q --hard "@{u}"
                 fi
-            else
-                if ! _git_is_branch "${samourai_commitish}"; then
+            else # on a tag
+                if ! _git_is_branch "${samourai_commitish}"; then # Not on existing tag
                     git checkout -q tags/"${samourai_commitish}" -b "${samourai_commitish}"
                 fi
             fi
-        elif ! _git_is_branch "${samourai_commitish}"; then
-                if [ "${_head}" != "master" ]; then
-                    git checkout -q "${samourai_commitish}"
-                fi
+        elif ! _git_is_branch "${samourai_commitish}"; then # coming from detach state i.e tag clone
+                git checkout -q "${samourai_commitish}"
+        else # existing master branch
+                git reset -q --hard "@{u}"
         fi
 
         # Delete old local branch if available otherwise check if master branch needs
@@ -1542,15 +1542,15 @@ EOF
                         git checkout -q "${ronin_dojo_branch}"
                         git reset -q --hard "@{u}"
                     fi
-                else
-                    if ! _git_is_branch "${ronin_dojo_branch}"; then
+                else # on a tag
+                    if ! _git_is_branch "${ronin_dojo_branch}"; then # Not on existing tag
                         git checkout -q tags/"${ronin_dojo_branch}" -b "${ronin_dojo_branch}"
                     fi
                 fi
-            elif ! _git_is_branch "${ronin_dojo_branch}"; then
-                    if [ "${_head}" != "master" ]; then
-                        git checkout -q "${ronin_dojo_branch}"
-                    fi
+            elif ! _git_is_branch "${ronin_dojo_branch}"; then # coming from detach state i.e tag clone
+                    git checkout -q "${ronin_dojo_branch}"
+            else # existing master branch
+                    git reset -q --hard "@{u}"
             fi
 
             # Delete old local branch if available otherwise check if master branch needs
