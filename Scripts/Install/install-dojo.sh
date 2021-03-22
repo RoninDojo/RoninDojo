@@ -263,7 +263,8 @@ All RoninDojo feature installations complete...
 ***
 ${nc}
 EOF
-    _sleep
+    # Make sure to wait for user interaction before continuing
+    _pause continue
 
     # Backup dojo credentials
     "${dojo_conf_backup}" && _dojo_backup
