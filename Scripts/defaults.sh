@@ -101,7 +101,7 @@ backup_format=false
 ronin_dojo_branch="master_test" # defaults to master
 ronin_dojo_repo="https://code.samourai.io/ronindojo/RoninDojo"
 samourai_repo='https://code.samourai.io/ronindojo/samourai-dojo.git'
-samourai_commitish="v1.8.1" # empty defaults to master
+samourai_commitish="v1.9.0" # empty defaults to master
 boltzmann_repo='https://code.samourai.io/oxt/boltzmann.git'
 whirlpool_stats_repo='https://code.samourai.io/whirlpool/whirlpool_stats.git'
 

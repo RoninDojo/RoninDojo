@@ -367,7 +367,9 @@ Dojo is ready to be installed!
 ***
 ${nc}
 EOF
-    _sleep 3
+
+    # Make sure to wait for user interaction before continuing
+    _pause continue
 
     # Make sure we don't run system install twice
     touch "${ronin_data_dir}"/system-install
@@ -501,7 +503,9 @@ Dojo is ready to be installed!
 ***
 ${nc}
 EOF
-    _sleep 2
+
+    # Make sure to wait for user interaction before continuing
+    _pause continue
 
     # Make sure we don't run system install twice
     touch "${ronin_data_dir}"/system-install
@@ -621,8 +625,8 @@ Dojo is ready to be installed!
 ***
 ${nc}
 EOF
-_sleep 3
 
+# Make sure to wait for user interaction before continuing
 _pause continue
 
 # Make sure we don't run system install twice
