@@ -1200,7 +1200,7 @@ EOF
                 git checkout -q "${samourai_commitish}"
         else # existing master branch
                 echo "step d8"
-                git reset -q --hard "${samourai_commitish}"
+                git reset -q --hard remotes/"${samourai_commitish}"
         fi
 
         # Delete old local branch if available otherwise check if master branch needs
@@ -1223,7 +1223,7 @@ EOF
         if ((_ret==3)); then
             echo "step d13"
             # valid branch, so reset hard
-            git reset -q --hard "${samourai_commitish}"
+            git reset -q --hard remotes/"${samourai_commitish}"
         fi
     fi
 }
@@ -1571,7 +1571,7 @@ EOF
                     git checkout -q "${ronin_dojo_branch}"
             else # existing master branch
                     echo "step 8"
-                    git reset -q --hard "${ronin_dojo_branch}"
+                    git reset -q --hard remotes/"${ronin_dojo_branch}"
             fi
 
             # Delete old local branch if available otherwise check if master branch needs
@@ -1594,7 +1594,7 @@ EOF
             if ((_ret==3)); then
                 echo "step 13"
                 # valid branch, so reset hard
-                git reset -q --hard "${ronin_dojo_branch}"
+                git reset -q --hard remotes/"${ronin_dojo_branch}"
             fi
         fi
     else
