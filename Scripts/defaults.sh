@@ -3,6 +3,7 @@
 
 # RoninDojo Version tag
 if [ -d "$HOME"/RoninDojo/.git ]; then
+    cd "$HOME"/RoninDojo || exit
     ronindojo_version=$(git describe --tags)
 fi
 
