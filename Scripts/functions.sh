@@ -1175,40 +1175,54 @@ EOF
 
     # Check if on existing branch/tag
     if [ "${samourai_commitish}" != "${_head}" ]; then
+        echo "step d0"
         # Make sure we are not in current master branch
         if [ "${samourai_commitish}" != "master" ]; then
+            echo "step d1"
             if ((_ret==3)); then
+                echo "step d2"
                 if ! _git_is_branch "${samourai_commitish}"; then
+                    echo "step d3"
                     git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
                 else
+                    echo "step d4"
                     git checkout -q "${samourai_commitish}"
                     git reset -q --hard "@{u}"
                 fi
             else # on a tag
+                echo "step d5"
                 if ! _git_is_branch "${samourai_commitish}"; then # Not on existing tag
+                    echo "step d6"
                     git checkout -q tags/"${samourai_commitish}" -b "${samourai_commitish}"
                 fi
             fi
         elif ! _git_is_branch "${samourai_commitish}"; then # coming from detach state i.e tag clone
+                echo "step d7"
                 git checkout -q "${samourai_commitish}"
         else # existing master branch
+                echo "step d8"
                 git reset -q --hard "@{u}"
         fi
 
         # Delete old local branch if available otherwise check if master branch needs
         # to be deleted
         if test "${_head}"; then
+            echo "step d9"
             if ! git branch -q -D "${_head}" 2>/dev/null; then
+                echo "step d10"
                 if _git_is_branch master; then
+                    echo "step d11"
                     git branch -q -D master
                 fi
             fi
         fi
     else # On same branch/tag
+        echo "step d12"
         _git_ref_type
         _ret=$?
 
         if ((_ret==3)); then
+            echo "step d13"
             # valid branch, so reset hard
             git reset -q --hard "@{u}"
         fi
