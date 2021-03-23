@@ -116,6 +116,11 @@ _sleep 10 --msg "Updating in"
         _ronindojo_update
         # see functions.sh
 
+        cd "$HOME" || exit
+
+        # Check TOR
+        _setup_tor
+
         if ! _ronin_ui_update_check; then
             cat <<EOF
 ${red}
