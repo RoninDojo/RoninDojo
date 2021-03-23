@@ -1618,7 +1618,7 @@ fi
 # Check TOR
 _setup_tor
 
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
+#bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
 # upgrades dojo and returns to menu
 EOF
         sudo chmod +x "$HOME"/ronin-update.sh
