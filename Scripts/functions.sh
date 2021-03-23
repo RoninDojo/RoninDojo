@@ -1541,7 +1541,7 @@ EOF
                     echo "step 2"
                     if ! _git_is_branch "${ronin_dojo_branch}"; then
                         echo "step 3"
-                        git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
+                        git switch -q -c "${ronin_dojo_branch}" -t origin/"${ronin_dojo_branch}"
                     else
                         echo "step 4"
                         git checkout -q "${ronin_dojo_branch}"
