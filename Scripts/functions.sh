@@ -1177,7 +1177,7 @@ EOF
     if [ "${samourai_commitish}" != "${_head}" ]; then
         echo "step d0"
         # Make sure we are not in current master branch
-        if [ "${samourai_commitish}" != "master" ]; then
+        if [ "${samourai_commitish}" != "origin/master" ]; then
             echo "step d1"
             if ((_ret==3)); then
                 echo "step d2"
@@ -1549,7 +1549,7 @@ EOF
         if [ "${ronin_dojo_branch}" != "${_head}" ]; then
             echo "step 0"
             # Make sure we are not in current master branch
-            if [ "${ronin_dojo_branch}" != "master" ]; then
+            if [ "${ronin_dojo_branch}" != "origin/master" ]; then
                 echo "step 1"
                 if ((_ret==3)); then
                     echo "step 2"
@@ -1605,7 +1605,7 @@ EOF
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
 
-if [ "${ronin_dojo_branch}" != "master" ]; then
+if [ "${ronin_dojo_branch}" != "origin/master" ]; then
     git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 else
     git clone -q "${ronin_dojo_repo}" 2>/dev/null
@@ -1622,22 +1622,8 @@ git symbolic-ref -q HEAD 1>/dev/null || git switch -q -c "${ronin_dojo_branch}" 
 . Scripts/defaults.sh
 . Scripts/functions.sh
 
-<<<<<<< HEAD
-# Check if UI Backend needs an update
-if ! _ronin_ui_update_check; then
-    printf "\n%s****\nUpdating Ronin UI Backend...\n***%s%s\n" "${red}" "${red}" "${nc}"
-    _install_ronin_ui_backend
-fi
-
 # Check TOR
 _setup_tor
-
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
-# upgrades dojo and returns to menu
-=======
-# Check TOR
-_setup_tor
->>>>>>> 81f5abc (Fix issue with archive upgrade)
 EOF
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
