@@ -1619,10 +1619,10 @@ cd RoninDojo || exit
 git symbolic-ref -q HEAD 1>/dev/null || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
 
 # Source functions and defaults and manually run necessary function calls
-
 . Scripts/defaults.sh
 . Scripts/functions.sh
 
+<<<<<<< HEAD
 # Check if UI Backend needs an update
 if ! _ronin_ui_update_check; then
     printf "\n%s****\nUpdating Ronin UI Backend...\n***%s%s\n" "${red}" "${red}" "${nc}"
@@ -1634,6 +1634,10 @@ _setup_tor
 
 bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
 # upgrades dojo and returns to menu
+=======
+# Check TOR
+_setup_tor
+>>>>>>> 81f5abc (Fix issue with archive upgrade)
 EOF
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
