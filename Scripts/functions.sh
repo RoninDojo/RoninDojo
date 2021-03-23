@@ -1599,18 +1599,27 @@ fi
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch
-cd dojo || exit
+cd RoninDojo || exit
 
 # Would not run when ronin_dojo_branch="master"
 git symbolic-ref -q HEAD || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
 
-${red}
-***
-Upgrade Complete...
-***
-${nc}
-sleep 2
-bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
+# Source functions and defaults and manually run necessary function calls
+
+. Scripts/defaults.sh
+. Scripts/functions.sh
+
+# Check if UI Backend needs an update
+if ! _ronin_ui_update_check; then
+    printf "\n%s****\nUpdating Ronin UI Backend...\n***%s%s\n" "${red}" "${red}" "${nc}"
+    _install_ronin_ui_backend
+fi
+
+# Check TOR
+_setup_tor
+
+bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
+# upgrades dojo and returns to menu
 EOF
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
@@ -1618,9 +1627,6 @@ EOF
         # end of script returns to menu
         # script is deleted during next run of update
     fi
-
-    # Check TOR
-    _setup_tor
 }
 
 #
