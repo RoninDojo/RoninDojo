@@ -1615,14 +1615,8 @@ cd RoninDojo || exit
 
 # Would not run when ronin_dojo_branch="master"
 git symbolic-ref -q HEAD 1>/dev/null || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
-
-# Source functions and defaults and manually run necessary function calls
-. Scripts/defaults.sh
-. Scripts/functions.sh
-
-# Check TOR
-_setup_tor
 EOF
+
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
         # makes script executable and runs
