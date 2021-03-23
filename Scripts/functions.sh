@@ -1610,7 +1610,7 @@ Upgrade Complete...
 ***
 ${nc}
 sleep 2
-bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
+ronin
 EOF
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
