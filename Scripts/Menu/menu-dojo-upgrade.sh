@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null disable=SC2154
+# shellcheck source=/dev/null disable=SC2154,SC2034
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -110,6 +110,11 @@ fi
 test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
 
 _pause return
+
+# RoninDojo Version tag
+if [ -d "$HOME"/RoninDojo/.git ]; then
+    ronindojo_version=$(git describe --tags)
+fi
 
 bash -c "$ronin_system_menu"
 # return to menu
