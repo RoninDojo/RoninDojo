@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -8,10 +8,11 @@ _load_user_conf
 
 OPTIONS=(1 "Firewall"
          2 "Change User Password"
-         3 "Lock Root User"
-         4 "Unlock Root User"
-         5 "Uninstall RoninDojo"
-         6 "Go Back")
+         3 "Change Root Password"
+         4 "Lock Root User"
+         5 "Unlock Root User"
+         6 "Uninstall RoninDojo"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -23,204 +24,178 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        bash -c "${RONIN_FIREWALL_MENU}"
+        bash -c "${ronin_firewall_menu}"
         ;;
     2)
         cat <<EOF
-${RED}
+${red}
 ***
-Prepare to type new password...
+Prepare to type new password for ${ronindojo_user}...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
-        sudo passwd
+        sudo passwd "${ronindojo_user}"
 
-        cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-        _sleep 2
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        _pause return
+        bash -c "${ronin_system_menu2}"
         # user change password, returns to menu
         ;;
     3)
         cat <<EOF
-${RED}
+${red}
 ***
-Locking Root User...
+Prepare to type new password for ${ronindojo_user}...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
-        sudo passwd -l root
-        bash -c "${RONIN_SYSTEM_MENU2}"
-        # uses passwd to lock root user, returns to menu
+        sudo passwd
+
+        _pause return
+        bash -c "${ronin_system_menu2}"
+        # root change password, returns to menu
         ;;
     4)
         cat <<EOF
-${RED}
+${red}
+***
+Locking Root User...
+***
+${nc}
+EOF
+        _sleep 2
+        sudo passwd -l root
+        bash -c "${ronin_system_menu2}"
+        # uses passwd to lock root user, returns to menu
+        ;;
+    5)
+        cat <<EOF
+${red}
 ***
 Unlocking Root User...
 ***
-${NC}
+${nc}
 EOF
         _sleep 2
         sudo passwd -u root
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # uses passwd to unlock root user, returns to menu
         ;;
-    5)
+    6)
         if ! _dojo_check; then
-            _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
+            _is_dojo bash -c "${ronin_system_menu2}"
         fi
             # is dojo installed?
 
         cat <<EOF
-${RED}
+${red}
 ***
-Uninstalling RoninDojo and all features, use Ctrl+C to exit if needed!
+Uninstalling RoninDojo, press Ctrl+C to exit if needed!
 ***
-${NC}
+${nc}
 EOF
-_sleep 10 --msg "Uninstalling in"
-
-    cat <<EOF
-${RED}
-***
-Users with a fully synced Blockchain should answer yes to salvage!
-***
-${NC}
-EOF
-    _sleep 2
-
-    cat <<EOF
-${RED}
-***
-WARNING: Data will be lost if you answer no to salvage, 
-***
-${NC}
-EOF
-    _sleep 2
-
-    cat <<EOF
-${RED}
-Do you want to salvage your Blockchain data?
-${NC}
-EOF
-    _sleep
-
-        while true; do
-            read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-            case $answer in
-                [yY][eE][sS]|[yY])
-                    cat <<EOF
-${RED}
-***
-Copying block data to temporary directory...
-***
-${NC}
-EOF
-                    _sleep 2
-
-                    cd "$dojo_path_my_dojo" || exit
-                    _stop_dojo
-                    # stop dojo
-
-                    test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
-                    # check if salvage directory exist
-
-                    sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
-                    # copies blockchain data to uninstall-salvage to be used by the dojo install script
-                    break
-                    ;;
-                [nN][oO]|[Nn])
-                    break
-                    ;;
-                *)
-                    cat <<EOF
-${RED}
-***
-Invalid answer! Enter Y or N
-***
-${NC}
-EOF
-                    ;;
-            esac
-        done
+        _sleep 10 --msg "Uninstalling in"
 
         cd "$dojo_path_my_dojo" || exit
-        _stop_dojo
+        _dojo_check && _stop_dojo
         # stop dojo
 
+        # Backup Bitcoin Blockchain Data
+        "${dojo_data_bitcoind_backup}" && _dojo_data_bitcoind backup
+
+        # Backup Indexer Data
+        "${dojo_data_indexer_backup}" && _dojo_data_indexer backup
+
         cat <<EOF
-${RED}
+${red}
 ***
 Uninstalling RoninDojo...
 ***
-${NC}
+${nc}
 EOF
-        "${TOR_RESTORE}" && _tor_backup
+        "${tor_backup}" && _tor_backup
         # tor backup must happen prior to dojo uninstall
+
+        # Check if applications need to be uninstalled
+        _is_specter && _specter_uninstall
+
+        _is_bisq && _bisq_uninstall
+
+        _is_mempool && _mempool_uninstall
+
+        _is_ronin_ui_backend && _ronin_ui_uninstall
+
+        _is_fan_control && _fan_control_uninstall
+
+        if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
+            cd "${HOME}"/Whirlpool-Stats-Tool || exit
+
+            cat <<EOF
+${red}
+***
+Uninstalling Whirlpool Stats Tool...
+***
+${nc}
+EOF
+            pipenv --rm &>/dev/null
+            cd - 1>/dev/null || exit
+            rm -rf "${HOME}"/Whirlpool-Stats-Tool
+        fi
+
+        if [ -d "${HOME}"/boltzmann ]; then
+            cd "${HOME}"/boltzmann || exit
+
+            cat <<EOF
+${red}
+***
+Uninstalling Bolzmann...
+***
+${nc}
+EOF
+            pipenv --rm &>/dev/null
+            cd - 1>/dev/null || exit
+            rm -rf "${HOME}"/boltzmann
+        fi
+
+        cat <<EOF
+${red}
+***
+Removing Samourai Dojo Server...
+***
+${nc}
+EOF
 
         cd "$dojo_path_my_dojo" || exit
         ./dojo.sh uninstall
         # uninstall dojo
 
-        "${DOJO_RESTORE}" && _dojo_backup
+        "${dojo_conf_backup}" && _dojo_backup
 
-        rm -rf "${DOJO_PATH}"
+        rm -rf "${dojo_path}"
 
-        # Returns HOME since $DOJO_PATH deleted
+        # Returns HOME since $dojo_path deleted
         cd "${HOME}" || exit
 
         sudo systemctl restart docker
         # restart docker daemon
 
-        cd "${RONIN_UI_BACKEND_DIR}" || exit
-
         cat <<EOF
-${RED}
+${red}
 ***
-Uninstalling Ronin UI Backend...
+All RoninDojo features has been Uninstalled...
 ***
-${NC}
-
-${RED}
-***
-Press Ctrl+C to cancel at anytime
-***
-${NC}
+${nc}
 EOF
-        _sleep 10 --msg "Uninstalling in"
+        _sleep 2
 
-        # Delete app from process list
-        pm2 delete "Ronin Backend" &>/dev/null
+        _pause return
 
-        # dump all processes for resurrecting them later
-        pm2 save 1>/dev/null
-
-        # Remove ${RONIN_UI_BACKEND_DIR}
-        cd "${HOME}" || exit
-        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
-
-        cat <<EOF
-${RED}
-***
-Complete!
-***
-${NC}
-EOF
-        _sleep 5 --msg "Returning to menu in"
-
-        bash -c "${RONIN_SYSTEM_MENU2}"
+        bash -c "${ronin_system_menu2}"
         # return to menu
         ;;
-    6)
-        bash -c "${RONIN_SYSTEM_MENU}"
+    7)
+        bash -c "${ronin_system_menu}"
         # returns to menu
         ;;
 esac

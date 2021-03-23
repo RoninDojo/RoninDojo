@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
@@ -13,8 +13,9 @@ OPTIONS=(1 "Dojo"
          4 "Mempool"
          5 "UI Backend"
          6 "Bitcoind"
-         7 "All Credentials"
-         8 "Go Back")
+         7 "Specter Server"
+         8 "All Credentials"
+         9 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -27,124 +28,115 @@ clear
 case $CHOICE in
         1)
             cat <<EOF
-${RED}
+${red}
 ***
 Samourai Dojo Credentials
 ***
-${NC}
+${nc}
 
-${RED}
+${red}
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
-Maintenance Tool        = http://$V3_ADDR_API/admin
+Maintenance Tool:
+Tor V2 URL              = http://${v2_addr_dojo_api}/admin
+Tor V3 URL              = http://${v3_addr_dojo_api}/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-                _pause
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                _pause return
+                bash -c "${ronin_credentials_menu}"
                 # press any key to return to menu
                 # shows samouraio dojo credentials and returns to menu
                 ;;
         2)
             cat <<EOF
-${RED}
+${red}
 ***
 Samourai Whirlpool Credentials
 ***
-${NC}
+${nc}
 
-${RED}
+${red}
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
-Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
-Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
+Tor V2 URL              = http://${v2_addr_whirlpool}
+Tor V3 URL              = http://${v3_addr_whirlpool}
+Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 EOF
-            _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            _pause return
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows whirlpool credentials and returns to menu
             ;;
         3)
             if _is_electrs; then
                 cat <<EOF
-${RED}
+${red}
 ***
 Electrs Credentials
 ***
-${NC}
+${nc}
 
-Electrs Tor URL         = $V3_ADDR_ELECTRS
+Electrs Tor URL         = http://${v3_addr_electrs}
 EOF
                 # displaying electrs tor address to connect to electrum
 
                 cat <<EOF
-${RED}
+${red}
 ***
 Check the RoninDojo Wiki for pairing information at https://wiki.ronindojo.io
 ***
-${NC}
+${nc}
 EOF
             fi
 
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            _sleep 2
+
+            _pause return
+            bash -c "${ronin_credentials_menu}"
             # return to menu
             ;;
         4)
-            if ! _mempool_check ; then
+            if ! _is_mempool ; then
                 cat <<EOF
-${RED}
+${red}
 ***
-Mempool.space is not installed...
+Mempool Space Visualizer is not installed...
 ***
-${NC}
+${nc}
+EOF
+                _sleep 2
+                cat <<EOF
+${red}
+***
+Install using the manage applications menu...
+***
+${nc}
 EOF
                 _sleep 2
 
-                cat <<EOF
-${RED}
-***
-Returning to menu...
-***
-${NC}
-EOF
-                bash -c "$RONIN_MEMPOOL_MENU"
+                _pause return
+                bash -c "${ronin_credentials_menu}"
             else
                 cat <<EOF
-${RED}
+${red}
 ***
-Mempool Credentials
+Mempool Space Visualizer Credentials
 ***
 
 ***
-${NC}
-Mempool Tor URL         =  http://${V3_ADDR_MEMPOOL}
-${RED}
-***
-Press any key to return...
-***
-${NC}
+${nc}
+Mempool Tor URL         =  http://${v3_addr_mempool}
 EOF
 
-                _pause
-                bash -c "$RONIN_CREDENTIALS_MENU"
+                _pause return
+                bash -c "${ronin_credentials_menu}"
                 # press any key to return to menu
                 # see defaults.sh
                 fi
@@ -153,72 +145,104 @@ EOF
             _ui_backend_credentials && cd "$HOME" || exit
 
             cat <<EOF
-${RED}
+${red}
 ***
 Ronin UI Backend Credentials
 ***
-${NC}
+${nc}
 
 Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
 Port                    =   ${BACKEND_PORT}
 Ronin URL               =   http://${BACKEND_TOR}
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-            _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            _pause return
+            bash -c "${ronin_credentials_menu}"
             # shows Ronin UI Backend credentials, returns to menu
             ;;
         6)
             cat <<EOF
-${RED}
+${red}
 ***
 Bitcoin Credentials
 ***
-${NC}
+${nc}
 
 Bitcoin Daemon:
 
-Tor URL                 = http://$V2_ADDR_BITCOIN
-RPC User                = $RPC_USER_CONF
-RPC Password            = $RPC_PASS_CONF
-RPC IP                  = $RPC_IP
-RPC Host                = $RPC_PORT
+Tor V2 URL              = http://${v2_addr_bitcoind}
+Tor V3 URL              = http://${v3_addr_bitcoind}
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
 
-Bitcoin RPC Explorer:
-
-Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
+Bitcoin RPC Explorer (No username required):
+Tor V2 URL              = http://${v2_addr_explorer}
+Tor V3 URL              = http://${v3_addr_explorer}
 Password                = $EXPLORER_KEY
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-            _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            _pause return
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows bitcoind and btc rpc explorer credentials and returns to menu
             ;;
         7)
+            if ! _is_specter ; then
+                cat <<EOF
+${red}
+***
+Specter Server is not installed...
+***
+${nc}
+EOF
+                _sleep 2
+                cat <<EOF
+${red}
+***
+Install using the manage applications menu...
+***
+${nc}
+EOF
+                _sleep 2
+
+                _pause return
+
+                bash -c "${ronin_credentials_menu}"
+            else
+                cat <<EOF
+${red}
+***
+Specter Server Credentials
+***
+${nc}
+
+Tor URL                 = http://${v3_addr_specter}
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
+EOF
+            fi
+
+            _pause return
+            bash -c "${ronin_credentials_menu}"
+            # press any key to return to menu
+            # shows specter server credentials and returns to menu
+            ;;
+        8)
             _ui_backend_credentials && cd "$HOME" || exit
             cat <<EOF
-${RED}
+${red}
 ***
 Displaying list of all available credentials in your RoninDojo...
 ***
-${NC}
+${nc}
 EOF
             _sleep 5 --msg "Displaying in "
 
             cat <<EOF
-${RED}
+${red}
 ***
 Samourai Dojo Credentials
 ***
@@ -226,13 +250,15 @@ Samourai Dojo Credentials
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
-Maintenance Tool        = http://$V3_ADDR_API/admin
+Maintenance Tool:
+Tor V2 URL              = http://${v2_addr_dojo_api}/admin
+Tor V3 URL              = http://${v3_addr_dojo_api}/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
 
-${RED}
+${red}
 ***
 Samourai Whirlpool Credentials
 ***
@@ -240,74 +266,87 @@ Samourai Whirlpool Credentials
 ***
 WARNING: Do not share these onion addresses with anyone!
 ***
-${NC}
+${nc}
 
-Whirlpool Tor URL       = http://$V3_ADDR_WHIRLPOOL
-Whirlpool API Key       = ${WHIRLPOOL_API_KEY:-Whirlpool not Initiated yet. Pair wallet with GUI}
-EOF
+Tor V2 URL              = http://${v2_addr_whirlpool}
+Tor V3 URL              = http://${v3_addr_whirlpool}
+Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
-            if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
-                cat <<EOF
-${RED}
-***
-Electrs Credentials
-***
-${NC}
-
-Electrs Tor URL         = $V3_ADDR_ELECTRS
-EOF
-            fi
-
-            cat <<EOF
-${RED}
-***
-Mempool Credentials
-***
-${NC}
-Mempool Tor URL         = http://${V3_ADDR_MEMPOOL}
-
-${RED}
+${red}
 ***
 Ronin UI Backend Credentials
 ***
-${NC}
+${nc}
 
 Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
 Port                    =   ${BACKEND_PORT}
 Ronin URL               =   http://${BACKEND_TOR}
 
-${RED}
+${red}
 ***
 Bitcoin Credentials
 ***
-${NC}
+${nc}
 
 Bitcoin Daemon:
 
-Tor URL                 = http://$V2_ADDR_BITCOIN
-RPC User                = $RPC_USER_CONF
-RPC Password            = $RPC_PASS_CONF
-RPC IP                  = $RPC_IP
-RPC Host                = $RPC_PORT
+Tor V2 URL              = http://${v2_addr_bitcoind}
+Tor V3 URL              = http://${v3_addr_bitcoind}
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
 
-Bitcoin RPC Explorer:
-
-Tor URL                 = http://$V3_ADDR_EXPLORER (No username required)
+Bitcoin RPC Explorer (No username required):
+Tor V2 URL              = http://${v2_addr_explorer}
+Tor V3 URL              = http://${v3_addr_explorer}
 Password                = $EXPLORER_KEY
-
-${RED}
-***
-Press any key to return...
-***
-${NC}
 EOF
-            _pause
-            bash -c "$RONIN_CREDENTIALS_MENU"
+            if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
+                cat <<EOF
+${red}
+***
+Electrs Credentials
+***
+${nc}
+
+Electrs Tor URL         = http://${v3_addr_electrs}
+EOF
+            fi
+
+            if _is_mempool; then
+                cat <<EOF
+${red}
+***
+Mempool Space Visualizer Credentials
+***
+${nc}
+Mempool Tor URL         = http://${v3_addr_mempool}
+EOF
+            fi
+
+            if _is_specter ; then
+                cat <<EOF
+${red}
+***
+Specter Server Credentials
+***
+${nc}
+Tor URL                 = http://${v3_addr_specter}
+RPC User                = $BITCOIND_RPC_USER
+RPC Password            = $BITCOIND_RPC_PASSWORD
+RPC IP                  = $BITCOIND_IP
+RPC Port                = $BITCOIND_RPC_PORT
+EOF
+            fi
+
+            _pause return
+            bash -c "${ronin_credentials_menu}"
             # press any key to return to menu
             # shows all credentials and returns to menu
             ;;
-        8)
+        9)
             ronin
             # returns to main menu
             ;;

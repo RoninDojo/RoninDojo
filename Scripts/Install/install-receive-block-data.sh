@@ -1,146 +1,214 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if ! sudo test -d "${DOCKER_VOLUME_BITCOIND}"/_data; then
+if ! sudo test -d "${docker_volume_bitcoind}"/_data; then
     cat <<EOF
-${RED}
+${red}
 ***
 Blockchain data not found! Did you forget to install RoninDojo?
 ***
-${NC}
+${nc}
 EOF
-    _sleep 5 --msg "Returning to menu in"
-    bash -c "${RONIN_DOJO_MENU2}"
+    _sleep 2
+
+    _pause return
+    bash -c "${ronin_dojo_menu2}"
 fi
 # if data directory is not found then warn and return to menu
 
-echo -e "${RED}"
-echo "***"
-echo "Preparing to copy data from your Backup Data Drive now..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Preparing to copy data from your Backup Data Drive now...
+***
+${nc}
+EOF
 _sleep 3
 
-if [ -b "${SECONDARY_STORAGE}" ]; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Your backup drive partition has been detected..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  # checks for ${SECONDARY_STORAGE}
-else
-  echo -e "${RED}"
-  echo "***"
-  echo "No backup drive partition detected! Please make sure it is plugged in and has power if needed."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 5
+if [ -b "${secondary_storage}" ]; then
+    # Make sure /mnt/usb UUID is not same as $secondary_storage
+    if [[ $(lsblk -no UUID "$(findmnt -n -o SOURCE --target "${install_dir}")") != $(lsblk -no UUID "${secondary_storage}") ]]; then
+        cat <<EOF
+${red}
+***
+Your new backup drive has been detected...
+***
+${nc}
+EOF
+        _sleep 2
+        # checks for ${secondary_storage}
+    else
+        cat <<EOF
+${red}
+***
+Possible drive rearrangement occured. Checking if ${primary_storage} is available to format...
+***
+${nc}
+EOF
+        # Make sure device does not contain an existing filesystem
+        if [ -b "${primary_storage}" ] && [ -n "$(lsblk -no FSTYPE "${primary_storage}")" ]; then
+            # Drive got rearranged
+            secondary_storage="${primary_storage}"
+        elif [ -b "${primary_storage}" ] && [ -z "$(lsblk -no FSTYPE "${primary_storage}")" ]; then
+            if ! "${backup_format}"; then
+                cat <<EOF
+${red}
+***
+${primary_storage} contains an existing filesystem and cannot be formatted. If you wish to use this drive
+for backup purposes. Set backup_format=true in ${HOME}/.config/RoninDojo/user.conf
+***
+${nc}
+EOF
+                _pause return
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any key to return..."
-  echo "***"
-  echo -e "${NC}"
-  _pause
-  bash -c "${RONIN_DOJO_MENU2}"
-  # no drive detected, press any key to return to menu
+                # press any key to return to menu-system-storage.sh
+                bash -c "${ronin_system_storage}"
+            else
+                secondary_storage="${primary_storage}"
+            fi
+        fi
+    fi
+else
+    cat <<EOF
+${red}
+***
+No backup drive partition detected! Please make sure it is plugged in and has power if needed...
+***
+${nc}
+EOF
+    _sleep 5
+
+    _pause return
+
+    bash -c "${ronin_dojo_menu2}"
+    # no drive detected, press any key to return to menu
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Making sure Dojo is stopped..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Making sure Dojo is stopped...
+***
+${nc}
+EOF
+
 _sleep 2
 
 cd "${dojo_path_my_dojo}" || exit
-_stop_dojo
+_dojo_check && _stop_dojo
 # stop dojo
 
-echo -e "${RED}"
-echo "***"
-echo "Removing old Data..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Removing old data...
+***
+${nc}
+EOF
+
 _sleep 2
 
 # Make sure we have directories to delete
-if test -d "${DOCKER_VOLUME_BITCOIND}"/_data/blocks; then
-    sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
+for dir in blocks chainstate indexes; do
+    if sudo test -d "${docker_volume_bitcoind}"/_data/"${dir}"; then
+        sudo rm -rf "${docker_volume_bitcoind}"/_data/"${dir}"
+    fi
+done
+
+# Check to see if we have old legacy backup directory, if so rename to ${storage_mount}
+if sudo test -d "${storage_mount}"/system-setup-salvage; then
+    sudo mv "${storage_mount}"/system-setup-salvage "${bitcoin_ibd_backup_dir}" 1>/dev/null
 fi
 
-# Check to see if we have old legacy backup directory, if so rename to ${STORAGE_MOUNT}
-if sudo test -d "${STORAGE_MOUNT}"/system-setup-salvage; then
-    sudo mv "${STORAGE_MOUNT}"/system-setup-salvage "${BITCOIN_IBD_BACKUP_DIR}" 1>/dev/null
+# Migrate from old $bitcoin_ibd_backup_dir path to new
+if sudo test -d "${storage_mount}"/bitcoin; then
+    sudo test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
+    sudo mv "${storage_mount}"/bitcoin/* "${bitcoin_ibd_backup_dir}"/
+    sudo rm -rf "${storage_mount}"/bitcoin
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Copying..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Copying...
+***
+${nc}
+EOF
+
 _sleep 2
 
-if sudo test -d "${BITCOIN_IBD_BACKUP_DIR}"/blocks; then
-    sudo cp -av "${BITCOIN_IBD_BACKUP_DIR}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/
+if sudo test -d "${bitcoin_ibd_backup_dir}"/blocks; then
     # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
+    sudo cp -av "${bitcoin_ibd_backup_dir}"/{blocks,chainstate,indexes} "${docker_volume_bitcoind}"/_data/
 else
-    sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
+    sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
     cat <<BACKUP
-${RED}
+${red}
 ***
-No backup data available to receive! Umounting drive now...
+No backup data available to receive data! Umounting drive now...
 ***
-${NC}
+${nc}
 BACKUP
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
 
+    _pause return
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Transfer Complete!"
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Transfer Complete!
+***
+${nc}
+EOF
+
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to continue..."
-echo "***"
-echo -e "${NC}"
-_pause
+_pause continue
 # press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
 
 cat <<EOF
-${RED}
+${red}
 ***
 Unmounting...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
-sudo umount "${STORAGE_MOUNT}" && sudo rmdir "${STORAGE_MOUNT}"
+sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
 
-echo -e "${RED}"
-echo "***"
-echo "You can now safely unplug your backup drive!"
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+You can now safely unplug your backup drive!
+***
+${nc}
+EOF
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to return..."
-echo "***"
-echo -e "${NC}"
-_pause
-bash -c "${RONIN_DOJO_MENU2}"
+cat <<EOF
+${red}
+***
+Starting Dojo...
+***
+${nc}
+EOF
+
+_sleep 2
+
+cd "${dojo_path_my_dojo}" || exit
+_source_dojo_conf
+
+# Start docker containers
+yamlFiles=$(_select_yaml_files)
+docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
+
+_pause return
+bash -c "${ronin_dojo_menu2}"
 # return to menu

@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -24,11 +24,11 @@ case $CHOICE in
             # checks if dojo is running (check the db container), if not running tells user to start dojo first
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -37,14 +37,7 @@ DOJO
               ./dojo.sh logs bitcoind -n 200 | grep -i 'error'
               # shows bitcoind error logs
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-              _pause
+              _pause return
               bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
               # press any key to return to menu
             fi
@@ -52,39 +45,52 @@ LOGS
         2)
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             else
+                if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+                    cat <<EOF
+${red}
+***
+Electrum Rust Server is your current Indexer...
+***
+${nc}
+EOF
+                    _sleep 2
+                    cat <<EOF
+${red}
+***
+Please check Electrum Rust Server logs instead...
+***
+${nc}
+EOF
+                    _sleep 2
+                    _pause return
+                    bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
+              fi
               cd "$dojo_path_my_dojo" || exit
               ./dojo.sh logs db -n 500 | grep -i 'error'
               # shows db error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
 	          ;;
         3)
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -94,25 +100,18 @@ DOJO
               # shows indexer error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         4)
             if ! _dojo_check; then
               cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
               _sleep 5
               bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -122,25 +121,18 @@ DOJO
               # shows nodejs error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
         5)
             if ! _dojo_check; then
                 cat <<DOJO
-${RED}
+${red}
 ***
 Please start Dojo first!
 ***
-${NC}
+${nc}
 DOJO
                 _sleep 5
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
@@ -150,14 +142,7 @@ DOJO
               # shows tor error logs
             fi
 
-            cat <<LOGS
-${RED}
-***
-Press any key to return...
-***
-${NC}
-LOGS
-            _pause
+            _pause return
             bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-error-logs.sh
             # press any key to return to menu
             ;;
