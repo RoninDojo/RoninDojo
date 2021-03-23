@@ -1604,7 +1604,7 @@ sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
 
 if [ "${ronin_dojo_branch}" != "origin/master" ]; then
-    git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
+    git clone -q -b "${ronin_dojo_branch#*/}" "${ronin_dojo_repo}" 2>/dev/null
 else
     git clone -q "${ronin_dojo_repo}" 2>/dev/null
 fi
