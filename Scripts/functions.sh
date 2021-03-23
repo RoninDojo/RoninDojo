@@ -1177,7 +1177,7 @@ EOF
     if [ "${samourai_commitish}" != "${_head}" ]; then
         echo "step d0"
         # Make sure we are not in current master branch
-        if [ "${samourai_commitish}" != "master" ]; then
+        if [ "${samourai_commitish}" != "origin/master" ]; then
             echo "step d1"
             if ((_ret==3)); then
                 echo "step d2"
@@ -1210,9 +1210,9 @@ EOF
             echo "step d9"
             if ! git branch -q -D "${_head}" 2>/dev/null; then
                 echo "step d10"
-                if _git_is_branch master; then
+                if _git_is_branch "origin/master"; then
                     echo "step d11"
-                    git branch -q -D master
+                    git branch -q -D "origin/master"
                 fi
             fi
         fi
@@ -1549,13 +1549,13 @@ EOF
         if [ "${ronin_dojo_branch}" != "${_head}" ]; then
             echo "step 0"
             # Make sure we are not in current master branch
-            if [ "${ronin_dojo_branch}" != "master" ]; then
+            if [ "${ronin_dojo_branch}" != "origin/master" ]; then
                 echo "step 1"
                 if ((_ret==3)); then
                     echo "step 2"
                     if ! _git_is_branch "${ronin_dojo_branch}"; then
                         echo "step 3"
-                        git switch -q -c "${ronin_dojo_branch}" -t origin/"${ronin_dojo_branch#*/}"
+                        git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
                     else
                         echo "step 4"
                         git checkout -q "${ronin_dojo_branch}"
@@ -1582,9 +1582,9 @@ EOF
                 echo "step 9"
                 if ! git branch -q -D "${_head}" 2>/dev/null; then
                     echo "step 10"
-                    if _git_is_branch master; then
+                    if _git_is_branch "origin/master"; then
                         echo "step 11"
-                        git branch -q -D master
+                        git branch -q -D "origin/master"
                     fi
                 fi
             fi
@@ -1605,7 +1605,7 @@ EOF
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
 
-if [ "${ronin_dojo_branch}" != "master" ]; then
+if [ "${ronin_dojo_branch}" != "origin/master" ]; then
     git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
 else
     git clone -q "${ronin_dojo_repo}" 2>/dev/null
