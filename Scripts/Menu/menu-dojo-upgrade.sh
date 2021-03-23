@@ -111,10 +111,8 @@ test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mn
 
 _pause return
 
-# RoninDojo Version tag
-if [ -d "$HOME"/RoninDojo/.git ]; then
-    ronindojo_version=$(git describe --tags)
-fi
+# Source defaults again so that version number gets updated
+. "$HOME"/RoninDojo/Scripts/defaults.sh
 
 bash -c "$ronin_system_menu"
 # return to menu
