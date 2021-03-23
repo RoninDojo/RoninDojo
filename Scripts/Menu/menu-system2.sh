@@ -6,14 +6,12 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Task Manager"
-         2 "Lock Root User"
-         3 "Unlock Root User"
-         4 "Upgrade RoninDojo"
-         5 "Mount Existing Backup Drive"
-         6 "UMount Existing Backup Drive"
-         7 "Format & Mount New Backup Drive"
-         8 "Go Back")
+OPTIONS=(1 "Firewall"
+         2 "Change User Password"
+         3 "Lock Root User"
+         4 "Unlock Root User"
+         5 "Uninstall RoninDojo"
+         6 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -25,68 +23,204 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        echo -e "${RED}"
-        echo "***"
-        echo "Use Ctrl+C at any time to exit Task Manager."
-        echo "***"
-        echo -e "${NC}"
-        _sleep 3
-        htop
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
-        # returns to main menu
+        bash -c "${RONIN_FIREWALL_MENU}"
         ;;
-	2)
-            echo -e "${RED}"
-            echo "***"
-            echo "Locking Root User..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            sudo passwd -l root
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
-            # uses passwd to lock root user, returns to menu
-            ;;
-	3)
-            echo -e "${RED}"
-            echo "***"
-            echo "Unlocking Root User..."
-            echo "***"
-            echo -e "${NC}"
-            _sleep 2
-            sudo passwd -u root
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
-            # uses passwd to unlock root user, returns to menu
-            ;;
-    4)
-            sudo rm -f "$HOME"/ronin-update.sh
-	        # using -f here to avoid error output if "$HOME"/ronin-update.sh does not exist
-
-            cat <<EOF
+    2)
+        cat <<EOF
 ${RED}
 ***
-Upgrading RoninDojo...
+Prepare to type new password...
 ***
 ${NC}
 EOF
-            _sleep 2
+        _sleep 2
+        sudo passwd
 
-            _update_ronin
-            # see functions.sh
-            ;;
+        cat <<EOF
+${RED}
+***
+Returning to menu...
+***
+${NC}
+EOF
+        _sleep 2
+        bash -c "${RONIN_SYSTEM_MENU2}"
+        # user change password, returns to menu
+        ;;
+    3)
+        cat <<EOF
+${RED}
+***
+Locking Root User...
+***
+${NC}
+EOF
+        _sleep 2
+        sudo passwd -l root
+        bash -c "${RONIN_SYSTEM_MENU2}"
+        # uses passwd to lock root user, returns to menu
+        ;;
+    4)
+        cat <<EOF
+${RED}
+***
+Unlocking Root User...
+***
+${NC}
+EOF
+        _sleep 2
+        sudo passwd -u root
+        bash -c "${RONIN_SYSTEM_MENU2}"
+        # uses passwd to unlock root user, returns to menu
+        ;;
     5)
-        bash "$HOME"/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
-        # mounts ${SECONDARY_STORAGE} to ${SALVAGE_MOUNT} for access to backup blockchain data
+        if ! _dojo_check; then
+            _is_dojo bash -c "${RONIN_SYSTEM_MENU2}"
+        fi
+            # is dojo installed?
+
+        cat <<EOF
+${RED}
+***
+Uninstalling RoninDojo and all features, use Ctrl+C to exit if needed!
+***
+${NC}
+EOF
+_sleep 10 --msg "Uninstalling in"
+
+    cat <<EOF
+${RED}
+***
+Users with a fully synced Blockchain should answer yes to salvage!
+***
+${NC}
+EOF
+    _sleep 2
+
+    cat <<EOF
+${RED}
+***
+WARNING: Data will be lost if you answer no to salvage, 
+***
+${NC}
+EOF
+    _sleep 2
+
+    cat <<EOF
+${RED}
+Do you want to salvage your Blockchain data?
+${NC}
+EOF
+    _sleep
+
+        while true; do
+            read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+            case $answer in
+                [yY][eE][sS]|[yY])
+                    cat <<EOF
+${RED}
+***
+Copying block data to temporary directory...
+***
+${NC}
+EOF
+                    _sleep 2
+
+                    cd "$dojo_path_my_dojo" || exit
+                    _stop_dojo
+                    # stop dojo
+
+                    test ! -d "${INSTALL_DIR_UNINSTALL}" && sudo mkdir "${INSTALL_DIR_UNINSTALL}"
+                    # check if salvage directory exist
+
+                    sudo mv -v "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate} "${INSTALL_DIR_UNINSTALL}"/ 1>/dev/null
+                    # copies blockchain data to uninstall-salvage to be used by the dojo install script
+                    break
+                    ;;
+                [nN][oO]|[Nn])
+                    break
+                    ;;
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+                    ;;
+            esac
+        done
+
+        cd "$dojo_path_my_dojo" || exit
+        _stop_dojo
+        # stop dojo
+
+        cat <<EOF
+${RED}
+***
+Uninstalling RoninDojo...
+***
+${NC}
+EOF
+        "${TOR_RESTORE}" && _tor_backup
+        # tor backup must happen prior to dojo uninstall
+
+        cd "$dojo_path_my_dojo" || exit
+        ./dojo.sh uninstall
+        # uninstall dojo
+
+        "${DOJO_RESTORE}" && _dojo_backup
+
+        rm -rf "${DOJO_PATH}"
+
+        # Returns HOME since $DOJO_PATH deleted
+        cd "${HOME}" || exit
+
+        sudo systemctl restart docker
+        # restart docker daemon
+
+        cd "${RONIN_UI_BACKEND_DIR}" || exit
+
+        cat <<EOF
+${RED}
+***
+Uninstalling Ronin UI Backend...
+***
+${NC}
+
+${RED}
+***
+Press Ctrl+C to cancel at anytime
+***
+${NC}
+EOF
+        _sleep 10 --msg "Uninstalling in"
+
+        # Delete app from process list
+        pm2 delete "Ronin Backend" &>/dev/null
+
+        # dump all processes for resurrecting them later
+        pm2 save 1>/dev/null
+
+        # Remove ${RONIN_UI_BACKEND_DIR}
+        cd "${HOME}" || exit
+        rm -rf "${RONIN_UI_BACKEND_DIR}" || exit
+
+        cat <<EOF
+${RED}
+***
+Complete!
+***
+${NC}
+EOF
+        _sleep 5 --msg "Returning to menu in"
+
+        bash -c "${RONIN_SYSTEM_MENU2}"
+        # return to menu
         ;;
     6)
-        bash "$HOME"/RoninDojo/Scripts/Install/install-umount-backup-data-drive.sh
-        # umounts ${SECONDARY_STORAGE} drive
-        ;;
-    7)
-        bash "$HOME"/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
-        # formats ${SECONDARY_STORAGE} to ext 4 and mounts to ${SALVAGE_MOUNT} for backing up data on "${PRIMARY_STORAGE}" or ${INSTALL_DIR}
-        ;;
-    8)
-        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
+        bash -c "${RONIN_SYSTEM_MENU}"
         # returns to menu
         ;;
 esac

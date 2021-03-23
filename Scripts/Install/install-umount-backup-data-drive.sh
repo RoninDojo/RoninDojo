@@ -6,66 +6,95 @@
 
 _load_user_conf
 
-if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${SECONDARY_STORAGE_MOUNT}"; then
-  echo -e "${RED}"
-  echo "***"
-  echo "Your backup drive partition has been detected..."
-  echo "***"
-  echo -e "${NC}"
-  _sleep 2
-  # checks for ${SECONDARY_STORAGE}
+if [ -b "${SECONDARY_STORAGE}" ] && findmnt "${STORAGE_MOUNT}"; then
+    cat <<EOF
+${RED}
+***
+Your backup drive partition has been detected...
+***
+${NC}
+EOF
+    _sleep 2
+    # checks for ${SECONDARY_STORAGE}
 else
-  echo -e "${RED}"
-  echo "***"
-  echo "No backup drive partition detected and or drive not mounted!"
-  echo "***"
-  echo -e "${NC}"
-  _sleep 5
+    cat <<EOF
+${RED}
+***
+No backup drive partition detected and or drive not mounted!
+***
+${NC}
+EOF
+    _sleep 5
 
-  echo -e "${RED}"
-  echo "***"
-  echo "Press any letter to return..."
-  echo "***"
-  echo -e "${NC}"
-  read -n 1 -r -s
-  bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
-  # no drive detected, press any letter to return to menu
+    cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+    _pause
+    bash -c "${RONIN_SYSTEM_STORAGE}"
+    # no drive detected, press any key to return to menu
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Preparing to UMount ${SECONDARY_STORAGE}..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Preparing to Umount ${SECONDARY_STORAGE}...
+***
+${NC}
+EOF
 _sleep 3
 
-echo -e "${RED}"
-echo "Are you ready to umount?"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Are you ready to Umount?
+***
+${NC}
+EOF
+
 while true; do
-    read -rp "Y/N?: " yn
-    case $yn in
-        [Yy]* ) break;;
-        [Nn]* ) bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh;exit;;
-        * ) echo "Please answer yes or no.";;
+    read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+    case $answer in
+        [yY][eE][sS]|[yY]) break;;
+        [nN][oO]|[Nn])
+          bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh
+          exit
+          ;;
+        *)
+          cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+          ;;
     esac
 done
 # ask user to proceed
 
-echo -e "${RED}"
-echo "***"
-echo "Umounting ${SECONDARY_STORAGE_MOUNT}..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${RED}
+***
+Umounting ${STORAGE_MOUNT}...
+***
+${NC}
+EOF
 _sleep 2
-sudo umount "${SECONDARY_STORAGE_MOUNT}"
+
+sudo umount "${STORAGE_MOUNT}"
 # umount backup drive ${SECONDARY_STORAGE}
 
-echo -e "${RED}"
-echo "***"
-echo "Press any letter to return..."
-echo "***"
-echo -e "${NC}"
-read -n 1 -r -s
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-system2.sh
-# press any letter to return to menu-system2.sh
+cat <<EOF
+${RED}
+***
+Press any key to return...
+***
+${NC}
+EOF
+_pause
+bash -c "${RONIN_SYSTEM_STORAGE}"
+# press any key to return to menu-system-storage.sh

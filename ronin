@@ -15,9 +15,10 @@ OPTIONS=(1 "Dojo"
          2 "Whirlpool"
          3 "Electrs"
          4 "UI Backend"
-         5 "System"
-         6 "System Setup & Install"
-         7 "Exit RoninDojo")
+         5 "Credentials"
+         6 "Extras"
+         7 "System"
+         8 "Exit RoninDojo")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -28,33 +29,37 @@ CHOICE=$(dialog --clear \
 
 clear
 case $CHOICE in
-        1)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo.sh
-            # runs dojo management menu script
-            ;;
-        2)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
-            # runs the whirlpool menu script
-            ;;
-        3)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
-            # runs electrs menu script
-            ;;
-        4)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-            # runs Ronin UI Backend menu script
-            ;;
-        5)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
-            # runs system menu script
-            ;;
-        6)
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
-	        # runs installs menu
-            ;;
-    	255|7)
-	        _sleep 5 --msg "RoninDojo Exiting in"
-	        exit 0
+    1)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo.sh
+        # runs dojo management menu script
+        ;;
+    2)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
+        # runs the whirlpool menu script
+        ;;
+    3)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-electrs.sh
+        # runs electrs menu script
+        ;;
+    4)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        # runs Ronin UI Backend menu script
+        ;;
+    5)
+        bash "$RONIN_CREDENTIALS_MENU"
+        # runs credentials menu script
+        ;;
+    6)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
+        # runs extras menu script
+        ;;
+    7)
+        bash "$HOME"/RoninDojo/Scripts/Menu/menu-system.sh
+        # runs system menu script
+        ;;
+    255|8)
+        _sleep 5 --msg "RoninDojo Exiting in"
+        exit 0
         # exits Ronin
-	        ;;
+        ;;
 esac

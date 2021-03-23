@@ -2,151 +2,335 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
+. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 _load_user_conf
 
-WORK_DIR=$(mktemp -d)
-# temporaly temp directory location
+_check_dojo_perms "${dojo_path_my_dojo}"
+# make sure permissions are properly set for ${dojo_path_my_dojo}
 
-if [[ ! "$WORK_DIR" || ! -d "$WORK_DIR" ]]; then
-    echo -e "${RED}"
-    echo "****"
-    echo "Could not create temp dir, upgrade failed!"
-    echo "***"
-    echo -e "${NOC}"
-    exit 1
-fi
-# check if tmp dir was created
-
-echo -e "${RED}"
-echo "***"
-echo "Upgrading Dojo in 10s..."
-echo "***"
-echo -e "${NC}"
-
-echo -e "${RED}"
-echo "***"
-echo "Use Ctrl+C to exit if needed!"
-echo "***"
-echo -e "${NC}"
-_sleep 5
-
-_check_dojo_perms "${DOJO_PATH}"
-# make sure permissions are properly set for ${DOJO_PATH}
-
-if grep BITCOIND_RPC_EXTERNAL=off "${DOJO_PATH}"/conf/docker-bitcoind.conf 1>/dev/null; then
-    sed -i 's/BITCOIND_RPC_EXTERNAL=off/BITCOIND_RPC_EXTERNAL=on/' "${DOJO_PATH}"/conf/docker-bitcoind.conf
+if grep BITCOIND_RPC_EXTERNAL=off "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf 1>/dev/null; then
+    sed -i 's/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=on/' "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
 fi
 # enable BITCOIND_RPC_EXTERNAL
-cd "${WORK_DIR}" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" 2>/dev/null # temporary
 
-cp -ua samourai-dojo/* "${DOJO_PATH%/docker/my-dojo}"/
-# copy only when the SOURCE file is newer than the
-# destination file or when the destination file is missing
-# and keep all permissions
+# Update Samourai Dojo repo
+_dojo_update
 
-rm -rf "${WORK_DIR}"
-# remove $WORK_DIR
-
-# Return to previous working path
 cd "${HOME}" || exit
+# return to previous working path
 
-echo -e "${RED}"
-echo "***"
-echo "Installing your Dojo-backed Bitcoin Explorer..."
-echo "***"
-echo -e "${NC}"
-_sleep 2
-
-echo -e "${RED}"
-echo "***"
-echo "A randomly generated 16 character password will be created if you haven't already made one."
-echo "***"
-echo -e "${NC}"
-_sleep 3
-
-if [ -f "${DOJO_PATH}"/conf/docker-explorer.conf ] ; then
-    echo -e "${RED}"
-    echo "***"
-    echo "Explorer is already installed!"
-    echo "***"
-    echo -e "${NC}"
-else
-    sed -i "s/EXPLORER_KEY=.*$/EXPLORER_KEY=$EXPLORER_KEY/" "${DOJO_PATH}"/conf/docker-explorer.conf.tpl
+if grep "EXPLORER_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-explorer.conf 1>/dev/null; then
+    cat <<EOF
+${RED}
+***
+BTC RPC Explorer not installed, would you like to install it?
+***
+${NC}
+EOF
+    while true; do
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+        case $answer in
+            [yY][eE][sS]|[yY])
+                sed -i "s/EXPLORER_INSTALL=.*$/EXPLORER_INSTALL=on/" "${dojo_path_my_dojo}"/conf/docker-explorer.conf
+                break
+                ;;
+            [nN][oO]|[Nn])
+                break
+                ;;
+                *)
+                cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+                ;;
+        esac
+    done
 fi
-# checks for docker-explorer.conf, if found informs user
-# else uses sed to modify
+# Checks if BTC RPC Explorer is disabled
 
-if grep "INDEXER_INSTALL=off" "${DOJO_PATH}"/conf/docker-indexer.conf 1>/dev/null; then
-    read -rp "Do you want to install an Indexer? [y/n]" yn
-    case $yn in
-        [Y/y]* )
-                 sudo sed -i 's/INDEXER_INSTALL=off/INDEXER_INSTALL=on/' "${DOJO_PATH}"/conf/docker-indexer.conf
-                 sudo sed -i 's/NODE_ACTIVE_INDEXER=local_bitcoind/NODE_ACTIVE_INDEXER=local_indexer/' "${DOJO_PATH}"/conf/docker-node.conf;;
-        [N/n]* )  echo -e "${RED}"
-                 echo "***"
-                 echo "Indexer will not be installed..."
-                 echo "***"
-                 echo -e "${NC}";;
-        * ) echo "Please answer Yes or No.";;
-    esac
-else
-    echo -e "${RED}"
-    echo "***"
-    echo "Indexer is already installed..."
-    echo "***"
-    echo -e "${NC}"
-fi
-# if docker-indexer.conf is not found prompt user to select
-# for elif, if grep search INDEXER_INSTALL=off works, prompt user
-# else informs user indexer is already installed
+if grep "INDEXER_INSTALL=off" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+    cat <<EOF
+${RED}
+***
+Checking for Indexer...
+***
+${NC}
+EOF
+    _sleep
 
-if [ ! -f "${DOJO_PATH}"/indexer/electrs.toml ] ; then
-   read -rp "Do you want to install Electrs? [y/n]" yn
-   case $yn in
-       [Y/y]* ) bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh;;
-       [N/n]* ) echo -e "${RED}"
-                echo "***"
-                echo "Electrs will not be installed!"
-                echo "***"
-                echo -e "${NC}";;
-       * ) echo "Please answer Yes or No.";;
-    esac
+    cat <<EOF
+${RED}
+***
+No Indexer found...
+***
+${NC}
+EOF
+    _sleep
+
+    cat <<EOF
+${RED}
+***
+Preparing for Indexer Prompt...
+***
+${NC}
+EOF
+    _sleep 2
+
+    cat <<EOF
+${RED}
+***
+Samourai Indexer is recommended for most users as it helps with querying balances...
+***
+${NC}
+EOF
+    _sleep 2
+
+    cat <<EOF
+${RED}
+***
+Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
+***
+${NC}
+EOF
+    _sleep 2
+
+    cat <<EOF
+${RED}
+***
+Skipping the installation of either Indexer option is ok! You can always install later...
+***
+${NC}
+EOF
+    _sleep 2
+
+    cat <<EOF
+${RED}
+***
+Choose one of the following options for your Indexer...
+***
+${NC}
+EOF
+    _sleep 2
+
+    _no_indexer_found
+    # give user menu for install choices, see functions.sh
 else
-   echo -e "${RED}"
-   echo "***"
-   echo "Electrs is already installed!"
-   echo "***"
-   echo -e "${NC}"
-   _sleep 3
-   bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-electrs-upgrade.sh
+    if grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        cat <<EOF
+${RED}
+***
+Electrum Rust Server found...
+***
+${NC}
+EOF
+        _sleep 2
+
+        cat <<EOF
+${RED}
+***
+Would you like to make any changes to your Indexer during this upgrade?
+***
+${NC}
+EOF
+        _sleep 2
+
+        select indexer in "Keep Electrum Rust Server (default)" "Replace With Samourai Indexer"; do
+            case $indexer in
+                "Keep Electrum Rust Server (default)")
+                    cat <<EOF
+${RED}
+***
+Keeping Electrum Rust Server...
+***
+${NC}
+EOF
+                    _sleep
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+                    break
+                    ;;
+                    # keep the samourai indexer
+
+                "Replace With Samourai Indexer")
+                    cat <<EOF
+${RED}
+***
+Replacing with Samourai Indexer...
+***
+${NC}
+EOF
+                    _sleep
+
+                    cd "${dojo_path_my_dojo}" || exit
+
+                    rm indexer/electrs.toml
+
+                    _set_addrindexer
+
+                    break
+                    ;;
+                    # remove electrs toml file, checkout to revert changes made in files, and trigger samourai indexer install
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid Entry! Valid values are 1 or 2...
+***
+${NC}
+EOF
+                    _sleep
+                    ;;
+                    # invalid data try again
+            esac
+        done
+    elif grep "INDEXER_INSTALL=on" "${dojo_path_my_dojo}"/conf/docker-indexer.conf 1>/dev/null && [ ! -f "${dojo_path_my_dojo}"/indexer/electrs.toml ] ; then
+        cat <<EOF
+${RED}
+***
+Samourai Indexer found...
+***
+${NC}
+EOF
+        _sleep 2
+
+        cat <<EOF
+${RED}
+***
+Would you like to make any changes to your Indexer during this upgrade?
+***
+${NC}
+EOF
+        _sleep 3
+
+        select indexer in "Keep Samourai Indexer (default)" "Replace With Electrum Rust Server"; do
+            case $indexer in
+                "Keep Samourai Indexer (default)")
+                    cat <<EOF
+${RED}
+***
+Keeping Samourai Indexer...
+***
+${NC}
+EOF
+                    _sleep
+
+                    _set_addrindexer
+
+                    break
+                    ;;
+                    # keep electrum rust server
+
+                "Replace With Electrum Rust Server")
+                    cat <<EOF
+${RED}
+***
+Replacing with Electrum Rust Server...
+***
+${NC}
+EOF
+                    _sleep
+
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+
+                    break
+                    ;;
+                    # triggers electrs install script
+                *)
+                    cat <<EOF
+${RED}
+***
+Invalid answer! Enter Y or N
+***
+${NC}
+EOF
+                    _sleep
+                    ;;
+                    # invalid data try again
+            esac
+        done
+    fi
 fi
-# if electrs.toml is not found the user is prompted to select y/n
-# else informs user indexer is already installed
+
+if _is_mempool; then
+    cat <<EOF
+${RED}
+***
+Do you want to install the Mempool Visualizer?
+***
+${NC}
+EOF
+    while true; do
+        read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
+        case $answer in
+            [yY][eE][sS]|[yY])
+                _mempool_conf
+
+                # Checks if urls need to be changed for mempool UI
+                _mempool_urls_to_local_btc_explorer
+                break
+                ;;
+            [Nn][oO]|[nN])
+                break
+                ;;
+            *)
+                cat <<EOF
+${RED}
+***
+Please answer Yes or No.
+***
+${NC}
+EOF
+            ;;
+        esac
+    done
+else
+    # Repopulate mempool/Dockerfile with current credentials
+    _mempool_conf
+fi
+# Check if mempool available or not
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop whirlpool
-   echo -e "${RED}"
-   echo "***"
-   echo "Whirlpool will be installed via Dojo docker"
-   echo "You will need to re-pair with GUI"
-   echo "See wiki for more information"
-   echo "***"
-   echo -e "${NC}"
+
+   cat <<EOF
+${RED}
+***
+Whirlpool will be installed via Docker...
+***
+${NC}
+
+${RED}
+***
+You will need to re-pair with GUI, see Wiki for more information...
+***
+${NC}
+EOF
    _sleep 5
 else
-   echo -e "${RED}"
-   echo "Whirlpool will be installed via Dojo Docker"
-   echo "For pairing information see the wiki"
-   echo -e "${NC}"
+   cat <<EOF
+${RED}
+***
+Whirlpool will be installed via Docker...
+***
+${NC}
+
+${RED}
+***
+For pairing information see the wiki...
+***
+${NC}
+EOF
+   _sleep 2
 fi
 # stop whirlpool for existing whirlpool users
 
-cd "${DOJO_PATH}" || exit
+cd "${dojo_path_my_dojo}" || exit
 ./dojo.sh upgrade
 # run upgrade
 
-bash -c "$RONIN_DOJO_MENU"
+bash -c "$RONIN_UPDATES_MENU"
 # return to menu

@@ -9,7 +9,7 @@ OPTIONS=(1 "Enable"
          3 "Status"
          4 "Delete Rule"
          5 "Reload"
-         6 "Add New IP Range for SSH"
+         6 "Add IP Range for SSH"
          7 "Add Specific IP for SSH"
          8 "Next Page"
          9 "Go Back")
@@ -32,7 +32,7 @@ case $CHOICE in
             _sleep 2
             sudo ufw enable
             _sleep
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # enables firewall
             ;;
         2)
@@ -44,7 +44,7 @@ case $CHOICE in
             _sleep 2
             sudo ufw disable
             _sleep
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # disables firewall
             ;;
         3)
@@ -59,15 +59,15 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            _pause
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any key to return to menu
             ;;
         4)
-	    echo -e "${RED}"
+            echo -e "${RED}"
             echo "***"
             echo "Find the rule you want to delete, and type its row number to delete it."
             echo "***"
@@ -107,12 +107,12 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
-            # press any letter to return to menu
+            _pause
+            bash -c "${RONIN_FIREWALL_MENU}"
+            # press any key to return to menu
             ;;
         5)
             echo -e "${RED}"
@@ -122,20 +122,28 @@ case $CHOICE in
             echo -e "${NC}"
             _sleep 2
             sudo ufw reload
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            bash -c "${RONIN_FIREWALL_MENU}"
             # reload and return to menu
             ;;
         6)
             echo -e "${RED}"
             echo "***"
-            echo "Obtain the IP address you wish to give access to SSH."
+            echo "Obtain the IP address of any machine on the same local network as your RoninDojo."
             echo "***"
             echo -e "${NC}"
             _sleep 2
 
             echo -e "${RED}"
             echo "***"
-            echo "Your IP address on your network may look like 192.168.4.21"
+            echo "The IP address entered will be adapted to end with .0/24"
+            echo "This will allow any machine on the same network to have SSH access."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Your IP address on the network may look like 192.168.4.21"
             echo "Or it could look like 12.34.56.78"
             echo "***"
             echo -e "${NC}"
@@ -148,7 +156,7 @@ case $CHOICE in
             echo -e "${NC}"
 
             read -rp 'Local IP Address: ' ip_address
-            sudo ufw allow from "$ip_address"/24 to any port 22 comment 'SSH access restricted to local LAN only'
+            sudo ufw allow from "$ip_address"/24 to any port 22 comment 'SSH access restricted to local network'
 
             echo -e "${RED}"
             echo "***"
@@ -176,17 +184,32 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            _pause
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any key to return to menu
             ;;
         7)
             echo -e "${RED}"
             echo "***"
-            echo "Obtain the IP address you wish to give access to SSH."
+            echo "Obtain the specific IP address you wish to give access to SSH."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "SSH access will be restricted to this IP address only."
+            echo "***"
+            echo -e "${NC}"
+            _sleep 2
+
+            echo -e "${RED}"
+            echo "***"
+            echo "Be careful when deleting old firewall rules!"
+            echo "Don't lock yourself out from SSH access."
             echo "***"
             echo -e "${NC}"
             _sleep 2
@@ -206,7 +229,7 @@ case $CHOICE in
             echo -e "${NC}"
 
             read -rp 'Local IP Address: ' ip_address
-            sudo ufw allow from "$ip_address" to any port 22 comment 'SSH access restricted to local LAN only'
+            sudo ufw allow from "$ip_address" to any port 22 comment 'SSH access restricted to specific IP'
 
             echo -e "${RED}"
             echo "***"
@@ -234,19 +257,19 @@ case $CHOICE in
 
             echo -e "${RED}"
             echo "***"
-            echo "Press any letter to return..."
+            echo "Press any key to return..."
             echo "***"
             echo -e "${NC}"
-            read -n 1 -r -s
-            bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall.sh
+            _pause
+            bash -c "${RONIN_FIREWALL_MENU}"
             # press any key to return to menu
             ;;
         8)
-	    bash "$HOME"/RoninDojo/Scripts/Menu/menu-firewall2.sh
+            bash -c "${RONIN_FIREWALL_MENU2}"
             # go to next menu page
             ;;
         9)
-            bash "$HOME"/RoninDojo/ronin
-            # return to main menu
+            bash -c "${RONIN_SYSTEM_MENU2}"
+            # return system menu page 2
             ;;
 esac

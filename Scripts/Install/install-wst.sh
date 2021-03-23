@@ -4,37 +4,35 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-cat <<WST
+cat <<EOF
 ${RED}
 ***
-Installing Whirlpool Stat Tool...
+Checking package dependencies...
 ***
 ${NC}
-WST
+EOF
+_sleep
 
-test -d "$HOME"/wst || mkdir "$HOME"/wst
+cd "$HOME" || exit
 
-cd "$HOME"/wst || exit
-# make wst directory and change to it, otherwise exit
-
-git clone https://github.com/Samourai-Wallet/whirlpool_stats.git 2>/dev/null
+git clone "$WHIRLPOOL_STATS_REPO" Whirlpool-Stats-Tool 2>/dev/null
 # download whirlpool stat tool
 
-if ! hash pip; then
-  cat <<PIP
+if ! hash pipenv; then
+  cat <<EOF
 ${RED}
 ***
-Installing python-pip...
+Installing python-pipenv...
 ***
 ${NC}
-PIP
+EOF
   _sleep
-  sudo pacman -S --noconfirm python-pip
+  sudo pacman -S --noconfirm python-pipenv &>/dev/null
 fi
 # check for python-pip and install if not found
 
-cd whirlpool_stats || exit
-sudo pip3 install -r ./requirements.txt
+cd Whirlpool-Stats-Tool || exit
+pipenv install -r requirements.txt &>/dev/null
 # change to whirlpool stats directory, otherwise exit
 # install whirlpool stat tool
 
