@@ -1623,17 +1623,17 @@ git symbolic-ref -q HEAD 1>/dev/null || git switch -q -c "${ronin_dojo_branch}" 
 . Scripts/defaults.sh
 . Scripts/functions.sh
 
-# Check if UI Backend needs an update
-if ! _ronin_ui_update_check; then
-    printf "\n%s****\nUpdating Ronin UI Backend...\n***%s%s\n" "${red}" "${red}" "${nc}"
-    _install_ronin_ui_backend
-fi
+# # Check if UI Backend needs an update
+# if ! _ronin_ui_update_check; then
+#     printf "\n%s****\nUpdating Ronin UI Backend...\n***%s%s\n" "${red}" "${red}" "${nc}"
+#     _install_ronin_ui_backend
+# fi
 
 # Check TOR
 _setup_tor
 
-bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
-# upgrades dojo and returns to menu
+# bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
+# # upgrades dojo and returns to menu
 EOF
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
