@@ -1,85 +1,101 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-echo -e "${RED}"
-echo "***"
-echo "Checking if Whirlpool is already installed..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Checking if Whirlpool is already installed...
+***
+${nc}
+EOF
 
 if [ -f "$HOME"/whirlpool/whirlpool.jar ]; then
-    echo -e "${RED}"
-    echo "***"
-    echo "Whirlpool is installed!"
-    echo "***"
-    echo -e "${NC}"
+    cat <<EOF
+${red}
+***
+Whirlpool is installed!
+***
+${nc}
+EOF
     _sleep 2
 
-    echo "***"
-    echo "Returning to Menu..."
-    echo "***"
-    echo -e "${NC}"
-    _sleep 2
+    _pause return
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
     exit
 fi
 # checks if whirlpool.jar exists, if so kick back to menu
 
-echo -e "${RED}"
-echo "***"
-echo "Checking if Tor is installed..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Checking if Tor is installed...
+***
+${nc}
+EOF
 
 if hash tor; then
-    echo -e "${RED}"
-    echo "***"
-    echo "The tor package is installed."
-    echo "***"
-    echo -e "${NC}"
+    _pacman_update_mirrors
+
+    cat <<EOF
+${red}
+***
+The Tor package is installed...
+***
+${nc}
+EOF
 else
-    echo -e "${RED}"
-    echo "***"
-    echo "The tor package will be installed now."
-    echo "***"
-    echo -e "${NC}"
-    sudo pacman -S --noconfirm tor
+    cat <<EOF
+${red}
+***
+The Tor package will be installed now...
+***
+${nc}
+EOF
+    sudo pacman --quiet -S --noconfirm tor
     _sleep
 
     # Torrc setup
     _setup_tor
 fi
 
-echo -e "${RED}"
-echo "***"
-echo "Installing Whirlpool..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Installing Whirlpool...
+***
+${nc}
+EOF
 _sleep 3
 
-echo -e "${RED}"
-echo "***"
-echo "A UFW rule will be made for Whirlpool..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+A UFW rule will be made for Whirlpool...
+***
+${nc}
+EOF
 _sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Whirlpool GUI will be able to access Whirlpool CLI from any machine on your RoninDojo's local network."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Whirlpool GUI will be able to access Whirlpool CLI from any machine on your RoninDojo's local network...
+***
+${nc}
+EOF
 _sleep 5
 
 if sudo ufw status | grep 8899 > /dev/null ; then
-    echo -e "${RED}"
-    echo "***"
-    echo "Whirlpool firewall rule already setup..."
-    echo "***"
-    echo -e "${NC}"
+    cat <<EOF
+${red}
+***
+Whirlpool firewall rule already setup...
+***
+${nc}
+EOF
     _sleep
 else
     ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/ip_tmp.txt
@@ -124,29 +140,35 @@ else
      sudo rm "$HOME"/ip_tmp.txt "$HOME"/whirlpool_rule_tmp.txt
     # removes txt files that are no longer needed
 
-    echo -e "${RED}"
-    echo "***"
-    echo "Reloading UFW..."
-    echo "***"
-    echo -e "${NC}"
+    cat <<EOF
+${red}
+***
+Reloading UFW...
+***
+${nc}
+EOF
     _sleep
     sudo ufw reload
 fi
 # checks for port 8899 ufw rule and skips if found, if not found it is set up
 
-echo -e "${RED}"
-echo "***"
-echo "Checking UFW status..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Checking UFW status...
+***
+${nc}
+EOF
 _sleep 2
 sudo ufw status
 
-echo -e "${RED}"
-echo "***"
-echo "Created a Whirlpool directory."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Created a Whirlpool directory...
+***
+${nc}
+EOF
 _sleep
 
 cd "$HOME" || exit
@@ -154,35 +176,43 @@ mkdir whirlpool
 cd whirlpool || exit
 # create whirlpool directory
 
-echo -e "${RED}"
-echo "***"
-echo "Pulling Whirlpool from Gitlab..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Pulling Whirlpool from repository...
+***
+${nc}
+EOF
 _sleep
 wget -qO whirlpool.jar https://code.samourai.io/whirlpool/whirlpool-client-cli/uploads/7998ea5a9bb180451616809bc346b9ac/whirlpool-client-cli-0.10.8-run.jar
 # pull Whirlpool run times
 
 # whirlpool service. Check if present else create it
-echo -e "${RED}"
-echo "***"
-echo "Checking if Whirlpool.service is already exists..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Checking if Whirlpool.service is already exists...
+***
+${nc}
+EOF
 
 if [ -f /etc/systemd/system/whirlpool.service ]; then
-    echo -e "${RED}"
-    echo "***"
-    echo "Whirlpool Service already is installed!"
-    echo "***"
+    cat <<EOF
+${red}
+***
+Whirlpool Service already is installed!
+***
+EOF
     _sleep
     sudo systemctl stop whirlpool
 else
-    echo -e "${RED}"
-    echo "***"
-    echo "Setting Whirlpool Service..."
-    echo "***"
-    echo -e "${NC}"
+    cat <<EOF
+${red}
+***
+Setting Whirlpool Service...
+***
+${nc}
+EOF
     _sleep
 
 sudo bash -c 'cat << EOF > /etc/systemd/system/whirlpool.service
@@ -191,10 +221,10 @@ Description=Whirlpool
 After=tor.service
 
 [Service]
-WorkingDirectory=/home/$USER/whirlpool
-ExecStart=/usr/bin/java -jar /home/$USER/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
-User=$USER
-Group=$USER
+WorkingDirectory=/home/${ronindojo_user}/whirlpool
+ExecStart=/usr/bin/java -jar /home/${ronindojo_user}/whirlpool/whirlpool.jar --server=mainnet --tor --auto-mix --listen
+User=${ronindojo_user}
+Group=${ronindojo_user}
 Type=simple
 KillMode=process
 TimeoutSec=60
@@ -210,35 +240,44 @@ fi
 sudo systemctl daemon-reload
 _sleep 3
 
-echo -e "${RED}"
-echo "***"
-echo "Starting Whirlpool in the background..."
-echo "***"
-echo -e "${NC}"
+cat <<EOF
+${red}
+***
+Starting Whirlpool in the background...
+***
+${nc}
+EOF
 _sleep
 
 sudo systemctl start whirlpool
-sudo systemctl enable whirlpool 2>/dev/null
+sudo systemctl enable --quiet whirlpool
 _sleep 3
 
-echo -e "${RED}"
-echo "***"
-echo "Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixing..."
-echo "***"
-echo -e "${NC}"
-_sleep 3
+cat <<EOF
+${red}
+***
+Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixing...
+***
+${nc}
+EOF
+_sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "For pairing with GUI head to full guide at: https://wiki.ronindojo.io/en/cli-setup/step3. This install is for non Tor whirlpool, can only access locally"
-echo "***"
-echo -e "${NC}"
-_sleep 3
+cat <<EOF
+${red}
+***
+For pairing with GUI head to full guide at: https://wiki.ronindojo.io/en/cli-setup/step3
+***
+${nc}
+EOF
+_sleep 2
 
-echo -e "${RED}"
-echo "***"
-echo "Press any key to continue..."
-echo "***"
-echo -e "${NC}"
-_pause
-# will return to menu as long as [*] Go Back was selected
+cat <<EOF
+${red}
+***
+This install is for non Tor whirlpool, can only access locally...
+***
+${nc}
+EOF
+_sleep 2
+
+_pause return

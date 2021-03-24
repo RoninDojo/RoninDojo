@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/generated-credentials.sh
@@ -7,172 +7,187 @@
 
 _load_user_conf
 
-if ! findmnt "${INSTALL_DIR}" 1>/dev/null; then
+if ! findmnt "${install_dir}" 1>/dev/null; then
     cat <<EOF
-${RED}
+${red}
 ***
-Missing drive mount at ${INSTALL_DIR}! Please contact support for assistance.
+Missing drive mount at ${install_dir}! Please contact support for assistance...
 ***
-${NC}
+${nc}
 EOF
-_sleep
-
+    _sleep 2
     cat <<EOF
-${RED}
+${red}
 ***
-Exiting RoninDojo in 5 seconds...
+Exiting RoninDojo...
 ***
-${NC}
+${nc}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+    _pause return
     exit 1
 fi
 
 if [ -d "${dojo_path_my_dojo}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 RoninDojo is already installed...
 ***
-${NC}
+${nc}
 EOF
-    _sleep 5 --msg "Returning to menu in"
+    _sleep 2
+    _pause return
     ronin
     exit
 fi
 # Makes sure RoninDojo has been uninstalled
 
 cat <<EOF
-${RED}
+${red}
 ***
 Running RoninDojo install...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
 
 cat <<EOF
-${RED}
+${red}
 ***
 Use Ctrl+C to exit now if needed!
 ***
-${NC}
+${nc}
 EOF
 _sleep 10 --msg "Installing in"
 
 cat <<EOF
-${RED}
+${red}
 ***
-Downloading and extracting latest RoninDojo release...
+Downloading latest RoninDojo release...
 ***
-${NC}
+${nc}
 EOF
 
 cd "$HOME" || exit
-git clone -b "${SAMOURAI_COMMITISH:-master}" "$SAMOURAI_REPO" dojo 2>/dev/null
+git clone -q -b "${samourai_commitish#*/}" "$samourai_repo" dojo 2>/dev/null
 
-if [ ! -d "${RONIN_UI_BACKEND_DIR}" ]; then
-  _install_ronin_ui_backend
-  # Install Ronin UI Backend service
+# Switch over to a branch if in detached state. Usually this happens
+# when you clone a tag instead of a branch
+cd "${dojo_path}" || exit
+
+_git_ref_type
+_ret=$?
+
+if ((_ret==3)); then
+    # valid branch
+    git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
+else
+    # valid tag
+    git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
+fi
+
+# Check if UI Backend needs installing
+if ! _ronin_ui_update_check; then
+    _install_ronin_ui_backend
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Credentials necessary for usernames, passwords, etc. will randomly be generated now...
 ***
-${NC}
+${nc}
 EOF
 _sleep 4
 
 cat <<EOF
-${RED}
+${red}
 ***
 Credentials are found in RoninDojo menu, ${dojo_path_my_dojo}/conf, or the ~/RoninDojo/user.conf.example file...
 ***
-${NC}
+${nc}
 EOF
 _sleep 4
 
 cat <<EOF
-${RED}
+${red}
 ***
 Be aware these credentials are used to login to Dojo Maintenance Tool, Block Explorer, and more!
 ***
-${NC}
+${nc}
 EOF
 _sleep 4
 
 cat <<EOF
-${RED}
+${red}
 ***
 Setting the RPC User and Password...
 ***
-${NC}
+${nc}
 EOF
 _sleep
 
-if [ -d "${DOJO_BACKUP_DIR}" ]; then
+if [ -d "${dojo_backup_dir}" ]; then
     if ! _dojo_restore; then
         cat <<EOF
-${RED}
+${red}
 ***
 Backup restoration disabled!
 ***
-${NC}
+${nc}
 EOF
         _sleep
 
         cat <<EOF
-${RED}
+${red}
 ***
 Enable in user.conf if you wish to restore credentials on dojo install when available...
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
     else
         cat <<EOF
-${RED}
+${red}
 ***
 Credentials backup detected and restored...
 ***
-${NC}
+${nc}
 EOF
         _sleep
 
         cat <<EOF
-${RED}
+${red}
 ***
-If you wish to disable this feature, set DOJO_RESTORE=false in $HOME/.config/RoninDojo/user.conf file...
+If you wish to disable this feature, set dojo_conf_backup=false in the $HOME/.config/RoninDojo/user.conf file...
 ***
-${NC}
+${nc}
 EOF
         _sleep 3
     fi
 else
     cat <<EOF
-${RED}
+${red}
 ***
 Configuring the bitcoin daemon server...
 ***
-${NC}
+${nc}
 EOF
     _sleep
-    sed -i -e "s/BITCOIND_RPC_USER=.*$/BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$RPC_USER}/" \
-      -e "s/BITCOIND_RPC_PASSWORD=.*$/BITCOIND_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD:-$RPC_PASS}/" \
-      -e "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-700}/" \
-      -e "s/BITCOIND_MAX_MEMPOOL=.*$/BITCOIND_MAX_MEMPOOL=400/" \
-      -e "s/BITCOIND_RPC_EXTERNAL=.*$/BITCOIND_RPC_EXTERNAL=${BITCOIND_RPC_EXTERNAL:-on}/" \
+    sed -i -e "s/BITCOIND_RPC_USER=.*$/BITCOIND_RPC_USER=${BITCOIND_RPC_USER:-$rpc_user}/" \
+      -e "s/BITCOIND_RPC_PASSWORD=.*$/BITCOIND_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD:-$rpc_pass}/" \
+      -e "s/BITCOIND_DB_CACHE=.*$/BITCOIND_DB_CACHE=${BITCOIND_DB_CACHE:-$(_mem_total "${bitcoind_db_cache_total}")}/" \
+      -e "s/BITCOIND_MAX_MEMPOOL=.*$/BITCOIND_MAX_MEMPOOL=${BITCOIND_MAX_MEMPOOL:-1024}/" \
       -e "s/BITCOIND_RPC_EXTERNAL_IP=.*$/BITCOIND_RPC_EXTERNAL_IP=${BITCOIND_RPC_EXTERNAL_IP:-127.0.0.1}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf.tpl
       # populate docker-bitcoind.conf.tpl template
 
     cat <<EOF
-${RED}
+${red}
 ***
 Configuring the Nodejs container...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -188,11 +203,11 @@ EOF
     # populate docker-mysql.conf.tpl template
 
     cat <<EOF
-${RED}
+${red}
 ***
 Configuring the BTC RPC Explorer...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -201,211 +216,117 @@ EOF
     # populate docker-explorer.conf.tpl template
 fi
 
-cat <<EOF
-${RED}
-***
-Preparing for Indexer Prompt...
-***
-${NC}
-EOF
-_sleep 2
+_check_indexer
 
-cat <<EOF
-${RED}
-***
-Samourai Indexer is recommended for most users as it helps with querying balances...
-***
-${NC}
-EOF
-_sleep 4
-
-cat <<EOF
-${RED}
-***
-Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
-***
-${NC}
-EOF
-_sleep 4
-
-cat <<EOF
-${RED}
-***
-Skipping the installation of either Indexer option is ok! You can always install later...
-***
-${NC}
-EOF
-_sleep 3
-
-cat <<EOF
-${RED}
-***
-Choose one of the following options for your Indexer...
-***
-${NC}
-EOF
-_sleep 3
-_no_indexer_found
-# give user menu for install choices, see functions.sh
-
-if _is_mempool; then
-    cat <<EOF
-${RED}
-***
-Do you want to install the Mempool Visualizer?
-***
-${NC}
-EOF
-    while true; do
-      read -rp "[${GREEN}Yes${NC}/${RED}No${NC}]: " answer
-      case $answer in
-          [yY][eE][sS]|[yY])
-            _mempool_conf
-            break
-            ;;
-          [nN][oO]|[Nn])
-            break
-            ;;
-          *)
-            cat <<EOF
-${RED}
-***
-Invalid answer! Enter Y or N
-***
-${NC}
-EOF
-            ;;
-      esac
-    done
-    # install mempool prompt
-else
-    # Repopulate mempool/Dockerfile with current credentials
-    _mempool_conf
+if (($?==2)); then # No indexer, fresh install so show prompts for indexer selection
+    _indexer_prompt
+    # give user menu for install choices, see functions.sh
 fi
 
 cat <<EOF
-${RED}
+${red}
 ***
 Please see Wiki for FAQ, help, and so much more...
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 https://wiki.ronindojo.io
 ***
-${NC}
+${nc}
 EOF
 _sleep 3
 
 cat <<EOF
-${RED}
+${red}
 ***
 Installing Samourai Wallet's Dojo...
 ***
-${NC}
+${nc}
 EOF
 _sleep 2
+
+# Restart docker here for good measure
+sudo systemctl restart docker
 
 cd "$dojo_path_my_dojo" || exit
 
 if ./dojo.sh install --nolog; then
     cat <<EOF
-${RED}
+${red}
 ***
 All RoninDojo feature installations complete...
 ***
-${NC}
+${nc}
 EOF
-    _sleep 3
+    # Make sure to wait for user interaction before continuing
+    _pause continue
 
-    cat <<EOF
-${RED}
-***
-Press any key to continue...
-***
-${NC}
-EOF
+    # Backup dojo credentials
+    "${dojo_conf_backup}" && _dojo_backup
 
-    _pause
-    # press to continue is needed because sudo password can be requested for next steps
-    # if the user is AFK there may be timeout
+    # Restore any saved IBD from a previous uninstall
+    "${dojo_data_bitcoind_backup}" && _dojo_data_bitcoind restore
 
-    _mempool_urls_to_local_btc_explorer
-    # checks if urls need to be changed for mempool UI
+    # Restore any saved indexer data from a previous uninstall
+    "${dojo_data_indexer_backup}" && _dojo_data_indexer restore
 
-    # Backup credentials
-    _dojo_backup
-
-    if sudo test -d "${INSTALL_DIR_UNINSTALL}/blocks" && sudo test -d "${DOCKER_VOLUME_BITCOIND}"; then
-        cat <<EOF
-${RED}
-***
-Blockchain data salvage starting...
-***
-${NC}
-EOF
-
-        cd "$dojo_path_my_dojo" || exit
-        _stop_dojo
-
-        _sleep
-
-        sudo rm -rf "${DOCKER_VOLUME_BITCOIND}"/_data/{blocks,chainstate}
-        sudo mv -v "${INSTALL_DIR_UNINSTALL}"/{blocks,chainstate} "${DOCKER_VOLUME_BITCOIND}"/_data/ 1>/dev/null
-        # changes to dojo path, otherwise exit
-        # websearch "bash Logical OR (||)" for info
-        # stops dojo and removes new data directories
-        # then moves salvaged block data
-
-        cat <<EOF
-${RED}
-***
-Blockchain data salvage completed...
-***
-${NC}
-EOF
-        _sleep 2
-
-        sudo rm -rf "${INSTALL_DIR_UNINSTALL}"
-        # remove old salvage directories
-
-        cd "$dojo_path_my_dojo" || exit
-        _source_dojo_conf
-
-        # Start docker containers
-        yamlFiles=$(_select_yaml_files)
-        docker-compose $yamlFiles up --remove-orphans -d || exit # failed to start dojo
-        # start dojo
-    fi
-    # check for IBD data, if not found continue
-
-    if ${TOR_RESTORE}; then
+    if ${tor_backup}; then
         _tor_restore
         docker restart tor 1>/dev/null
     fi
     # restore tor credentials backup to container
+
+    # Installing SW Toolkit
+
+    if [ ! -d "${HOME}"/boltzmann ]; then
+        cat <<EOF
+${red}
+***
+Installing Boltzmann Calculator...
+***
+${nc}
+EOF
+        _sleep 2
+
+        # install Boltzmann
+        _install_boltzmann
+    fi
+
+    if [ ! -d "${HOME}"/Whirlpool-Stats-Tool ]; then
+        cat <<EOF
+${red}
+***
+Installing Whirlpool Stat Tool...
+***
+${nc}
+EOF
+        _sleep 2
+
+        _install_wst
+    fi
+
+    # Source update script
+    . "$HOME"/RoninDojo/Scripts/update.sh
+
+    # Run _update_08
+    test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mnt-usb.mount is available
+
+    # Press to continue to prevent from snapping back to menu too quickly
+    _pause return
 else
         cat <<EOF
-${RED}
+${red}
 ***
 Install failed! Please contact support...
 ***
-${NC}
+${nc}
 EOF
 
-        cat <<EOF
-${RED}
-***
-Press any key to continue...
-***
-${NC}
-EOF
-
-        _pause
-        _sleep 5 --msg "Returning to main menu in"
+        _pause return
         ronin
 fi

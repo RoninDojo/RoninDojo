@@ -1,17 +1,17 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-if [ ! -d "${BOLTZMANN_PATH}" ]; then
+if [ ! -d "${boltzmann_path}" ]; then
     cat <<EOF
-${RED}
+${red}
 ***
 Installing Boltzmann...
 ***
-${NC}
+${nc}
 EOF
     _sleep
 
@@ -33,24 +33,24 @@ EOF
 cat <<EOF
 Example Usage:
 
-${RED}
+${red}
 Single txid
-${NC}
+${nc}
 8e56317360a548e8ef28ec475878ef70d1371bee3526c017ac22ad61ae5740b8
 
-${RED}
+${red}
 Multiple txids
-${NC}
+${nc}
 8e56317360a548e8ef28ec475878ef70d1371bee3526c017ac22ad61ae5740b8,812bee538bd24d03af7876a77c989b2c236c063a5803c720769fc55222d36b47,...
 EOF
 
-cd "${BOLTZMANN_PATH}"/boltzmann || exit
+cd "${boltzmann_path}"/boltzmann || exit
 
 # Export required environment variables
-export BOLTZMANN_RPC_USERNAME=${RPC_USER_CONF}
-export BOLTZMANN_RPC_PASSWORD=${RPC_PASS_CONF}
-export BOLTZMANN_RPC_HOST=${RPC_IP}
-export BOLTZMANN_RPC_PORT=${RPC_PORT}
+export BOLTZMANN_RPC_USERNAME=${BITCOIND_RPC_USER}
+export BOLTZMANN_RPC_PASSWORD=${BITCOIND_RPC_PASSWORD}
+export BOLTZMANN_RPC_HOST=${BITCOIND_IP}
+export BOLTZMANN_RPC_PORT=${BITCOIND_RPC_PORT}
 
 # Loop command until user quits
 until [[ "$txids" =~ (Q|q|quit|Quit) ]]
@@ -59,8 +59,24 @@ do
   read -r txids
 
   if [[ ! "$txids" =~ (Q|Quit) ]]; then
-    pipenv run python ludwig.py --rpc --txids="${txids}"
+    if ! pipenv run python ludwig.py --rpc --txids="${txids}" 2>/dev/null; then
+      _check_pkg "pipenv" "python-pipenv"
+
+      cat <<EOF
+${red}
+***
+Checking for updates...
+***
+${nc}
+EOF
+      _sleep
+
+      cd .. || exit
+
+      # Upgrade dependencies
+      pipenv update &>/dev/null
+    fi
   else
-    bash "$HOME"/RoninDojo/Scripts/Menu/menu-extras.sh
+    bash -c "${ronin_samourai_toolkit_menu}"
   fi
 done

@@ -5,8 +5,7 @@
 
 cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
 options=(1 "System Setup" off    # any option can be set to default to "on"
-         2 "Install RoninDojo" off
-         3 "Go Back" off)
+         2 "Install RoninDojo" off)
 choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 clear
 for choice in $choices
@@ -20,9 +19,8 @@ do
             bash "$HOME"/RoninDojo/Scripts/Install/install-dojo.sh
             # runs dojo install script
             ;;
-        3)
-            bash -c "${RONIN_SYSTEM_MENU}"
-            # return to menu
-            ;;
     esac
 done
+
+bash -c "${ronin_system_menu}"
+# return to menu

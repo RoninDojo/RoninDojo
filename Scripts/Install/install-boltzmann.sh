@@ -1,46 +1,21 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 cd "$HOME" || exit
-git clone "$BOLTZMANN_REPO" &>/dev/null
+git clone -q "$boltzmann_repo" &>/dev/null
 cd boltzmann || exit
 # pull Boltzmann
 
-cat <<EOF
-${RED}
-***
-Checking package dependencies...
-***
-${NC}
-EOF
-_sleep
-
-if ! hash pipenv; then
-    cat <<EOF
-${RED}
-***
-Installing pipenv...
-***
-${NC}
-EOF
-    sudo pacman -S --noconfirm python-pipenv &>/dev/null
-fi
+_check_pkg "pipenv" "python-pipenv"
 
 # Setup a virtual environment to hold boltzmann dependencies. We should use this
 # with all future packages that ship a requirements.txt.
-pipenv install -r requirements.txt &>/dev/null
+pipenv install &>/dev/null
 
-cat <<EOF
-${RED}
-***
-Press any key to continue...
-***
-${NC}
-EOF
-_pause
+_pause continue
 
 # will return to boltzmann menu option script
-bash -c "$RONIN_BOLTZMANN_MENU"
+bash -c "$ronin_boltzmann_menu"
