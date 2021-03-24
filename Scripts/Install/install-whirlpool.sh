@@ -250,7 +250,7 @@ EOF
 _sleep
 
 sudo systemctl start whirlpool
-sudo systemctl enable whirlpool 2>/dev/null
+sudo systemctl enable --quiet whirlpool
 _sleep 3
 
 cat <<EOF

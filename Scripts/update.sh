@@ -157,7 +157,7 @@ Options=defaults
 [Install]
 WantedBy=multi-user.target
 EOF"
-        sudo systemctl enable mnt-usb.mount 2>/dev/null
+        sudo systemctl enable --quiet mnt-usb.mount
 
         _sleep 4 --msg "Restarting RoninDojo in"
 

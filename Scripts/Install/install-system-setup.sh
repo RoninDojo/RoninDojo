@@ -139,7 +139,7 @@ EOF
     _sleep
 
     sudo ufw --force enable &>/dev/null
-    sudo systemctl enable ufw 2>/dev/null
+    sudo systemctl enable --quiet ufw
     # enabling ufw so /etc/ufw/user.rules file configures properly
 
     ip addr | sed -rn '/state UP/{n;n;s:^ *[^ ]* *([^ ]*).*:\1:;s:[^.]*$:0/24:p}' > "$HOME"/ip_tmp.txt

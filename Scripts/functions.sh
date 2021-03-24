@@ -416,7 +416,7 @@ TOR_CONFIG
 
     # Enable service on startup
     if ! systemctl is-enabled tor 1>/dev/null; then
-        sudo systemctl enable tor 2>/dev/null
+        sudo systemctl enable --quiet tor
     fi
 
     _is_active tor
@@ -721,7 +721,7 @@ _fan_control_uninstall() {
         # Stop service before upgrade
         sudo systemctl stop bbbfancontrol
 
-        sudo systemctl disable bbbfancontrol 1>/dev/null
+        sudo systemctl disable --quiet bbbfancontrol
 
         sudo rm /etc/systemd/system/bbbfancontrol.service
 
@@ -759,7 +759,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF"
 
-        sudo systemctl enable bbbfancontrol 2>/dev/null
+        sudo systemctl enable --quiet bbbfancontrol
         sudo systemctl start bbbfancontrol
     else # Previous unit file found
         # Update unit file if hwmon directory location changed
@@ -1652,7 +1652,7 @@ EOF
 
     # Enable service on startup
     if ! sudo systemctl is-enabled docker 1>/dev/null; then
-        sudo systemctl enable docker 2>/dev/null
+        sudo systemctl enable --quiet docker
     fi
 
     return 0
@@ -1876,7 +1876,7 @@ EOF
     fi
 
     sudo systemctl start "${systemd_mountpoint}".mount || return 1
-    sudo systemctl enable "${systemd_mountpoint}".mount 2>/dev/null || return 1
+    sudo systemctl enable --quiet "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
 
 
@@ -2223,7 +2223,7 @@ EOF
     _ufw_rule_add "${ip_range}" 25441
 
     sudo systemctl daemon-reload
-    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl enable --quiet specter 2>/dev/null
     # Using enable
 
     _specter_hww_udev_rules
@@ -2297,7 +2297,7 @@ EOF
     _ufw_rule_add "${ip_range}" "25441"
 
     sudo systemctl daemon-reload
-    systemctl is-enabled specter 1>/dev/null || sudo systemctl enable specter 2>/dev/null
+    systemctl is-enabled --quiet specter || sudo systemctl enable --quiet specter
 
     _specter_hww_udev_rules
 
