@@ -1186,7 +1186,8 @@ EOF
                     git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
                 else
                     echo "step d4"
-                    git checkout -q "${samourai_commitish}"
+                    git branch -q -D "${samourai_commitish}"
+                    git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
                 fi
             else # on a tag
                 echo "step d5"
@@ -1557,7 +1558,8 @@ EOF
                         git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
                     else
                         echo "step 4"
-                        git checkout -q "${ronin_dojo_branch}"
+                        git branch -q -D "${ronin_dojo_branch}"
+                        git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
                     fi
                 else # on a tag
                     echo "step 5"
@@ -1613,7 +1615,7 @@ fi
 # when you clone a tag instead of a branch
 cd RoninDojo || exit
 
-# Would not run when ronin_dojo_branch="master"
+# Would not run when ronin_dojo_branch="origin/master"
 git symbolic-ref -q HEAD 1>/dev/null || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
 EOF
 
