@@ -74,7 +74,7 @@ fi
 # stop whirlpool for existing whirlpool users
 
 if _is_specter ; then
-    _specter_upgrade
+    _specter_upgrade || sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 fi
 
 if _is_bisq ; then
