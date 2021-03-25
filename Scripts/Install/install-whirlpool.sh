@@ -204,7 +204,7 @@ Whirlpool Service already is installed!
 ***
 EOF
     _sleep
-    sudo systemctl stop whirlpool
+    sudo systemctl stop --quiet whirlpool
 else
     cat <<EOF
 ${red}
@@ -249,7 +249,7 @@ ${nc}
 EOF
 _sleep
 
-sudo systemctl start whirlpool
+sudo systemctl start --quiet whirlpool
 sudo systemctl enable --quiet whirlpool
 _sleep 3
 

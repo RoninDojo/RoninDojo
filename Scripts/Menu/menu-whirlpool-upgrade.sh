@@ -8,7 +8,7 @@ CLI_VERSION="$(jq -r '.CLI_VERSION' <<< "${CLI_OBJECT}")"
 CLI_CHECKSUM="$(jq -r '.CLI_CHECKSUM' <<< "${CLI_OBJECT}")"
 CLI_FILENAME="/home/${ronindojo_user}/whirlpool/whirlpool.jar"
 
-sudo systemctl stop whirlpool &>/dev/null
+sudo systemctl stop --quiet whirlpool
 # stop whirlpool service
 
 if [ "$(sha256sum "${CLI_FILENAME}" | awk '{print $1}')" != "${CLI_CHECKSUM}" ]; then
@@ -27,5 +27,5 @@ fi;
 # download whirlpool cli using wget
 # if sha256 hash does not match, warn it failed to correct
 
-sudo systemctl start whirlpool
+sudo systemctl start --quiet whirlpool
 # start whirlpool

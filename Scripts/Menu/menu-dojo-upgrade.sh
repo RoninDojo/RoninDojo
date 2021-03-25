@@ -39,7 +39,7 @@ fi
 # Check if mempool available or not, then uninstall it.
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
-   sudo systemctl stop whirlpool
+   sudo systemctl stop --quiet whirlpool
 
    cat <<EOF
 ${red}

@@ -251,7 +251,7 @@ EOF
 _sleep 1
 
 # Restart docker here for good measure
-sudo systemctl restart docker
+sudo systemctl restart --quiet docker
 
 cd "$dojo_path_my_dojo" || exit
 
