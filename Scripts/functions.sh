@@ -204,6 +204,8 @@ _check_pkg() {
         esac
     done
 
+    [ "${pkg_name}" = "--update-mirrors" ] && pkg_name="${1}"
+
     "${update}" && _pacman_update_mirrors
 
     if ! hash "${pkg_bin}" 2>/dev/null; then
