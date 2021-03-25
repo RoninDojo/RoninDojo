@@ -49,7 +49,7 @@ Powering off machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             _pause continue
             sudo systemctl poweroff
@@ -62,7 +62,7 @@ Powering off machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             _pause continue
             sudo systemctl poweroff
@@ -89,7 +89,7 @@ Restarting machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             _pause continue
             sudo systemctl reboot
@@ -102,7 +102,7 @@ Restarting machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             _pause continue
             sudo systemctl reboot

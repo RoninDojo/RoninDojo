@@ -12,7 +12,7 @@ Blockchain data not found! Did you forget to install RoninDojo?
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     _pause return
     bash -c "${ronin_dojo_menu2}"
@@ -38,7 +38,7 @@ Your new backup drive has been detected...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         # checks for ${secondary_storage}
     else
         cat <<EOF
@@ -95,7 +95,7 @@ Making sure Dojo is stopped...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 cd "${dojo_path_my_dojo}" || exit
 _dojo_check && _stop_dojo
@@ -109,7 +109,7 @@ Removing old data...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 # Make sure we have directories to delete
 for dir in blocks chainstate indexes; do
@@ -138,7 +138,7 @@ Copying...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 if sudo test -d "${bitcoin_ibd_backup_dir}"/blocks; then
     # copy blockchain data from back up drive to dojo bitcoind data directory, will take a little bit
@@ -152,7 +152,7 @@ No backup data available to receive data! Umounting drive now...
 ***
 ${nc}
 BACKUP
-    _sleep 2
+    _sleep 1
 
     _pause return
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
@@ -166,7 +166,7 @@ Transfer Complete!
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 _pause continue
 # press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
@@ -178,7 +178,7 @@ Unmounting...
 ***
 ${nc}
 EOF
-_sleep 2
+_sleep 1
 
 sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
@@ -190,7 +190,7 @@ You can now safely unplug your backup drive!
 ***
 ${nc}
 EOF
-_sleep 2
+_sleep 1
 
 cat <<EOF
 ${red}
@@ -200,7 +200,7 @@ Starting Dojo...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 cd "${dojo_path_my_dojo}" || exit
 _source_dojo_conf

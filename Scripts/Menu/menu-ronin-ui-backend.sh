@@ -32,7 +32,7 @@ Starting UI Backend Server...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             cd "${ronin_ui_backend_dir}" || exit
 
             pm2 start "Ronin Backend"
@@ -44,7 +44,7 @@ UI Backend already started...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
         fi
 
         _pause return
@@ -63,7 +63,7 @@ Stopping UI Backend Server...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             cd "${ronin_ui_backend_dir}" || exit
 
             pm2 stop "Ronin Backend"
@@ -91,7 +91,7 @@ Restarting UI Backend Server...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         cd "${ronin_ui_backend_dir}" || exit
 
         pm2 restart "Ronin Backend" 1>/dev/null

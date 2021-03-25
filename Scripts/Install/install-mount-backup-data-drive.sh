@@ -16,7 +16,7 @@ Your new backup drive has been detected...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         # checks for ${secondary_storage}
     else
         cat <<EOF
@@ -111,7 +111,7 @@ Mounting ${secondary_storage} to ${storage_mount}...
 ***
 ${nc}
 EOF
-_sleep 2
+_sleep 1
 
 sudo mount "${secondary_storage}" "${storage_mount}"
 # mount backup drive to ${storage_mount} directory

@@ -45,7 +45,7 @@ RoninDojo update is available!
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
         else
             cat <<EOF
 ${red}
@@ -54,7 +54,7 @@ No update is available!
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
         fi
         # check for Ronin update from site
 
@@ -72,7 +72,7 @@ Missing ${dojo_path} directory, aborting update...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
 
                 _pause return
 
@@ -99,7 +99,7 @@ Updating RoninDojo...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
 
         cat <<EOF
 ${red}

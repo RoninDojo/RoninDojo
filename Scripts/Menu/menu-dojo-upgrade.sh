@@ -69,7 +69,7 @@ For pairing information see the wiki...
 ***
 ${nc}
 EOF
-   _sleep 2
+   _sleep 1
 fi
 # stop whirlpool for existing whirlpool users
 

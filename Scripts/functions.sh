@@ -342,7 +342,7 @@ Tor credentials backup detected and restored...
 ***
 ${nc}
 EOF
-_sleep 2
+_sleep 1
 
         cat <<EOF
 ${red}
@@ -434,7 +434,7 @@ Electrum Rust Server is not installed...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         cat <<EOF
 ${red}
 ***
@@ -442,7 +442,7 @@ Enable Electrum Rust Server using the manage applications menu...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
 
         _pause return
         return 1
@@ -567,7 +567,7 @@ Checking package dependencies for Ronin UI Backend...
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     # Check package dependencies
     for x in npm pm2 jq; do
@@ -630,7 +630,7 @@ Uninstalling Ronin UI Backend...
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     # Delete app from process list
     pm2 delete "Ronin Backend" &>/dev/null
@@ -2276,7 +2276,7 @@ On latest version of Specter...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             return 1
         fi
@@ -2440,7 +2440,7 @@ Indexer data restore completed...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
 
                     sudo rm -rf "${dojo_backup_indexer}"
                     # remove old salvage directories
@@ -2536,7 +2536,7 @@ Blockchain data restore completed...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
 
                     sudo rm -rf "${dojo_backup_bitcoind}"
                     # remove old salvage directories

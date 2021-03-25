@@ -62,7 +62,7 @@ Electrum Rust Server is your current Indexer...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
                     cat <<EOF
 ${red}
 ***
@@ -70,7 +70,7 @@ Please check Electrum Rust Server logs instead...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
                     _pause return
                     bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
               fi

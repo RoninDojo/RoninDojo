@@ -32,7 +32,7 @@ Dojo is already started!
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
                 _pause return
                 bash -c "${ronin_dojo_menu}"
             else
@@ -46,7 +46,7 @@ Starting Dojo...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
 
                 cd "${dojo_path_my_dojo}" || exit
                 _source_dojo_conf
@@ -79,7 +79,7 @@ Restarting Dojo...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
                 cd "${dojo_path_my_dojo}" || exit
 
                 cat <<DOJO
