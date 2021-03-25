@@ -35,6 +35,7 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/12-* || _update_12 # Set BITCOIND_DB_CACHE to use bitcoind_db_cache_total value if not set
     test -f "$HOME"/.config/RoninDojo/data/updates/13-* || _update_13 # tag that system install has been installed already
     test -f "$HOME"/.config/RoninDojo/data/updates/14-* || _update_14 # Remove user.config file if it exist
+    test -f "$HOME"/.config/RoninDojo/data/updates/15-* || _update_15 # Remove duplicate bisq integration changes
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -2382,7 +2383,7 @@ EOF
     sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
         -e "/  -txindex=1/i\  -whitelist=bloomfilter@${ip}" "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
-    echo "peerbloomfilters=1" > "${ronin_data_dir}"/bisq.txt
+    touch "${ronin_data_dir}"/bisq.txt
 
     return 0
 }
@@ -2398,6 +2399,10 @@ Disabling Bisq Support...
 ***
 ${nc}
 EOF
+
+    sed -i -e '/-peerbloomfilters=1/d' \
+        -e "/-whitelist=bloomfilter@${ip}/d" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
     rm "${ronin_data_dir}"/bisq.txt
     # Deletes bisq.txt file
 
