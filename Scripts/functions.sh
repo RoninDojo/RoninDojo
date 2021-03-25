@@ -2187,7 +2187,7 @@ _specter_install(){
     cat <<EOF
 ${red}
 ***
-Installing Specter $specter_version...
+Installing Specter $specter_version, please wait...
 ***
 ${nc}
 EOF
