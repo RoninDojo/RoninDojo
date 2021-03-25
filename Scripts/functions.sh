@@ -2251,7 +2251,7 @@ _specter_upgrade(){
     cd "${HOME}" || exit
 
     for dir in specter*; do
-        if [[ "${dir}" != specter-$specter_version ]]; then
+        if [ -d "$dir" ] && [[ "${dir}" != specter-$specter_version ]]; then
             cat <<EOF
 ${red}
 ***
@@ -2270,15 +2270,6 @@ EOF
             sudo rm -rf "${dir}"
             # Remove old specter directory
         else
-            cat <<EOF
-${red}
-***
-On latest version of Specter...
-***
-${nc}
-EOF
-            _sleep 1
-
             return 1
         fi
     done
