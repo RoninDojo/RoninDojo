@@ -1148,6 +1148,9 @@ _dojo_update() {
 
     cd "${dojo_path}" || exit
 
+    # Fetch remotes
+    git fetch -q --all --tags --force
+
     # Validate current branch from user.conf
     _git_ref_type "${samourai_commitish#*/}"
     _ret=$?
@@ -1166,9 +1169,6 @@ EOF
 
     # Check current branch/tag
     _head=$(_git_branch_name)
-
-    # Fetch remotes
-    git fetch -q --all --tags --force
 
     # reset any local changes
     git reset -q --hard
@@ -1498,6 +1498,9 @@ _ronindojo_update() {
     if [ -d "$HOME"/RoninDojo/.git ]; then
         cd "$HOME/RoninDojo" || exit
 
+        # Fetch remotes
+        git fetch -q --all --tags --force
+
         # Validate current branch from user.conf
         _git_ref_type "${ronin_dojo_branch#*/}"
         _ret=$?
@@ -1524,9 +1527,6 @@ EOF
 
         # Check current branch/tag
         _head=$(_git_branch_name)
-
-        # Fetch remotes
-        git fetch -q --all --tags --force
 
         # reset any local changes
         git reset -q --hard
