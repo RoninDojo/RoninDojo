@@ -308,7 +308,7 @@ _is_active() {
 
     # Check that service is running
     if ! systemctl is-active --quiet "$service"; then
-        sudo systemctl start "$service"
+        sudo systemctl start --quiet "$service"
         return 0
     fi
 
@@ -403,7 +403,7 @@ TOR_DIR
     if ! systemctl is-active --quiet tor; then
         sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
     fi
 
     cat <<TOR_CONFIG
@@ -415,7 +415,7 @@ ${nc}
 TOR_CONFIG
 
     # Enable service on startup
-    if ! systemctl is-enabled tor 1>/dev/null; then
+    if ! systemctl is-enabled --quiet tor; then
         sudo systemctl enable --quiet tor
     fi
 
@@ -470,7 +470,7 @@ HiddenServicePort 80 127.0.0.1:8470\n\
 " /etc/tor/torrc
 
         # restart tor service
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
     fi
 }
 
@@ -691,7 +691,7 @@ _fan_control_install() {
         cd bitbox-base/tools/bbbfancontrol || return 1
     else
         # Stop service before upgrade
-        sudo systemctl stop bbbfancontrol
+        sudo systemctl stop --quiet bbbfancontrol
 
         _fan_control_upgrade
     fi
@@ -719,7 +719,7 @@ EOF
 _fan_control_uninstall() {
     if _is_fan_control && [ -f /etc/systemd/system/bbbfancontrol.service ]; then
         # Stop service before upgrade
-        sudo systemctl stop bbbfancontrol
+        sudo systemctl stop --quiet bbbfancontrol
 
         sudo systemctl disable --quiet bbbfancontrol
 
@@ -760,7 +760,7 @@ WantedBy=multi-user.target
 EOF"
 
         sudo systemctl enable --quiet bbbfancontrol
-        sudo systemctl start bbbfancontrol
+        sudo systemctl start --quiet bbbfancontrol
     else # Previous unit file found
         # Update unit file if hwmon directory location changed
         if ! grep "${hwmon_dir}" /etc/systemd/system/bbbfancontrol.service 1>/dev/null; then
@@ -768,7 +768,7 @@ EOF"
 
             # Reload systemd unit file & restart daemon
             sudo systemctl daemon-reload
-            sudo systemctl restart bbbfancontrol.service
+            sudo systemctl restart --quiet bbbfancontrol.service
         fi
     fi
 
@@ -1651,7 +1651,7 @@ EOF
     _is_active docker
 
     # Enable service on startup
-    if ! sudo systemctl is-enabled docker 1>/dev/null; then
+    if ! sudo systemctl is-enabled --quiet docker; then
         sudo systemctl enable --quiet docker
     fi
 
@@ -1699,7 +1699,7 @@ EOF'
     # Check to see if ipv6 stack available and if so
     # restart sysctl service
     if [ -d /proc/sys/net/ipv6 ]; then
-        sudo systemctl restart systemd-sysctl
+        sudo systemctl restart --quiet systemd-sysctl
     fi
 
     return 0
@@ -1712,8 +1712,8 @@ _disable_bluetooth() {
     _systemd_unit_exist bluetooth || return 1
 
     if _is_active bluetooth; then
-        sudo systemctl --quiet disable bluetooth 2>/dev/null
-        sudo systemctl stop bluetooth
+        sudo systemctl --quiet disable bluetooth
+        sudo systemctl stop --quiet bluetooth
         return 0
     fi
 }
@@ -1790,7 +1790,7 @@ EOF
         # Make sure to stop tor and docker when mount point is ${install_dir}
         if [ "${mountpoint}" = "${install_dir}" ]; then
             for x in tor docker; do
-                sudo systemctl stop "${x}"
+                sudo systemctl stop --quiet "${x}"
             done
 
             # Stop swap on mount point
@@ -1875,7 +1875,7 @@ EOF
         sudo systemctl daemon-reload
     fi
 
-    sudo systemctl start "${systemd_mountpoint}".mount || return 1
+    sudo systemctl start --quiet "${systemd_mountpoint}".mount || return 1
     sudo systemctl enable --quiet "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
 
@@ -2093,7 +2093,7 @@ HiddenServiceDir ${install_dir_tor}/specter_server/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
     fi
     # Set tor hiddenservice for https specter server
 
@@ -2139,8 +2139,8 @@ ${nc}
 EOF
 
     if systemctl is-active --quiet specter; then
-        sudo systemctl stop specter
-        sudo systemctl --quiet disable specter 1>/dev/null
+        sudo systemctl stop --quiet specter
+        sudo systemctl --quiet disable specter
         sudo rm /etc/systemd/system/specter.service
         sudo systemctl daemon-reload
     fi
@@ -2167,7 +2167,7 @@ EOF
     # Deletes the .specter dir, source dir, venv directory, certificate files and specter.service file
 
     sudo sed -i -e "s:^ControlPort .*$:#ControlPort 9051:" -e "/specter/,+3d" /etc/tor/torrc
-    sudo systemctl restart tor
+    sudo systemctl restart --quiet tor
     # Remove torrc changes
 
     if getent group plugdev | grep -q "${ronindojo_user}" &>/dev/null; then
@@ -2223,12 +2223,12 @@ EOF
     _ufw_rule_add "${ip_range}" 25441
 
     sudo systemctl daemon-reload
-    sudo systemctl enable --quiet specter 2>/dev/null
+    sudo systemctl enable --quiet specter
     # Using enable
 
     _specter_hww_udev_rules
 
-    sudo systemctl start specter 2>/dev/null
+    sudo systemctl start --quiet specter
     # start to ensure the startup creates the .specter dir
 
     cat <<EOF
@@ -2263,7 +2263,7 @@ EOF
 
             git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
-            sudo systemctl stop specter
+            sudo systemctl stop --quiet specter
             sudo rm /etc/systemd/system/specter.service
 
             sudo rm -rf "${dir}"
@@ -2301,7 +2301,7 @@ EOF
 
     _specter_hww_udev_rules
 
-    sudo systemctl restart specter 2>/dev/null
+    sudo systemctl restart --quiet specter
 
     return 0
 }

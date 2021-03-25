@@ -177,7 +177,7 @@ EOF
         # Returns HOME since $dojo_path deleted
         cd "${HOME}" || exit
 
-        sudo systemctl restart docker
+        sudo systemctl restart --quiet docker
         # restart docker daemon
 
         cat <<EOF

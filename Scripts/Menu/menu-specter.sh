@@ -46,7 +46,7 @@ Stopping Specter Service...
 ***
 ${nc}
 EOF
-        sudo systemctl stop specter
+        sudo systemctl stop --quiet specter
         fi
 
         _sleep
@@ -63,7 +63,7 @@ Restarting Specter Service...
 ***
 ${nc}
 EOF
-        sudo systemctl restart specter
+        sudo systemctl restart --quiet specter
 
         _sleep
 
