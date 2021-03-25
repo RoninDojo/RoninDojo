@@ -2192,6 +2192,13 @@ Installing Specter $specter_version, please wait...
 ${nc}
 EOF
 
+    cat <<EOF
+${red}
+***
+Downloading latest Specter release......
+***
+${nc}
+EOF
     git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
@@ -2217,6 +2224,13 @@ EOF
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
 
+    cat <<EOF
+${red}
+***
+Configuring Specter Daemon...
+***
+${nc}
+EOF
     _specter_create_systemd_unit_file
 
     _specter_config_tor
@@ -2229,6 +2243,13 @@ EOF
     sudo systemctl enable --quiet specter
     # Using enable
 
+    cat <<EOF
+${red}
+***
+Loading UDEV rules for Specter HWWI...
+***
+${nc}
+EOF
     _specter_hww_udev_rules
 
     sudo systemctl start --quiet specter
