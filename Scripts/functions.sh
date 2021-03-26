@@ -689,6 +689,9 @@ _is_fan_control() {
 # Install fan control for rockchip boards
 #
 _fan_control_install() {
+    local upgrade
+    upgrade=false
+
     if ! _is_fan_control; then
         git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
         cd bitbox-base/tools/bbbfancontrol || return 1
@@ -696,7 +699,11 @@ _fan_control_install() {
         # Stop service before upgrade
         sudo systemctl stop --quiet bbbfancontrol
 
-        _fan_control_upgrade
+        if ! _fan_control_upgrade; then
+            return 1
+        fi
+
+        upgrade=true
     fi
 
     _fan_control_compile || return 1
@@ -705,13 +712,23 @@ _fan_control_install() {
 
     _is_active bbbfancontrol
 
-    cat <<EOF
+    if "${upgrade}"; then
+        cat <<EOF
+${red}
+***
+Fan control upgraded...
+***
+${nc}
+EOF
+    else
+        cat <<EOF
 ${red}
 ***
 Fan control installed...
 ***
 ${nc}
 EOF
+    fi
 
     return 0
 }
@@ -796,11 +813,12 @@ _fan_control_compile() {
 _fan_control_upgrade() {
     cd "${HOME}"/bitbox-base || exit
 
-    git pull &>/dev/null
-
-    cd tools/bbbfancontrol || return 1
-
-    return 0
+    if (($(git pull --rebase|wc -l)>1)); then
+        cd tools/bbbfancontrol || return 1
+        return 0
+    else
+        return 1
+    fi
 }
 
 #

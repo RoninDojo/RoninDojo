@@ -197,7 +197,15 @@ Checking for Fan Control updates...
 ${nc}
 EOF
 
-            _fan_control_install || return 1
+            if ! _fan_control_install; then
+                cat <<EOF
+${red}
+***
+Fan Control already up to date...
+***
+${nc}
+EOF
+            fi
         fi
 
         _pause return
