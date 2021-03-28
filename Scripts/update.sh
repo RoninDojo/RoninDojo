@@ -96,9 +96,15 @@ _update_05() {
         _is_active tor
     fi
 
-    # Some systems have issue with tor not starting unless User=tor is enabled.
+    # Some systems have issue with tor not starting unless User=tor is enabled. Here we check both directions as it takes care of edge cases where
+    # the first if condition triggered but we still have problems.
     if findmnt /mnt/usb 1>/dev/null && ! systemctl is-active --quiet tor && ! grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
         sudo sed -i '/Type=notify/a\User=tor' /usr/lib/systemd/system/tor.service
+        sudo systemctl daemon-reload
+
+        _is_active tor
+    elif findmnt /mnt/usb 1>/dev/null && ! systemctl is-active --quiet tor && grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
+        sudo sed -i '/User=tor/d' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
 
         _is_active tor
