@@ -218,9 +218,18 @@ Installing ${pkg_name}...
 ***
 ${nc}
 EOF
-        sudo pacman --quiet -S --noconfirm "${pkg_name}" &>/dev/null
-
-        return 0
+        if ! sudo pacman --quiet -S --noconfirm "${pkg_name}" &>/dev/null; then
+            cat <<EOF
+${red}
+***
+${pgk_name} failed to install!
+***
+${nc}
+EOF
+            return 1
+        else
+            return 0
+        fi
     fi
 
     return 1
