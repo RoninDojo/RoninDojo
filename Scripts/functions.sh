@@ -205,7 +205,7 @@ _check_pkg() {
         esac
     done
 
-    [ "${pkg_name}" = "--update-mirrors" ] && pkg_name="${1}"
+    [ "${pkg_name}" = "--update-mirrors" ] && pkg_name="${pkg_bin}"
 
     "${update}" && _pacman_update_mirrors
 
