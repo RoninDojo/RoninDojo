@@ -36,6 +36,7 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/13-* || _update_13 # tag that system install has been installed already
     test -f "$HOME"/.config/RoninDojo/data/updates/14-* || _update_14 # Remove user.config file if it exist
     test -f "$HOME"/.config/RoninDojo/data/updates/15-* || _update_15 # Remove duplicate bisq integration changes
+    test -f "$HOME"/.config/RoninDojo/data/updates/16-* || _update_16 # Fix any existing specter installs that are missing gcc dependency
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -2038,7 +2039,7 @@ EOF"
 # Check if specter is installed
 #
 _is_specter(){
-    if [ -d "$HOME"/.specter ]; then
+    if [ -d "$HOME"/.venv_specter ]; then
         return 0
     fi
 
@@ -2149,12 +2150,15 @@ EOF
 }
 
 _specter_uninstall() {
+    local _specter_version
+    _specter_version="$1"
+
     _load_user_conf
 
     cat <<EOF
 ${red}
 ***
-Uninstalling Specter $specter_version...
+Uninstalling Specter ${_specter_version:-$specter_version}...
 ***
 ${nc}
 EOF
@@ -2172,7 +2176,7 @@ EOF
     # Resets to defaults
 
     if [ -f /etc/udev/rules.d/51-coinkite.rules ]; then
-        cd "$HOME"/specter-"$specter_version"/udev || exit
+        cd "$HOME"/specter-"${_specter_version:-$specter_version}"/udev || exit
 
         for file in *.rules; do
             sudo rm /etc/udev/rules.d/"${file}"
@@ -2183,8 +2187,8 @@ EOF
     fi
     # Delete udev rules
 
-    rm -rf "$HOME"/.specter "$HOME"/specter-* "$HOME"/.venv_specter
-    rm "$HOME"/.config/RoninDojo/specter*
+    rm -rf "$HOME"/.specter "$HOME"/specter-* "$HOME"/.venv_specter &>/dev/null
+    rm "$HOME"/.config/RoninDojo/specter* &>/dev/null
     # Deletes the .specter dir, source dir, venv directory, certificate files and specter.service file
 
     sudo sed -i -e "s:^ControlPort .*$:#ControlPort 9051:" -e "/specter/,+3d" /etc/tor/torrc
@@ -2217,6 +2221,7 @@ Downloading latest Specter release......
 ***
 ${nc}
 EOF
+
     git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
     sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
@@ -2305,17 +2310,17 @@ EOF
 
             git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
+            sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
             sudo systemctl stop --quiet specter
             sudo rm /etc/systemd/system/specter.service
 
-            sudo rm -rf "${dir}"
+            rm -rf "${dir}"
             # Remove old specter directory
         else
             return 1
         fi
     done
-
-    python3 -m venv "$HOME"/.venv_specter &>/dev/null
 
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null

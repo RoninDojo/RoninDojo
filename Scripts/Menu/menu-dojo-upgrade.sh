@@ -17,6 +17,9 @@ test -f "$HOME"/.config/RoninDojo/data/updates/10-* && rm "$HOME"/.config/RoninD
 # Migrate user.conf variables to lowercase
 _update_10
 
+# Fix any existing specter installs that are missing gcc dependency
+_update_16
+
 _load_user_conf
 
 _check_dojo_perms "${dojo_path_my_dojo}"
