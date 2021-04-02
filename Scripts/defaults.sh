@@ -140,7 +140,7 @@ indexer_data_dir="docker/volumes/my-dojo_data_indexer"
 
 sudoers_file="/etc/sudoers.d/21-ronindojo"
 
-# Workaround when on x86 systems and autologin is enabled for the user account
+# Workaround when on desktop systems and autologin is enabled for the user account
 if [ "$(getent group 1000 | cut -d ':' -f1)" = "autologin" ]; then
     ronindojo_user=$(getent group 1000 | cut -d ':' -f4)
 else
