@@ -52,7 +52,7 @@ case $CHOICE in
         # runs system menu script
         ;;
     255|9)
-        _sleep 5 --msg "RoninDojo Exiting in"
+        _sleep 5 --msg "RoninDojo Saliendo en"
         exit 0
         # exits Ronin
         ;;
