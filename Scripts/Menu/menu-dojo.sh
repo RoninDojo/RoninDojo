@@ -2,7 +2,6 @@
 # shellcheck source=/dev/null disable=SC2086,SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 _load_user_conf
@@ -32,7 +31,7 @@ Dojo is already started!
 ***
 ${nc}
 EOF
-                _sleep 1
+                _sleep
                 _pause return
                 bash -c "${ronin_dojo_menu}"
             else
@@ -46,7 +45,7 @@ Starting Dojo...
 ***
 ${nc}
 EOF
-                _sleep 1
+                _sleep
 
                 cd "${dojo_path_my_dojo}" || exit
                 _source_dojo_conf
@@ -57,13 +56,15 @@ EOF
             fi
             # checks if dojo is running (check the db container), if running, tells user to dojo has already started
 
-                _pause return
-                bash -c "${ronin_dojo_menu}"
-                # press any key to return to menu
-                ;;
+            _pause return
+
+            bash -c "${ronin_dojo_menu}"
+            # press any key to return to menu
+            ;;
         2)
             _dojo_check && _stop_dojo
             _pause return
+
             bash -c "${ronin_dojo_menu}"
             # press any key to return to menu
             ;;
@@ -79,7 +80,7 @@ Restarting Dojo...
 ***
 ${nc}
 EOF
-                _sleep 1
+                _sleep
                 cd "${dojo_path_my_dojo}" || exit
 
                 cat <<DOJO

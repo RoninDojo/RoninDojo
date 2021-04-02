@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -25,7 +25,7 @@ Obtain the IP address you wish to give access to Whirlpool CLI...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -34,7 +34,7 @@ Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 dependi
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -64,7 +64,7 @@ Showing status...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             # show firewall status
 
@@ -75,7 +75,7 @@ Make sure that you see your new rule!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause return
             bash -c "${ronin_firewall_menu2}"
@@ -89,7 +89,7 @@ Obtain the IP address you wish to give access to Whirlpool CLI...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -98,7 +98,7 @@ Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 dependi
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -128,7 +128,7 @@ Showing status...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             # show firewall status
 
@@ -139,9 +139,10 @@ Make sure that you see your new rule!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause return
+
             bash -c "${ronin_firewall_menu2}"
             # press any key to return to menu
             ;;

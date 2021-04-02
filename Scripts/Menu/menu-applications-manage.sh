@@ -4,7 +4,6 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
-
 upgrade=false
 
 # Set mempool install/uninstall status
@@ -110,7 +109,7 @@ Switching to Samourai indexer...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     _uninstall_electrs_indexer
 
@@ -124,7 +123,7 @@ Installing Electrum Rust Server...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     ;;

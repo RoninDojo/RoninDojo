@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -28,7 +28,7 @@ Showing Disk Space Info...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
         sd_free_ratio=$(printf "%s" "$(df | grep "/$" | awk '{ print $4/$2*100 }')") 2>/dev/null
         sd=$(printf "%s (%s%%)" "$(df -h | grep '/$' | awk '{ print $4 }')" "${sd_free_ratio}")

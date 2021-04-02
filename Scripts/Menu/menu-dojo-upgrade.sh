@@ -2,7 +2,6 @@
 # shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 # Source update script
@@ -72,7 +71,7 @@ For pairing information see the wiki...
 ***
 ${nc}
 EOF
-   _sleep 1
+   _sleep
 fi
 # stop whirlpool for existing whirlpool users
 

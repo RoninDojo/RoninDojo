@@ -15,7 +15,7 @@ Missing drive mount at ${install_dir}! Please contact support for assistance...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
     cat <<EOF
 ${red}
 ***
@@ -23,7 +23,7 @@ Exiting RoninDojo...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
     _pause return
     exit 1
 fi
@@ -36,7 +36,7 @@ RoninDojo is already installed...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
     _pause return
     ronin
     exit
@@ -50,7 +50,7 @@ Running RoninDojo install...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -248,7 +248,7 @@ Installing Samourai Wallet's Dojo...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 # Restart docker here for good measure
 sudo systemctl restart --quiet docker
@@ -291,7 +291,7 @@ Installing Boltzmann Calculator...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
 
         # install Boltzmann
         _install_boltzmann
@@ -305,7 +305,7 @@ Installing Whirlpool Stat Tool...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
 
         _install_wst
     fi

@@ -2,7 +2,6 @@
 # shellcheck source=/dev/null
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Whirlpool"

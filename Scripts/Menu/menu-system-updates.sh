@@ -6,8 +6,7 @@
 
 _load_user_conf
 
-OPTIONS=(#1 "Update Operating System"
-         1 "Update Mirrors"
+OPTIONS=(1 "Update Mirrors"
          2 "Check for RoninDojo Update"
          3 "Update RoninDojo"
          4 "Go Back")
@@ -45,7 +44,7 @@ RoninDojo update is available!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
         else
             cat <<EOF
 ${red}
@@ -54,7 +53,7 @@ No update is available!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
         fi
         # check for Ronin update from site
 
@@ -72,7 +71,7 @@ Missing ${dojo_path} directory, aborting update...
 ***
 ${nc}
 EOF
-                _sleep 1
+                _sleep
 
                 _pause return
 
@@ -99,7 +98,7 @@ Updating RoninDojo...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
 
         cat <<EOF
 ${red}
@@ -108,7 +107,8 @@ Use Ctrl+C to exit if needed!
 ***
 ${nc}
 EOF
-_sleep 10 --msg "Updating in"
+
+        _sleep 10 --msg "Updating in"
 
         test -f "$HOME"/ronin-update.sh && sudo rm "$HOME"/ronin-update.sh
         # Remove old update file

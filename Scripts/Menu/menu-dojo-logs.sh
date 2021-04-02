@@ -46,7 +46,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-              _sleep 1
+              _sleep
 
               cd "${dojo_path_my_dojo}" || exit
 
@@ -78,7 +78,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-              _sleep 1
+              _sleep
 
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs db
@@ -110,7 +110,7 @@ Electrum Rust Server is your current Indexer...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
                     cat <<EOF
 ${red}
 ***
@@ -118,7 +118,7 @@ Please check Electrum Rust Server logs instead...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     _pause return
 
@@ -132,7 +132,7 @@ No indexer installed...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
                     cat <<EOF
 ${red}
 ***
@@ -140,7 +140,7 @@ Install using the applications install menu...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     _pause return
 
@@ -154,7 +154,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     cd "${dojo_path_my_dojo}" || exit
 
@@ -187,7 +187,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-              _sleep 1
+              _sleep
 
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs node
@@ -218,7 +218,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-              _sleep 1
+              _sleep
 
               cd "${dojo_path_my_dojo}" || exit
               ./dojo.sh logs tor
@@ -242,7 +242,7 @@ EOF
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              _sleep 1
+              _sleep
 
               cat <<EOF
 ${red}
@@ -278,7 +278,7 @@ EOF
 
                 bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-logs.sh
             else
-              _sleep 1
+              _sleep
 
               cat <<EOF
 ${red}

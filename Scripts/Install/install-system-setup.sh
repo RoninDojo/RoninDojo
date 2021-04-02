@@ -14,7 +14,7 @@ Dojo directory found, please uninstall Dojo first!
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     _pause return
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-install.sh
@@ -37,7 +37,7 @@ Setting up system and installing dependencies...
 ${nc}
 EOF
 fi
-_sleep 1
+_sleep
 # checks for "$HOME"/dojo directory, if found kicks back to menu
 
 cat <<EOF
@@ -383,7 +383,7 @@ No Blockchain data found for salvage check 1...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 fi
 # checks for blockchain data to salvage, if found exits this script to dojo install, and if not found continue to salvage check 2 below
 
@@ -410,7 +410,7 @@ Moving to temporary directory...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
 
@@ -429,7 +429,7 @@ Blockchain data prepared for salvage!
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     # Check if swap in use
     if check_swap "${storage_mount}/swapfile"; then
@@ -519,7 +519,7 @@ No Blockchain data found for salvage check 2...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     # Check if swap in use
     if check_swap "${storage_mount}/swapfile" ; then
@@ -593,7 +593,7 @@ Installing SW Toolkit...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -602,7 +602,7 @@ Installing Boltzmann Calculator...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 _install_boltzmann
 # install Boltzmann
@@ -614,7 +614,7 @@ Installing Whirlpool Stat Tool...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 _install_wst
 

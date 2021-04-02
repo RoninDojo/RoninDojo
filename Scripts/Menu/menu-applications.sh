@@ -31,7 +31,7 @@ Mempool Space Visualizer not installed!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***
@@ -39,7 +39,7 @@ Install Mempool Space Visualizer using the manage applications menu...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             _pause return
             bash -c "${ronin_applications_menu}"
         else
@@ -56,7 +56,7 @@ Specter server not installed!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***
@@ -64,7 +64,7 @@ Install Specter Server using the manage applications menu...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             _pause return
             bash -c "${ronin_applications_menu}"
         else
@@ -90,7 +90,7 @@ Checking your RoninDojo's compatibility with Bisq...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         if ! _is_bisq ; then
             cat <<EOF
 ${red}
@@ -99,7 +99,7 @@ Bisq connections are not enabled...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***
@@ -107,7 +107,7 @@ Enable Bisq connections using the applications install menu...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             _pause return
             bash -c "$ronin_applications_menu"
         else
@@ -118,7 +118,7 @@ Bisq connections are enabled...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***
@@ -126,7 +126,7 @@ Enjoy those no-KYC sats...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             _pause return
             bash -c "$ronin_applications_menu"
         fi
@@ -140,7 +140,7 @@ ${red}
 No supported single-board computer detected for fan control...
 ***
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***
@@ -148,7 +148,7 @@ Supported devices are Rockpro64 and Rockpi4...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause return
             bash -c "$ronin_applications_menu"

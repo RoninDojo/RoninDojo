@@ -16,7 +16,7 @@ Your new backup drive has been detected...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         # checks for ${secondary_storage}
     else
         cat <<EOF
@@ -71,7 +71,7 @@ Preparing to Format and Mount ${secondary_storage} to ${storage_mount}...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -80,7 +80,7 @@ WARNING: Any pre-existing data on this backup drive will be lost!
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -118,7 +118,7 @@ Formatting the Backup Data Drive...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 # Check for sgdisk dependency
 _check_pkg "sgdisk" "gptfdisk" --update-mirrors
@@ -139,7 +139,7 @@ ${nc}
 EOF
 
 lsblk -o NAME,SIZE,LABEL "${secondary_storage}"
-_sleep 1
+_sleep
 # double-check that "${secondary_storage}" exists, and that its storage capacity is what you expected
 
 cat <<EOF
@@ -151,7 +151,7 @@ ${nc}
 EOF
 
 df -h "${secondary_storage}"
-_sleep 1
+_sleep
 # checks disk info
 
 _pause return

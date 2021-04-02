@@ -32,7 +32,7 @@ Deleting docker dangling images and images of previous versions...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh clean
 
@@ -53,7 +53,7 @@ Displaying the version info...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh version
             # display dojo version info

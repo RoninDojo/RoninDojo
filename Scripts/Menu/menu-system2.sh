@@ -30,11 +30,11 @@ case $CHOICE in
         cat <<EOF
 ${red}
 ***
-Prepare to type new password for ${ronindojo_user}...
+Prepare to type new password for ${ronindojo_user} user...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         sudo passwd "${ronindojo_user}"
 
         _pause return
@@ -45,11 +45,11 @@ EOF
         cat <<EOF
 ${red}
 ***
-Prepare to type new password for ${ronindojo_user}...
+Prepare to type new password for root user...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         sudo passwd
 
         _pause return
@@ -64,7 +64,7 @@ Locking Root User...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         sudo passwd -l root
         bash -c "${ronin_system_menu2}"
         # uses passwd to lock root user, returns to menu
@@ -77,7 +77,7 @@ Unlocking Root User...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         sudo passwd -u root
         bash -c "${ronin_system_menu2}"
         # uses passwd to unlock root user, returns to menu
@@ -187,7 +187,7 @@ All RoninDojo features has been Uninstalled...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
 
         _pause return
 

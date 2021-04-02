@@ -16,7 +16,7 @@ EOF
 
     bash "$HOME"/RoninDojo/Scripts/Install/install-wst.sh
 else
-    _sleep 1
+    _sleep
     cd "$HOME"/Whirlpool-Stats-Tool/whirlpool_stats || exit
 fi
 # if "$HOME"/whirlpool_stats is not found then run install script
@@ -28,7 +28,7 @@ Whirlpool Stat Tool INSTRUCTIONS:
 ${nc}
 EOF
 
-_sleep 1
+_sleep
 # instructions are given to user
 
 cat <<EOF
@@ -38,7 +38,7 @@ ${nc}
 download 001
 EOF
 
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -47,7 +47,7 @@ ${nc}
 load 001
 EOF
 
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -56,7 +56,7 @@ ${nc}
 score <ENTER TXID OF DESIRED 0.01 BTC transaction>
 EOF
 
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -71,7 +71,7 @@ Forward-looking metrics for the outputs of Tx0s having this transaction as their
     spread = 76%
 EOF
 
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}

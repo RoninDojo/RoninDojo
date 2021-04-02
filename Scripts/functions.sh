@@ -358,7 +358,7 @@ Tor credentials backup detected and restored...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
         cat <<EOF
 ${red}
@@ -450,7 +450,7 @@ Electrum Rust Server is not installed...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         cat <<EOF
 ${red}
 ***
@@ -458,7 +458,7 @@ Enable Electrum Rust Server using the manage applications menu...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
 
         _pause return
         return 1
@@ -583,7 +583,7 @@ Checking package dependencies for Ronin UI Backend...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     # Check package dependencies
     for x in npm pm2 jq; do
@@ -646,7 +646,7 @@ Uninstalling Ronin UI Backend...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     # Delete app from process list
     pm2 delete "Ronin Backend" &>/dev/null
@@ -898,7 +898,7 @@ No Indexer found...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     cat <<EOF
 ${red}
@@ -907,7 +907,7 @@ Preparing for Indexer Prompt...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     cat <<EOF
 ${red}
@@ -943,7 +943,7 @@ Choose one of the following options for your Indexer...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     # indexer names here are used as data source
     while true; do
@@ -2494,7 +2494,7 @@ Indexer data restore completed...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     sudo rm -rf "${dojo_backup_indexer}"
                     # remove old salvage directories
@@ -2590,7 +2590,7 @@ Blockchain data restore completed...
 ***
 ${nc}
 EOF
-                    _sleep 1
+                    _sleep
 
                     sudo rm -rf "${dojo_backup_bitcoind}"
                     # remove old salvage directories

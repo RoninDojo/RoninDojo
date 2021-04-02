@@ -12,7 +12,7 @@ Outdated and bridge-utils found...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         cat <<EOF
 ${red}
 ***
@@ -31,7 +31,7 @@ Existing dojo found! Rebooting system to apply changes...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***

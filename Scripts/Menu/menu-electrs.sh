@@ -2,7 +2,6 @@
 # shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Logs"
@@ -34,7 +33,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
 
         cd "$dojo_path_my_dojo" || exit
 

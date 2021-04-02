@@ -20,7 +20,7 @@ Whirlpool is installed!
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     _pause return
     bash "$HOME"/RoninDojo/Scripts/Menu/menu-whirlpool.sh
@@ -77,7 +77,7 @@ A UFW rule will be made for Whirlpool...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -159,7 +159,7 @@ Checking UFW status...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 sudo ufw status
 
 cat <<EOF
@@ -260,7 +260,7 @@ Install Whirlpool GUI to initiate Whirlpool and then unlock wallet to begin mixi
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -269,7 +269,7 @@ For pairing with GUI head to full guide at: https://wiki.ronindojo.io/en/cli-set
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 cat <<EOF
 ${red}
@@ -278,6 +278,6 @@ This install is for non Tor whirlpool, can only access locally...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 _pause return

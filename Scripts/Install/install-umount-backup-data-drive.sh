@@ -14,7 +14,7 @@ Your backup drive partition has been detected...
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
     # checks for ${secondary_storage}
 else
     cat <<EOF
@@ -76,7 +76,7 @@ Umounting ${storage_mount}...
 ***
 ${nc}
 EOF
-_sleep 1
+_sleep
 
 sudo umount "${storage_mount}"
 # umount backup drive ${secondary_storage}

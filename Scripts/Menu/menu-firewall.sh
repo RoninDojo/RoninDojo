@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -31,7 +31,7 @@ Enabling Firewall...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw enable
             _pause return
             bash -c "${ronin_firewall_menu}"
@@ -45,7 +45,7 @@ Disabling Firewall...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw disable
             _pause return
             bash -c "${ronin_firewall_menu}"
@@ -59,7 +59,7 @@ Showing Status...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             _pause return
             bash -c "${ronin_firewall_menu}"
@@ -73,7 +73,7 @@ Find the rule you want to delete, and type its row number to delete it...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             # show firewall status
 
@@ -84,7 +84,7 @@ Be careful when deleting old firewall rules! Don't lock yourself out from SSH ac
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -93,7 +93,7 @@ Example: If you want to delete the 3rd rule listed, press the number 3, and pres
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             read -rp "Please type the rule number to delete now: " ufw_rule_number
             sudo ufw delete "$ufw_rule_number"
@@ -116,7 +116,7 @@ Showing status...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             # show firewall status
 
@@ -145,7 +145,7 @@ Obtain the IP address of any machine on the same local network as your RoninDojo
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -154,7 +154,7 @@ The IP address entered will be adapted to end with .0/24 range...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -163,7 +163,7 @@ This will allow any machine on the same network to have SSH access...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -172,7 +172,7 @@ Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 dependi
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -202,7 +202,7 @@ Showing status...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             # show firewall status
 
@@ -213,7 +213,7 @@ Make sure that you see your new rule!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause return
             bash -c "${ronin_firewall_menu}"
@@ -227,7 +227,7 @@ Obtain the specific IP address you wish to give access to SSH...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -236,7 +236,7 @@ SSH access will be restricted to this IP address only...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -245,7 +245,7 @@ Your IP address on the network may look like 192.168.4.21 or 12.34.56.78 dependi
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -275,7 +275,7 @@ Showing status...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             sudo ufw status
             # show firewall status
 
@@ -286,7 +286,7 @@ Make sure that you see your new rule!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause return
             bash -c "${ronin_firewall_menu}"

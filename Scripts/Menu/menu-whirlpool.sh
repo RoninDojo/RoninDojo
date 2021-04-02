@@ -2,7 +2,6 @@
 # shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
-. "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Start"
@@ -30,7 +29,7 @@ Starting Whirlpool...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             docker start whirlpool 1>/dev/null
 
             cat <<EOF
@@ -40,8 +39,10 @@ Don't forget to login to GUI to unlock mixing!
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
+
             _pause return
+
             bash -c "$ronin_whirlpool_menu"
             # see defaults.sh
             # start whirlpool, press to return to menu
@@ -55,9 +56,11 @@ Stopping Whirlpool...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             docker stop whirlpool 1>/dev/null
+
             _pause return
+
             bash -c "$ronin_whirlpool_menu"
             # stop whirlpool, press to return to menu
             # see defaults.sh
@@ -71,12 +74,14 @@ Restarting Whirlpool...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             docker stop whirlpool 1>/dev/null
-            _sleep 5
+
             docker start whirlpool 1>/dev/null
-            _sleep 1
+            _sleep
+
             _pause return
+
             bash -c "$ronin_whirlpool_menu"
             # enable whirlpool at startup, press to return to menu
             # see defaults.sh
@@ -90,7 +95,7 @@ Viewing Whirlpool Logs...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             cat <<EOF
 ${red}
@@ -101,6 +106,7 @@ ${nc}
 EOF
             cd "$dojo_path_my_dojo" || exit
             ./dojo.sh logs whirlpool
+
             bash -c "$ronin_whirlpool_menu"
             # view logs, return to menu
             # see defaults.sh
@@ -114,7 +120,7 @@ Re-initiating Whirlpool will reset your mix count and generate new API key...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cat <<EOF
 ${red}
 ***
@@ -165,6 +171,7 @@ EOF
             done
 
             _sleep
+
             bash -c "$ronin_whirlpool_menu"
             # re-initate whirlpool, return to menu
             # see defaults.sh

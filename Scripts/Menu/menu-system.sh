@@ -30,7 +30,7 @@ case $CHOICE in
         # System storage menu
         ;;
     2)
-        if [ -d "$HOME"/dojo ]; then
+        if [ -d "${dojo_path}" ]; then
             cat <<EOF
 ${red}
 ***
@@ -49,9 +49,10 @@ Powering off machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause continue
+
             sudo systemctl poweroff
             # power off machine
         else
@@ -62,15 +63,16 @@ Powering off machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause continue
+
             sudo systemctl poweroff
             # power off machine
         fi
         ;;
     3)
-        if [ -d "$HOME"/dojo ]; then
+        if [ -d "${dojo_path}" ]; then
             cat <<EOF
 ${red}
 ***
@@ -79,6 +81,7 @@ Shutting down Dojo if running...
 ${nc}
 EOF
             cd "${dojo_path_my_dojo}" || exit
+
             _dojo_check && _stop_dojo
             # stop dojo
 
@@ -89,9 +92,10 @@ Restarting machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause continue
+
             sudo systemctl reboot
             # restart machine
         else
@@ -102,9 +106,10 @@ Restarting machine, or press Ctrl + C to cancel...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
 
             _pause continue
+
             sudo systemctl reboot
             # restart machine
         fi

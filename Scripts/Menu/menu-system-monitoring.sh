@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null
+# shellcheck source=/dev/null disable=SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -28,7 +28,9 @@ Use Ctrl+C at any time to exit Task Manager...
 ${nc}
 EOF
         _sleep 3
+
         htop
+
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-system-monitoring.sh
         # returns to menu
         ;;

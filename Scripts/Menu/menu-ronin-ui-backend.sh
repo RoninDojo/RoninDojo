@@ -1,5 +1,5 @@
 #!/bin/bash
-# shellcheck source=/dev/null disable=SC2153
+# shellcheck source=/dev/null disable=SC2153,SC2154
 
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
@@ -32,7 +32,7 @@ Starting UI Backend Server...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cd "${ronin_ui_backend_dir}" || exit
 
             pm2 start "Ronin Backend"
@@ -44,7 +44,7 @@ UI Backend already started...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
         fi
 
         _pause return
@@ -63,7 +63,7 @@ Stopping UI Backend Server...
 ***
 ${nc}
 EOF
-            _sleep 1
+            _sleep
             cd "${ronin_ui_backend_dir}" || exit
 
             pm2 stop "Ronin Backend"
@@ -91,7 +91,7 @@ Restarting UI Backend Server...
 ***
 ${nc}
 EOF
-        _sleep 1
+        _sleep
         cd "${ronin_ui_backend_dir}" || exit
 
         pm2 restart "Ronin Backend" 1>/dev/null
@@ -103,20 +103,6 @@ EOF
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         # start Ronin UI Backend, return to menu
         ;;
-#     4)
-#         cat <<EOF
-# ${red}
-# ***
-# Showing UI Backend Status...
-# ***
-# ${nc}
-# EOF
-#         cd "${ronin_ui_backend_dir}" || exit
-#         pm2 status
-
-#         _pause return
-#         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-#         ;;
     4)
         cat <<EOF
 ${red}
@@ -130,6 +116,7 @@ EOF
         pm2 status
 
         _pause return
+
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
         ;;
     5)
@@ -149,7 +136,9 @@ Press "q" key to exit at any time...
 ${nc}
 EOF
         cd "${ronin_ui_backend_dir}" || exit
-        _sleep 5 # Workaround until a proper FIX
+        _sleep 5
+
+        # Workaround until a proper FIX
         less --force logs/combined.log
 
         bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
