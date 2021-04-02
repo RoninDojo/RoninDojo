@@ -59,7 +59,7 @@ Ninguna partición con copia de seguridad ha sido detectada! Asegúrate de que e
 ***
 ${nc}
 EOF
-    _sleep 1
+    _sleep
 
     _pause volver
     bash -c "${ronin_dojo_menu2}"
