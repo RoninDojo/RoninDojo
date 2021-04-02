@@ -12,30 +12,30 @@
 #
 # Backend GUI Credentials
 #
-gui_api=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
-gui_jwt=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
+gui_api=$(_rand_passwd 69)
+gui_jwt=$(_rand_passwd 69)
 
 #
 # Samourai Dojo Credentials
 #
 
 # Bitcoin Daemon
-rpc_pass=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
-rpc_user=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
+rpc_pass=$(_rand_passwd 69)
+rpc_user=$(_rand_passwd)
 
 # Node.js
-NODE_API_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-NODE_JWT_SECRET=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-NODE_ADMIN_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 32 | head -n 1)
+NODE_API_KEY=$(_rand_passwd 69)
+NODE_JWT_SECRET=$(_rand_passwd 69)
+NODE_ADMIN_KEY=$(_rand_passwd 69)
 
 # MySQL
-MYSQL_ROOT_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
-MYSQL_USER=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 12 | head -n 1)
-MYSQL_PASSWORD=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 64 | head -n 1)
+MYSQL_ROOT_PASSWORD=$(_rand_passwd 69)
+MYSQL_USER=$(_rand_passwd)
+MYSQL_PASSWORD=$(_rand_passwd 69)
 
 # Bitcoin Explorer
-EXPLORER_KEY=$(tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1)
+EXPLORER_KEY=$(_rand_passwd 69)
 
 # Mempool Space Visualizer
 MEMPOOL_MYSQL_USER=$(_rand_passwd)
-MEMPOOL_MYSQL_PASSWORD=$(_rand_passwd)
+MEMPOOL_MYSQL_PASSWORD=$(_rand_passwd 69)

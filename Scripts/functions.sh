@@ -132,7 +132,10 @@ _create_ronin_data_dir() {
 # Random Password
 #
 _rand_passwd() {
-    tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w 16 | head -n 1
+    local _length
+    _length="${1:-16}"
+
+    tr -dc 'a-zA-Z0-9' </dev/urandom | fold -w "$_length" | head -n 1
 }
 
 #
