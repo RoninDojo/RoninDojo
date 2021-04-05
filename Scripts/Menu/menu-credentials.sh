@@ -11,7 +11,7 @@ OPTIONS=(1 "Dojo"
          2 "Whirlpool"
          3 "Electrs"
          4 "Mempool"
-         5 "UI Backend"
+         5 "Ronin UI"
          6 "Bitcoind"
          7 "Specter Server"
          8 "All Credentials"
@@ -142,23 +142,22 @@ EOF
                 fi
                 ;;
         5)
-            _ui_backend_credentials && cd "$HOME" || exit
+            _ronin_ui_credentials && cd "$HOME" || exit
 
             cat <<EOF
 ${red}
 ***
-Ronin UI Backend Credentials
+Ronin UI Credentials
 ***
 ${nc}
 
 Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
-Port                    =   ${BACKEND_PORT}
-Ronin URL               =   http://${BACKEND_TOR}
+Ronin Tor URL           =   http://${BACKEND_TOR}
 EOF
             _pause return
             bash -c "${ronin_credentials_menu}"
-            # shows Ronin UI Backend credentials, returns to menu
+            # shows Ronin UI credentials, returns to menu
             ;;
         6)
             cat <<EOF
@@ -231,7 +230,7 @@ EOF
             # shows specter server credentials and returns to menu
             ;;
         8)
-            _ui_backend_credentials && cd "$HOME" || exit
+            _ronin_ui_credentials && cd "$HOME" || exit
             cat <<EOF
 ${red}
 ***
@@ -274,14 +273,13 @@ Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair
 
 ${red}
 ***
-Ronin UI Backend Credentials
+Ronin UI Credentials
 ***
 ${nc}
 
 Ronin API Key           =   ${API_KEY}
 JWT SECRET              =   ${JWT_SECRET}
-Port                    =   ${BACKEND_PORT}
-Ronin URL               =   http://${BACKEND_TOR}
+Ronin Tor URL           =   http://${BACKEND_TOR}
 
 ${red}
 ***

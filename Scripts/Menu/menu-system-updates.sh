@@ -116,23 +116,6 @@ EOF
         _ronindojo_update
         # see functions.sh
 
-        cd "$HOME" || exit
-
-        # Check TOR
-        _setup_tor
-
-        if ! _ronin_ui_update_check; then
-            cat <<EOF
-${red}
-***
-Updating Ronin UI Backend...
-***
-${nc}
-EOF
-            _install_ronin_ui_backend
-        fi
-        # Check if UI Backend needs an update
-
         bash "$HOME"/RoninDojo/Scripts/Menu/menu-dojo-upgrade.sh
         # upgrades dojo and returns to menu
         ;;

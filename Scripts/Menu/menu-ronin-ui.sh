@@ -11,7 +11,8 @@ OPTIONS=(1 "Start"
          3 "Restart"
          4 "Status"
          5 "Logs"
-         6 "Go Back")
+         6 "Reset"
+         7 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -24,23 +25,23 @@ clear
 case $CHOICE in
 	1)
         # Check if process running, otherwise start it
-        if pm2 describe "Ronin Backend" | grep status | grep stopped 1>/dev/null; then
+        if pm2 describe "RoninUI" | grep status | grep stopped 1>/dev/null; then
             cat <<EOF
 ${red}
 ***
-Starting UI Backend Server...
+Starting Ronin UI...
 ***
 ${nc}
 EOF
             _sleep
-            cd "${ronin_ui_backend_dir}" || exit
+            cd "${ronin_ui_path}" || exit
 
-            pm2 start "Ronin Backend"
+            pm2 start "RoninUI"
         else
             cat <<EOF
 ${red}
 ***
-UI Backend already started...
+Ronin UI already started...
 ***
 ${nc}
 EOF
@@ -50,28 +51,28 @@ EOF
         _pause return
         # press to return is needed so the user has time to see outputs
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        # start Ronin UI Backend, return to menu
+        bash -c "${ronin_ui_menu}"
+        # start Ronin UI, return to menu
         ;;
     2)
         # Check if process running before stopping it
-        if pm2 describe "Ronin Backend" &>/dev/null; then
+        if pm2 describe "RoninUI" &>/dev/null; then
             cat <<EOF
 ${red}
 ***
-Stopping UI Backend Server...
+Stopping Ronin UI...
 ***
 ${nc}
 EOF
             _sleep
-            cd "${ronin_ui_backend_dir}" || exit
+            cd "${ronin_ui_path}" || exit
 
-            pm2 stop "Ronin Backend"
+            pm2 stop "RoninUI"
         else
             cat <<EOF
 ${red}
 ***
-UI Backend Server already stopped...
+Ronin UI already stopped...
 ***
 ${nc}
 EOF
@@ -80,50 +81,49 @@ EOF
         _pause return
         # press to return is needed so the user has time to see outputs
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        # start Ronin UI Backend, return to menu
+        bash -c "${ronin_ui_menu}"
+        # start Ronin UI, return to menu
         ;;
     3)
         cat <<EOF
 ${red}
 ***
-Restarting UI Backend Server...
+Restarting Ronin UI...
 ***
 ${nc}
 EOF
         _sleep
-        cd "${ronin_ui_backend_dir}" || exit
+        cd "${ronin_ui_path}" || exit
 
-        pm2 restart "Ronin Backend" 1>/dev/null
+        pm2 restart "RoninUI" 1>/dev/null
         # restart service
 
         _pause return
         # press to return is needed so the user has time to see outputs
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
-        # start Ronin UI Backend, return to menu
+        bash -c "${ronin_ui_menu}"
+        # start Ronin UI, return to menu
         ;;
     4)
         cat <<EOF
 ${red}
 ***
-Showing UI Backend Status...
+Showing Ronin UI Status...
 ***
 ${nc}
 EOF
 
-        cd "${ronin_ui_backend_dir}" || exit
+        cd "${ronin_ui_path}" || exit
         pm2 status
 
         _pause return
-
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        bash -c "${ronin_ui_menu}"
         ;;
     5)
         cat <<EOF
 ${red}
 ***
-Showing UI Backend Logs...
+Showing Ronin UI Logs...
 ***
 ${nc}
 EOF
@@ -135,16 +135,31 @@ Press "q" key to exit at any time...
 ***
 ${nc}
 EOF
-        cd "${ronin_ui_backend_dir}" || exit
-        _sleep 5
+        cd "${ronin_ui_path}" || exit
 
-        # Workaround until a proper FIX
+        _sleep 5 # Workaround until a proper FIX!!!
         less --force logs/combined.log
 
-        bash -c "${HOME}"/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh
+        bash -c "${ronin_ui_menu}"
         ;;
-
     6)
+        cat <<EOF
+${red}
+***
+Resetting Ronin UI...
+***
+${nc}
+EOF
+
+        cd "${ronin_ui_path}" || exit
+
+        test -f ronin-ui.dat && rm ronin-ui.dat
+
+        _pause return
+
+        bash -c "${ronin_ui_menu}"
+        ;;
+    7)
         ronin
         # returns to main menu
         ;;

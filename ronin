@@ -11,7 +11,7 @@ test -f "$HOME"/.dialogrc || cp "$HOME"/RoninDojo/Scripts/.dialogrc "$HOME"/.dia
 # config file for dialog color
 
 OPTIONS=(1 "Dojo"
-         2 "UI Backend"
+         2 "Ronin UI"
          3 "Credentials"
          4 "Applications"
          5 "Samourai Toolkit"
@@ -32,8 +32,8 @@ case $CHOICE in
         # runs dojo management menu script
         ;;
     2)
-        bash -c "${ronin_ui_backend_menu}"
-        # runs Ronin UI Backend menu script
+        bash -c "${ronin_ui_menu}"
+        # runs Ronin UI menu script
         ;;
     3)
         bash -c "${ronin_credentials_menu}"
