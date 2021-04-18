@@ -34,7 +34,7 @@ Press Ctrl + C to exit at any time...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
 
         cd "$dojo_path_my_dojo" || exit
 

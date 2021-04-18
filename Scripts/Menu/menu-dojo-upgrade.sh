@@ -17,6 +17,9 @@ test -f "$HOME"/.config/RoninDojo/data/updates/10-* && rm "$HOME"/.config/RoninD
 # Migrate user.conf variables to lowercase
 _update_10
 
+# Fix any existing specter installs that are missing gcc dependency
+_update_16
+
 _load_user_conf
 
 _check_dojo_perms "${dojo_path_my_dojo}"
@@ -39,7 +42,7 @@ fi
 # Check if mempool available or not, then uninstall it.
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
-   sudo systemctl stop whirlpool
+   sudo systemctl stop --quiet whirlpool
 
    cat <<EOF
 ${red}
@@ -69,12 +72,12 @@ For pairing information see the wiki...
 ***
 ${nc}
 EOF
-   _sleep 2
+   _sleep 1
 fi
 # stop whirlpool for existing whirlpool users
 
 if _is_specter ; then
-    _specter_upgrade
+    _specter_upgrade || sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
 fi
 
 if _is_bisq ; then

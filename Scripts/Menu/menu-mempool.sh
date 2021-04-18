@@ -29,7 +29,7 @@ Mempool Space Visualizer is not installed...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
@@ -57,7 +57,7 @@ Mempool Space Visualizer is not installed...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
@@ -84,7 +84,7 @@ Mempool Space Visualizer is not installed...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
@@ -98,7 +98,7 @@ EOF
             docker stop mempool 1>/dev/null
             _sleep 5
             docker start mempool 1>/dev/null
-            _sleep 2
+            _sleep 1
 
             _pause return
             bash -c "${ronin_mempool_menu}"
@@ -115,7 +115,7 @@ Mempool Space Visualizer is not installed...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             _pause return
             bash -c "${ronin_mempool_menu}"
         else
@@ -126,7 +126,7 @@ Viewing Mempool Space Visualizer Logs...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             cat <<EOF
 ${red}

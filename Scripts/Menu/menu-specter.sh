@@ -46,7 +46,7 @@ Stopping Specter Service...
 ***
 ${nc}
 EOF
-        sudo systemctl stop specter
+        sudo systemctl stop --quiet specter
         fi
 
         _sleep
@@ -63,7 +63,7 @@ Restarting Specter Service...
 ***
 ${nc}
 EOF
-        sudo systemctl restart specter
+        sudo systemctl restart --quiet specter
 
         _sleep
 
@@ -72,16 +72,9 @@ EOF
         # Restart specter.service and return to same menu
         ;;
     4)
-        cat <<EOF
-${red}
-***
-Press "q" key to exit at any time...
-***
-${nc}
-EOF
-        _sleep 3
-
         sudo systemctl status specter
+
+        _pause return
 
         bash -c "${ronin_specter_menu}"
         ;;

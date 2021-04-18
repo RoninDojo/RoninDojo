@@ -35,6 +35,8 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/12-* || _update_12 # Set BITCOIND_DB_CACHE to use bitcoind_db_cache_total value if not set
     test -f "$HOME"/.config/RoninDojo/data/updates/13-* || _update_13 # tag that system install has been installed already
     test -f "$HOME"/.config/RoninDojo/data/updates/14-* || _update_14 # Remove user.config file if it exist
+    test -f "$HOME"/.config/RoninDojo/data/updates/15-* || _update_15 # Remove duplicate bisq integration changes
+    test -f "$HOME"/.config/RoninDojo/data/updates/16-* || _update_16 # Fix any existing specter installs that are missing gcc dependency
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -204,6 +206,8 @@ _check_pkg() {
         esac
     done
 
+    [ "${pkg_name}" = "--update-mirrors" ] && pkg_name="${pkg_bin}"
+
     "${update}" && _pacman_update_mirrors
 
     if ! hash "${pkg_bin}" 2>/dev/null; then
@@ -214,9 +218,18 @@ Installing ${pkg_name}...
 ***
 ${nc}
 EOF
-        sudo pacman --quiet -S --noconfirm "${pkg_name}" &>/dev/null
-
-        return 0
+        if ! sudo pacman --quiet -S --noconfirm "${pkg_name}" &>/dev/null; then
+            cat <<EOF
+${red}
+***
+${pgk_name} failed to install!
+***
+${nc}
+EOF
+            return 1
+        else
+            return 0
+        fi
     fi
 
     return 1
@@ -308,7 +321,7 @@ _is_active() {
 
     # Check that service is running
     if ! systemctl is-active --quiet "$service"; then
-        sudo systemctl start "$service"
+        sudo systemctl start --quiet "$service"
         return 0
     fi
 
@@ -342,7 +355,7 @@ Tor credentials backup detected and restored...
 ***
 ${nc}
 EOF
-_sleep 2
+_sleep 1
 
         cat <<EOF
 ${red}
@@ -403,7 +416,7 @@ TOR_DIR
     if ! systemctl is-active --quiet tor; then
         sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
     fi
 
     cat <<TOR_CONFIG
@@ -415,8 +428,8 @@ ${nc}
 TOR_CONFIG
 
     # Enable service on startup
-    if ! systemctl is-enabled tor 1>/dev/null; then
-        sudo systemctl enable tor 2>/dev/null
+    if ! systemctl is-enabled --quiet tor; then
+        sudo systemctl enable --quiet tor
     fi
 
     _is_active tor
@@ -434,7 +447,7 @@ Electrum Rust Server is not installed...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         cat <<EOF
 ${red}
 ***
@@ -442,7 +455,7 @@ Enable Electrum Rust Server using the manage applications menu...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
 
         _pause return
         return 1
@@ -470,7 +483,7 @@ HiddenServicePort 80 127.0.0.1:8470\n\
 " /etc/tor/torrc
 
         # restart tor service
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
     fi
 }
 
@@ -567,7 +580,7 @@ Checking package dependencies for Ronin UI Backend...
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     # Check package dependencies
     for x in npm pm2 jq; do
@@ -630,7 +643,7 @@ Uninstalling Ronin UI Backend...
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     # Delete app from process list
     pm2 delete "Ronin Backend" &>/dev/null
@@ -686,14 +699,21 @@ _is_fan_control() {
 # Install fan control for rockchip boards
 #
 _fan_control_install() {
+    local upgrade
+    upgrade=false
+
     if ! _is_fan_control; then
         git clone -q https://github.com/digitalbitbox/bitbox-base.git &>/dev/null || return 1
         cd bitbox-base/tools/bbbfancontrol || return 1
     else
         # Stop service before upgrade
-        sudo systemctl stop bbbfancontrol
+        sudo systemctl stop --quiet bbbfancontrol
 
-        _fan_control_upgrade
+        if ! _fan_control_upgrade; then
+            return 1
+        fi
+
+        upgrade=true
     fi
 
     _fan_control_compile || return 1
@@ -702,13 +722,23 @@ _fan_control_install() {
 
     _is_active bbbfancontrol
 
-    cat <<EOF
+    if "${upgrade}"; then
+        cat <<EOF
+${red}
+***
+Fan control upgraded...
+***
+${nc}
+EOF
+    else
+        cat <<EOF
 ${red}
 ***
 Fan control installed...
 ***
 ${nc}
 EOF
+    fi
 
     return 0
 }
@@ -719,9 +749,9 @@ EOF
 _fan_control_uninstall() {
     if _is_fan_control && [ -f /etc/systemd/system/bbbfancontrol.service ]; then
         # Stop service before upgrade
-        sudo systemctl stop bbbfancontrol
+        sudo systemctl stop --quiet bbbfancontrol
 
-        sudo systemctl disable bbbfancontrol 1>/dev/null
+        sudo systemctl disable --quiet bbbfancontrol
 
         sudo rm /etc/systemd/system/bbbfancontrol.service
 
@@ -759,8 +789,8 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF"
 
-        sudo systemctl enable bbbfancontrol 2>/dev/null
-        sudo systemctl start bbbfancontrol
+        sudo systemctl enable --quiet bbbfancontrol
+        sudo systemctl start --quiet bbbfancontrol
     else # Previous unit file found
         # Update unit file if hwmon directory location changed
         if ! grep "${hwmon_dir}" /etc/systemd/system/bbbfancontrol.service 1>/dev/null; then
@@ -768,7 +798,7 @@ EOF"
 
             # Reload systemd unit file & restart daemon
             sudo systemctl daemon-reload
-            sudo systemctl restart bbbfancontrol.service
+            sudo systemctl restart --quiet bbbfancontrol.service
         fi
     fi
 
@@ -793,11 +823,12 @@ _fan_control_compile() {
 _fan_control_upgrade() {
     cd "${HOME}"/bitbox-base || exit
 
-    git pull &>/dev/null
-
-    cd tools/bbbfancontrol || return 1
-
-    return 0
+    if (($(git pull --rebase|wc -l)>1)); then
+        cd tools/bbbfancontrol || return 1
+        return 0
+    else
+        return 1
+    fi
 }
 
 #
@@ -1148,6 +1179,9 @@ _dojo_update() {
 
     cd "${dojo_path}" || exit
 
+    # Fetch remotes
+    git fetch -q --all --tags --force
+
     # Validate current branch from user.conf
     _git_ref_type "${samourai_commitish#*/}"
     _ret=$?
@@ -1167,32 +1201,29 @@ EOF
     # Check current branch/tag
     _head=$(_git_branch_name)
 
-    # Fetch remotes
-    git fetch -q --all --tags --force
-
     # reset any local changes
     git reset -q --hard
 
     # Check if on existing branch/tag
     if [ "${samourai_commitish}" != "${_head}" ]; then
         # Make sure we are not in current master branch
-        if [ "${samourai_commitish}" != "master" ]; then
+        if [ "${samourai_commitish}" != "origin/master" ]; then
             if ((_ret==3)); then
                 if ! _git_is_branch "${samourai_commitish}"; then
                     git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
                 else
-                    git checkout -q "${samourai_commitish}"
-                    git reset -q --hard "@{u}"
+                    git branch -q -D "${samourai_commitish}"
+                    git switch -q -c "${samourai_commitish}" -t "${samourai_commitish}"
                 fi
-            else
-                if ! _git_is_branch "${samourai_commitish}"; then
+            else # on a tag
+                if ! _git_is_branch "${samourai_commitish}"; then # Not on existing tag
                     git checkout -q tags/"${samourai_commitish}" -b "${samourai_commitish}"
                 fi
             fi
-        elif ! _git_is_branch "${samourai_commitish}"; then
-                if [ "${_head}" != "master" ]; then
-                    git checkout -q "${samourai_commitish}"
-                fi
+        elif ! _git_is_branch "${samourai_commitish}"; then # coming from detach state i.e tag clone
+                git checkout -q "${samourai_commitish}"
+        else # existing master branch
+                git reset -q --hard remotes/"${samourai_commitish}"
         fi
 
         # Delete old local branch if available otherwise check if master branch needs
@@ -1210,7 +1241,7 @@ EOF
 
         if ((_ret==3)); then
             # valid branch, so reset hard
-            git reset -q --hard "@{u}"
+            git reset -q --hard remotes/"${samourai_commitish}"
         fi
     fi
 }
@@ -1498,6 +1529,9 @@ _ronindojo_update() {
     if [ -d "$HOME"/RoninDojo/.git ]; then
         cd "$HOME/RoninDojo" || exit
 
+        # Fetch remotes
+        git fetch -q --all --tags --force
+
         # Validate current branch from user.conf
         _git_ref_type "${ronin_dojo_branch#*/}"
         _ret=$?
@@ -1525,32 +1559,29 @@ EOF
         # Check current branch/tag
         _head=$(_git_branch_name)
 
-        # Fetch remotes
-        git fetch -q --all --tags --force
-
         # reset any local changes
         git reset -q --hard
 
         # Check if on existing branch/tag
         if [ "${ronin_dojo_branch}" != "${_head}" ]; then
             # Make sure we are not in current master branch
-            if [ "${ronin_dojo_branch}" != "master" ]; then
+            if [ "${ronin_dojo_branch}" != "origin/master" ]; then
                 if ((_ret==3)); then
                     if ! _git_is_branch "${ronin_dojo_branch}"; then
                         git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
                     else
-                        git checkout -q "${ronin_dojo_branch}"
-                        git reset -q --hard "@{u}"
+                        git branch -q -D "${ronin_dojo_branch}"
+                        git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}"
                     fi
-                else
-                    if ! _git_is_branch "${ronin_dojo_branch}"; then
+                else # on a tag
+                    if ! _git_is_branch "${ronin_dojo_branch}"; then # Not on existing tag
                         git checkout -q tags/"${ronin_dojo_branch}" -b "${ronin_dojo_branch}"
                     fi
                 fi
-            elif ! _git_is_branch "${ronin_dojo_branch}"; then
-                    if [ "${_head}" != "master" ]; then
-                        git checkout -q "${ronin_dojo_branch}"
-                    fi
+            elif ! _git_is_branch "${ronin_dojo_branch}"; then # coming from detach state i.e tag clone
+                    git checkout -q "${ronin_dojo_branch}"
+            else # existing master branch
+                    git reset -q --hard remotes/"${ronin_dojo_branch}"
             fi
 
             # Delete old local branch if available otherwise check if master branch needs
@@ -1568,7 +1599,7 @@ EOF
 
             if ((_ret==3)); then
                 # valid branch, so reset hard
-                git reset -q --hard "@{u}"
+                git reset -q --hard remotes/"${ronin_dojo_branch}"
             fi
         fi
     else
@@ -1577,36 +1608,26 @@ EOF
 sudo rm -rf "$HOME/RoninDojo"
 cd "$HOME"
 
-if [ "${ronin_dojo_branch}" != "master" ]; then
-    git clone -q -b "${ronin_dojo_branch}" "${ronin_dojo_repo}" 2>/dev/null
+if [ "${ronin_dojo_branch}" != "origin/master" ]; then
+    git clone -q -b "${ronin_dojo_branch#*/}" "${ronin_dojo_repo}" 2>/dev/null
 else
     git clone -q "${ronin_dojo_repo}" 2>/dev/null
 fi
 
 # Switch over to a branch if in detached state. Usually this happens
 # when you clone a tag instead of a branch
-cd dojo || exit
+cd RoninDojo || exit
 
-# Would not run when ronin_dojo_branch="master"
-git symbolic-ref -q HEAD || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
-
-${red}
-***
-Upgrade Complete...
-***
-${nc}
-sleep 2
-bash -c "$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
+# Would not run when ronin_dojo_branch="origin/master"
+git symbolic-ref -q HEAD 1>/dev/null || git switch -q -c "${ronin_dojo_branch}" -t "${ronin_dojo_branch}" 2>/dev/null
 EOF
+
         sudo chmod +x "$HOME"/ronin-update.sh
         bash "$HOME"/ronin-update.sh
         # makes script executable and runs
         # end of script returns to menu
         # script is deleted during next run of update
     fi
-
-    # Check TOR
-    _setup_tor
 }
 
 #
@@ -1661,8 +1682,8 @@ EOF
     _is_active docker
 
     # Enable service on startup
-    if ! sudo systemctl is-enabled docker 1>/dev/null; then
-        sudo systemctl enable docker 2>/dev/null
+    if ! sudo systemctl is-enabled --quiet docker; then
+        sudo systemctl enable --quiet docker
     fi
 
     return 0
@@ -1709,7 +1730,7 @@ EOF'
     # Check to see if ipv6 stack available and if so
     # restart sysctl service
     if [ -d /proc/sys/net/ipv6 ]; then
-        sudo systemctl restart systemd-sysctl
+        sudo systemctl restart --quiet systemd-sysctl
     fi
 
     return 0
@@ -1722,8 +1743,8 @@ _disable_bluetooth() {
     _systemd_unit_exist bluetooth || return 1
 
     if _is_active bluetooth; then
-        sudo systemctl --quiet disable bluetooth 2>/dev/null
-        sudo systemctl stop bluetooth
+        sudo systemctl --quiet disable bluetooth
+        sudo systemctl stop --quiet bluetooth
         return 0
     fi
 }
@@ -1800,7 +1821,7 @@ EOF
         # Make sure to stop tor and docker when mount point is ${install_dir}
         if [ "${mountpoint}" = "${install_dir}" ]; then
             for x in tor docker; do
-                sudo systemctl stop "${x}"
+                sudo systemctl stop --quiet "${x}"
             done
 
             # Stop swap on mount point
@@ -1885,8 +1906,8 @@ EOF
         sudo systemctl daemon-reload
     fi
 
-    sudo systemctl start "${systemd_mountpoint}".mount || return 1
-    sudo systemctl enable "${systemd_mountpoint}".mount 2>/dev/null || return 1
+    sudo systemctl start --quiet "${systemd_mountpoint}".mount || return 1
+    sudo systemctl enable --quiet "${systemd_mountpoint}".mount || return 1
     # mount drive to ${mountpoint} using systemd.mount
 
 
@@ -2027,7 +2048,7 @@ EOF"
 # Check if specter is installed
 #
 _is_specter(){
-    if [ -d "$HOME"/.specter ]; then
+    if [ -d "$HOME"/.venv_specter ]; then
         return 0
     fi
 
@@ -2103,7 +2124,7 @@ HiddenServiceDir ${install_dir_tor}/specter_server/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
     fi
     # Set tor hiddenservice for https specter server
 
@@ -2138,19 +2159,22 @@ EOF
 }
 
 _specter_uninstall() {
+    local _specter_version
+    _specter_version="$1"
+
     _load_user_conf
 
     cat <<EOF
 ${red}
 ***
-Uninstalling Specter $specter_version...
+Uninstalling Specter ${_specter_version:-$specter_version}...
 ***
 ${nc}
 EOF
 
     if systemctl is-active --quiet specter; then
-        sudo systemctl stop specter
-        sudo systemctl --quiet disable specter 1>/dev/null
+        sudo systemctl stop --quiet specter
+        sudo systemctl --quiet disable specter
         sudo rm /etc/systemd/system/specter.service
         sudo systemctl daemon-reload
     fi
@@ -2161,7 +2185,7 @@ EOF
     # Resets to defaults
 
     if [ -f /etc/udev/rules.d/51-coinkite.rules ]; then
-        cd "$HOME"/specter-"$specter_version"/udev || exit
+        cd "$HOME"/specter-"${_specter_version:-$specter_version}"/udev || exit
 
         for file in *.rules; do
             sudo rm /etc/udev/rules.d/"${file}"
@@ -2172,12 +2196,12 @@ EOF
     fi
     # Delete udev rules
 
-    rm -rf "$HOME"/.specter "$HOME"/specter-* "$HOME"/.venv_specter
-    rm "$HOME"/.config/RoninDojo/specter*
+    rm -rf "$HOME"/.specter "$HOME"/specter-* "$HOME"/.venv_specter &>/dev/null
+    rm "$HOME"/.config/RoninDojo/specter* &>/dev/null
     # Deletes the .specter dir, source dir, venv directory, certificate files and specter.service file
 
     sudo sed -i -e "s:^ControlPort .*$:#ControlPort 9051:" -e "/specter/,+3d" /etc/tor/torrc
-    sudo systemctl restart tor
+    sudo systemctl restart --quiet tor
     # Remove torrc changes
 
     if getent group plugdev | grep -q "${ronindojo_user}" &>/dev/null; then
@@ -2194,7 +2218,15 @@ _specter_install(){
     cat <<EOF
 ${red}
 ***
-Installing Specter $specter_version...
+Installing Specter $specter_version, please wait...
+***
+${nc}
+EOF
+
+    cat <<EOF
+${red}
+***
+Downloading latest Specter release......
 ***
 ${nc}
 EOF
@@ -2224,6 +2256,13 @@ EOF
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
 
+    cat <<EOF
+${red}
+***
+Configuring Specter Daemon...
+***
+${nc}
+EOF
     _specter_create_systemd_unit_file
 
     _specter_config_tor
@@ -2233,12 +2272,19 @@ EOF
     _ufw_rule_add "${ip_range}" 25441
 
     sudo systemctl daemon-reload
-    sudo systemctl enable specter 2>/dev/null
+    sudo systemctl enable --quiet specter
     # Using enable
 
+    cat <<EOF
+${red}
+***
+Loading UDEV rules for Specter HWWI...
+***
+${nc}
+EOF
     _specter_hww_udev_rules
 
-    sudo systemctl start specter 2>/dev/null
+    sudo systemctl start --quiet specter
     # start to ensure the startup creates the .specter dir
 
     cat <<EOF
@@ -2260,7 +2306,7 @@ _specter_upgrade(){
     cd "${HOME}" || exit
 
     for dir in specter*; do
-        if [[ "${dir}" != specter-$specter_version ]]; then
+        if [ -d "$dir" ] && [[ "${dir}" != specter-$specter_version ]]; then
             cat <<EOF
 ${red}
 ***
@@ -2273,26 +2319,17 @@ EOF
 
             git clone -q -b "$specter_version" "$specter_url" "$HOME"/specter-"$specter_version" &>/dev/null || exit
 
-            sudo systemctl stop specter
+            sed -i 's/  -disablewallet=.*$/  -disablewallet=0/' "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
+            sudo systemctl stop --quiet specter
             sudo rm /etc/systemd/system/specter.service
 
-            sudo rm -rf "${dir}"
+            rm -rf "${dir}"
             # Remove old specter directory
         else
-            cat <<EOF
-${red}
-***
-On latest version of Specter...
-***
-${nc}
-EOF
-            _sleep 2
-
             return 1
         fi
     done
-
-    python3 -m venv "$HOME"/.venv_specter &>/dev/null
 
     cd "$HOME"/specter-"$specter_version" || exit
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
@@ -2307,11 +2344,11 @@ EOF
     _ufw_rule_add "${ip_range}" "25441"
 
     sudo systemctl daemon-reload
-    systemctl is-enabled specter 1>/dev/null || sudo systemctl enable specter 2>/dev/null
+    systemctl is-enabled --quiet specter || sudo systemctl enable --quiet specter
 
     _specter_hww_udev_rules
 
-    sudo systemctl restart specter 2>/dev/null
+    sudo systemctl restart --quiet specter
 
     return 0
 }
@@ -2392,7 +2429,7 @@ EOF
     sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
         -e "/  -txindex=1/i\  -whitelist=bloomfilter@${ip}" "${dojo_path_my_dojo}"/bitcoin/restart.sh
 
-    echo "peerbloomfilters=1" > "${ronin_data_dir}"/bisq.txt
+    touch "${ronin_data_dir}"/bisq.txt
 
     return 0
 }
@@ -2408,6 +2445,10 @@ Disabling Bisq Support...
 ***
 ${nc}
 EOF
+
+    sed -i -e '/-peerbloomfilters=1/d' \
+        -e "/-whitelist=bloomfilter@${ip}/d" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
     rm "${ronin_data_dir}"/bisq.txt
     # Deletes bisq.txt file
 
@@ -2450,7 +2491,7 @@ Indexer data restore completed...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
 
                     sudo rm -rf "${dojo_backup_indexer}"
                     # remove old salvage directories
@@ -2546,7 +2587,7 @@ Blockchain data restore completed...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
 
                     sudo rm -rf "${dojo_backup_bitcoind}"
                     # remove old salvage directories

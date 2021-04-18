@@ -96,7 +96,7 @@ ${nc}
 EOF
             fi
 
-            _sleep 2
+            _sleep 1
 
             _pause return
             bash -c "${ronin_credentials_menu}"
@@ -111,7 +111,7 @@ Mempool Space Visualizer is not installed...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
                 cat <<EOF
 ${red}
 ***
@@ -119,7 +119,7 @@ Install using the manage applications menu...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
 
                 _pause return
                 bash -c "${ronin_credentials_menu}"
@@ -196,7 +196,7 @@ Specter Server is not installed...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
                 cat <<EOF
 ${red}
 ***
@@ -204,7 +204,7 @@ Install using the manage applications menu...
 ***
 ${nc}
 EOF
-                _sleep 2
+                _sleep 1
 
                 _pause return
 

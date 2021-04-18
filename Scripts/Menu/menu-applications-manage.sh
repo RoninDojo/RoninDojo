@@ -110,7 +110,7 @@ Switching to Samourai indexer...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
 
                     _uninstall_electrs_indexer
 
@@ -124,7 +124,7 @@ Installing Electrum Rust Server...
 ***
 ${nc}
 EOF
-                    _sleep 2
+                    _sleep 1
 
                     bash -c "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
                     ;;

@@ -12,7 +12,7 @@ Outdated and bridge-utils found...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         cat <<EOF
 ${red}
 ***
@@ -31,7 +31,7 @@ Existing dojo found! Rebooting system to apply changes...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             cat <<EOF
 ${red}
 ***
@@ -96,9 +96,17 @@ _update_05() {
         _is_active tor
     fi
 
-    # Some systems have issue with tor not starting unless User=tor is enabled.
+    # Some systems have issue with tor not starting unless User=tor is enabled. Here we check both directions as it takes care of edge cases where
+    # the first if condition triggered but we still have problems.
     if findmnt /mnt/usb 1>/dev/null && ! systemctl is-active --quiet tor && ! grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
-        sudo sed -i '/Type=notify/a\User=tor' /usr/lib/systemd/system/tor.service
+        sudo sed -i -e 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' \
+            -e '/Type=notify/a\User=tor' /usr/lib/systemd/system/tor.service
+        sudo systemctl daemon-reload
+
+        _is_active tor
+    elif findmnt /mnt/usb 1>/dev/null && ! systemctl is-active --quiet tor && grep "User=tor" /usr/lib/systemd/system/tor.service 1>/dev/null; then
+        sudo sed -i -e 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' \
+            -e '/User=tor/d' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
 
         _is_active tor
@@ -157,7 +165,7 @@ Options=defaults
 [Install]
 WantedBy=multi-user.target
 EOF"
-        sudo systemctl enable mnt-usb.mount 2>/dev/null
+        sudo systemctl enable --quiet mnt-usb.mount
 
         _sleep 4 --msg "Restarting RoninDojo in"
 
@@ -207,7 +215,7 @@ _update_11() {
         sudo sed -i 's:/var/lib/tor/hidden_service_ronin_backend/:/mnt/usb/tor/hidden_service_ronin_backend/:' /etc/tor/torrc
         sudo rm -rf /var/lib/tor/hidden_service_ronin_backend
 
-        sudo systemctl restart tor
+        sudo systemctl restart --quiet tor
 
         # Finalize
         touch "$HOME"/.config/RoninDojo/data/updates/11-"$(date +%m-%d-%Y)"
@@ -246,5 +254,49 @@ _update_14() {
 
         # Finalize
         touch "$HOME"/.config/RoninDojo/data/updates/14-"$(date +%m-%d-%Y)"
+    fi
+}
+
+# Remove duplicate bisq integration changes
+_update_15() {
+    if _is_bisq; then
+        if (($(grep -c "\-peerbloomfilters=1" "${dojo_path_my_dojo}"/bitcoin/restart.sh)>1)); then
+            sed -i -e '/-peerbloomfilters=1/d' \
+                -e "/-whitelist=bloomfilter@${ip}/d" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+
+            sed -i -e "/  -txindex=1/i\  -peerbloomfilters=1" \
+                -e "/  -txindex=1/i\  -whitelist=bloomfilter@${ip}" "${dojo_path_my_dojo}"/bitcoin/restart.sh
+        fi
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/15-"$(date +%m-%d-%Y)"
+    fi
+}
+
+# Fix any existing specter installs that are missing gcc dependency
+_update_16() {
+    local _specter_version
+
+    if findmnt /mnt/usb 1>/dev/null && ! hash gcc 2>/dev/null && _is_specter; then
+        cat <<EOF
+${red}
+***
+Detected an incomplete Specter install, please wait while it's fixed...
+***
+${nc}
+EOF
+        shopt -s nullglob
+
+        cd "${HOME}" || exit
+
+        for dir in specter*; do
+            if [ -d "$dir" ]; then
+                _specter_version="${dir#*-}"
+                _specter_uninstall "${_specter_version}" && _specter_install
+            fi
+        done
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/16-"$(date +%m-%d-%Y)"
     fi
 }

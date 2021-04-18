@@ -2,7 +2,10 @@
 # shellcheck disable=SC2034
 
 # RoninDojo Version tag
-cd "$HOME"/RoninDojo && ronindojo_version=$(git describe --tags)
+if [ -d "$HOME"/RoninDojo/.git ]; then
+    cd "$HOME"/RoninDojo || exit
+    ronindojo_version=$(git describe --tags)
+fi
 
 #
 # Package dependencies associative array
@@ -98,10 +101,10 @@ backup_format=false
 #
 # Repositories
 #
-ronin_dojo_branch="master" # defaults to master
+ronin_dojo_branch="origin/master" # defaults to origin/master
 ronin_dojo_repo="https://code.samourai.io/ronindojo/RoninDojo"
 samourai_repo='https://code.samourai.io/ronindojo/samourai-dojo.git'
-samourai_commitish="v1.9.0" # empty defaults to master
+samourai_commitish="v1.9.0" # Tag release
 boltzmann_repo='https://code.samourai.io/oxt/boltzmann.git'
 whirlpool_stats_repo='https://code.samourai.io/whirlpool/whirlpool_stats.git'
 
@@ -148,7 +151,7 @@ fi
 specter_sign_key_url="https://stepansnigirev.com/ss-specter-release.asc"
 specter_sign_key="ss-specter-release.asc"
 specter_url="https://github.com/cryptoadvance/specter-desktop.git"
-specter_version="v1.2.2"
+specter_version="v1.3.0"
 
 # Network info
 ip=$(ip route get 1 | awk '{print $7}')

@@ -30,7 +30,7 @@ Starting Whirlpool...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             docker start whirlpool 1>/dev/null
 
             cat <<EOF
@@ -40,7 +40,7 @@ Don't forget to login to GUI to unlock mixing!
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             _pause return
             bash -c "$ronin_whirlpool_menu"
             # see defaults.sh
@@ -55,7 +55,7 @@ Stopping Whirlpool...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             docker stop whirlpool 1>/dev/null
             _pause return
             bash -c "$ronin_whirlpool_menu"
@@ -71,11 +71,11 @@ Restarting Whirlpool...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             docker stop whirlpool 1>/dev/null
             _sleep 5
             docker start whirlpool 1>/dev/null
-            _sleep 2
+            _sleep 1
             _pause return
             bash -c "$ronin_whirlpool_menu"
             # enable whirlpool at startup, press to return to menu
@@ -90,7 +90,7 @@ Viewing Whirlpool Logs...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
 
             cat <<EOF
 ${red}
@@ -114,7 +114,7 @@ Re-initiating Whirlpool will reset your mix count and generate new API key...
 ***
 ${nc}
 EOF
-            _sleep 2
+            _sleep 1
             cat <<EOF
 ${red}
 ***

@@ -12,7 +12,7 @@ Blockchain data not found! Did you forget to install RoninDojo?
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     _pause return
     bash -c "${ronin_dojo_menu2}"
@@ -39,7 +39,7 @@ Your new backup drive has been detected...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         # checks for ${secondary_storage}
     else
         cat <<EOF
@@ -80,7 +80,7 @@ No backup drive partition detected! Please make sure it is plugged in and has po
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     _pause return
     bash -c "${ronin_dojo_menu2}"
@@ -95,7 +95,7 @@ Making sure Dojo is stopped...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 cd "${dojo_path_my_dojo}" || exit
 _dojo_check && _stop_dojo
@@ -109,7 +109,7 @@ Copying...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 sudo test -d "${bitcoin_ibd_backup_dir}" || sudo mkdir -p "${bitcoin_ibd_backup_dir}"
 # test for system-setup-salvage directory, if not found mkdir is used to create
@@ -133,7 +133,7 @@ No backup data available to send! Umounting drive now...
 ***
 ${nc}
 EOF
-    _sleep 2
+    _sleep 1
 
     _pause return
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
@@ -149,7 +149,7 @@ Transfer Complete!
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 _pause continue
 
@@ -161,7 +161,7 @@ Unmounting...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 sudo umount "${storage_mount}" && sudo rmdir "${storage_mount}"
 # unmount backup drive and remove directory
@@ -174,7 +174,7 @@ You can now safely unplug your backup drive!
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 cat <<EOF
 ${red}
@@ -184,7 +184,7 @@ Starting Dojo...
 ${nc}
 EOF
 
-_sleep 2
+_sleep 1
 
 cd "${dojo_path_my_dojo}" || exit
 _source_dojo_conf

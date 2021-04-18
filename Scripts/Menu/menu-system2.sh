@@ -34,7 +34,7 @@ Prepare to type new password for ${ronindojo_user}...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         sudo passwd "${ronindojo_user}"
 
         _pause return
@@ -49,7 +49,7 @@ Prepare to type new password for ${ronindojo_user}...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         sudo passwd
 
         _pause return
@@ -64,7 +64,7 @@ Locking Root User...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         sudo passwd -l root
         bash -c "${ronin_system_menu2}"
         # uses passwd to lock root user, returns to menu
@@ -77,7 +77,7 @@ Unlocking Root User...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
         sudo passwd -u root
         bash -c "${ronin_system_menu2}"
         # uses passwd to unlock root user, returns to menu
@@ -177,7 +177,7 @@ EOF
         # Returns HOME since $dojo_path deleted
         cd "${HOME}" || exit
 
-        sudo systemctl restart docker
+        sudo systemctl restart --quiet docker
         # restart docker daemon
 
         cat <<EOF
@@ -187,7 +187,7 @@ All RoninDojo features has been Uninstalled...
 ***
 ${nc}
 EOF
-        _sleep 2
+        _sleep 1
 
         _pause return
 
