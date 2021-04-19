@@ -45,6 +45,7 @@ EOF
                 # press any key to return to menu-system-storage.sh
                 bash -c "${ronin_system_storage}"
             else
+                # Available to format
                 secondary_storage="${primary_storage}"
             fi
         fi

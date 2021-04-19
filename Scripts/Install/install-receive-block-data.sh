@@ -44,38 +44,17 @@ EOF
         cat <<EOF
 ${red}
 ***
-Possible drive rearrangement occured. Checking if ${primary_storage} is available to format...
+Possible drive rearrangement occured. Checking if ${primary_storage} is available to mount...
 ***
 ${nc}
 EOF
-        # Make sure device does not contain an existing filesystem
-        if [ -b "${primary_storage}" ] && [ -n "$(lsblk -no FSTYPE "${primary_storage}")" ]; then
-            # Drive got rearranged
-            secondary_storage="${primary_storage}"
-        elif [ -b "${primary_storage}" ] && [ -z "$(lsblk -no FSTYPE "${primary_storage}")" ]; then
-            if ! "${backup_format}"; then
-                cat <<EOF
-${red}
-***
-${primary_storage} contains an existing filesystem and cannot be formatted. If you wish to use this drive
-for backup purposes. Set backup_format=true in ${HOME}/.config/RoninDojo/user.conf
-***
-${nc}
-EOF
-                _pause return
-
-                # press any key to return to menu-system-storage.sh
-                bash -c "${ronin_system_storage}"
-            else
-                secondary_storage="${primary_storage}"
-            fi
-        fi
+        secondary_storage="${primary_storage}"
     fi
 else
     cat <<EOF
 ${red}
 ***
-No backup drive partition detected! Please make sure it is plugged in and has power if needed...
+No backup drive partition detected! Make sure it is available for use...
 ***
 ${nc}
 EOF
@@ -85,6 +64,61 @@ EOF
 
     bash -c "${ronin_dojo_menu2}"
     # no drive detected, press any key to return to menu
+fi
+
+if ! findmnt "${storage_mount}" 1>/dev/null; then
+    cat <<EOF
+${red}
+***
+Preparing to Mount ${secondary_storage} to ${storage_mount}...
+***
+${nc}
+EOF
+    _sleep 3
+
+    cat <<EOF
+${red}
+***
+Are you ready to mount?
+***
+${nc}
+EOF
+
+    while true; do
+        read -rp "[${green}Yes${nc}/${red}No${nc}]: " answer
+        case $answer in
+            [yY][eE][sS]|[yY]) break;;
+            [nN][oO]|[Nn])
+            bash "$HOME"/RoninDojo/Scripts/Menu/system-menu2.sh
+            exit
+            ;;
+            *)
+            cat <<EOF
+${red}
+***
+Invalid answer! Enter Y or N
+***
+${nc}
+EOF
+            ;;
+        esac
+    done
+    # ask user to proceed
+
+    test ! -d "${storage_mount}" && sudo mkdir "${storage_mount}"
+    # create mount directory if not available
+
+    cat <<EOF
+${red}
+***
+Mounting ${secondary_storage} to ${storage_mount}...
+***
+${nc}
+EOF
+    _sleep 1
+
+    sudo mount "${secondary_storage}" "${storage_mount}"
+    # mount backup drive to ${storage_mount} directory
 fi
 
 cat <<EOF
@@ -156,6 +190,7 @@ BACKUP
 
     _pause return
     bash -c "$HOME"/RoninDojo/Scripts/Menu/menu-dojo2.sh
+    exit
 fi
 
 cat <<EOF
