@@ -25,7 +25,7 @@ cat << 'EOF'
  / /_/ / /_/ / / /_  / /_/ / / / / / /_/ / / / / / / /
 /_.___/\____/_/\__/ /___/_/ /_/ /_/\__,_/_/ /_/_/ /_/ 
 Un Script de python para el cálculo de la entropia de las transacciones de Bitcoin
-    y la trazabilidad de los inputs y los outputs.
+    y la trazabilidad de inputs y outputs.
 
 EOF
 
@@ -64,7 +64,7 @@ do
       cat <<EOF
 ${red}
 ***
-Checking for updates...
+Comprobando si hay actualizaciones...
 ***
 ${nc}
 EOF

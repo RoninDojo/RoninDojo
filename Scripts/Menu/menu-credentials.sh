@@ -115,7 +115,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Install using the manage applications menu...
+Instala usando el menú de aplicaciones...
 ***
 ${nc}
 EOF
@@ -199,7 +199,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Install using the manage applications menu...
+Instala usando el menú de aplicaciones...
 ***
 ${nc}
 EOF

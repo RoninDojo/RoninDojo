@@ -129,7 +129,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Removing Samourai Dojo Server...
+Desinstalando herramienta de estadísticas de Whirlpool...
 ***
 ${nc}
 EOF
@@ -149,7 +149,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Uninstalling Whirlpool Stats Tool...
+Desinstalando Bolzmann...
 ***
 ${nc}
 EOF
@@ -164,7 +164,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Uninstalling Bolzmann...
+Eliminando servidor Samourai Dojo...
 ***
 ${nc}
 EOF
@@ -187,7 +187,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-All RoninDojo features has been Uninstalled...
+Todas las características de RoninDojo han sido desinstaladas...
 ***
 ${nc}
 EOF

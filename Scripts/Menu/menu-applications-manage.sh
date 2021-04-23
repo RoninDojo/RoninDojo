@@ -38,14 +38,14 @@ _check_indexer
 ret=$?
 
 if ((ret==0)); then
-    indexer_name="Instalar Samourai indexador"
+    indexer_name="Instalar indexador de Samourai"
 elif ((ret==1)); then
-    indexer_name="Instalar Electrum indexador"
+    indexer_name="Instalar indexador de Electrum"
 elif ((ret==2)); then
     indexer_name="Instalar el indexador"
 fi
 
-cmd=(dialog --title "RoninDojo" --separate-output --checklist "Use Mouse Click or Spacebar to select:" 22 76 16)
+cmd=(dialog --title "RoninDojo" --separate-output --checklist "Usar click de ratón o barra espaciadora para seleccionar:" 22 76 16)
 options=(1 "${mempool_text} visualizador de espacio en la Mempool" off    # any option can be set to default to "on"
          2 "${specter_text} Specter" off
          3 "${bisq_text} conexión con Bisq" off

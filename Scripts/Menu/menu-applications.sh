@@ -103,7 +103,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Enable Bisq connections using the applications install menu...
+Habilita las conexiones de Bisq usando el menú de instalación de aplicaciones...
 ***
 ${nc}
 EOF
@@ -144,7 +144,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Los dispositivos soportados són Rockpro64 and Rockpi4...
+Los dispositivos soportados són Rockpro64 y Rockpi4...
 ***
 ${nc}
 EOF
@@ -166,7 +166,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Installing fan control...
+Instalando control de ventiladores...
 ***
 ${nc}
 EOF
@@ -192,7 +192,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Checking for Fan Control updates...
+Comprobando actualizaciones del control de ventiladores...
 ***
 ${nc}
 EOF
@@ -201,7 +201,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Fan Control already up to date...
+Control de ventiladores ya actualizado...
 ***
 ${nc}
 EOF
