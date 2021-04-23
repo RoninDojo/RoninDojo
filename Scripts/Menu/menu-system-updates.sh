@@ -84,7 +84,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Actualización de espejos de Arch OS, Espere por favor...
+Actualizando Arch OS Mirrors, espera por favor...
 ***
 ${nc}
 EOF

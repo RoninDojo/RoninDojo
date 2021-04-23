@@ -128,7 +128,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-No indexer installed...
+No hay indexador instalado...
 ***
 ${nc}
 EOF
@@ -136,7 +136,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Install using the applications install menu...
+Instala usando el menú de instalación de aplicaciones...
 ***
 ${nc}
 EOF
