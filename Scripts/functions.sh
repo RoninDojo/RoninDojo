@@ -504,11 +504,10 @@ HiddenServicePort 80 127.0.0.1:8470\n\
 _ronin_ui_credentials() {
     cd "${ronin_ui_path}" || exit
 
-    API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
     JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
     BACKEND_TOR=$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)
 
-    export API_KEY JWT_SECRET BACKEND_TOR
+    export JWT_SECRET BACKEND_TOR
 }
 
 #
@@ -545,44 +544,63 @@ EOF
     _sleep
 
     # Check package dependencies
-    for x in yarn nginx; do
+    for x in nginx; do
         _check_pkg "${x}"
     done
 
     _check_pkg "avahi-daemon" "avahi"
 
-    git clone -q "${ronin_ui_repo}" Ronin-UI 2>/dev/null
+    sudo npm i -g pnpm
+
+    mkdir Ronin-UI
 
     # cd into Ronin UI dir
     cd "${ronin_ui_path}" || exit
 
+    # get PGP public key for verification
+    # wget https://ronindojo.io/downloads/RoninUI/pgp-key.asc
+    # gpg --import pgp-key.asc
+
+    # get file URL
+    FILE=$(curl https://ronindojo.io/downloads/RoninUI/version.json | jq -r .file)
+    wget https://ronindojo.io/donwloads/RoninUI/$FILE
+
+    # get signature URL
+    # SIGNATURE_FILE=$(curl https://ronindojo.io/downloads/RoninUI/version.json | jq -r .signature)
+    # wget https://ronindojo.io/donwloads/RoninUI/$SIGNATURE_FILE
+
+    # verify signature
+    # gpg --verify $SIGNATURE_FILE $FILE
+
+    tar xzf $FILE
+
+    rm -f $FILE
+    # rm -f $SIGNATURE_FILE
+    # rm -f pgp-key.asc
+
     # Generate .env file
     cat << EOF >.env
-API_KEY=$gui_api
 JWT_SECRET=$gui_jwt
-ACCESS_TOKEN_EXPIRATION=8h
 NEXT_TELEMETRY_DISABLED=1
 EOF
 
     cat <<EOF
 ${red}
 ***
-Performing yarn install, please wait...
+Performing pnpm install, please wait...
 ***
 ${nc}
 EOF
 
-    yarn install &>/dev/null || { printf "\n %s***\nRonin UI yarn install failed...\n***%s\n" "${red}" "${nc}";exit; }
+    pnpm install --prod &>/dev/null || { printf "\n %s***\nRonin UI pnpm install failed...\n***%s\n" "${red}" "${nc}";exit; }
 
     cat <<EOF
 ${red}
 ***
-Performing yarn build, please wait...
+Performing Next start, please wait...
 ***
 ${nc}
 EOF
-
-    yarn build &>/dev/null || { printf "\n %s***\nRonin UI yarn build failed...\n***%s\n" "${red}" "${nc}";exit; }
 
     # Start app
     pm2 start pm2.config.js &>/dev/null

@@ -13,7 +13,7 @@ fi
 declare -A package_dependencies=(
     [avahi-daemon]=avahi
     [nginx]=nginx
-    [yarn]=yarn
+    [pnpm]=pnpm
     [java]=jdk11-openjdk
     [tor]=tor
     [python3]=python3
