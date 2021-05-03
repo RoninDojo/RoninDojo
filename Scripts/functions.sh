@@ -544,39 +544,25 @@ EOF
     _sleep
 
     # Check package dependencies
-    for x in nginx; do
-        _check_pkg "${x}"
-    done
+    _check_pkg nginx
 
     _check_pkg "avahi-daemon" "avahi"
 
-    sudo npm i -g pnpm
+    sudo npm i -g pnpm &>/dev/null
 
-    mkdir Ronin-UI
+    test -d "${ronin_ui_path}" || mkdir "${ronin_ui_path}"
 
     # cd into Ronin UI dir
     cd "${ronin_ui_path}" || exit
 
-    # get PGP public key for verification
-    # wget https://ronindojo.io/downloads/RoninUI/pgp-key.asc
-    # gpg --import pgp-key.asc
-
     # get file URL
-    FILE=$(curl https://ronindojo.io/downloads/RoninUI/version.json | jq -r .file)
-    wget https://ronindojo.io/donwloads/RoninUI/$FILE
+    _file=$(curl -s https://ronindojo.io/downloads/RoninUI/version.json | jq -r .file)
 
-    # get signature URL
-    # SIGNATURE_FILE=$(curl https://ronindojo.io/downloads/RoninUI/version.json | jq -r .signature)
-    # wget https://ronindojo.io/donwloads/RoninUI/$SIGNATURE_FILE
+    wget -q https://ronindojo.io/downloads/RoninUI/"$_file"
 
-    # verify signature
-    # gpg --verify $SIGNATURE_FILE $FILE
+    tar xzf "$_file"
 
-    tar xzf $FILE
-
-    rm -f $FILE
-    # rm -f $SIGNATURE_FILE
-    # rm -f pgp-key.asc
+    rm -f "$_file"
 
     # Generate .env file
     cat << EOF >.env
