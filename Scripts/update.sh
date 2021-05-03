@@ -338,7 +338,7 @@ Installing Ronin UI Server...
 ${nc}
 EOF
 
-        _is_ronin_ui || _install_ronin_ui
+        _is_ronin_ui || _ronin_ui_install
 
         # Finalize
         touch "$HOME"/.config/RoninDojo/data/updates/17-"$(date +%m-%d-%Y)"

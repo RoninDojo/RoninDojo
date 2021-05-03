@@ -493,7 +493,7 @@ HiddenServicePort 80 127.0.0.1:8470\n\
     # Populate or update "${ronin_data_dir}"/ronin-ui-tor-hostname with tor address
     if [ ! -f "${ronin_data_dir}"/ronin-ui-tor-hostname ]; then
         sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname >"${ronin_data_dir}"/ronin-ui-tor-hostname
-    elif ! sudo grep "$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)" "${ronin_data_dir}"/ronin-ui-tor-hostname; then
+    elif ! sudo grep -q "$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)" "${ronin_data_dir}"/ronin-ui-tor-hostname; then
         sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname >"${ronin_data_dir}"/ronin-ui-tor-hostname
     fi
 }
@@ -527,7 +527,7 @@ _is_ronin_ui() {
 #
 # Install Ronin UI
 #
-_install_ronin_ui() {
+_ronin_ui_install() {
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
 
     _load_user_conf
@@ -753,9 +753,9 @@ server {
     }
 }
 EOF"
-    elif ! grep -q "${ip}" /etc/nginx/sites/enabled/001-ronindojo; then
+    elif ! sudo grep -q "${ip}" /etc/nginx/sites-enabled/001-roninui; then
         # Updates the ip in vhost
-        sudo sed -i "s/listen .*$/listen ${ip}:80;/" /etc/nginx/sites/enabled/001-ronindojo
+        sudo sed -i "s/listen .*$/listen ${ip}:80;/" /etc/nginx/sites-enabled/001-roninui
 
         # Reload nginx server
         sudo systemctl reload --quiet nginx
@@ -794,6 +794,14 @@ EOF
     cd "${HOME}" || exit
 
     rm -rf "${ronin_ui_path}" || exit
+
+    # Remove nginx vhost and disable nginx on boot
+    sudo rm /etc/nginx/sites-enabled/001-roninui
+    sudo systemctl disable --now nginx
+
+    # Disable avahi host and disable avahi-daemon on boot
+    sudo rm /etc/avahi/services/http.service
+    sudo systemctl disable --now avahi-daemon
 
     return 0
 }

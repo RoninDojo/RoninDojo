@@ -151,8 +151,8 @@ Ronin UI Credentials
 ***
 ${nc}
 
-Ronin API Key           =   ${API_KEY}
-JWT SECRET              =   ${JWT_SECRET}
+Local Access Domain     =   http://ronindojo.local
+Local Access IP         =   http://${ip} # fallback for when ronindojo.local doesn't work for you.
 Ronin Tor URL           =   http://${BACKEND_TOR}
 EOF
             _pause return
@@ -277,8 +277,8 @@ Ronin UI Credentials
 ***
 ${nc}
 
-Ronin API Key           =   ${API_KEY}
-JWT SECRET              =   ${JWT_SECRET}
+Local Access Domain     =   http://ronindojo.local
+Local Access IP         =   http://${ip} # fallback for when ronindojo.local doesn't work for you.
 Ronin Tor URL           =   http://${BACKEND_TOR}
 
 ${red}

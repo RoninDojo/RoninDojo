@@ -96,7 +96,7 @@ Installing Ronin UI...
 ${nc}
 EOF
 
-_install_ronin_ui
+_ronin_ui_install
 
 cat <<EOF
 ${red}
