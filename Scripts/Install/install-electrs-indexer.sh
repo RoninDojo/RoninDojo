@@ -49,6 +49,7 @@ fi\n\
 sed -i \
 -e 's/--indexer-rpc-addr=.*$/--electrum-rpc-addr="172.28.1.6:50001"/' \
 -e '/--cookie=.*$/d' \
+-e '/--indexer-http-addr*/d' \
 -e 's/^addrindexrs/electrs/' "${dojo_path_my_dojo}"/indexer/restart.sh
 # modify indexer/restart.sh for electrs
 
