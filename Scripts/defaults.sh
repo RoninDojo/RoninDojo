@@ -28,6 +28,7 @@ declare -A package_dependencies=(
     [ufw]=ufw
     [rsync]=rsync
     [node]=nodejs
+    [npm]=npm
     [jq]=jq
     [pipenv]=python-pipenv
     [sgdisk]=gptfdisk
