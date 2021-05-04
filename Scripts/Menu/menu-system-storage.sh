@@ -5,10 +5,8 @@
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
 OPTIONS=(1 "Check Disk Space"
-         2 "Mount Backup Drive"
-         3 "Unmount Backup Drive"
-         4 "Format & Mount New Backup Drive"
-         5 "Go Back")
+         2 "Format & Mount New Backup Drive"
+         3 "Go Back")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -43,18 +41,10 @@ _sleep
         # press any key to return to menu
         ;;
     2)
-        bash "$HOME"/RoninDojo/Scripts/Install/install-mount-backup-data-drive.sh
-        # mounts ${secondary_storage} to ${storage_mount} for access to backup blockchain data
-        ;;
-    3)
-        bash "$HOME"/RoninDojo/Scripts/Install/install-umount-backup-data-drive.sh
-        # umounts ${secondary_storage} drive
-        ;;
-    4)
         bash "$HOME"/RoninDojo/Scripts/Install/install-new-backup-data-drive.sh
         # formats ${secondary_storage} to ext 4 and mounts to ${storage_mount} for backing up data on "${primary_storage}" or ${install_dir}
         ;;
-    5)
+    3)
         bash -c "${ronin_system_menu}"
         # returns to menu
         ;;
