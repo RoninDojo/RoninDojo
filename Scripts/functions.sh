@@ -37,6 +37,7 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/14-* || _update_14 # Remove user.config file if it exist
     test -f "$HOME"/.config/RoninDojo/data/updates/15-* || _update_15 # Remove duplicate bisq integration changes
     test -f "$HOME"/.config/RoninDojo/data/updates/16-* || _update_16 # Fix any existing specter installs that are missing gcc dependency
+    test -f "$HOME"/.config/RoninDojo/data/updates/17-* || _update_17  # Uninstall legacy Ronin UI
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
@@ -468,17 +469,17 @@ EOF
 }
 
 #
-# Backend torrc
+# Ronin UI torrc
 #
 _ronin_ui_setup_tor() {
     if ! grep hidden_service_ronin_backend /etc/tor/torrc 1>/dev/null; then
-        cat <<BACKEND_TOR_CONFIG
+        cat <<EOF
 ${red}
 ***
 Configuring RoninDojo Backend Tor Address...
 ***
 ${nc}
-BACKEND_TOR_CONFIG
+EOF
         sudo sed -i "/################ This section is just for relays/i\
 HiddenServiceDir ${install_dir_tor}/hidden_service_ronin_backend/\n\
 HiddenServiceVersion 3\n\
@@ -488,175 +489,319 @@ HiddenServicePort 80 127.0.0.1:8470\n\
         # restart tor service
         sudo systemctl restart --quiet tor
     fi
+
+    # Populate or update "${ronin_data_dir}"/ronin-ui-tor-hostname with tor address
+    if [ ! -f "${ronin_data_dir}"/ronin-ui-tor-hostname ]; then
+        sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname >"${ronin_data_dir}"/ronin-ui-tor-hostname
+    elif ! sudo grep -q "$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)" "${ronin_data_dir}"/ronin-ui-tor-hostname; then
+        sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname >"${ronin_data_dir}"/ronin-ui-tor-hostname
+    fi
 }
 
 #
-# UI Backend get credentials
+# Source Ronin UI credentials
 #
-_ui_backend_credentials() {
-    cd "${ronin_ui_backend_dir}" || exit
+_ronin_ui_credentials() {
+    cd "${ronin_ui_path}" || exit
 
-    API_KEY=$(grep API_KEY .env|cut -d'=' -f2)
     JWT_SECRET=$(grep JWT_SECRET .env|cut -d'=' -f2)
-    BACKEND_PORT=$(grep PORT .env|cut -d'=' -f2)
     BACKEND_TOR=$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)
 
-    export API_KEY JWT_SECRET BACKEND_PORT BACKEND_TOR
+    export JWT_SECRET BACKEND_TOR
 }
 
 #
-# Check Backend Installation
+# Check Ronin UI Installation
 #
-_is_ronin_ui_backend() {
+_is_ronin_ui() {
     _load_user_conf
 
-    if [ ! -d "${ronin_ui_backend_dir}" ]; then
+    if [ ! -d "${ronin_ui_path}" ]; then
         return 1
     fi
-    # check if Ronin UI Backend is already installed
+    # check if Ronin UI is already installed
 
     return 0
 }
 
 #
-# UI check for update
+# Install Ronin UI
 #
-_ronin_ui_update_check() {
-    local ver current_ver
-
-    # Fetch Ronin UI Backend archive
-    wget -q https://ronindojo.io/downloads/RoninUI-Backend/latest.txt -O /tmp/latest.txt
-
-    ver=$( cut -d ' ' -f2 </tmp/latest.txt )
-
-    if _is_ronin_ui_backend; then
-        # Get latest version of current RoninBackend if available
-        if [ -f "${ronin_ui_backend_dir}"/package.json ]; then
-            current_ver=$(jq --raw-output '.version' "${ronin_ui_backend_dir}"/package.json)
-        fi
-
-        # Check if update is needed
-        if [[ "${ver}" != "${current_ver}" ]]; then
-            cat <<EOF
-${red}
-***
-Updating to Ronin UI Backend v"${ver}"...
-***
-${nc}
-EOF
-            return 1
-        else
-            return 0
-        fi
-    else
-            cat <<EOF
-${red}
-***
-Installing Ronin UI Backend...
-***
-${nc}
-EOF
-        return 1
-    fi
-}
-
-#
-# Install Ronin UI Backend
-#
-_install_ronin_ui_backend() {
+_ronin_ui_install() {
     . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
-
-    local pkg
-
-    # Extract latest tar archive filename and latest version
-    pkg=$( cut -d ' ' -f1 </tmp/latest.txt )
 
     _load_user_conf
 
-    # Import PGP keys for backend archive
-    #curl -s https://keybase.io/pajasevi/pgp_keys.asc | gpg -q --import
+    cd "$HOME" || exit
 
     cat <<EOF
 ${red}
 ***
-Checking package dependencies for Ronin UI Backend...
+Checking package dependencies for Ronin UI...
 ***
 ${nc}
 EOF
     _sleep
 
     # Check package dependencies
-    for x in npm pm2 jq; do
-        _check_pkg "${x}"
-    done
+    _check_pkg nginx
 
-    _check_pkg "node" "nodejs"
+    _check_pkg "avahi-daemon" "avahi"
 
-    # Create dir
-    mkdir "${ronin_ui_backend_dir}"
+    sudo npm i -g pnpm &>/dev/null
 
-    # cd into RoninBackend dir
-    cd "${ronin_ui_backend_dir}" || exit
+    test -d "${ronin_ui_path}" || mkdir "${ronin_ui_path}"
 
-    # Fetch tar archive
-    wget -q https://ronindojo.io/downloads/RoninUI-Backend/"${pkg}"
+    # cd into Ronin UI dir
+    cd "${ronin_ui_path}" || exit
 
-    # Extract all file from package directory inside tar archive into current directory
-    tar xf "${pkg}" package/ --strip-components=1 || exit
+    # get file URL
+    _file=$(curl -s https://ronindojo.io/downloads/RoninUI/version.json | jq -r .file)
 
-    # Remove tar archive
-    rm "${pkg}"
+    wget -q https://ronindojo.io/downloads/RoninUI/"$_file"
+
+    tar xzf "$_file"
+
+    rm -f "$_file"
 
     # Generate .env file
-    if [ ! -f .env ]; then
-        cat << EOF >.env
-API_KEY=$gui_api
+    cat << EOF >.env
 JWT_SECRET=$gui_jwt
-PORT=3000
-ACCESS_TOKEN_EXPIRATION=8h
+NEXT_TELEMETRY_DISABLED=1
 EOF
 
-        # NPM run
-        npm run start &>/dev/null
+    cat <<EOF
+${red}
+***
+Performing pnpm install, please wait...
+***
+${nc}
+EOF
 
-        # pm2 save process list
-        pm2 save &>/dev/null
+    pnpm install --prod &>/dev/null || { printf "\n %s***\nRonin UI pnpm install failed...\n***%s\n" "${red}" "${nc}";exit; }
 
-        # pm2 system startup
-        pm2 startup &>/dev/null
+    cat <<EOF
+${red}
+***
+Performing Next start, please wait...
+***
+${nc}
+EOF
 
-        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" &>/dev/null
+    # Start app
+    pm2 start pm2.config.js &>/dev/null
 
-        _ronin_ui_setup_tor
-    else # Restart process after updating
-        pm2 restart "Ronin Backend" 1>/dev/null
+    # pm2 save process list
+    pm2 save &>/dev/null
+
+    # pm2 system startup
+    pm2 startup &>/dev/null
+
+    sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" &>/dev/null
+
+    _ronin_ui_setup_tor
+
+    _ronin_ui_vhost
+
+    _ronin_ui_avahi_service
+
+    _ufw_rule_add "${ip_range}" "80"
+}
+
+#
+# Setup avahi service for ronindojo.local access
+#
+_ronin_ui_avahi_service() {
+    if [ ! -f /etc/avahi/services/http.service ]; then
+        # Generate service file
+        sudo bash -c "cat <<EOF >/etc/avahi/services/http.service
+<?xml version=\"1.0\" standalone='no'?><!--*-nxml-*-->
+<!DOCTYPE service-group SYSTEM \"avahi-service.dtd\">
+<!-- This advertises the RoninDojo vhost -->
+<service-group>
+ <name replace-wildcards=\"yes\">%h Web Application</name>
+  <service>
+   <type>_http._tcp</type>
+   <port>80</port>
+  </service>
+</service-group>
+EOF"
     fi
+
+    # Setup /etc/nsswitch.conf
+    sudo sed -i 's/hosts: .*$/hosts: files mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns mdns/' /etc/nsswitch.conf
+
+    # Set hostname in avahi-daemon.conf
+    if ! grep -q "host-name=ronindojo" /etc/avahi/avahi-daemon.conf; then
+        sudo sed -i 's/.*host-name=.*$/host-name=ronindojo/' /etc/avahi/avahi-daemon.conf
+    fi
+
+    # Restart avahi-daemon service
+    sudo systemctl restart avahi-daemon
+
+    # Enable avahi-daemon on boot
+    if ! systemctl is-enabled --quiet avahi-daemon; then
+        sudo systemctl enable --quiet avahi-daemon
+    fi
+
+    return 0
+}
+
+#
+# Setup nginx reverse proxy for Ronin UI
+#
+_ronin_ui_vhost() {
+    if [ ! -f /etc/nginx/sites-enabled/001-roninui ]; then
+        local _tor_hostname
+        _tor_hostname=$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)
+
+        test -d /etc/nginx/sites-enabled || sudo mkdir /etc/nginx/sites-enabled
+
+        test -d /var/log/nginx || sudo mkdir /var/log/nginx
+
+        test -d /etc/nginx/logs || sudo mkdir /etc/nginx/logs
+
+        # Generate nginx.conf
+        sudo bash -c "cat <<'EOF' >/etc/nginx/nginx.conf
+worker_processes  2;
+worker_rlimit_nofile 65535;
+
+error_log  logs/error.log;
+error_log  logs/error.log  notice;
+error_log  logs/error.log  info;
+
+events {
+    worker_connections  8192;
+    use epoll;
+
+    multi_accept on;
+}
+
+http {
+    default_type  application/octet-stream;
+
+    log_format  main  '\$remote_addr - \$remote_user [\$time_local] \"\$request\" '
+                      '\$status \$body_bytes_sent \"\$http_referer\" '
+                      '\"\$http_user_agent\" \"\$http_x_forwarded_for\"';
+
+    client_header_timeout 10m;
+    client_body_timeout 10m;
+    client_max_body_size 0;
+    client_header_buffer_size 1k;
+
+    keepalive_timeout  10 10;
+
+    gzip  on;
+    gzip_buffers 16 8k;
+    gzip_comp_level 1;
+    gzip_http_version 1.1;
+    gzip_min_length 10;
+    gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xlm+rss text/javascript image/x-icon application/vnd.ms-fontobject font/opentype application/x-font-ttf;
+    gzip_vary off;
+    gzip_proxied any;
+    gzip_disable \"msie6\";
+    gzip_static off;
+
+    server_tokens off;
+    limit_conn_zone \$binary_remote_addr zone=arbeit:10m;
+    connection_pool_size 256;
+    reset_timedout_connection on;
+    ignore_invalid_headers on;
+
+    include /etc/nginx/sites-enabled/*;
+}
+EOF"
+        # Generate default server vhost
+        sudo bash -c "cat <<EOF >/etc/nginx/sites-enabled/000-default
+server {
+    listen 80 default_server;
+
+    server_name_in_redirect off;
+    return 444;
+}
+EOF"
+        # Generate Ronin UI reverse proxy server vhost
+        sudo bash -c "cat <<'EOF' >/etc/nginx/sites-enabled/001-roninui
+server {
+    listen ${ip}:80;
+    server_name ronindojo ${_tor_hostname};
+
+    ## Access and error logs.
+    access_log /var/log/nginx/ronindojo_access.log;
+    error_log /var/log/nginx/ronindojo_error.log;
+
+    # Prevent iframe jacking
+    add_header X-Frame-Options \"SAMEORIGIN\";
+
+    # Prevent clickjacking attacks
+    add_header X-Frame-Options DENY;
+
+    # Prevent \"mime\" based attacks
+    add_header X-Content-Type-Options nosniff;
+
+    # Prevent XSS attacks
+    add_header X-XSS-Protection \"1; mode=block\";
+
+    location / {
+        proxy_http_version      1.1;
+        proxy_set_header        Upgrade \$http_upgrade;
+        proxy_set_header        Connection \"upgrade\";
+        proxy_set_header        Host \$http_host;
+        proxy_cache_bypass      \$http_upgrade;
+        proxy_next_upstream     error timeout http_502 http_503 http_504;
+        proxy_pass              http://127.0.0.1:8470;
+    }
+}
+EOF"
+    elif ! sudo grep -q "${ip}" /etc/nginx/sites-enabled/001-roninui; then
+        # Updates the ip in vhost
+        sudo sed -i "s/listen .*$/listen ${ip}:80;/" /etc/nginx/sites-enabled/001-roninui
+
+        # Reload nginx server
+        sudo systemctl reload --quiet nginx
+    fi
+
+    # Enable nginx on boot
+    if ! systemctl is-enabled --quiet nginx; then
+        sudo systemctl enable --quiet nginx
+    fi
+
+    return 0
 }
 
 #
 # Ronin UI Uninstall
 #
 _ronin_ui_uninstall() {
-    cd "${ronin_ui_backend_dir}" || exit
+    cd "${ronin_ui_path}" || exit
 
     cat <<EOF
 ${red}
 ***
-Uninstalling Ronin UI Backend...
+Uninstalling Ronin UI...
 ***
 ${nc}
 EOF
     _sleep
 
     # Delete app from process list
-    pm2 delete "Ronin Backend" &>/dev/null
+    pm2 delete "RoninUI" &>/dev/null
 
     # dump all processes for resurrecting them later
     pm2 save 1>/dev/null
 
-    # Remove ${ronin_ui_backend_dir}
+    # Remove ${ronin_ui_path}
     cd "${HOME}" || exit
-    rm -rf "${ronin_ui_backend_dir}" || exit
+
+    rm -rf "${ronin_ui_path}" || exit
+
+    # Remove nginx vhost and disable nginx on boot
+    sudo rm /etc/nginx/sites-enabled/001-roninui
+    sudo systemctl disable --now nginx
+
+    # Disable avahi host and disable avahi-daemon on boot
+    sudo rm /etc/avahi/services/http.service
+    sudo systemctl disable --now avahi-daemon
 
     return 0
 }

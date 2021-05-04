@@ -124,7 +124,7 @@ EOF
 
         _is_mempool && _mempool_uninstall
 
-        _is_ronin_ui_backend && _ronin_ui_uninstall
+        _is_ronin_ui && _ronin_ui_uninstall
 
         _is_fan_control && _fan_control_uninstall
 

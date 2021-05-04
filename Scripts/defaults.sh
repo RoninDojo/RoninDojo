@@ -11,6 +11,9 @@ fi
 # Package dependencies associative array
 #
 declare -A package_dependencies=(
+    [avahi-daemon]=avahi
+    [nginx]=nginx
+    [pnpm]=pnpm
     [java]=jdk11-openjdk
     [tor]=tor
     [python3]=python3
@@ -25,7 +28,6 @@ declare -A package_dependencies=(
     [docker-compose]=docker-compose
     [ufw]=ufw
     [rsync]=rsync
-    [npm]=npm
     [node]=nodejs
     [jq]=jq
     [pipenv]=python-pipenv
@@ -67,7 +69,7 @@ ronin_specter_menu="$HOME/RoninDojo/Scripts/Menu/menu-specter.sh"
 ronin_system_menu="$HOME/RoninDojo/Scripts/Menu/menu-system.sh"
 ronin_system_menu2="$HOME/RoninDojo/Scripts/Menu/menu-system2.sh"
 ronin_system_storage="$HOME/RoninDojo/Scripts/Menu/menu-system-storage.sh"
-ronin_ui_backend_menu="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui-backend.sh"
+ronin_ui_menu="$HOME/RoninDojo/Scripts/Menu/menu-ronin-ui.sh"
 ronin_updates_menu="$HOME/RoninDojo/Scripts/Menu/menu-system-updates.sh"
 ronin_whirlpool_menu="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool.sh"
 ronin_whirlpool_stat_menu="$HOME/RoninDojo/Scripts/Menu/menu-whirlpool-wst.sh"
@@ -87,7 +89,7 @@ dojo_path="$HOME/dojo"
 dojo_path_my_dojo="${dojo_path}/docker/my-dojo"
 ronin_data_dir="$HOME/.config/RoninDojo/data"
 boltzmann_path="$HOME/boltzmann"
-ronin_ui_backend_dir="$HOME/Ronin-UI-Backend"
+ronin_ui_path="$HOME/Ronin-UI"
 
 #
 # Data backup variables
@@ -107,6 +109,7 @@ samourai_repo='https://code.samourai.io/ronindojo/samourai-dojo.git'
 samourai_commitish="v1.9.0" # Tag release
 boltzmann_repo='https://code.samourai.io/oxt/boltzmann.git'
 whirlpool_stats_repo='https://code.samourai.io/whirlpool/whirlpool_stats.git'
+ronin_ui_repo="https://code.samourai.io/ronindojo/ronin-ui.git"
 
 #
 # Filesystem Defaults

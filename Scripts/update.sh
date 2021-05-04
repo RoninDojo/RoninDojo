@@ -198,7 +198,7 @@ _update_09() {
 # Migrate user.conf variables to lowercase
 _update_10() {
     if [ -f "${HOME}"/.config/RoninDojo/user.conf ]; then
-        for var in "PRIMARY_STORAGE" "SECONDARY_STORAGE" "INSTALL_DIR" "RONIN_UI_BACKEND_DIR" "GUI_API" "RONIN_DOJO_BRANCH" "SAMOURAI_COMMITISH"; do
+        for var in "PRIMARY_STORAGE" "SECONDARY_STORAGE" "INSTALL_DIR" "GUI_API" "RONIN_DOJO_BRANCH" "SAMOURAI_COMMITISH"; do
             if grep "${var}" "${HOME}"/.config/RoninDojo/user.conf 1>/dev/null; then
                 sed -i "s/${var}/${var,,}/" "${HOME}"/.config/RoninDojo/user.conf
             fi
@@ -298,5 +298,49 @@ EOF
 
         # Finalize
         touch "$HOME"/.config/RoninDojo/data/updates/16-"$(date +%m-%d-%Y)"
+    fi
+}
+
+# Uninstall legacy Ronin UI
+_update_17() {
+    if [ -d "$HOME"/Ronin-UI-Backend ]; then
+        cd "$HOME"/Ronin-UI-Backend || exit
+
+        pm2 delete "Ronin Backend" &>/dev/null
+
+        pm2 save 1>/dev/null
+
+        cd "$HOME" || exit
+
+        rm -rf "$HOME"/Ronin-UI-Backend || exit
+
+        cat <<EOF
+${red}
+***
+Legacy Ronin UI detected...
+***
+EOF
+
+        _sleep
+
+        cat <<EOF
+***
+Uninstalling Ronin UI Backend...
+***
+EOF
+
+        _sleep
+
+        cat <<EOF
+***
+Installing Ronin UI Server...
+***
+${nc}
+EOF
+
+        _is_ronin_ui || _ronin_ui_install
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/17-"$(date +%m-%d-%Y)"
     fi
 }

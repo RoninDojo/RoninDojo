@@ -87,10 +87,16 @@ else
     git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
 fi
 
-# Check if UI Backend needs installing
-if ! _ronin_ui_update_check; then
-    _install_ronin_ui_backend
-fi
+# Install Ronin UI
+cat <<EOF
+${red}
+***
+Installing Ronin UI...
+***
+${nc}
+EOF
+
+_ronin_ui_install
 
 cat <<EOF
 ${red}

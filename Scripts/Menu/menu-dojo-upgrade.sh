@@ -19,7 +19,21 @@ _update_10
 # Fix any existing specter installs that are missing gcc dependency
 _update_16
 
+# Uninstall legacy Ronin UI
+test -f "$HOME"/.config/RoninDojo/data/updates/17-* || _update_17
+
 _load_user_conf
+
+if _is_ronin_ui; then # Update Ronin UI
+    cat <<EOF
+${red}
+***
+Updating Ronin UI...
+***
+${nc}
+EOF
+    _ronin_ui_update
+fi
 
 _check_dojo_perms "${dojo_path_my_dojo}"
 # make sure permissions are properly set for ${dojo_path_my_dojo}
@@ -83,11 +97,6 @@ if _is_bisq ; then
     _bisq_install
 fi
 
-# Check if UI Backend needs installing
-if ! _ronin_ui_update_check; then
-    _install_ronin_ui_backend
-fi
-
 cd "${dojo_path_my_dojo}" || exit
 
 # Re-enable the indexer
@@ -113,5 +122,5 @@ test -f "$HOME"/.config/RoninDojo/data/updates/08-* || _update_08 # Make sure mn
 
 _pause return
 
-bash -c "$ronin_system_menu"
+ronin
 # return to menu

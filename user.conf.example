@@ -48,12 +48,12 @@
 #install_dir=""
 
 #
-# Ronin UI Backend & Ronin GUI Credentials
+# Ronin UI
 #
 
-# ronin_ui_backend_dir must be set before installation of backend UI service
+# ronin_ui_path must be set before installation of backend UI service
 
-#ronin_ui_backend_dir=""
+#ronin_ui_path=""
 
 # These values are for the desktop GUI app
 #gui_api=""
