@@ -344,3 +344,19 @@ EOF
         touch "$HOME"/.config/RoninDojo/data/updates/17-"$(date +%m-%d-%Y)"
     fi
 }
+
+# Update docker-bitcoind.conf settings for existing users
+_update_18() {
+    _load_user_conf
+
+    if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then
+        if grep -q "BITCOIND_RPC_THREADS=12" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf; then
+            sed -i "s/BITCOIND_RPC_THREADS.*$/BITCOIND_RPC_THREADS=${BITCOIND_RPC_THREADS:-16}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
+        elif grep -q "BITCOIND_MAX_MEMPOOL=1024" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf; then
+            sed -i "s/BITCOIND_MAX_MEMPOOL.*$/BITCOIND_MAX_MEMPOOL=${BITCOIND_MAX_MEMPOOL:-2048}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
+        fi
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/18-"$(date +%m-%d-%Y)"
+    fi
+}
