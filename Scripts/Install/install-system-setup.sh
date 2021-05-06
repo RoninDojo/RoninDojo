@@ -4,6 +4,8 @@
 . "$HOME"/RoninDojo/Scripts/defaults.sh
 . "$HOME"/RoninDojo/Scripts/functions.sh
 
+shopt -s extglob
+
 _load_user_conf
 
 if [ -d "$HOME"/dojo ]; then
@@ -299,9 +301,7 @@ _sleep
         test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    if [ -f "${storage_mount}"/swapfile ]; then
-        sudo rm -rf "${storage_mount}"/{swapfile,docker,tor} &>/dev/null
-    fi
+    sudo rm -rf "${storage_mount}"/!(backup|"lost+found") &>/dev/null
 
     if findmnt "${storage_mount}" 1>/dev/null; then
         sudo umount "${storage_mount}"
@@ -436,7 +436,7 @@ EOF
         test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
     fi
 
-    sudo rm -rf "${storage_mount}"/{docker,tor,swapfile} &>/dev/null
+    sudo rm -rf "${storage_mount}"/!(backup|"lost+found") &>/dev/null
 
     if findmnt "${storage_mount}" 1>/dev/null; then
         sudo umount "${storage_mount}"
@@ -520,7 +520,100 @@ No Blockchain data found for salvage check 2...
 ${nc}
 EOF
     _sleep
+fi
+# checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
 
+# Start node migration check
+if _node_migration; then
+    cat <<EOF
+${red}
+***
+Found existing reusable node data from ${_node_name^}...
+***
+${nc}
+EOF
+
+    # Check if swap in use
+    if check_swap "${storage_mount}/swapfile"; then
+        test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
+    fi
+
+    sudo rm -rf "${storage_mount}"/!(backup|"lost+found") &>/dev/null
+
+    if findmnt "${storage_mount}" 1>/dev/null; then
+        sudo umount "${storage_mount}"
+        sudo rmdir "${storage_mount}" &>/dev/null
+    fi
+    # remove docker, tor, swap file directories from ${storage_mount}
+    # then unmount and remove ${storage_mount}
+
+    cat <<EOF
+${red}
+***
+Mounting drive...
+***
+${nc}
+EOF
+    _sleep
+
+    # Mount primary drive if not already mounted
+    findmnt "${primary_storage}" 1>/dev/null || sudo mount "${primary_storage}" "${install_dir}"
+
+    _sleep
+
+    cat <<EOF
+${red}
+***
+Displaying the name on the external disk...
+***
+${nc}
+EOF
+    _sleep
+
+    lsblk -o NAME,SIZE,LABEL "${primary_storage}"
+    # lsblk lists disk by device
+    # double-check that ${primary_storage} exists, and its storage capacity is what you expected
+
+    cat <<EOF
+${red}
+***
+Check output for ${primary_storage} and make sure everything looks ok...
+***
+${nc}
+EOF
+
+    df -h "${primary_storage}"
+    _sleep 5
+    # checks disk info
+
+    # Calculate swapfile size
+    _swap_size
+
+    create_swap --file "${install_dir_swap}" --size "${_size}"G
+    # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
+
+    _setup_tor
+    # tor configuration setup, see functions.sh
+
+    _docker_datadir_setup
+    # docker data directory setup, see functions.sh
+
+    cat <<EOF
+${red}
+***
+Dojo is ready to be installed!
+***
+${nc}
+EOF
+
+    # Make sure to wait for user interaction before continuing
+    _pause continue
+
+    # Make sure we don't run system install twice
+    touch "${ronin_data_dir}"/system-install
+
+    exit
+else
     # Check if swap in use
     if check_swap "${storage_mount}/swapfile" ; then
         test -f "${storage_mount}/swapfile" && sudo swapoff "${storage_mount}/swapfile" &>/dev/null
@@ -531,7 +624,6 @@ EOF
         sudo rmdir "${storage_mount}"
     fi
 fi
-# checks for blockchain data to salvage, if found exit to dojo install, and if not found continue to format drive
 
 cat <<EOF
 ${red}

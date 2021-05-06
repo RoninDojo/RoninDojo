@@ -2811,3 +2811,48 @@ _ufw_rule_add(){
         sudo ufw reload
     fi
 }
+
+#
+# Node Migration
+#
+_node_migration() {
+    test -d "${bitcoin_ibd_backup_dir}" || mkdir -p "${bitcoin_ibd_backup_dir}"
+
+    # Search for umbrel and mynode bitcoind ibd data
+    for node in umbrel mynode; do
+        if _bitcoind_ibd_search "${node}"/bitcoin; then
+            export _node_name="${node}"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+#
+# Bitcoind Search
+#
+_bitcoind_ibd_search() {
+    local _is_true=false
+
+    _load_user_conf
+
+    # Search of bitcoind ibd data
+    for dir in blocks chainstate indexes; do
+        if [ -d "${install_dir}"/"${1}"/"${dir}" ]; then
+            _is_true=true
+
+            if [ ! -d "${bitcoin_ibd_backup_dir}"/"${dir}" ]; then
+                sudo mv "${install_dir}"/"${1}"/"${dir}" "${bitcoin_ibd_backup_dir}"/"${dir}"
+            fi
+        fi
+    done
+
+    # Edit directory permissions
+    if ${_is_true}; then
+        sudo chown -R 1105:1108 "${bitcoin_ibd_backup_dir}"/*
+        return 0
+    fi
+
+    return 1
+}
