@@ -38,6 +38,7 @@ _main() {
     test -f "$HOME"/.config/RoninDojo/data/updates/15-* || _update_15 # Remove duplicate bisq integration changes
     test -f "$HOME"/.config/RoninDojo/data/updates/16-* || _update_16 # Fix any existing specter installs that are missing gcc dependency
     test -f "$HOME"/.config/RoninDojo/data/updates/17-* || _update_17  # Uninstall legacy Ronin UI
+    test -f "$HOME"/.config/RoninDojo/data/updates/18-* || _update_18  # Update docker-bitcoind.conf settings for existing users
 
     # Create symbolic link for main ronin script
     if [ ! -h /usr/local/bin/ronin ]; then
