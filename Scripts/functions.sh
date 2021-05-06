@@ -544,7 +544,9 @@ EOF
     _sleep
 
     # Check package dependencies
-    _check_pkg nginx
+    for pkg in nginx pm2; do
+        _check_pkg "${pkg}"
+    done
 
     _check_pkg "avahi-daemon" "avahi"
 

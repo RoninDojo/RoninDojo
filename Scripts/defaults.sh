@@ -12,6 +12,7 @@ fi
 #
 declare -A package_dependencies=(
     [avahi-daemon]=avahi
+    [pm2]=pm2
     [nginx]=nginx
     [java]=jdk11-openjdk
     [tor]=tor
