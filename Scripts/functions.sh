@@ -2819,8 +2819,13 @@ _node_migration() {
     test -d "${bitcoin_ibd_backup_dir}" || mkdir -p "${bitcoin_ibd_backup_dir}"
 
     # Search for umbrel and mynode bitcoind ibd data
-    for node in umbrel mynode; do
-        if _bitcoind_ibd_search "${node}"/bitcoin; then
+    for node in umbrel mynode casa; do
+        if [ "${node}" = "casa" ]; then
+            if _bitcoind_ibd_search "${node}"/volumes/applications_bitcoind-data/_data; then
+                export _node_name="${node}"
+                return 0
+            fi
+        elif _bitcoind_ibd_search "${node}"/bitcoin; then
             export _node_name="${node}"
             return 0
         fi
