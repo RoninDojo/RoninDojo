@@ -768,6 +768,9 @@ EOF"
         sudo systemctl enable --quiet nginx
     fi
 
+    # Start nginx service
+    _is_active nginx
+
     return 0
 }
 
