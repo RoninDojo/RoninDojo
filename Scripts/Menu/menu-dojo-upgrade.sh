@@ -24,17 +24,6 @@ test -f "$HOME"/.config/RoninDojo/data/updates/17-* || _update_17
 
 _load_user_conf
 
-if _is_ronin_ui; then # Update Ronin UI
-    cat <<EOF
-${red}
-***
-Updating Ronin UI...
-***
-${nc}
-EOF
-    _ronin_ui_update
-fi
-
 _check_dojo_perms "${dojo_path_my_dojo}"
 # make sure permissions are properly set for ${dojo_path_my_dojo}
 
