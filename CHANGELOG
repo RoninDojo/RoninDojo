@@ -1,3 +1,12 @@
+RoninDojo v1.9.2 Change Log
+
+- Introduce Web Application which replaces desktop application
+- Optimized Bitcoind settings
+- Update Electrum Rust Server to 0.8.9
+- Refactor Backup send/receive logic
+- Fix User and Root password change logic
+- refactor _rand_passwd function
+
 RoninDojo v1.9.1 Change Log
 
 - Update to Specter 1.3.0
