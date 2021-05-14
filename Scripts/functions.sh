@@ -493,9 +493,9 @@ HiddenServicePort 80 127.0.0.1:8470\n\
 
     # Populate or update "${ronin_data_dir}"/ronin-ui-tor-hostname with tor address
     if [ ! -f "${ronin_data_dir}"/ronin-ui-tor-hostname ]; then
-        sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname >"${ronin_data_dir}"/ronin-ui-tor-hostname
+        sudo bash -c "cat ${install_dir_tor}/hidden_service_ronin_backend/hostname >${ronin_data_dir}/ronin-ui-tor-hostname"
     elif ! sudo grep -q "$(sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname)" "${ronin_data_dir}"/ronin-ui-tor-hostname; then
-        sudo cat "${install_dir_tor}"/hidden_service_ronin_backend/hostname >"${ronin_data_dir}"/ronin-ui-tor-hostname
+        sudo bash -c "cat ${install_dir_tor}/hidden_service_ronin_backend/hostname >${ronin_data_dir}/ronin-ui-tor-hostname"
     fi
 }
 
@@ -558,22 +558,30 @@ EOF
     # cd into Ronin UI dir
     cd "${ronin_ui_path}" || exit
 
-    # get file URL
-    _file=$(curl -s https://ronindojo.io/downloads/RoninUI/version.json | jq -r .file)
+    # wget version.json
+    wget -q https://ronindojo.io/downloads/RoninUI/version.json -O /tmp/version.json
+
+    # get file
+    _file=$(jq -r .file /tmp/version.json)
+
+    # get sha256sum value
+    _shasum=$(jq -r .sha256 /tmp/version.json)
 
     wget -q https://ronindojo.io/downloads/RoninUI/"$_file"
 
-    tar xzf "$_file"
+    # Check integrity of archive download
+    if echo "${_shasum} ${_file}" | sha256sum --check --status; then
+        tar xzf "$_file"
 
-    rm -f "$_file"
+        rm "$_file" /tmp/version.json
 
-    # Generate .env file
-    cat << EOF >.env
+        # Generate .env file
+        cat << EOF >.env
 JWT_SECRET=$gui_jwt
 NEXT_TELEMETRY_DISABLED=1
 EOF
 
-    cat <<EOF
+        cat <<EOF
 ${red}
 ***
 Performing pnpm install, please wait...
@@ -581,9 +589,9 @@ Performing pnpm install, please wait...
 ${nc}
 EOF
 
-    pnpm install --prod &>/dev/null || { printf "\n %s***\nRonin UI pnpm install failed...\n***%s\n" "${red}" "${nc}";exit; }
+        pnpm install --prod &>/dev/null || { printf "\n %s***\nRonin UI pnpm install failed...\n***%s\n" "${red}" "${nc}";exit; }
 
-    cat <<EOF
+        cat <<EOF
 ${red}
 ***
 Performing Next start, please wait...
@@ -591,24 +599,34 @@ Performing Next start, please wait...
 ${nc}
 EOF
 
-    # Start app
-    pm2 start pm2.config.js &>/dev/null
+        # Start app
+        pm2 start pm2.config.js &>/dev/null
 
-    # pm2 save process list
-    pm2 save &>/dev/null
+        # pm2 save process list
+        pm2 save &>/dev/null
 
-    # pm2 system startup
-    pm2 startup &>/dev/null
+        # pm2 system startup
+        pm2 startup &>/dev/null
 
-    sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" &>/dev/null
+        sudo env PATH="$PATH:/usr/bin" /usr/lib/node_modules/pm2/bin/pm2 startup systemd -u "${ronindojo_user}" --hp "$HOME" &>/dev/null
 
-    _ronin_ui_setup_tor
+        _ronin_ui_setup_tor
 
-    _ronin_ui_vhost
+        _ronin_ui_vhost
 
-    _ronin_ui_avahi_service
+        _ronin_ui_avahi_service
 
-    _ufw_rule_add "${ip_range}" "80"
+        _ufw_rule_add "${ip_range}" "80"
+    else
+        _bad_shasum=$(sha256sum ${_file})
+        cat <<EOF
+${red}
+***
+Ronin UI archive verification failed! Valid sum is ${_shasum}, got ${_bad_shasum} instead...
+***
+${nc}
+EOF
+    fi
 }
 
 #
@@ -2308,7 +2326,8 @@ RestartSec=60
 [Install]
 WantedBy=multi-user.target
 EOF
-"specter
+"
+}
 
 _specter_uninstall() {
     local _specter_version
