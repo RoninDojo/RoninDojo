@@ -2308,9 +2308,7 @@ RestartSec=60
 [Install]
 WantedBy=multi-user.target
 EOF
-"
-    return 0
-}
+"specter
 
 _specter_uninstall() {
     local _specter_version
@@ -2380,7 +2378,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Downloading latest Specter release......
+Downloading latest Specter release...
 ***
 ${nc}
 EOF
