@@ -167,27 +167,28 @@ ${nc}
 EOF
 
         cd "$dojo_path_my_dojo" || exit
-        ./dojo.sh uninstall
-        # uninstall dojo
+        if ./dojo.sh uninstall; then
+            # uninstall dojo
 
-        "${dojo_conf_backup}" && _dojo_backup
+            "${dojo_conf_backup}" && _dojo_backup
 
-        rm -rf "${dojo_path}"
+            rm -rf "${dojo_path}"
 
-        # Returns HOME since $dojo_path deleted
-        cd "${HOME}" || exit
+            # Returns HOME since $dojo_path deleted
+            cd "${HOME}" || exit
 
-        sudo systemctl restart --quiet docker
-        # restart docker daemon
+            sudo systemctl restart --quiet docker
+            # restart docker daemon
 
-        cat <<EOF
+            cat <<EOF
 ${red}
 ***
 All RoninDojo features has been Uninstalled...
 ***
 ${nc}
 EOF
-        _sleep
+            _sleep
+        fi
 
         _pause return
 
