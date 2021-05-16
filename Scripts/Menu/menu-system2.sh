@@ -117,46 +117,14 @@ EOF
         "${tor_backup}" && _tor_backup
         # tor backup must happen prior to dojo uninstall
 
-        # Check if applications need to be uninstalled
-        _is_specter && _specter_uninstall
-
-        _is_bisq && _bisq_uninstall
-
+        # uninstall mempool.space
         _is_mempool && _mempool_uninstall
 
-        _is_ronin_ui && _ronin_ui_uninstall
+        # uninstall specter desktop
+        _is_specter && _specter_uninstall
 
-        _is_fan_control && _fan_control_uninstall
-
-        if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
-            cd "${HOME}"/Whirlpool-Stats-Tool || exit
-
-            cat <<EOF
-${red}
-***
-Uninstalling Whirlpool Stats Tool...
-***
-${nc}
-EOF
-            pipenv --rm &>/dev/null
-            cd - 1>/dev/null || exit
-            rm -rf "${HOME}"/Whirlpool-Stats-Tool
-        fi
-
-        if [ -d "${HOME}"/boltzmann ]; then
-            cd "${HOME}"/boltzmann || exit
-
-            cat <<EOF
-${red}
-***
-Uninstalling Bolzmann...
-***
-${nc}
-EOF
-            pipenv --rm &>/dev/null
-            cd - 1>/dev/null || exit
-            rm -rf "${HOME}"/boltzmann
-        fi
+        # uninstall bisq support
+        _is_bisq && _bisq_uninstall
 
         cat <<EOF
 ${red}
@@ -167,9 +135,45 @@ ${nc}
 EOF
 
         cd "$dojo_path_my_dojo" || exit
-        if ./dojo.sh uninstall; then
-            # uninstall dojo
 
+        # uninstall samourai dojo
+        if ./dojo.sh uninstall; then
+            # Check if applications need to be uninstalled
+            _is_ronin_ui && _ronin_ui_uninstall
+
+            _is_fan_control && _fan_control_uninstall
+
+            if [ -d "${HOME}"/Whirlpool-Stats-Tool ]; then
+                cd "${HOME}"/Whirlpool-Stats-Tool || exit
+
+                cat <<EOF
+${red}
+***
+Uninstalling Whirlpool Stats Tool...
+***
+${nc}
+EOF
+                pipenv --rm &>/dev/null
+                cd - 1>/dev/null || exit
+                rm -rf "${HOME}"/Whirlpool-Stats-Tool
+            fi
+
+            if [ -d "${HOME}"/boltzmann ]; then
+                cd "${HOME}"/boltzmann || exit
+
+                cat <<EOF
+${red}
+***
+Uninstalling Bolzmann...
+***
+${nc}
+EOF
+                pipenv --rm &>/dev/null
+                cd - 1>/dev/null || exit
+                rm -rf "${HOME}"/boltzmann
+            fi
+
+            # Backup samourai dojo credentials
             "${dojo_conf_backup}" && _dojo_backup
 
             rm -rf "${dojo_path}"
