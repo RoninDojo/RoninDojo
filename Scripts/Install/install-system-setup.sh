@@ -348,7 +348,7 @@ EOF
     # Calculate swapfile size
     _swap_size
 
-    create_swap --file "${install_dir_swap}" --size "${_size}"G
+    create_swap --file "${install_dir_swap}" --count "${_size}"
     # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
     _setup_tor
@@ -487,7 +487,7 @@ EOF
     # Calculate swapfile size
     _swap_size
 
-    create_swap --file "${install_dir_swap}" --size "${_size}"G
+    create_swap --file "${install_dir_swap}" --count "${_size}"
     # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
     _setup_tor
@@ -577,7 +577,7 @@ _sleep 5
 # Calculate swapfile size
 _swap_size
 
-create_swap --file "${install_dir_swap}" --size "${_size}"G
+create_swap --file "${install_dir_swap}" --count "${_size}"
 # created a 2GB swapfile on the external drive instead of sd card to preserve sd card life
 
 _setup_tor

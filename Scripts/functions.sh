@@ -2143,13 +2143,12 @@ _swap_size() {
         if [ -z "${swapfile_size}" ]; then
             # < 2GB set twice RAM total for swapfile
             if (( num >= 0 && _size <= num )); then
-                _size=$((_size * 2 / 1000))
+                _size=$((_size * 2))
                 break
             fi
 
-            # > 2GB
+            # > 2GB, use same amount for swapfile
             if (( num >= 2096 && num <= _size )); then
-                _size=$((_size / 1000))
                 break
             fi
         fi
@@ -2168,8 +2167,8 @@ create_swap() {
                 file=${2}
                 shift 2
                 ;;
-            --size|-s)
-                size=${2}
+            --count|-c)
+                count=${2}
                 shift 2
                 ;;
             -*|--*=) # unsupported flags
@@ -2187,7 +2186,7 @@ Creating swapfile...
 ***
 ${nc}
 EOF
-        sudo dd if=/dev/zero of="${file}" bs="${size}" count=1 2>/dev/null
+        sudo dd if=/dev/zero of="${file}" bs=1M count="${count}" 2>/dev/null
         sudo chmod 600 "${file}"
         sudo mkswap -p 0 "${file}" 1>/dev/null
         sudo swapon "${file}"
