@@ -60,7 +60,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Install Specter Server using the manage applications menu...
+Instale Spectre Server usando el menú de administración de aplicaciones...
 ***
 ${nc}
 EOF

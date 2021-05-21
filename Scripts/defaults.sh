@@ -53,7 +53,7 @@ HEIGHT=22
 WIDTH=76
 CHOICE_HEIGHT=16
 TITLE="RoninDojo ${ronindojo_version}"
-MENU="Choose one of the following menu options:"
+MENU="Elija una de las siguientes opciones de menú:"
 
 # RoninDojo Menu Paths
 ronin_applications_menu="$HOME/RoninDojo/Scripts/Menu/menu-applications.sh"

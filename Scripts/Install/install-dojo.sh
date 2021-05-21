@@ -91,7 +91,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Installing Ronin UI...
+Instalando Ronin UI...
 ***
 ${nc}
 EOF
@@ -271,7 +271,7 @@ Todas las opciones de RoninDojo han sido instaladas...
 ${nc}
 EOF
     # Make sure to wait for user interaction before continuing
-    _pause continue
+    _pause seguir
 
     # Backup dojo credentials
     "${dojo_conf_backup}" && _dojo_backup

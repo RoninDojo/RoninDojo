@@ -63,7 +63,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Adding user to the docker group and loading RoninDojo CLI...
+Agregar un usuario al grupo de docker y cargar la CLI de Ronin Dojo...
 ***
 ${nc}
 EOF
@@ -87,11 +87,11 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Removing legacy fstab entries and replacing with systemd mount service...
+Eliminación de entradas fstab heredadas y reemplazo con el servicio de montaje de systemd...
 ***
 ${nc}
 EOF
-                _sleep 4 --msg "Starting RoninDojo in"
+                _sleep 4 --msg "Iniciando RoninDojo en"
             fi
         fi
     fi
@@ -101,7 +101,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Removing ipv6 disable setting in kernel line favor of sysctl...
+Eliminando la configuración de desactivación de ipv6 en la línea del kernel a favor de sysctl...
 ***
 ${nc}
 EOF
@@ -219,7 +219,7 @@ _check_pkg() {
         cat <<EOF
 ${red}
 ***
-Installing ${pkg_name}...
+Instalando ${pkg_name}...
 ***
 ${nc}
 EOF
@@ -227,7 +227,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-${pgk_name} failed to install!
+${pgk_name} Fallo en la instalación!
 ***
 ${nc}
 EOF
@@ -281,7 +281,7 @@ _sleep() {
 
     while [ "$secs" -gt 0 ]; do
         if $verbose; then
-            printf "%s%s %s\033[0K seconds...%s\r" "${red}" "${msg}" "${secs}" "${nc}"
+            printf "%s%s %s\033[0K segundos...%s\r" "${red}" "${msg}" "${secs}" "${nc}"
         fi
         sleep 1
         : $((secs--))
@@ -356,7 +356,7 @@ _tor_restore() {
         cat <<EOF
 ${red}
 ***
-Tor credentials backup detected and restored...
+Copia de seguridad de las credenciales de Tor detectada y restaurada...
 ***
 ${nc}
 EOF
@@ -365,7 +365,7 @@ _sleep
         cat <<EOF
 ${red}
 ***
-If you wish to disable this feature, set tor_backup=false in $HOME/.conf/RoninDojo/user.conf file...
+Si desea deshabilitar esta función, configure tor_backup=false en $HOME/.conf/RoninDojo/user.conf archivo...
 ***
 ${nc}
 EOF
@@ -387,7 +387,7 @@ _setup_tor() {
         cat <<TOR_CONFIG
 ${red}
 ***
-Initial Tor Configuration...
+Configuración inicial de Tor...
 ***
 ${nc}
 TOR_CONFIG
@@ -406,7 +406,7 @@ TOR_CONFIG
         cat <<TOR_DIR
 ${red}
 ***
-Creating Tor directory...
+Creando directorio Tor...
 ***
 ${nc}
 TOR_DIR
@@ -427,7 +427,7 @@ TOR_DIR
     cat <<TOR_CONFIG
 ${red}
 ***
-Setting up the Tor service...
+Configurar el servicio Tor...
 ***
 ${nc}
 TOR_CONFIG
@@ -448,7 +448,7 @@ _is_electrs() {
         cat <<EOF
 ${red}
 ***
-Electrum Rust Server is not installed...
+Electrum Rust Server no está instalado...
 ***
 ${nc}
 EOF
@@ -456,7 +456,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Enable Electrum Rust Server using the manage applications menu...
+Habilite Electrum Rust Server usando el menú de administración de aplicaciones...
 ***
 ${nc}
 EOF
@@ -477,7 +477,7 @@ _ronin_ui_setup_tor() {
         cat <<EOF
 ${red}
 ***
-Configuring RoninDojo Backend Tor Address...
+Configuración de la dirección Tor del backend del RoninDojo..
 ***
 ${nc}
 EOF
@@ -538,7 +538,7 @@ _ronin_ui_install() {
     cat <<EOF
 ${red}
 ***
-Checking package dependencies for Ronin UI...
+Comprobando las dependencias del paquete para Ronin UI...
 ***
 ${nc}
 EOF
@@ -584,7 +584,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Performing pnpm install, please wait...
+Realizando la instalación de pnpm, espere...
 ***
 ${nc}
 EOF
@@ -594,7 +594,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Performing Next start, please wait...
+Iniciando Next, por favor espere...
 ***
 ${nc}
 EOF
@@ -622,7 +622,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Ronin UI archive verification failed! Valid sum is ${_shasum}, got ${_bad_shasum} instead...
+Error en la verificación del archivo Ronin! La suma válida es ${_shasum}, tiene ${_bad_shasum} en su lugar...
 ***
 ${nc}
 EOF
@@ -802,7 +802,7 @@ _ronin_ui_uninstall() {
     cat <<EOF
 ${red}
 ***
-Uninstalling Ronin UI...
+Desinstalar Ronin UI...
 ***
 ${nc}
 EOF
@@ -898,7 +898,7 @@ _fan_control_install() {
         cat <<EOF
 ${red}
 ***
-Fan control upgraded...
+Control de ventilador mejorado...
 ***
 ${nc}
 EOF
@@ -906,7 +906,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Fan control installed...
+Control de ventilador instalado...
 ***
 ${nc}
 EOF
@@ -932,7 +932,7 @@ _fan_control_uninstall() {
         cat <<EOF
 ${red}
 ***
-Fan control Uninstalled...
+Desinstalación del control del ventilador...
 ***
 ${nc}
 EOF
@@ -1063,7 +1063,7 @@ _indexer_prompt() {
     cat <<EOF
 ${red}
 ***
-No Indexer found...
+No se encontró ningún indexador...
 ***
 ${nc}
 EOF
@@ -1116,13 +1116,13 @@ EOF
 
     # indexer names here are used as data source
     while true; do
-        select indexer in "Samourai Indexer (recommended)" "Electrum Rust Server" "No Indexer (not recommended)"; do
+        select indexer in "Indizador Samourai (recomendado)" "Servidor Electrum Rust" "Sin indexador (No recomendado)"; do
             case $indexer in
-                "Samourai Indexer"*)
+                "Indizador Samourai"*)
                     cat <<EOF
 ${red}
 ***
-Selected Samourai Indexer...
+Indizador Samourai seleccionado...
 ***
 ${nc}
 EOF
@@ -1134,11 +1134,11 @@ EOF
                     return 0
                     ;;
                     # Samourai indexer install enabled in .conf.tpl files using sed
-                "Electrum"*)
+                "Servidor Electrum Rust"*)
                     cat <<EOF
 ${red}
 ***
-Selected Electrum Rust Server...
+Servidor Electrum Rust seleccionado...
 ***
 ${nc}
 EOF
@@ -1150,11 +1150,11 @@ EOF
                     return 0
                     ;;
                     # triggers electrs install script
-                "No Indexer"*)
+                "Sin indexador"*)
                     cat <<EOF
 ${red}
 ***
-An Indexer will not be installed...
+No se instalará un indexador...
 ***
 ${nc}
 EOF
@@ -1166,7 +1166,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Invalid Entry! Valid values are 1, 2 & 3...
+Respuesta invalida! Los valores válidos son 1, 2 y 3 ...
 ***
 ${nc}
 EOF
@@ -1190,7 +1190,7 @@ _is_dojo() {
         cat <<EOF
 ${red}
 ***
-Missing ${dojo_path} directory!
+Falta el directorio ${dojo_path}!
 ${nc}
 EOF
         _pause volver
@@ -1226,7 +1226,7 @@ _mempool_uninstall() {
     cat <<EOF
 ${red}
 ***
-Uninstalling Mempool Space Visualizer...
+Desinstalación de Mempool Space Visualizer...
 ***
 ${nc}
 EOF
@@ -1236,7 +1236,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Mempool Space Visualizer Uninstalled...
+Mempool Space Visualizer desinstalado...
 ***
 ${nc}
 EOF
@@ -1363,7 +1363,7 @@ _dojo_update() {
         cat <<EOF
 ${red}
 ***
-Invalid branch or tag name for ${samourai_commitish}!!!
+Nombre de etiqueta o rama no válido para ${samourai_commitish}!!!
 ***
 ${nc}
 EOF
@@ -1425,7 +1425,7 @@ _dojo_upgrade() {
     cat <<EOF
 ${red}
 ***
-Performing Dojo upgrade to finalize changes...
+Realización de la actualización de Dojo para finalizar los cambios...
 ***
 ${nc}
 EOF
@@ -1482,7 +1482,7 @@ _dojo_check() {
         cat <<EOF
 ${red}
 ***
-Missing drive mount at ${install_dir}!
+Falta el montaje de la unidad en ${install_dir}!
 ***
 ${nc}
 EOF
@@ -1491,11 +1491,11 @@ EOF
         cat <<EOF
 ${red}
 ***
-Please contact support for assistance...
+Comuníquese con el soporte para obtener ayuda...
 ***
 ${nc}
 EOF
-        _sleep 5 --msg "Returning to main menu in"
+        _sleep 5 --msg "Volviendo al menú principal en"
         ronin
     fi
 
@@ -1564,7 +1564,7 @@ _stop_dojo() {
         cat <<EOF
 ${red}
 ***
-Missing ${dojo_path} directory!
+Falta el directorio ${dojo_path}!
 ***
 ${nc}
 EOF
@@ -1582,7 +1582,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Dojo is already stopped!
+Dojo ya está detenido!
 ***
 ${nc}
 EOF
@@ -1592,7 +1592,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Preparing shutdown of Dojo...
+Preparando el cierre de Dojo...
 ***
 ${nc}
 EOF
@@ -1617,7 +1617,7 @@ _sleep
         cat <<EOF
 ${red}
 ***
-Waiting for shutdown of Bitcoin Daemon...
+Esperando el cierre de Bitcoin Daemon...
 ***
 ${nc}
 EOF
@@ -1633,7 +1633,7 @@ EOF
                 cat <<EOF
 ${red}
 ***
-Bitcoin Server Daemon stopped...
+Detenido el daemon del servidor Bitcoin...
 ***
 ${nc}
 EOF
@@ -1644,7 +1644,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Stopping all Docker containers...
+Deteniendo todos los contenedores de Docker...
 ***
 ${nc}
 EOF
@@ -1713,7 +1713,7 @@ _ronindojo_update() {
             cat <<EOF
 ${red}
 ***
-Invalid branch or tag name for ${ronin_dojo_branch}!!!
+Nombre de etiqueta o rama no válido para ${ronin_dojo_branch}!!!
 ***
 ${nc}
 EOF
@@ -1723,7 +1723,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Git repo found, downloading updates...
+Se encontró un repositorio de Git, descargando actualizaciones...
 ***
 ${nc}
 EOF
@@ -1809,7 +1809,7 @@ _docker_datadir_setup() {
     cat <<EOF
 ${red}
 ***
-Now configuring docker to use the external SSD...
+Ahora configurando Docker para usar el SSD externo...
 ***
 ${nc}
 EOF
@@ -1821,7 +1821,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-The /etc/docker directory already exists...
+El directorio / etc / docker ya existe...
 ***
 ${nc}
 EOF
@@ -1829,7 +1829,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Creating /etc/docker directory.
+Creando el directorio /etc/docker.
 ***
 ${nc}
 EOF
@@ -1845,7 +1845,7 @@ EOF"
         cat <<EOF
 ${red}
 ***
-Starting docker daemon.
+Iniciando Docker...
 ***
 ${nc}
 EOF
@@ -1948,9 +1948,9 @@ create_fs() {
                     cat <<EOF
 ${red}
 ***
-Error: unsupported filesystem type ${2}
-Available options are: ${supported_filesystems[@]}
-Exiting!
+Error: tipo de sistema de archivos no admitido ${2}
+Las opciones disponibles son: ${supported_filesystems[@]}
+Saliendo!!
 ***
 ${nc}
 EOF
@@ -1973,7 +1973,7 @@ EOF
                 shift 2
                 ;;
             -*|--*=) # unsupported flags
-                echo "Error: Unsupported flag $1" >&2
+                echo "Error: indicador no admitido $1" >&2
                 exit 1
                 ;;
         esac
@@ -1984,7 +1984,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Creating ${mountpoint} directory...
+Creando el directorio ${mountpoint}...
 ***
 ${nc}
 EOF
@@ -2017,7 +2017,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Using ${fstype} filesystem format for ${device} partition...
+Usando el formato del sistema de archivos $ {fstype} para la partición $ {device}...
 ***
 ${nc}
 EOF
@@ -2047,13 +2047,13 @@ EOF
         cat <<EOF
 ${red}
 ***
-Adding device ${device} to systemd.mount unit file
+Agregar dispositivo $ {device} al archivo de unidad systemd.mount
 ***
 ${nc}
 EOF
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
-Description=Mount External SSD Drive ${device}
+Description=Monte la unidad SSD externa ${device}
 
 [Mount]
 What=/dev/disk/by-uuid/${uuid}
@@ -2068,7 +2068,7 @@ EOF"
         cat <<EOF
 ${red}
 ***
-Mounting ${device} to ${mountpoint}
+Montando el disco duro ${device} en ${mountpoint}
 ***
 ${nc}
 EOF
@@ -2182,7 +2182,7 @@ create_swap() {
         cat <<EOF
 ${red}
 ***
-Creating swapfile...
+Creando Swapfile...
 ***
 ${nc}
 EOF
@@ -2194,7 +2194,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Swapfile already created...
+Swapfile ya creado...
 ***
 ${nc}
 EOF
@@ -2205,7 +2205,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Creating swapfile entry in /etc/fstab
+Creando una entrada de archivo de intercambio en /etc/fstab
 ***
 ${nc}
 EOF
@@ -2247,7 +2247,7 @@ _specter_hww_udev_rules() {
             cat <<EOF
 ${red}
 ***
-Adding ${ronindojo_user} to plugdev group...
+Añadiendo ${ronindojo_user} al grupo plugdev...
 ***
 ${nc}
 EOF
@@ -2266,7 +2266,7 @@ _specter_cert_check() {
         cat <<EOF
 ${red}
 ***
-Generating a self-signed certicate for local LAN use
+Generación de un certificado autofirmado para uso de LAN local...
 ***
 ${nc}
 EOF
@@ -2337,7 +2337,7 @@ _specter_uninstall() {
     cat <<EOF
 ${red}
 ***
-Uninstalling Specter ${_specter_version:-$specter_version}...
+Desinstalar Spectre ${_specter_version:-$specter_version}...
 ***
 ${nc}
 EOF
@@ -2388,7 +2388,7 @@ _specter_install(){
     cat <<EOF
 ${red}
 ***
-Installing Specter $specter_version, please wait...
+Instalando Spectre $specter_version, espere...
 ***
 ${nc}
 EOF
@@ -2396,7 +2396,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Downloading latest Specter release...
+Descargando la última versión de Spectre...
 ***
 ${nc}
 EOF
@@ -2414,7 +2414,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Installing libusb...
+Instalando libusb...
 ***
 ${nc}
 EOF
@@ -2429,7 +2429,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Configuring Specter Daemon...
+Configurando Specter Daemon...
 ***
 ${nc}
 EOF
@@ -2448,7 +2448,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Loading UDEV rules for Specter HWWI...
+Cargando reglas UDEV para Specter HWWI...
 ***
 ${nc}
 EOF
@@ -2460,7 +2460,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Specter $specter_version installed...
+Specter $specter_version instalado...
 ***
 ${nc}
 EOF
@@ -2480,7 +2480,7 @@ _specter_upgrade(){
             cat <<EOF
 ${red}
 ***
-Upgrading Specter to version $specter_version...
+Actualización de Spectre a la versión $specter_version...
 ***
 ${nc}
 EOF
@@ -2557,7 +2557,7 @@ _install_boltzmann(){
     cat <<EOF
 ${red}
 ***
-Checking package dependencies...
+Comprobando las dependencias de los paquetes...
 ***
 ${nc}
 EOF
@@ -2587,7 +2587,7 @@ _bisq_install(){
     cat <<EOF
 ${red}
 ***
-Enabling Bisq support...
+Habilitar el soporte de Bisq...
 ***
 ${nc}
 EOF
@@ -2611,7 +2611,7 @@ _bisq_uninstall() {
     cat <<EOF
 ${red}
 ***
-Disabling Bisq Support...
+Desactivación de la compatibilidad con Bisq...
 ***
 ${nc}
 EOF
@@ -2657,7 +2657,7 @@ _dojo_data_indexer() {
                     cat <<EOF
 ${red}
 ***
-Indexer data restore completed...
+Restauración de datos del indexador completada...
 ***
 ${nc}
 EOF
@@ -2672,7 +2672,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Starting all Docker containers...
+Iniciar todos los contenedores de Docker...
 ***
 ${nc}
 EOF
@@ -2724,7 +2724,7 @@ _dojo_data_bitcoind() {
                     cat <<EOF
 ${red}
 ***
-Blockchain data restore starting...
+Inicio de la restauración de datos de blockchain...
 ***
 ${nc}
 EOF
@@ -2753,7 +2753,7 @@ EOF
                     cat <<EOF
 ${red}
 ***
-Blockchain data restore completed...
+Restauración de datos de blockchain completada...
 ***
 ${nc}
 EOF
@@ -2769,7 +2769,7 @@ EOF
                         cat <<EOF
 ${red}
 ***
-Starting all Docker containers...
+Iniciar todos los contenedores de Docker...
 ***
 ${nc}
 EOF

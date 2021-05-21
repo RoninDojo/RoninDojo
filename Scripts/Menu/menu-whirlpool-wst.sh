@@ -80,7 +80,7 @@ Escribe : 'quit' en cualquier momento para salir de la herramienta estadística 
 ***
 EOF
 
-_pause continue
+_pause volver
 # press any key to continue
 
 if ! pipenv run python wst.py -w=/tmp 2>/dev/null; then

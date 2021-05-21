@@ -51,7 +51,7 @@ ${nc}
 EOF
             _sleep
 
-            _pause continue
+            _pause seguir
 
             sudo systemctl poweroff
             # power off machine
@@ -65,7 +65,7 @@ ${nc}
 EOF
             _sleep
 
-            _pause continue
+            _pause seguir
 
             sudo systemctl poweroff
             # power off machine
@@ -94,7 +94,7 @@ ${nc}
 EOF
             _sleep
 
-            _pause continue
+            _pause seguir
 
             sudo systemctl reboot
             # restart machine
@@ -108,7 +108,7 @@ ${nc}
 EOF
             _sleep
 
-            _pause continue
+            _pause seguir
 
             sudo systemctl reboot
             # restart machine
