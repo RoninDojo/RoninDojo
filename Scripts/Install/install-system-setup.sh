@@ -32,7 +32,7 @@ else
     cat <<EOF
 ${red}
 ***
-Setting up system and installing dependencies...
+Configuración del sistema e instalación de dependencias...
 ***
 ${nc}
 EOF
@@ -83,7 +83,7 @@ _pacman_update_mirrors
 cat <<EOF
 ${red}
 ***
-Checking package dependencies. Please wait...
+Comprobando las dependencias de los paquetes. Espere por favor...
 ***
 ${nc}
 EOF
@@ -369,7 +369,7 @@ ${nc}
 EOF
 
     # Make sure to wait for user interaction before continuing
-    _pause continue
+    _pause sequir
 
     # Make sure we don't run system install twice
     touch "${ronin_data_dir}"/system-install
@@ -506,7 +506,7 @@ ${nc}
 EOF
 
     # Make sure to wait for user interaction before continuing
-    _pause continue
+    _pause seguir
 
     # Make sure we don't run system install twice
     touch "${ronin_data_dir}"/system-install
@@ -639,7 +639,7 @@ ${nc}
 EOF
 
 # Make sure to wait for user interaction before continuing
-_pause continue
+_pause seguir
 
 # Make sure we don't run system install twice
 touch "${ronin_data_dir}"/system-install

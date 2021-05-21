@@ -40,7 +40,7 @@ fi\n\
 sed -i "/onion() {/a\
 if [ \"\$INDEXER_INSTALL\" == \"on\" ]; then\n\
   v3_addr_electrs=\$( docker exec -it tor cat /var/lib/tor/hsv3electrs/hostname )\n\
-  echo \"Electrs hidden service address (v3) = \$v3_addr_electrs\"\n\
+  echo \"Dirección de servicio oculta de Electrum (v3) = \$v3_addr_electrs\"\n\
 fi\n\
 " "${dojo_path_my_dojo}"/dojo.sh
 # modify dojo.sh for electrs

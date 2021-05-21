@@ -15,7 +15,7 @@ _check_pkg "pipenv" "python-pipenv"
 # with all future packages that ship a requirements.txt.
 pipenv install &>/dev/null
 
-_pause continue
+_pause seguir
 
 # will return to boltzmann menu option script
 bash -c "$ronin_boltzmann_menu"

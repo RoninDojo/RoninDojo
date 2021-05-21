@@ -6,13 +6,13 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Start"
-         2 "Stop"
-         3 "Restart"
-         4 "Status"
-         5 "Logs"
-         6 "Reset"
-         7 "Go Back")
+OPTIONS=(1 "Iniciar"
+         2 "Detener"
+         3 "Reiniciar"
+         4 "Estado"
+         5 "Registros"
+         6 "Reiniciar UI"
+         7 "Atrás")
 
 CHOICE=$(dialog --clear \
                 --title "$TITLE" \
@@ -29,7 +29,7 @@ case $CHOICE in
             cat <<EOF
 ${red}
 ***
-Starting Ronin UI...
+Inicio de Ronin UI...
 ***
 ${nc}
 EOF
@@ -41,14 +41,14 @@ EOF
             cat <<EOF
 ${red}
 ***
-Ronin UI already started...
+La interfaz de usuario del Ronin UI ya comenzó..
 ***
 ${nc}
 EOF
             _sleep
         fi
 
-        _pause return
+        _pause volver
         # press to return is needed so the user has time to see outputs
 
         bash -c "${ronin_ui_menu}"
@@ -60,7 +60,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Stopping Ronin UI...
+Deteniendo a Ronin UI...
 ***
 ${nc}
 EOF
@@ -72,13 +72,13 @@ EOF
             cat <<EOF
 ${red}
 ***
-Ronin UI already stopped...
+Ronin UI ya se detuvo...
 ***
 ${nc}
 EOF
         fi
 
-        _pause return
+        _pause volver
         # press to return is needed so the user has time to see outputs
 
         bash -c "${ronin_ui_menu}"
@@ -88,7 +88,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Restarting Ronin UI...
+Reiniciando Ronin UI...
 ***
 ${nc}
 EOF
@@ -98,7 +98,7 @@ EOF
         pm2 restart "RoninUI" 1>/dev/null
         # restart service
 
-        _pause return
+        _pause volver
         # press to return is needed so the user has time to see outputs
 
         bash -c "${ronin_ui_menu}"
@@ -108,7 +108,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Showing Ronin UI Status...
+Mostrando el estado de Ronin UI...
 ***
 ${nc}
 EOF
@@ -116,14 +116,14 @@ EOF
         cd "${ronin_ui_path}" || exit
         pm2 status
 
-        _pause return
+        _pause volver
         bash -c "${ronin_ui_menu}"
         ;;
     5)
         cat <<EOF
 ${red}
 ***
-Showing Ronin UI Logs...
+Mostrar registros de la interfaz de usuario de Ronin UI...
 ***
 ${nc}
 EOF
@@ -131,7 +131,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Press "q" key to exit at any time...
+Presione la tecla "q" para salir en cualquier momento...
 ***
 ${nc}
 EOF
@@ -146,7 +146,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Resetting Ronin UI...
+Restablecimiento de la interfaz de usuario del Ronin UI...
 ***
 ${nc}
 EOF
@@ -155,7 +155,7 @@ EOF
 
         test -f ronin-ui.dat && rm ronin-ui.dat
 
-        _pause return
+        _pause volver
 
         bash -c "${ronin_ui_menu}"
         ;;

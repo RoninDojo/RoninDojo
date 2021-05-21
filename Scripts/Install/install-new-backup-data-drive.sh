@@ -22,7 +22,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Possible drive rearrangement occured. Checking if ${primary_storage} is available to format...
+Se produjo una posible reorganización de la unidad, ${primary_storage} está disponible para formatear...
 ***
 ${nc}
 EOF
@@ -35,8 +35,8 @@ EOF
                 cat <<EOF
 ${red}
 ***
-${primary_storage} contains an existing filesystem and cannot be formatted. If you wish to use this drive
-for backup purposes. Set backup_format=true in ${HOME}/.config/RoninDojo/user.conf
+${primary_storage} contiene un sistema de archivos existente y no se puede formatear. Si desea utilizar esta unidad
+para fines de respaldo. colocar backup_format=true en ${HOME}/.config/RoninDojo/user.conf
 ***
 ${nc}
 EOF
@@ -125,7 +125,7 @@ _sleep
 _check_pkg "sgdisk" "gptfdisk" --update-mirrors
 
 if ! create_fs --label "backup" --device "${secondary_storage}" --mountpoint "${storage_mount}"; then
-    printf "\n %sFilesystem creation failed! Exiting now...%s" "${red}" "${nc}"
+    printf "\n %sFalló la creación del sistema de archivos! Saliendo ahora...%s" "${red}" "${nc}"
     _sleep 3
     exit 1
 fi

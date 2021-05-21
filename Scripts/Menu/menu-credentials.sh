@@ -41,9 +41,9 @@ ADVERTENCIA: No comparta estas direcciones onion con nadie!
 ${nc}
 
 Herramienta de mantenimiento:
-Tor V3 URL              = http://${v3_addr_dojo_api}/admin
-Admin Key               = $NODE_ADMIN_KEY
-API Key                 = $NODE_API_KEY
+Tor V3 URL                  = http://${v3_addr_dojo_api}/admin
+Clave de administrador      = $NODE_ADMIN_KEY
+Clave API                   = $NODE_API_KEY
 EOF
                 _pause volver
                 bash -c "${ronin_credentials_menu}"
@@ -65,7 +65,7 @@ ADVERTENCIA: No comparta estas direcciones onion con nadie!
 ${nc}
 
 Tor V3 URL              = http://${v3_addr_whirlpool}
-Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Whirlpool Clave API     = ${whirlpool_api_key:-Whirlpool aún no iniciado. Emparejar billetera con GUI}
 EOF
             _pause volver
             bash -c "${ronin_credentials_menu}"
@@ -96,7 +96,6 @@ EOF
 
             _sleep
 
-            _pause volver
             bash -c "${ronin_credentials_menu}"
             # return to menu
             ;;
@@ -149,9 +148,9 @@ Credenciales del UI Backend de Ronin
 ***
 ${nc}
 
-Local Access Domain     =   http://ronindojo.local
-Local Access IP         =   http://${ip} # fallback for when ronindojo.local doesn't work for you.
-Ronin Tor URL           =   http://${BACKEND_TOR}
+Dominio de acceso local      =   http://ronindojo.local
+IP de acceso local           =   http://${ip} # respaldo para cuando ronindojo.local no funciona para usted.
+Ronin Tor URL                =   http://${BACKEND_TOR}
 EOF
             _pause volver
             bash -c "${ronin_credentials_menu}"
@@ -168,14 +167,14 @@ ${nc}
 Bitcoin Daemon:
 
 Tor V3 URL              = http://${v3_addr_bitcoind}
-RPC User                = $BITCOIND_RPC_USER
-RPC Password            = $BITCOIND_RPC_PASSWORD
-RPC IP                  = $BITCOIND_IP
-RPC Port                = $BITCOIND_RPC_PORT
+RPC Usuario             = $BITCOIND_RPC_USER
+RPC Contraseña          = $BITCOIND_RPC_PASSWORD
+IP de RPC               = $BITCOIND_IP
+Puerto RPC              = $BITCOIND_RPC_PORT
 
-Bitcoin RPC Explorer (No username required):
+Bitcoin RPC Explorer (No se requiere nombre de usuario):
 Tor V3 URL              = http://${v3_addr_explorer}
-Password                = $EXPLORER_KEY
+Contraseña              = $EXPLORER_KEY
 EOF
             _pause volver
             bash -c "${ronin_credentials_menu}"
@@ -213,10 +212,10 @@ Credenciales del servidor de Specter
 ${nc}
 
 Tor URL                 = http://${v3_addr_specter}
-RPC User                = $BITCOIND_RPC_USER
-RPC Password            = $BITCOIND_RPC_PASSWORD
-RPC IP                  = $BITCOIND_IP
-RPC Port                = $BITCOIND_RPC_PORT
+RPC Usuario             = $BITCOIND_RPC_USER
+RPC Contraseña          = $BITCOIND_RPC_PASSWORD
+IP de RPC               = $BITCOIND_IP
+Puerto RPC              = $BITCOIND_RPC_PORT
 EOF
             fi
 
@@ -247,10 +246,10 @@ ADVERTENCIA: No comparta estas direcciones onion con nadie!
 ***
 ${nc}
 
-Maintenance Tool:
-Tor V3 URL              = http://${v3_addr_dojo_api}/admin
-Admin Key               = $NODE_ADMIN_KEY
-API Key                 = $NODE_API_KEY
+Herramienta de mantenimiento:
+Tor V3 URL                  = http://${v3_addr_dojo_api}/admin
+Clave de Administrator      = $NODE_ADMIN_KEY
+API Clave                   = $NODE_API_KEY
 
 ${red}
 ***
@@ -263,7 +262,7 @@ ADVERTENCIA: No comparta estas direcciones onion con nadie!
 ${nc}
 
 Tor V3 URL              = http://${v3_addr_whirlpool}
-Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
+Whirlpool Clave API     = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
 ${red}
 ***
@@ -271,9 +270,9 @@ Credenciales del UI Backend de Ronin
 ***
 ${nc}
 
-Local Access Domain     =   http://ronindojo.local
-Local Access IP         =   http://${ip} # fallback for when ronindojo.local doesn't work for you.
-Ronin Tor URL           =   http://${BACKEND_TOR}
+Dominio de acceso local      =   http://ronindojo.local
+IP de acceso local           =   http://${ip} # respaldo para cuando ronindojo.local no funciona para usted.
+Ronin Tor URL                =   http://${BACKEND_TOR}
 
 ${red}
 ***
@@ -284,14 +283,14 @@ ${nc}
 Bitcoin Daemon:
 
 Tor V3 URL              = http://${v3_addr_bitcoind}
-RPC User                = $BITCOIND_RPC_USER
-RPC Password            = $BITCOIND_RPC_PASSWORD
-RPC IP                  = $BITCOIND_IP
-RPC Port                = $BITCOIND_RPC_PORT
+Usuario de RPC          = $BITCOIND_RPC_USER
+Contraseña de RPC       = $BITCOIND_RPC_PASSWORD
+IP de RPC               = $BITCOIND_IP
+Puerto RPC              = $BITCOIND_RPC_PORT
 
-Bitcoin RPC Explorer (No username required):
+Bitcoin RPC Explorer (No se requiere nombre de usuario):
 Tor V3 URL              = http://${v3_addr_explorer}
-Password                = $EXPLORER_KEY
+Contraseña              = $EXPLORER_KEY
 EOF
             if [ -f "${dojo_path_my_dojo}"/indexer/electrs.toml ]; then
                 cat <<EOF
@@ -323,11 +322,11 @@ ${red}
 Credenciales del servidor de Specter
 ***
 ${nc}
-Tor URL                 = http://${v3_addr_specter}
-RPC User                = $BITCOIND_RPC_USER
-RPC Password            = $BITCOIND_RPC_PASSWORD
-RPC IP                  = $BITCOIND_IP
-RPC Port                = $BITCOIND_RPC_PORT
+Tor URL                  = http://${v3_addr_specter}
+Usuario de RPC           = $BITCOIND_RPC_USER
+Contraseña de RPC        = $BITCOIND_RPC_PASSWORD
+IP de RPC                = $BITCOIND_IP
+Puerto RPC               = $BITCOIND_RPC_PORT
 EOF
             fi
 

@@ -8,7 +8,7 @@ _update_01() {
         cat <<EOF
 ${red}
 ***
-Outdated and bridge-utils found...
+OAnticuado y bridge-utils encontrados...
 ***
 ${nc}
 EOF
@@ -16,7 +16,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Starting bridge-utils upgrade...
+Iniciando la actualización de bridge-utils...
 ***
 ${nc}
 EOF
@@ -27,7 +27,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Existing dojo found! Rebooting system to apply changes...
+Dojo existente encontrado! Reinicio del sistema para aplicar cambios...
 ***
 ${nc}
 EOF
@@ -35,7 +35,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Press Ctrl+C now if you wish to skip...
+Pulsa Ctrl + C para salir en cualquier momento......
 ***
 ${nc}
 EOF
@@ -148,13 +148,13 @@ _update_08() {
         cat <<EOF
 ${red}
 ***
-Adding missing systemd mount unit file for device ${primary_storage}...
+Adición del archivo de unidad de montaje systemd faltante para el dispositivo ${primary_storage}...
 ***
 ${nc}
 EOF
         sudo bash -c "cat <<EOF >/etc/systemd/system/${systemd_mountpoint}.mount
 [Unit]
-Description=Mount External SSD Drive ${primary_storage}
+Description=Monte la unidad SSD externa ${primary_storage}
 
 [Mount]
 What=/dev/disk/by-uuid/${uuid}
@@ -167,7 +167,7 @@ WantedBy=multi-user.target
 EOF"
         sudo systemctl enable --quiet mnt-usb.mount
 
-        _sleep 4 --msg "Restarting RoninDojo in"
+        _sleep 4 --msg "Reiniciar RoninDojo en"
 
         # Finalize
         touch "$HOME"/.config/RoninDojo/data/updates/08-"$(date +%m-%d-%Y)"
@@ -281,7 +281,7 @@ _update_16() {
         cat <<EOF
 ${red}
 ***
-Detected an incomplete Specter install, please wait while it's fixed...
+Se detectó una instalación incompleta de Spectre, espere mientras se arregla...
 ***
 ${nc}
 EOF
@@ -317,7 +317,7 @@ _update_17() {
         cat <<EOF
 ${red}
 ***
-Legacy Ronin UI detected...
+Se detectó la interfaz de usuario de Ronin heredada...
 ***
 EOF
 
@@ -325,7 +325,7 @@ EOF
 
         cat <<EOF
 ***
-Uninstalling Ronin UI Backend...
+Desinstalar el backend de la interfaz de usuario de Ronin...
 ***
 EOF
 
@@ -333,7 +333,7 @@ EOF
 
         cat <<EOF
 ***
-Installing Ronin UI Server...
+instalación de Ronin UI Server...
 ***
 ${nc}
 EOF

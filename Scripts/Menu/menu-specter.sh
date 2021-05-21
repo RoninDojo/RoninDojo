@@ -73,7 +73,7 @@ EOF
     4)
         sudo systemctl status specter
 
-        _pause return
+        _pause volver
 
         bash -c "${ronin_specter_menu}"
         ;;

@@ -44,7 +44,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Possible drive rearrangement occured. Checking if ${primary_storage} is available to mount...
+Se produjo una posible reorganización de la unidad, ${primary_storage} está disponible para formatear...
 ***
 ${nc}
 EOF
@@ -70,7 +70,7 @@ if ! findmnt "${storage_mount}" 1>/dev/null; then
     cat <<EOF
 ${red}
 ***
-Preparing to Mount ${secondary_storage} to ${storage_mount}...
+Preparando para montar ${secondary_storage} a ${storage_mount}...
 ***
 ${nc}
 EOF
@@ -79,7 +79,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Are you ready to mount?
+Estás seguro?
 ***
 ${nc}
 EOF
@@ -96,7 +96,7 @@ EOF
             cat <<EOF
 ${red}
 ***
-Invalid answer! Enter Y or N
+Respuesta inválida! Pulsa Y o N
 ***
 ${nc}
 EOF
@@ -111,7 +111,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Mounting ${secondary_storage} to ${storage_mount}...
+Montando ${secondary_storage} ah ${storage_mount}...
 ***
 ${nc}
 EOF
@@ -203,7 +203,7 @@ EOF
 
 _sleep
 
-_pause continue
+_pause seguir
 # press to continue is needed because sudo password can be requested for next step, if user is AFK there may be timeout
 
 cat <<EOF
@@ -230,7 +230,7 @@ _sleep
 cat <<EOF
 ${red}
 ***
-Starting Dojo...
+Iniciando Dojo...
 ***
 ${nc}
 EOF
