@@ -22,7 +22,7 @@ elif [ -f "${ronin_data_dir}"/system-install ]; then
     cat <<EOF
 ${red}
 ***
-Preparando el sistema e instalando las dependencias...
+Detectada instalación previa de sistema. Saliendo del script...
 ***
 ${nc}
 EOF
@@ -206,7 +206,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Ahora que el UFW ha sido habilitado, cualquier ordenador conectado en la misma red tendra acceso al RoninDojo através de SSH...
+Ahora que el UFW ha sido habilitado, cualquier ordenador conectado en la misma red tendra acceso por SSH a RoninDojo...
 ***
 ${nc}
 EOF
@@ -425,8 +425,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Blockchain data prepared for salvage! Los datos de la Blockchain estan preparados para su recuperación!
-
+Los datos de la Blockchain estan preparados para su recuperación!
 ***
 ${nc}
 EOF
@@ -622,7 +621,7 @@ _install_wst
 cat <<EOF
 ${red}
 ***
-Dojo ha sido instalado!
+Dojo está listo para ser instalado!
 ***
 ${nc}
 EOF
