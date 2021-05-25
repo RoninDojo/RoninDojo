@@ -167,8 +167,8 @@
 # Se requiere contraseña para acceder al block explorer
 # (el acceso del usuario puede ser cualquier cosa)
 # Guarda tu contraseña en secreto!
-# Proporciona un valor con más entropía!
-# Typo: alphanumérico
+# Proporciona un valor con entropía!
+# Tipo: Alfanumérico
 #EXPLORER_KEY=""
 
 ##############################

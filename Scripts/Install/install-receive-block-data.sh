@@ -44,7 +44,7 @@ EOF
         cat <<EOF
 ${red}
 ***
-Se produjo una posible reorganización de la unidad, ${primary_storage} está disponible para formatear...
+Es posible que se haya producido una reorganización en el disco. Verificando si, ${primary_storage} está disponible para formatear...
 ***
 ${nc}
 EOF
@@ -111,7 +111,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Montando ${secondary_storage} ah ${storage_mount}...
+Montando ${secondary_storage} a ${storage_mount}...
 ***
 ${nc}
 EOF

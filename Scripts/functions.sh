@@ -1945,7 +1945,7 @@ EOF"
         cat <<EOF
 ${red}
 ***
-Montando el disco duro ${device} en ${mountpoint}
+Montando el disco duro ${device} a ${mountpoint}
 ***
 ${nc}
 EOF
@@ -2214,7 +2214,7 @@ _specter_uninstall() {
     cat <<EOF
 ${red}
 ***
-Desinstalar Spectre ${_specter_version:-$specter_version}...
+Desinstalar Specter ${_specter_version:-$specter_version}...
 ***
 ${nc}
 EOF
@@ -2265,7 +2265,7 @@ _specter_install(){
     cat <<EOF
 ${red}
 ***
-Instalando Spectre $specter_version, espere...
+Instalando Specter $specter_version, espere...
 ***
 ${nc}
 EOF
@@ -2273,7 +2273,7 @@ EOF
     cat <<EOF
 ${red}
 ***
-Descargando la última versión de Spectre...
+Descargando la última versión de Specter...
 ***
 ${nc}
 EOF
@@ -2357,7 +2357,7 @@ _specter_upgrade(){
             cat <<EOF
 ${red}
 ***
-Actualización de Spectre a la versión $specter_version...
+Actualización de Specter a la versión $specter_version...
 ***
 ${nc}
 EOF

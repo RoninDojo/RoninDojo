@@ -46,7 +46,7 @@ fi
 cat <<EOF
 ${red}
 ***
-Aplicando la instalación de RoninDojo...
+Instalando RoninDojo...
 ***
 ${nc}
 EOF
@@ -117,7 +117,7 @@ _sleep 4
 cat <<EOF
 ${red}
 ***
-Ajustando el RCP Usuario y Contraseña...
+Configurando el RCP Usuario y Contraseña...
 ***
 ${nc}
 EOF

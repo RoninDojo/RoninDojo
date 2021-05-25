@@ -281,7 +281,7 @@ _update_16() {
         cat <<EOF
 ${red}
 ***
-Se detectó una instalación incompleta de Spectre, espere mientras se arregla...
+Se detectó una instalación incompleta de Specter, espere mientras se arregla...
 ***
 ${nc}
 EOF
