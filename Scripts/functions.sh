@@ -1606,7 +1606,7 @@ _sleep
         # Renewal of bitcoind onion address
         if [ "$BITCOIND_LISTEN_MODE" == "on" ]; then
             if [ "$BITCOIND_EPHEMERAL_HS" = "on" ]; then
-                docker exec -it tor rm -rf /var/lib/tor/hsv3bitcoind &> /dev/null
+                docker exec -it tor rm -rf /var/lib/tor/hsv*bitcoind &> /dev/null
             fi
         fi
 
@@ -1626,7 +1626,7 @@ EOF
         nbIters=$((BITCOIND_SHUTDOWN_DELAY/10))
 
         while ((i<nbIters)); do
-            if timeout -k 12 2 docker container top bitcoind | grep bitcoind &>/dev/null; then
+            if timeout -k 12 10 docker container top bitcoind | grep bitcoind &>/dev/null; then
                 sleep 1
                 ((i++))
             else
