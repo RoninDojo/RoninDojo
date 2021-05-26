@@ -13,22 +13,27 @@ RoninDojo:
     - @BTCxZelko            - https://code.samourai.io/BTCxZelko
     - @s2l1  (GuerraMoneta) - https://code.samourai.io/s2l1
 
-RoninDojo Website:
+Website:
     - @s2l1
     - @likewhoa
     - @pajasevi (Pavel Ševčík)
 
-RoninUI:
+Ronin UI:
     - @pajasevi
     - @miguelm9             - https://code.samourai.io/miguelmartinn9
 
-RoninDojo Documentation:
+Documentation:
     - @Crazyk031
     - @BitcoinQnA
 
-RoninDojo Quality Assurance:
+Quality Assurance:
     - @Crazyk031
     - @BitcoinQnA
     - @likewhoa
     - @BTCxZelko
     - @s2l1
+
+Translation:
+    - @likewhoa
+    - @LChavo
+    - @Bitcoinlion21
