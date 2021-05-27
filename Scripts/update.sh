@@ -360,3 +360,12 @@ _update_18() {
         touch "$HOME"/.config/RoninDojo/data/updates/18-"$(date +%m-%d-%Y)"
     fi
 }
+
+# Uninstall bleeding edge Node.js and install LTS Node.js instead
+_update_19() {
+    sudo pacman -R --noconfirm --cascade nodejs 2>/dev/null
+    sudo pacman -S --noconfirm --quiet nodejs-lts-fermium npm
+
+    # Finalize
+    touch "$HOME"/.config/RoninDojo/data/updates/19-"$(date +%m-%d-%Y)"
+}
