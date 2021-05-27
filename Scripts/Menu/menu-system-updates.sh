@@ -94,6 +94,16 @@ EOF
         cat <<EOF
 ${red}
 ***
+Updating PNPM, Please wait...
+***
+${nc}
+EOF
+        # Update PNPM
+        sudo npm i -g pnpm &>/dev/null
+
+        cat <<EOF
+${red}
+***
 Updating RoninDojo...
 ***
 ${nc}
