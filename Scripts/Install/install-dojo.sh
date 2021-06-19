@@ -225,9 +225,15 @@ fi
 
 _check_indexer
 
-if (($?==2)); then # No indexer, fresh install so show prompts for indexer selection
-    _indexer_prompt
-    # give user menu for install choices, see functions.sh
+if (($?==2)); then
+    # No indexer found, fresh install
+    # Enable default samourai indexer unless dojo_indexer="electrs-indexer" set in user.conf
+    _set_indexer
+
+    # Enable Electrs indexer
+    if [ "${dojo_indexer}" = "electrs-indexer" ]; then
+        bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+    fi
 fi
 
 cat <<EOF
@@ -262,7 +268,7 @@ sudo systemctl restart --quiet docker
 
 cd "$dojo_path_my_dojo" || exit
 
-if ./dojo.sh install --nolog; then
+if ./dojo.sh install --nolog --auto; then
     cat <<EOF
 ${red}
 ***
