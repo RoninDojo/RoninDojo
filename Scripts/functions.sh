@@ -1229,8 +1229,9 @@ _mempool_conf() {
     test -f "${dojo_path_my_dojo}"/conf/docker-mempool.conf || mempool_conf="conf.tpl"
 
     if [ "${mempool_conf}" = "conf" ]; then # Existing install
-        MEMPOOL_MYSQL_USER=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
-        MEMPOOL_MYSQL_PASSWORD=$(grep MEMPOOL_MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+        MEMPOOL_MYSQL_USER=$(grep MYSQL_USER "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+        MEMPOOL_MYSQL_PASSWORD=$(grep MYSQL_PASSWORD "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
+        MEMPOOL_MYSQL_ROOT_PASSWORD=$(grep MYSQL_ROOT_PASSWORD "${dojo_path_my_dojo}"/conf/docker-mempool.conf | cut -d '=' -f2)
     else
         # Generate mempool MySQL credentials for a fresh install
         . "${HOME}"/RoninDojo/Scripts/generated-credentials.sh
@@ -1243,29 +1244,32 @@ _mempool_conf() {
 
     # Enable mempool and set MySQL credentials
     sudo sed -i -e 's/MEMPOOL_INSTALL=.*$/MEMPOOL_INSTALL=on/' \
-    -e "s/MEMPOOL_MYSQL_USER=.*$/MEMPOOL_MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
-    -e "s/MEMPOOL_MYSQL_PASSWORD=.*$/MEMPOOL_MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool."${mempool_conf}"
+    -e "s/MYSQL_USER=.*$/MYSQL_USER=${MEMPOOL_MYSQL_USER}/" \
+    -e "s/MYSQL_ROOT_PASSWORD=.$/MYSQL_ROOT_PASSWORD=${MEMPOOL_MYSQL_ROOT_PASSWORD}/" \
+    -e "s/MYSQL_PASSWORD=.*$/MYSQL_PASSWORD=${MEMPOOL_MYSQL_PASSWORD}/" "${dojo_path_my_dojo}"/conf/docker-mempool."${mempool_conf}"
 
-    # Set environment values for Dockerfile
-    sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \
-    -e "s/DB_USER .*$/DB_USER ${MEMPOOL_MYSQL_USER}/" -e "s/DB_PASSWORD .*$/DB_PASSWORD ${MEMPOOL_MYSQL_PASSWORD}/" \
-    -e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${BITCOIND_IP}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${BITCOIND_RPC_PORT}/" \
-    -e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${BITCOIND_RPC_USER}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${BITCOIND_RPC_PASSWORD}/" \
-    "${dojo_path_my_dojo}"/mempool/Dockerfile
+    # Set environment values for Dockerfile 
+    #sed -i -e "s/'mempool'@/'${MEMPOOL_MYSQL_USER}'@/" -e "s/by 'mempool'/by '${MEMPOOL_MYSQL_PASSWORD}'/"  \
+    #-e "s/DB_USER .*$/DB_USER ${MEMPOOL_MYSQL_USER}/" -e "s/DB_PASSWORD .*$/DB_PASSWORD ${MEMPOOL_MYSQL_PASSWORD}/" \
+    #-e "s/BITCOIN_NODE_HOST .*$/BITCOIN_NODE_HOST ${BITCOIND_IP}/" -e "s/BITCOIN_NODE_PORT .*$/BITCOIN_NODE_PORT ${BITCOIND_RPC_PORT}/" \
+    #-e "s/BITCOIN_NODE_USER .*$/BITCOIN_NODE_USER ${BITCOIND_RPC_USER}/" -e "s/BITCOIN_NODE_PASS .*$/BITCOIN_NODE_PASS ${BITCOIND_RPC_PASSWORD}/" \
+    #"${dojo_path_my_dojo}"/mempool/Dockerfile
+    #### No longer required ####
 }
 
 #
 # Mempool Space Visualizer url rewrites
 #
-_mempool_urls_to_local_btc_explorer() {
-    . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
-
-    if _is_mempool && grep "blockstream" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
-        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${v3_addr_explorer}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html
-        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${v3_addr_explorer}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/block-modal/block-modal.component.html
-        sudo sed -i "s:http\://www.blockstream.info/tx/:http\://ronindojo\:${EXPLORER_KEY}@${v3_addr_explorer}/tx/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/tx-bubble/tx-bubble.component.html
-    fi
-}
+#_mempool_urls_to_local_btc_explorer() {
+#    . "$HOME"/RoninDojo/Scripts/dojo-defaults.sh
+#
+#    if _is_mempool && grep "blockstream" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html 1>/dev/null ; then
+#        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${v3_addr_explorer}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/blockchain-blocks.component.html
+#        sudo sed -i "s:https\://www.blockstream.info/block-height/:http\://ronindojo\:${EXPLORER_KEY}@${v3_addr_explorer}/block-height/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/blockchain-blocks/block-modal/block-modal.component.html
+#        sudo sed -i "s:http\://www.blockstream.info/tx/:http\://ronindojo\:${EXPLORER_KEY}@${v3_addr_explorer}/tx/:" "${dojo_path_my_dojo}"/mempool/frontend/src/app/tx-bubble/tx-bubble.component.html
+#    fi
+######## Need to re-evaluate if this is possible. Currently not applicable ##########
+#}
 
 #
 # git current branch name. If in detached state returns zero output. We only need branch name as

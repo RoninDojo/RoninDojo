@@ -65,7 +65,7 @@ Installing Mempool Space Visualizer...
 ${nc}
 EOF
                 _mempool_conf
-                _mempool_urls_to_local_btc_explorer
+#                _mempool_urls_to_local_btc_explorer   ### Not currently applicable given implementation method ###
             else
                 _mempool_uninstall || exit
             fi

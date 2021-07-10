@@ -39,9 +39,9 @@ cd "${HOME}" || exit
 # return to previous working path
 
 if _is_mempool; then
-    _mempool_uninstall || exit
+    _mempool_install || exit
 fi
-# Check if mempool available or not, then uninstall it.
+# Check if mempool available or not, then install it if previously installed.
 
 if [ -f /etc/systemd/system/whirlpool.service ] ; then
    sudo systemctl stop --quiet whirlpool
