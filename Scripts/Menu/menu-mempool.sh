@@ -40,7 +40,7 @@ Starting Mempool Space Visualizer...
 ***
 ${nc}
 EOF
-            docker start mempool 1>/dev/null
+            docker start mempool_api mempool_db mempool_web 1>/dev/null
             _sleep 5
             _pause return
             bash -c "${ronin_mempool_menu}"
@@ -68,7 +68,7 @@ Stopping Mempool Space Visualizer...
 ***
 ${nc}
 EOF
-            docker stop mempool 1>/dev/null
+            docker stop mempool_api mempool_db mempool_web 1>/dev/null
             _pause return
             bash -c "${ronin_mempool_menu}"
             # stop mempool, return to menu
@@ -95,9 +95,9 @@ Restarting Mempool Space Visualizer...
 ***
 ${nc}
 EOF
-            docker stop mempool 1>/dev/null
+            docker stop mempool_api mempool_db mempool_web 1>/dev/null
             _sleep 5
-            docker start mempool 1>/dev/null
+            docker start mempool_api mempool_db mempool_web 1>/dev/null
             _sleep 1
 
             _pause return
@@ -136,7 +136,7 @@ Press Ctrl+C to exit at anytime...
 ${nc}
 EOF
             cd "$dojo_path_my_dojo" || exit
-            ./dojo.sh logs mempool
+            ./dojo.sh logs mempool_api
             bash -c "${ronin_mempool_menu}"
             # view logs, return to menu
             # see defaults.sh
