@@ -41,7 +41,6 @@ WARNING: Do not share these onion addresses with anyone!
 ${nc}
 
 Maintenance Tool:
-Tor V2 URL              = http://${v2_addr_dojo_api}/admin
 Tor V3 URL              = http://${v3_addr_dojo_api}/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
@@ -65,7 +64,6 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${nc}
 
-Tor V2 URL              = http://${v2_addr_whirlpool}
 Tor V3 URL              = http://${v3_addr_whirlpool}
 Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 EOF
@@ -170,7 +168,6 @@ ${nc}
 
 Bitcoin Daemon:
 
-Tor V2 URL              = http://${v2_addr_bitcoind}
 Tor V3 URL              = http://${v3_addr_bitcoind}
 RPC User                = $BITCOIND_RPC_USER
 RPC Password            = $BITCOIND_RPC_PASSWORD
@@ -178,7 +175,6 @@ RPC IP                  = $BITCOIND_IP
 RPC Port                = $BITCOIND_RPC_PORT
 
 Bitcoin RPC Explorer (No username required):
-Tor V2 URL              = http://${v2_addr_explorer}
 Tor V3 URL              = http://${v3_addr_explorer}
 Password                = $EXPLORER_KEY
 EOF
@@ -253,7 +249,6 @@ WARNING: Do not share these onion addresses with anyone!
 ${nc}
 
 Maintenance Tool:
-Tor V2 URL              = http://${v2_addr_dojo_api}/admin
 Tor V3 URL              = http://${v3_addr_dojo_api}/admin
 Admin Key               = $NODE_ADMIN_KEY
 API Key                 = $NODE_API_KEY
@@ -268,7 +263,6 @@ WARNING: Do not share these onion addresses with anyone!
 ***
 ${nc}
 
-Tor V2 URL              = http://${v2_addr_whirlpool}
 Tor V3 URL              = http://${v3_addr_whirlpool}
 Whirlpool API Key       = ${whirlpool_api_key:-Whirlpool not Initiated yet. Pair wallet with GUI}
 
@@ -291,7 +285,6 @@ ${nc}
 
 Bitcoin Daemon:
 
-Tor V2 URL              = http://${v2_addr_bitcoind}
 Tor V3 URL              = http://${v3_addr_bitcoind}
 RPC User                = $BITCOIND_RPC_USER
 RPC Password            = $BITCOIND_RPC_PASSWORD
@@ -299,7 +292,6 @@ RPC IP                  = $BITCOIND_IP
 RPC Port                = $BITCOIND_RPC_PORT
 
 Bitcoin RPC Explorer (No username required):
-Tor V2 URL              = http://${v2_addr_explorer}
 Tor V3 URL              = http://${v3_addr_explorer}
 Password                = $EXPLORER_KEY
 EOF
