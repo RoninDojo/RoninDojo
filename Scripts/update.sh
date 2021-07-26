@@ -369,3 +369,16 @@ _update_19() {
     # Finalize
     touch "$HOME"/.config/RoninDojo/data/updates/19-"$(date +%m-%d-%Y)"
 }
+
+# Revert some settings in docker-bitcoind.conf
+_update_20() {
+    _load_user_conf
+
+    if [ -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf ]; then
+        sed -i "s/BITCOIND_RPC_THREADS.*$/BITCOIND_RPC_THREADS=${BITCOIND_RPC_THREADS:-10}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
+        sed -i "s/BITCOIND_MAX_MEMPOOL.*$/BITCOIND_MAX_MEMPOOL=${BITCOIND_MAX_MEMPOOL:-1024}/" "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf
+
+        # Finalize
+        touch "$HOME"/.config/RoninDojo/data/updates/20-"$(date +%m-%d-%Y)"
+    fi
+}
