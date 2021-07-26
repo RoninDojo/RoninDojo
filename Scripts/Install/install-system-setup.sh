@@ -618,6 +618,17 @@ _sleep
 
 _install_wst
 
+# Install Ronin UI
+cat <<EOF
+${red}
+***
+Installing Ronin UI...
+***
+${nc}
+EOF
+
+_ronin_ui_install
+
 cat <<EOF
 ${red}
 ***

@@ -87,17 +87,6 @@ else
     git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
 fi
 
-# Install Ronin UI
-cat <<EOF
-${red}
-***
-Installing Ronin UI...
-***
-${nc}
-EOF
-
-_ronin_ui_install
-
 cat <<EOF
 ${red}
 ***
