@@ -2688,3 +2688,144 @@ _ufw_rule_add(){
         sudo ufw reload
     fi
 }
+
+#
+# Yes or No Prompt
+#
+_yes_or_no() {
+    while true; do
+        read -rp "$* ${green}[y/n]:${nc} " yn
+        case $yn in
+            [Yy]*) return 0;;
+            [Nn]*) return 1;;
+        esac
+    done
+}
+
+#
+# SSH Key Management
+#
+_ssh_key_authentication() {
+    local _add_ssh_key=false _del_ssh_key=false _pub_ssh_key_path=/tmp/pub-ssh-key
+
+    # Parse Arguments
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            add-ssh-key)
+                _add_ssh_key=true
+                break
+                ;;
+            del-ssh-key)
+                _del_ssh_key=true
+                break
+                ;;
+            enable)
+                if sudo grep -q "UsePAM no" /etc/ssh/sshd_config; then
+                    printf "%s\n***\nSSH Key Authentication already enabled! Returning to menu...\n***%s\n" "${red}" "${nc}"
+
+                    return 1
+                else
+                    printf "%s\n***\nThis will enable SSH key authentication ONLY and will disable password authentication...\n***%s\n\n" "${red}" "${nc}"
+
+                    if _yes_or_no "Do you wish to continue?"; then
+                        printf "%s\n***\nGenerating sshd configuration file...\n***%s\n" "${red}" "${nc}"
+
+                        # Backup original sshd_config
+                        sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config_original
+
+                        sudo bash -c "cat <<EOF >/etc/ssh/sshd_config
+PasswordAuthentication no
+PermitEmptyPasswords no
+UsePAM no
+AllowUsers $USER
+EOF
+"
+                        printf "%s\n***\nRestarting SSH daemon...\n***%s\n\n" "${red}" "${nc}"
+                        sudo systemctl restart --quiet sshd
+                    else
+                        return 1
+                    fi
+
+                    return 0
+                fi
+                ;;
+            disable)
+                if sudo grep -q "UsePAM no" /etc/ssh/sshd_config; then
+                    printf "%s\n***\nRestoring sshd_config to defaults...\n***%s\n" "${red}" "${nc}"
+                    sudo cp /etc/ssh/sshd_config_original /etc/ssh/sshd_config
+
+                    printf "%s\n***\nDeleting $HOME/.ssh directory containing keys...\n***%s\n" "${red}" "${nc}"
+                    rm -rf "$HOME"/.ssh || exit
+
+                    # Restart sshd
+                    sudo systemctl restart --quiet sshd
+
+                    return 0
+                else
+                    printf "%s\n***\nSSH Key Authentication not enabled! Returning to menu...\n***%s\n" "${red}" "${nc}"
+                    return 1
+                fi
+                ;;
+        esac
+    done
+
+    read -rp "${red}Paste a valid SSH public key: ${nc}" _pub_ssh_key
+
+    # Create a temporaly file with pasta contents
+    echo "${_pub_ssh_key}">"${_pub_ssh_key_path}"
+
+    # Verify key
+    if ssh-keygen -lf "${_pub_ssh_key_path}" 1>/dev/null; then
+        test -d "$HOME"/.ssh || mkdir "$HOME"/.ssh
+
+        # Adding to authorized_keys & removing temporaly file
+        if [ -f "$HOME"/.ssh/authorized_keys ]; then
+            if grep -q "${_pub_ssh_key}" "$HOME"/.ssh/authorized_keys; then
+                if ${_add_ssh_key}; then
+                    # Key already found
+                    printf "%s\n***\nSSH public key already found. Returning to menu...\n***%s\n" "${red}" "${nc}"
+                    return 1
+                elif ${_del_ssh_key}; then
+                    # Delete key
+                    sed -i "/${_pub_ssh_key}/d" "$HOME"/.ssh/authorized_keys
+                    return 0
+                fi
+            else
+                # Adding new key
+                echo "${_pub_ssh_key}" >>"$HOME"/.ssh/authorized_keys
+
+                # Shred temporaly key
+                shred -uzfs 42 "${_pub_ssh_key_path}"
+
+                # Unset variable
+                unset _pub_ssh_key_path
+
+                return 0
+            fi
+        else
+            if ${_del_ssh_key}; then
+                # No key found to delete
+                return 1
+            elif ${_add_ssh_key}; then
+                # Adding new key
+                echo "${_pub_ssh_key}" >>"$HOME"/.ssh/authorized_keys
+
+                # Shred temporaly key
+                shred -uzfs 42 "${_pub_ssh_key_path}"
+
+                # Unset variable
+                unset _pub_ssh_key_path
+
+                return 0
+            fi
+        fi
+    else
+        printf "%s\n***\nInvalid SSH public key!\n***\n\n***Example SSH public key below...\n***%s\n" "${red}" "${nc}"
+
+        printf "\nssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJuh9yEnlKJT1A/MijVQm2fFxoxlX3Bb1JXSUMwOX9E/ likewhoa@localhost\n"
+
+        printf "%s\n***\nReturning to menu...\n***%s\n" "${red}" "${nc}"
+
+        return 1
+    fi
+}
