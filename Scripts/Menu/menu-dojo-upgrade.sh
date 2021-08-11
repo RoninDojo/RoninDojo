@@ -100,7 +100,7 @@ elif ((ret==1)); then
     _set_indexer
 fi
 
-./dojo.sh upgrade --nolog
+./dojo.sh upgrade --nolog --auto
 # run upgrade
 
 # Source update script
