@@ -137,7 +137,7 @@ EOF
         cd "$dojo_path_my_dojo" || exit
 
         # uninstall samourai dojo
-        if ./dojo.sh uninstall; then
+        if ./dojo.sh uninstall --auto; then
             # Check if applications need to be uninstalled
             _is_ronin_ui && _ronin_ui_uninstall
 
