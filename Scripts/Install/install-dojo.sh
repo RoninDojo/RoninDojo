@@ -87,6 +87,13 @@ else
     git checkout -q -b "${samourai_commitish}" "${samourai_commitish}"
 fi
 
+# Check if RoninUI needs installing
+if ! _is_ronin_ui; then
+    printf "%s\n***\nInstalling Ronin UI\n***\n%s\n" "${red}" "${nc}"
+
+    _ronin_ui_install
+fi
+
 cat <<EOF
 ${red}
 ***
