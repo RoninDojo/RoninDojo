@@ -1057,6 +1057,101 @@ _check_indexer() {
 }
 
 #
+# Offer user choice of SW indexer or electrs
+#
+_indexer_prompt() {
+    . "$HOME"/RoninDojo/Scripts/defaults.sh
+
+    cat <<EOF
+${red}
+***
+Preparing the Indexer Prompt...
+***
+${nc}
+EOF
+    _sleep
+
+    cat <<EOF
+${red}
+***
+Samourai Indexer is recommended for most users as it helps with querying balances...
+***
+${nc}
+EOF
+    _sleep 3
+
+    cat <<EOF
+${red}
+***
+Electrum Rust Server is recommended for Hardware Wallets, Multisig, and other Electrum features...
+***
+${nc}
+EOF
+    _sleep 3
+
+    cat <<EOF
+${red}
+***
+Choose one of the following options for your Indexer...
+***
+${nc}
+EOF
+    _sleep
+
+    # indexer names here are used as data source
+    while true; do
+        select indexer in "Samourai Indexer (recommended)" "Electrum Rust Server"; do
+            case $indexer in
+                "Samourai Indexer"*)
+                    cat <<EOF
+${red}
+***
+Selected Samourai Indexer...
+***
+${nc}
+EOF
+                    _sleep
+
+                    _check_indexer && _uninstall_electrs_indexer
+
+                    _set_indexer
+                    return 0
+                    ;;
+                    # Samourai indexer install enabled in .conf.tpl files using sed
+                "Electrum"*)
+                    cat <<EOF
+${red}
+***
+Selected Electrum Rust Server...
+***
+${nc}
+EOF
+                    _sleep
+
+                    _set_indexer
+
+                    bash "$HOME"/RoninDojo/Scripts/Install/install-electrs-indexer.sh
+                    return 0
+                    ;;
+                    # triggers electrs install script
+                *)
+                    cat <<EOF
+${red}
+***
+Invalid Entry! Valid values are 1 & 2...
+***
+${nc}
+EOF
+                    _sleep
+                    break
+                    ;;
+                    # invalid data try again
+            esac
+        done
+    done
+}
+
+#
 # Check if my-dojo directory is missing
 #
 _is_dojo() {
