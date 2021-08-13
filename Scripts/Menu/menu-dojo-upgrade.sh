@@ -39,7 +39,7 @@ cd "${HOME}" || exit
 # return to previous working path
 
 if _is_mempool; then
-    _mempool_install || exit
+    _mempool_conf || exit
 fi
 # Check if mempool available or not, then install it if previously installed.
 

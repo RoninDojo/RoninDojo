@@ -1220,7 +1220,7 @@ EOF
 # Setup mempool docker variables
 #
 _mempool_conf() {
-    local mempool_conf bitcoind_conf MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD
+    local mempool_conf bitcoind_conf MEMPOOL_MYSQL_USER MEMPOOL_MYSQL_PASSWORD MEMPOOL_MYSQL_ROOT_PASSWORD
 
     bitcoind_conf="conf"
     test -f "${dojo_path_my_dojo}"/conf/docker-bitcoind.conf || bitcoind_conf="conf.tpl"
