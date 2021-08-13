@@ -215,7 +215,7 @@ _update_11() {
         sudo sed -i 's:/var/lib/tor/hidden_service_ronin_backend/:/mnt/usb/tor/hidden_service_ronin_backend/:' /etc/tor/torrc
         sudo rm -rf /var/lib/tor/hidden_service_ronin_backend
 
-        sudo systemctl reload-or-restart --quiet tor
+        sudo systemctl restart --quiet tor
 
         # Finalize
         touch "$HOME"/.config/RoninDojo/data/updates/11-"$(date +%m-%d-%Y)"

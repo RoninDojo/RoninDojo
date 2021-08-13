@@ -423,7 +423,7 @@ TOR_DIR
     if ! systemctl is-active --quiet tor; then
         sudo sed -i 's:^ReadWriteDirectories=-/var/lib/tor.*$:ReadWriteDirectories=-/var/lib/tor /mnt/usb/tor:' /usr/lib/systemd/system/tor.service
         sudo systemctl daemon-reload
-        sudo systemctl reload-or-restart --quiet tor
+        sudo systemctl restart --quiet tor
     fi
 
     cat <<TOR_CONFIG
@@ -2267,7 +2267,7 @@ HiddenServiceDir ${install_dir_tor}/specter_server/\n\
 HiddenServiceVersion 3\n\
 HiddenServicePort 443 127.0.0.1:25441\n\
 " /etc/tor/torrc
-        sudo systemctl reload-or-restart --quiet tor
+        sudo systemctl restart --quiet tor
     fi
     # Set tor hiddenservice for https specter server
 
