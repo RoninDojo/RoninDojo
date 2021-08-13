@@ -2235,7 +2235,7 @@ EOF
         cd "$HOME"/specter-"${_specter_version:-$specter_version}"/udev || exit
 
         for file in *.rules; do
-            sudo rm /etc/udev/rules.d/"${file}"
+            test -f /etc/udev/rules.d/"${file}" && sudo rm /etc/udev/rules.d/"${file}"
         done
 
         sudo udevadm trigger
