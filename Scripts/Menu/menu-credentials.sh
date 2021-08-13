@@ -212,6 +212,7 @@ Specter Server Credentials
 ***
 ${nc}
 
+Local IP URL            = http://${ip}:25441
 Tor URL                 = http://${v3_addr_specter}
 RPC User                = $BITCOIND_RPC_USER
 RPC Password            = $BITCOIND_RPC_PASSWORD
@@ -323,6 +324,7 @@ ${red}
 Specter Server Credentials
 ***
 ${nc}
+Local IP URL            = http://${ip}:25441
 Tor URL                 = http://${v3_addr_specter}
 RPC User                = $BITCOIND_RPC_USER
 RPC Password            = $BITCOIND_RPC_PASSWORD

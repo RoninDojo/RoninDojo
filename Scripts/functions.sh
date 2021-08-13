@@ -2330,7 +2330,7 @@ EOF
         cd "$HOME"/specter-"${_specter_version:-$specter_version}"/udev || exit
 
         for file in *.rules; do
-            sudo rm /etc/udev/rules.d/"${file}"
+            test -f /etc/udev/rules.d/"${file}" && sudo rm /etc/udev/rules.d/"${file}"
         done
 
         sudo udevadm trigger
@@ -2380,6 +2380,9 @@ EOF
     # Check for package dependencies
     _check_pkg "gcc" --update-mirrors
 
+    # Check for python-pip
+    _check_pkg pip3 python-pip
+
     if ! pacman -Q libusb 1>/dev/null; then
         _pacman_update_mirrors
 
@@ -2393,9 +2396,16 @@ EOF
      sudo pacman --quiet -S --noconfirm libusb
     fi
 
-    python3 -m venv "$HOME"/.venv_specter &>/dev/null
+    python3 -m venv "$HOME"/.venv_specter &>/dev/null || return 1
 
     cd "$HOME"/specter-"$specter_version" || exit
+
+    # Install dependencies through pip3
+    "$HOME"/.venv_specter/bin/pip3 install -r requirements.txt &>/dev/null || return 1
+
+    # Set version number
+    sed -i "s/version=\".*/version=\"${specter_version}\",/" setup.py
+
     "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
 
     cat <<EOF
@@ -2473,8 +2483,16 @@ EOF
         fi
     done
 
+
     cd "$HOME"/specter-"$specter_version" || exit
-    "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null
+
+    # Install dependencies through pip
+    "$HOME"/.venv_specter/bin/pip3 install -r requirements.txt &>/dev/null || return 1
+
+    # Set version number
+    sed -i "s/version=\".*/version=\"${specter_version}\",/" setup.py
+
+    "$HOME"/.venv_specter/bin/python3 setup.py install &>/dev/null || return 1
 
     _specter_create_systemd_unit_file
 
@@ -2490,7 +2508,7 @@ EOF
 
     _specter_hww_udev_rules
 
-    sudo systemctl restart --quiet specter
+    sudo systemctl reload-or-restart --quiet specter
 
     return 0
 }
