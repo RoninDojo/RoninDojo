@@ -6,7 +6,7 @@
 
 _load_user_conf
 
-OPTIONS=(1 "Firewall"
+OPTIONS=(1 "Networking"
          2 "Change User Password"
          3 "Change Root Password"
          4 "Lock Root User"
@@ -24,7 +24,7 @@ CHOICE=$(dialog --clear \
 clear
 case $CHOICE in
     1)
-        bash -c "${ronin_firewall_menu}"
+        bash -c "${ronin_networking_menu}"
         ;;
     2)
         cat <<EOF
