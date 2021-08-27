@@ -14,7 +14,7 @@ fi
 # Retrieve bitcoind RPC credentials
 
 cat <<EOF > "${dojo_path_my_dojo}"/indexer/electrs.toml
-cookie = "$BITCOIND_RPC_USER:$BITCOIND_RPC_PASSWORD"
+auth = "$BITCOIND_RPC_USER:$BITCOIND_RPC_PASSWORD"
 server_banner = "Welcome to your RoninDojo ${ronindojo_version} Electrs Server!"
 EOF
 
